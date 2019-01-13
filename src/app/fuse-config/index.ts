@@ -9,7 +9,7 @@ import { FuseConfig } from '@fuse/types';
  */
 
 export const fuseConfig: FuseConfig = {
-    // Color themes can be defined in src/app/app.theme.scss
+    // Color themes can be defined in src/app/superadmin.theme.scss
     colorTheme      : 'theme-default',
     customScrollbars: true,
     layout          : {

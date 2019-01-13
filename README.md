@@ -1,4 +1,4 @@
-# Fuse - Angular
+# Mzurihealth
 
 Material Design Admin Template with Angular 7+ and Angular Material
 

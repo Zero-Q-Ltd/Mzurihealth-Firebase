@@ -1,13 +1,15 @@
 export const locale = {
-    lang: 'tr',
+    lang: 'sw',
     data: {
         'NAV': {
-            'APPLICATIONS': 'Programlar',
+            'Hospital': 'HOSPITALI',
             'SAMPLE'        : {
-                'TITLE': 'Örnek',
-                'BADGE': '15'
+                'TITLE': 'Sample',
+                'BADGE': '25'
             },
-            'appointments' : 'uteuzi'
+            'appointments' : 'Uteuzi',
+            'dashboard' : 'Dashibodi',
+            'superadmin' : 'Mipangiliio'
         }
     }
 };

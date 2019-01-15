@@ -17,7 +17,7 @@ import { ToolbarComponent } from 'app/admin/layout/components/toolbar/toolbar.co
         MatIconModule,
         MatMenuModule,
         MatToolbarModule,
-
+        RouterModule,
         FuseSharedModule,
         FuseSearchBarModule,
         FuseShortcutsModule

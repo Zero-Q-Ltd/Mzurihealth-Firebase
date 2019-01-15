@@ -4,13 +4,13 @@ export const navigation: FuseNavigation[] = [
     {
         id: 'Hospital',
         title: 'Hospital',
-        translate: 'NAV.APPLICATIONS',
+        translate: 'NAV.Hospital',
         type: 'group',
         children: [
             {
                 id: 'SuperAdmin',
                 title: 'SuperAdmin',
-                // translate: 'NAV.dashboard',
+                translate: 'NAV.superadmin',
                 type: 'item',
                 icon: 'settings',
                 url: 'superadmin',

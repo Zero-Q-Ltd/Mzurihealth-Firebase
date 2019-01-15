@@ -1,15 +1,15 @@
-<div class="navbar-top" [ngClass]="fuseConfig.layout.navbar.secondaryBackground">
+<div [ngClass]="fuseConfig.layout.navbar.secondaryBackground" class="navbar-top">
     <div class="logo">
         <img class="logo-icon" src="assets/images/logos/fuse.svg">
-        <span class="logo-text secondary-text">FUSE</span>
+        <span class="logo-text secondary-text">{{activehospital.name | uppercase}}</span>
     </div>
     <div class="buttons">
-        <button mat-icon-button class="toggle-sidebar-folded"
-                (click)="toggleSidebarFolded()" fxHide.lt-lg>
+        <button (click)="toggleSidebarFolded()" class="toggle-sidebar-folded"
+                fxHide.lt-lg mat-icon-button>
             <mat-icon class="secondary-text">menu</mat-icon>
         </button>
-        <button mat-icon-button class="toggle-sidebar-opened"
-                (click)="toggleSidebarOpened()" fxHide.gt-md>
+        <button (click)="toggleSidebarOpened()" class="toggle-sidebar-opened"
+                fxHide.gt-md mat-icon-button>
             <mat-icon class="secondary-text">arrow_back</mat-icon>
         </button>
     </div>
@@ -21,7 +21,9 @@
         <div class="h3 username">{{userdata.data.displayName}}</div>
         <div class="h5 email hint-text mt-8">{{userdata.data.email}}</div>
         <div class="avatar-container" [ngClass]="fuseConfig.layout.navbar.primaryBackground">
-            <img class="avatar" src="{{userdata.data.photoURL || 'assets/images/avatars/docicon.svg'}}"  alt="">
+            <a [routerLink]="'profile'">
+                <img class="avatar" src="{{userdata.data.photoURL || 'assets/images/avatars/docicon.svg'}}" alt="">
+            </a>
         </div>
     </div>
     <div class="navbar-content">

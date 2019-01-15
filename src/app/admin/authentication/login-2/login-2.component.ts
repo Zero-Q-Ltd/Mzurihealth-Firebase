@@ -7,6 +7,8 @@ import {FuseSplashScreenService} from '../../../../@fuse/services/splash-screen.
 import {AdminService} from '../../services/admin.service';
 import {AngularFireAuth} from '@angular/fire/auth';
 import * as firebase from 'firebase';
+import {HospitalAdmin} from '../../../models/HospitalAdmin';
+import {Router} from '@angular/router';
 
 @Component({
     selector: 'login-2',
@@ -25,6 +27,10 @@ export class Login2Component implements OnInit {
      *
      * @param {FuseConfigService} _fuseConfigService
      * @param {FormBuilder} _formBuilder
+     * @param _fuseSplashScreenService
+     * @param adminservice
+     * @param afAuth
+     * @param router
      */
     constructor(
         private _fuseConfigService: FuseConfigService,
@@ -32,6 +38,7 @@ export class Login2Component implements OnInit {
         private _fuseSplashScreenService: FuseSplashScreenService,
         private adminservice: AdminService,
         private afAuth: AngularFireAuth,
+        private router: Router,
     ) {
         // Configure the layout
         this._fuseConfigService.config = {
@@ -50,6 +57,11 @@ export class Login2Component implements OnInit {
                 }
             }
         };
+        this.adminservice.observableuserdata.subscribe((admin: HospitalAdmin) => {
+            if (admin.id) {
+                this.router.navigate(['/admin']);
+            }
+        });
     }
 
     loginWithGoogle() {

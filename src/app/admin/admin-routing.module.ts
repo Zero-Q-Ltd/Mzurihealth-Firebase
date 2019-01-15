@@ -6,6 +6,7 @@ import {DashboardComponent} from './dashboard/dashboard.component';
 // import { AdminLayoutComponent } from './adminlayout.component';
 import {SuperadminComponent} from './superadmin/superadmin.component';
 import {AdminlayoutComponent} from './adminlayout.component';
+import {AdminprofileComponent} from './adminprofile/adminprofile.component';
 
 const routes: Routes = [
     {
@@ -21,6 +22,11 @@ const routes: Routes = [
                 path: 'dashboard',
                 // canActivate: [UsersGuard],
                 component: DashboardComponent
+            },
+            {
+                path: 'profile',
+                // canActivate: [UsersGuard],
+                component: AdminprofileComponent
             },
             {
                 path: 'appointments',

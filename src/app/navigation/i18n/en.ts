@@ -2,13 +2,14 @@ export const locale = {
     lang: 'en',
     data: {
         'NAV': {
-            'APPLICATIONS': 'Applications',
+            'Hospital': 'HOSPITAL',
             'SAMPLE'        : {
                 'TITLE': 'Sample',
                 'BADGE': '25'
             },
             'appointments' : 'Appointments',
-            'dashboard' : 'dashboard'
+            'dashboard' : 'Dashboard',
+            'superadmin' : 'SuperAdmin'
         }
     }
 };

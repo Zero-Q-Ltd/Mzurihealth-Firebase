@@ -1,64 +1,63 @@
-import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { RouterModule, Routes } from '@angular/router';
-import { MatMomentDateModule } from '@angular/material-moment-adapter';
-import { MatButtonModule, MatIconModule } from '@angular/material';
-import { TranslateModule } from '@ngx-translate/core';
+import {NgModule} from '@angular/core';
+import {BrowserModule} from '@angular/platform-browser';
+import {HttpClientModule} from '@angular/common/http';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {MatIconModule} from '@angular/material';
+import {TranslateModule} from '@ngx-translate/core';
 import 'hammerjs';
+import {FuseModule} from '@fuse/fuse.module';
+import {FuseProgressBarModule} from '@fuse/components';
 
-import { FuseModule } from '@fuse/fuse.module';
-import { FuseSharedModule } from '@fuse/shared.module';
-import { FuseProgressBarModule, FuseSidebarModule, FuseThemeOptionsModule } from '@fuse/components';
+import {fuseConfig} from 'app/fuse-config';
 
-import { fuseConfig } from 'app/fuse-config';
+import {AppComponent} from 'app/app.component';
+import {AngularFirestoreModule} from '@angular/fire/firestore';
+import {RouterModule} from '@angular/router';
+import {AngularFireAuth} from '@angular/fire/auth';
+import {AppRoutingModule} from './app-routing.module';
+import {AngularFireModule} from '@angular/fire';
+import {FuseSharedModule} from '../@fuse/shared.module';
+import {Error404Module} from './errorpages/404/error-404.module';
+import {Error500Module} from './errorpages/500/error-500.module';
+import {FrontendModule} from './frontend/frontend.module';
 
-import { AppComponent } from 'app/app.component';
-import { LayoutModule } from 'app/layout/layout.module';
-import { SampleModule } from 'app/main/sample/sample.module';
-
-const appRoutes: Routes = [
-    {
-        path      : '**',
-        redirectTo: 'sample'
-    }
-];
+export const firebaseConfig = {
+    apiKey: 'AIzaSyDaiEsgWOaeopaYQTgTWPIatMeKLZjZc-A',
+    authDomain: 'mzurihealth.firebaseapp.com',
+    databaseURL: 'https://mzurihealth.firebaseio.com',
+    projectId: 'mzurihealth',
+    storageBucket: 'mzurihealth.appspot.com',
+    messagingSenderId: '126269493100'
+};
 
 @NgModule({
     declarations: [
-        AppComponent
+        AppComponent,
     ],
-    imports     : [
+    imports: [
         BrowserModule,
         BrowserAnimationsModule,
         HttpClientModule,
-        RouterModule.forRoot(appRoutes),
-
-        TranslateModule.forRoot(),
-
-        // Material moment date module
-        MatMomentDateModule,
-
-        // Material
-        MatButtonModule,
-        MatIconModule,
-
-        // Fuse modules
         FuseModule.forRoot(fuseConfig),
-        FuseProgressBarModule,
         FuseSharedModule,
-        FuseSidebarModule,
-        FuseThemeOptionsModule,
-
-        // App modules
-        LayoutModule,
-        SampleModule
+        FuseProgressBarModule,
+        MatIconModule,
+        TranslateModule.forRoot(),
+        AppRoutingModule,
+        RouterModule,
+        AngularFireModule.initializeApp(firebaseConfig),
+        AngularFirestoreModule,
+        AngularFirestoreModule.enablePersistence({
+            experimentalTabSynchronization: true
+        }),
+        Error404Module,
+        Error500Module,
+        FrontendModule
     ],
-    bootstrap   : [
-        AppComponent
+    providers: [AngularFireAuth],
+    bootstrap: [
+        AppComponent,
     ]
 })
-export class AppModule
-{
+export class AppModule {
 }

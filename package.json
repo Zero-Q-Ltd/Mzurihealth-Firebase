@@ -1,6 +1,6 @@
 {
-  "name": "fuse",
-  "version": "7.0.1",
+  "name": "Mzurihealth",
+  "version": "2.1.3",
   "license": "https://themeforest.net/licenses/terms/regular",
   "scripts": {
     "ng": "ng",
@@ -24,6 +24,7 @@
     "@angular/common": "7.0.4",
     "@angular/compiler": "7.0.4",
     "@angular/core": "7.0.4",
+    "@angular/fire": "5.1.1",
     "@angular/flex-layout": "7.0.0-beta.19",
     "@angular/forms": "7.0.4",
     "@angular/http": "7.0.4",
@@ -49,7 +50,9 @@
     "core-js": "2.5.7",
     "d3": "5.7.0",
     "date-fns": "1.29.0",
+    "firebase": "5.7.2",
     "hammerjs": "2.0.8",
+    "howler": "2.1.1",
     "lodash": "4.17.11",
     "moment": "2.22.2",
     "ng2-charts": "1.6.0",

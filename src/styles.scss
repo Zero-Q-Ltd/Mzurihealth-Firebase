@@ -1,5 +1,9 @@
 // Import Fuse core library
 @import "@fuse/scss/core";
 
-// Import app.theme.scss
+// Import superadmin.theme.scss
+@import "app/admin/admin.theme";
+
+//import app theme
 @import "app/app.theme";
+

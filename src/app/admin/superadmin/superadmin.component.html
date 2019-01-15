@@ -1,0 +1,78 @@
+<div class="page-layout carded  tabbed right-sidebar">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+    <!-- SIDEBAR -->
+    <fuse-sidebar *ngIf="sidebarstatus" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" class="sidebar "
+                  lockedOpen="gt-md" name="procedureconfig-sidebar"
+                  position="right">
+        <app-procedureconfig class="right-navbar"></app-procedureconfig>
+    </fuse-sidebar>
+    <!-- / SIDEBAR -->
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- CONTENT HEADER -->
+        <div class="header accent p-24">
+
+
+            <div class="logo" fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
+                          class="logo-icon mr-16">settings
+                </mat-icon>
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" class="logo-text h1">
+                    SuperAdmin
+                </span>
+            </div>
+            <button (click)="toggleactiveside()"
+                    [@animate]="{value:'*', params:{delay:'300ms',scale:'0.2'}}"
+                    [@fadeInOut]="activetabindex !== 2"
+                    [color]="activeside ? 'accent' : 'warn' "
+                    aria-label="Add Procedure"
+                    class="vutadown"
+                    mat-fab>
+                <mat-icon *ngIf="!activeside">add</mat-icon>
+                <mat-icon *ngIf="activeside">replay</mat-icon>
+            </button>
+        </div>
+        <!-- / CONTENT HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+            <!-- CONTENT -->
+            <div class="content">
+
+                <mat-tab-group (selectedTabChange)="tabChanged($event)">
+                    <mat-tab label="Procedures">
+                        <div class="tab-content p-24" fusePerfectScrollbar>
+                            <procedures-all *ngIf="!activeside && activetabindex === 0"></procedures-all>
+                            <procedure-add *ngIf="activeside && activetabindex === 0"></procedure-add>
+                        </div>
+                    </mat-tab>
+
+                    <mat-tab label="Admins">
+                        <div class="tab-content p-24" fusePerfectScrollbar>
+                            <admins-all *ngIf="!activeside && activetabindex === 1"></admins-all>
+                            <admin-add *ngIf="activeside && activetabindex === 1"></admin-add>
+                        </div>
+                    </mat-tab>
+
+                    <mat-tab label="Hospital Config">
+                        <div class="tab-content p-24" fusePerfectScrollbar>
+                            <app-hospconfig></app-hospconfig>
+                        </div>
+                    </mat-tab>
+                </mat-tab-group>
+
+            </div>
+            <!-- / CONTENT -->
+
+        </div>
+        <!-- / CONTENT CARD -->
+
+    </div>
+
+
+</div>

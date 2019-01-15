@@ -1,0 +1,81 @@
+<div class="page-layout carded fullwidth tabbed inner-scroll" id="patients">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent p-16 p-sm-24" fxLayout="column" fxLayout.gt-xs="row"
+             fxLayoutAlign="start" fxLayoutAlign.gt-xs="space-between center">
+
+            <!-- APP TITLE -->
+            <div fxLayout="row" fxLayoutAlign="start center">
+
+                <div class="logo" fxLayout="row" fxLayoutAlign="start center">
+                    <mat-icon [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
+                              class="logo-icon mr-16">weekend
+                    </mat-icon>
+                    <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" class="logo-text h1">Queue</span>
+                </div>
+
+            </div>
+            <!-- / APP TITLE -->
+
+            <!-- SEARCH -->
+            <div class="ml-sm-32" fxFlex fxLayout="row" fxLayoutAlign="center center"  [@animate]="{value:'*', params:{delay:'150ms',scale:'0.2'}}">
+
+                <div class="search-wrapper mt-16 mt-sm-0">
+
+                    <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
+                        <mat-icon>search</mat-icon>
+                        <input placeholder="Search for a patient">
+                    </div>
+
+                </div>
+
+            </div>
+            <!-- / SEARCH -->
+        </div>
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+            <!-- CONTENT -->
+            <div class="content">
+
+                <mat-tab-group>
+
+                    <mat-tab label="Main Queue">
+                        <div class="tab-content p-24" fusePerfectScrollbar>
+                           <queue-mine></queue-mine>
+                        </div>
+                    </mat-tab>
+
+                    <mat-tab label="My Queue">
+                        <div class="tab-content p-24" fusePerfectScrollbar>
+                           <queue-main></queue-main>
+                        </div>
+                    </mat-tab>
+
+                    <mat-tab label="Current">
+                        <div class="tab-content p-24" fusePerfectScrollbar>
+                          <patient-currrent></patient-currrent>
+                        </div>
+                    </mat-tab>
+
+
+                </mat-tab-group>
+
+            </div>
+            <!-- / CONTENT -->
+
+        </div>
+        <!-- / CONTENT CARD -->
+
+    </div>
+    <!-- / CENTER -->
+
+</div>

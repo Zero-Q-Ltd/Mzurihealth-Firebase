@@ -1,0 +1,299 @@
+<div class="page-layout carded fullwidth tabbed inner-scroll" id="patients" >
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent p-16 p-sm-24" fxLayout="column" fxLayout.gt-xs="row"
+             fxLayoutAlign="start" fxLayoutAlign.gt-xs="space-between center">
+
+            <!-- APP TITLE -->
+            <div fxLayout="row" fxLayoutAlign="start center">
+
+                <div class="logo" fxLayout="row" fxLayoutAlign="start center">
+                    <mat-icon [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
+                              class="logo-icon mr-16">person_add
+                    </mat-icon>
+                    <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
+                          class="logo-text h1">New Patient : &nbsp;</span>
+                    <span [@animate]="{value:'*',params:{delay:'300ms',x:'-25px'}}"
+                          class="logo-text h2"> <strong>{{patientfileno.no}}</strong></span>
+                </div>
+
+            </div>
+            <div fxLayout="row" fxLayoutAlign="start end">
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
+                      class="logo-text h3">{{gettime()}}</span>
+            </div>
+            <!-- / APP TITLE -->
+
+        </div>
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+            <!-- CONTENT -->
+            <div class="content">
+
+                <form [formGroup]="patientsform" class=" p-24 m-24" fxFlex="1 0 auto"
+                      fxLayout="column" fxLayoutAlign="start" name="form">
+
+                    <div class="h2 mb-24">New Patient
+
+                    </div>
+
+                    <div fxFlex="1 0 auto" fxLayout="row" fxLayoutAlign="start center">
+
+                        <mat-form-field appearance="outline" fxFlex="100">
+                            <mat-label>Company (disabled)</mat-label>
+                            <input formControlName="company" matInput>
+                            <mat-icon class="disabled-text" matSuffix>domain</mat-icon>
+                        </mat-form-field>
+
+                    </div>
+
+                    <div fxFlex="1 0 auto" fxLayout="row" fxLayoutAlign="start center">
+
+                        <mat-form-field appearance="outline" class="pr-4" fxFlex="50">
+                            <mat-label>First name</mat-label>
+                            <input formControlName="firstName" matInput required>
+                            <mat-icon class="secondary-text" matSuffix>account_circle</mat-icon>
+                            <mat-error>First Name is required!</mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" class="pl-4" fxFlex="50">
+                            <mat-label>Last name</mat-label>
+                            <input formControlName="lastName" matInput required>
+                            <mat-icon class="secondary-text" matSuffix>account_circle</mat-icon>
+                            <mat-error>Last Name is required!</mat-error>
+                        </mat-form-field>
+
+                    </div>
+
+                    <div fxFlex="1 0 auto" fxLayout="row wrap" fxLayoutAlign="start center">
+
+                        <mat-form-field appearance="outline" fxFlex="100">
+                            <mat-label>Address</mat-label>
+                            <textarea formControlName="address" matInput required>
+                            1600 Amphitheatre Pkwy
+                        </textarea>
+                            <mat-error>Address is required!</mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" fxFlex="100">
+                            <mat-label>Address 2</mat-label>
+                            <textarea formControlName="address2" matInput></textarea>
+                            <mat-error>Address 2 is required!</mat-error>
+                        </mat-form-field>
+
+                    </div>
+
+                    <div fxFlex="1 0 auto" fxLayout="row" fxLayoutAlign="start center">
+
+                        <mat-form-field appearance="outline" fxFlex="33">
+                            <mat-label>City</mat-label>
+                            <input formControlName="city" matInput required>
+                            <mat-icon class="secondary-text" matSuffix>location_city</mat-icon>
+                            <mat-error>City is required!</mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" class="px-8" fxFlex="34">
+                            <mat-label>State</mat-label>
+                            <input formControlName="state" matInput required>
+                            <mat-icon class="secondary-text" matSuffix>location_city</mat-icon>
+                            <mat-error>State is required!</mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" fxFlex="33">
+                            <mat-label>Postal Code</mat-label>
+                            <input #postalCode formControlName="postalCode" matInput
+                                   maxlength="5" required value="94043">
+                            <mat-icon class="secondary-text" matSuffix>markunread_mailbox</mat-icon>
+                            <mat-hint align="end">{{postalCode.value.length}} / 5</mat-hint>
+                            <mat-error>Postal Code is required!</mat-error>
+                        </mat-form-field>
+
+                    </div>
+
+                    <div fxFlex="1 0 auto" fxLayout="row" fxLayoutAlign="start center">
+
+                        <mat-form-field appearance="outline" fxFlex="100">
+                            <mat-label>Country</mat-label>
+                            <mat-select formControlName="country" required>
+                                <mat-option [value]="'United States of America'">
+                                    United States of America
+                                </mat-option>
+                                <mat-option [value]="'United Kingdom'">
+                                    United Kingdom
+                                </mat-option>
+                                <mat-option [value]="'Russia'">
+                                    Russia
+                                </mat-option>
+                                <mat-option [value]="'China'">
+                                    China
+                                </mat-option>
+                                <mat-option [value]="'Japan'">
+                                    Japan
+                                </mat-option>
+                                <mat-option [value]="'Turkey'">
+                                    Turkey
+                                </mat-option>
+                            </mat-select>
+                            <mat-icon class="secondary-text" matSuffix>outlined_flag</mat-icon>
+                            <mat-error>Country is required!</mat-error>
+                        </mat-form-field>
+
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--<mat-dialog-content>-->
+<!--<div class='body'>-->
+<!--<div class='row clearfix'>-->
+<!--<div class='col-sm-3'>-->
+<!--<div class='form-group'>-->
+<!--<legend matDialogTitle>-->
+<!--<strong>New Patient &nbsp;&nbsp;</strong>-->
+<!--<small>{{gettime()}}</small>&nbsp;&nbsp;-->
+<!--<input [(ngModel)]='patientfileno.no' class='form-control' placeholder='Custom File Number' type='text'>-->
+<!--</legend>-->
+<!--<input type='text' [(ngModel)]='temppatient.personalinfo.name' class='form-control' placeholder='Full Name'>-->
+<!--</div>-->
+<!--</div>-->
+<!--<div class='col-sm-3'>-->
+<!--<select [(ngModel)]='temppatient.personalinfo.gender' class='form-control show-tick'>-->
+<!--<option value=0>- Gender -</option>-->
+<!--<option value=1>Male</option>-->
+<!--<option value=2>Female</option>-->
+<!--</select>-->
+<!--</div>-->
+<!--<div class='col-sm-3'>-->
+<!--<div class='form-group'>-->
+<!--<input type='text' class='form-control' [(ngModel)]='temppatient.personalinfo.idno' placeholder='ID Number'>-->
+<!--</div>-->
+<!--</div>-->
+<!--<div class='col-sm-3'>-->
+<!--<mat-form-field class="calendarinput">-->
+<!--<input class='form-control calendarinputstyle' matInput [(ngModel)]='temppatient.personalinfo.dob'-->
+<!--[matDatepicker]="picker" (click)="picker.open()"-->
+<!--placeholder="Date of Birth">-->
+<!--<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>-->
+<!--<mat-datepicker disabled='false' touchUi="true" #picker></mat-datepicker>-->
+<!--</mat-form-field>-->
+<!--</div>-->
+<!--</div>-->
+<!--<div class='row clearfix'>-->
+<!--<div class='col-sm-3'>-->
+<!--<div class='form-group'>-->
+<!--<input type='text' class='form-control' [(ngModel)]='temppatient.personalinfo.occupation'-->
+<!--placeholder='Occupation'>-->
+<!--</div>-->
+<!--</div>-->
+<!--<div class='col-sm-3'>-->
+<!--<div class='form-group'>-->
+<!--<input type='text' class='form-control' [(ngModel)]='temppatient.personalinfo.address'-->
+<!--placeholder='Postal Adress '>-->
+<!--</div>-->
+<!--</div>-->
+<!--<div class='col-sm-3'>-->
+<!--<div class='form-group'>-->
+<!--<input type='text' class='form-control' [(ngModel)]='temppatient.personalinfo.workplace'-->
+<!--placeholder='Place of Work'>-->
+<!--</div>-->
+<!--</div>-->
+<!--<div class='col-sm-3'>-->
+<!--<div class='form-group'>-->
+<!--<input type='text' class='form-control' [(ngModel)]='temppatient.personalinfo.phone' placeholder='Phone No.'>-->
+<!--</div>-->
+<!--</div>-->
+
+<!--</div>-->
+<!--<div class='row clearfix'>-->
+
+<!--<div class='col-sm-3'>-->
+<!--<div class='form-group'>-->
+<!--<input type='email' class='form-control' [(ngModel)]='temppatient.personalinfo.email' placeholder='Email.'>-->
+<!--</div>-->
+<!--</div>-->
+
+<!--<div class='col-sm-3'>-->
+<!--<div [ngClass]="{'has-danger' : invalidinsurance}" class='form-group'>-->
+<!--&lt;!&ndash;<input placeholder='Insurance Company' [typeahead]="allinsurance" [typeaheadScrollable]="true"&ndash;&gt;-->
+<!--&lt;!&ndash;[typeaheadOptionsInScrollableView]="5"&ndash;&gt;-->
+<!--&lt;!&ndash;[(ngModel)]='insurancename ' (typeaheadNoResults)="resetinsurance($event)" typeaheadOptionField="name"&ndash;&gt;-->
+<!--&lt;!&ndash;(typeaheadOnSelect)="selectinsurance($event)" class="form-control form-control-danger">&ndash;&gt;-->
+<!--</div>-->
+<!--</div>-->
+<!--<div class='col-sm-3'>-->
+<!--<div class='form-group'>-->
+<!--&lt;!&ndash;Only allow entry of isnurance number if at least one insuranc eis chosen&ndash;&gt;-->
+<!--<input type='text' class='form-control' *ngFor="let selectedinsurance of temppatient.insurance | keyvalue"-->
+<!--[(ngModel)]='temppatient.insurance[selectedinsurance.key].insuranceno' placeholder='Insurance No.'>-->
+<!--</div>-->
+<!--</div>-->
+<!--<div class='col-sm-3'>-->
+<!--<select [(ngModel)]='temphistory.paymentmethod.type' class='form-control show-tick'>-->
+<!--<option value=-1>- Payment Mode -</option>-->
+<!--<option value=0>Cash</option>-->
+<!--<option value=1>Mobile Money</option>-->
+<!--<option value=2>Card</option>-->
+<!--<option value=3>Insurance</option>-->
+<!--<option value=3>Cheque</option>-->
+<!--</select>-->
+<!--</div>-->
+<!--</div>-->
+<!--<div class='row clearfix'>-->
+<!--<div class='col-sm-3'>-->
+<!--<div class='form-group'>-->
+<!--<input type='text' [(ngModel)]='temppatient.nextofkin.name' class='form-control' placeholder='Next of Kin'>-->
+<!--</div>-->
+<!--</div>-->
+<!--<div class='col-sm-3'>-->
+<!--<div class='form-group'>-->
+<!--<input type='text' [(ngModel)]='temppatient.nextofkin.relationship' class='form-control'-->
+<!--placeholder='Relationship'>-->
+<!--</div>-->
+<!--</div>-->
+<!--<div class='col-sm-3'>-->
+<!--<div class='form-group'>-->
+<!--<input type='number' [(ngModel)]='temppatient.nextofkin.phone' class='form-control' placeholder='Tel'>-->
+<!--</div>-->
+<!--</div>-->
+<!--<div class='col-sm-3'>-->
+<!--<div class='form-group'>-->
+<!--<input type='text' [(ngModel)]='temppatient.nextofkin.workplace' class='form-control'-->
+<!--placeholder='Place of Work'>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+<!--<div class='row clearfix'>-->
+
+<!--<div class='col-sm-6'>-->
+<!--<div class='form-group'>-->
+<!--<textarea rows='3' class='form-control no-resize' [(ngModel)]='temppatient.exrainfo'-->
+<!--placeholder='Additional Personal Info'></textarea>-->
+<!--</div>-->
+<!--</div>-->
+<!--<div class='col-sm-6'>-->
+<!--<div class='form-group'>-->
+<!--<textarea rows='3' class='form-control no-resize' [(ngModel)]='temphistory.visitdescription'-->
+<!--placeholder="Brief description of today's visit"></textarea>-->
+<!--</div>-->
+<!--</div>-->
+
+<!--</div>-->
+<!--</div>-->
+<!--</mat-dialog-content>-->
+<!--<div class='col-sm-12'>-->
+<!--<button matDialogClose class="btn btn-danger btn-simple btn-round float-left">DISMISS</button>-->
+<!--<button (click)="addpatient(false)" class="btn btn-default btn-round btn-primary float-none">SAVE ONLY</button>-->
+<!--<button (click)="addpatient(true)" class="btn btn-default btn-round btn-primary float-right">SAVE AND QUEUE</button>-->
+<!--</div>-->

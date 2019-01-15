@@ -1,0 +1,43 @@
+<div>
+    <form [formGroup]="proceduresform">
+        <mat-form-field appearance="outline" class="my-12 w-100-p">
+            <mat-label>Category</mat-label>
+            <mat-select formControlName="category" required>
+                <mat-option *ngFor="let category of procedurecategories" [value]="category">
+                    {{category.name |titlecase}}
+                </mat-option>
+            </mat-select>
+            <mat-icon *ngIf="!loadingprocedures" class="secondary-text" matSuffix>apps</mat-icon>
+            <mat-spinner *ngIf='loadingprocedures' [diameter]="19" matSuffix></mat-spinner>
+            <mat-error>Category is required!</mat-error>
+        </mat-form-field>
+    </form>
+    <mat-form-field appearance="outline" class="my-12 w-100-p">
+        <input (keyup)="applyFilter($event.target.value)" matInput placeholder="Filter">
+    </mat-form-field>
+    <mat-table #table [@animateStagger]="{value:'100'}" [dataSource]="categoryprocedures">
+
+        <ng-container matColumnDef="name">
+            <th *matHeaderCellDef mat-header-cell> Name</th>
+            <td *matCellDef="let element" mat-cell> {{element.name | titlecase}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="category">
+            <th *matHeaderCellDef mat-header-cell>Sub Category</th>
+            <td *matCellDef="let element" mat-cell> {{getcategory(element.category) | titlecase}} </td>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="procedureheaders"></mat-header-row>
+        <mat-row (click)="onSelect(row)"
+                 *matRowDef="let row; columns: procedureheaders;"
+                 [@animate]="{value:'*',params:{y:'100%'}}"
+                 [ngClass]="{'selected' : row ===selectedprocedure}" matRipple>
+        </mat-row>
+    </mat-table>
+    <mat-paginator [length]="categoryprocedures.data.length"
+                   [pageSizeOptions]="[10, 25, 50, 100]"
+                   [pageSize]="10">
+    </mat-paginator>
+
+</div>
+

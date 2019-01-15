@@ -1,0 +1,174 @@
+<div class="page-layout carded fullwidth inner-scroll" id="patients">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent"
+             fxLayout="column" fxLayoutAlign="center center"
+             fxLayout.gt-sm="row" fxLayoutAlign.gt-sm="space-between center">
+
+            <!-- APP TITLE -->
+            <div class="logo mb-24 mb-md-0"
+                 fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="logo-icon s-32 mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
+                    shopping_basket
+                </mat-icon>
+                <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    All PAtients
+                </span>
+            </div>
+            <!-- / APP TITLE -->
+
+            <!-- SEARCH -->
+            <div class="search-wrapper mx-32 mx-md-0" [@animate]="{value:'*', params:{delay:'150ms',scale:'0.2'}}">
+                <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
+                    <mat-icon>search</mat-icon>
+                    <input #filter placeholder="Search for a patient">
+                </div>
+            </div>
+            <!-- / SEARCH -->
+            <button mat-fab
+                    color="warn"
+                    aria-label="Add patient"
+                    [routerLink]="'/admin/patients/add'"
+                    [@animate]="{value:'*', params:{delay:'300ms',scale:'0.2'}}">
+                <mat-icon>person_add</mat-icon>
+            </button>
+
+        </div>
+        <!-- / HEADER -->
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+            <mat-table #table
+                       [@animateStagger]="{value:'50'}" [dataSource]="patientsdatasource"
+                       class="patients-table"
+                       fusePerfectScrollbar
+                       matSort>
+
+                <!-- ID Column -->
+                <ng-container matColumnDef="FileNo">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>FileNo</mat-header-cell>
+                    <mat-cell *matCellDef="let patient">
+                        <p class="text-truncate">{{patient.fileinfo.no}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Image Column -->
+                <ng-container matColumnDef="Photo">
+                    <mat-header-cell *matHeaderCellDef></mat-header-cell>
+                    <mat-cell *matCellDef="let patient">
+                        <img *ngIf="patient.personalinfo.gender == 1" alt=""
+                             class="patients-img"
+                             src="{{patient.personalinfo.photoURL || 'assets/images/icons/male.png'}}">
+                        <img *ngIf="patient.personalinfo.gender == 2" alt=""
+                             class="patients-img"
+                             src="{{patient.personalinfo.gender || 'assets/images/icons/female.png'}}">
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Name Column -->
+                <ng-container matColumnDef="Name">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
+                    <mat-cell *matCellDef="let patient">
+                        <p class="text-truncate">{{patient.personalinfo.name}}}</p>
+                    </mat-cell>
+                </ng-container>
+
+
+                <!-- Price Column -->
+                <ng-container matColumnDef="Age">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Age
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let patient">
+                        <p class="price text-truncate">
+                            {{getage(patient.personalinfo.dob)}}
+                        </p>
+                    </mat-cell>
+                </ng-container>
+                <!-- Price Column -->
+                <ng-container matColumnDef="ID">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Age
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let patient">
+                        <p class="price text-truncate">
+                            {{patient.personalinfo.idno}}
+                        </p>
+                    </mat-cell>
+                </ng-container>
+                <!-- Price Column -->
+                <ng-container matColumnDef="Phone">
+                    <mat-header-cell *matHeaderCellDef>Phone
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let patient">
+                        <p class="price text-truncate">
+                            {{patient.personalinfo.phone}}
+                        </p>
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="Last Visit">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Last Visit
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let patient">
+                        <p class="price text-truncate">
+                            {{patient.fileinfo.lastvisit.toDate()}}
+                        </p>
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="Status">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Status
+                    </mat-header-cell>
+                    <!--<span-->
+                    <!--*ngIf="((index === 0 || patientsdatasource.data[index-1].queuedata.status === 2) && userdata.config.occupied === '' ) ; else statusbuttons"-->
+                    <!--[ngSwitch]="userdata.config.occupied">-->
+                    <!--<span *ngSwitchDefault [ngSwitch]='patient.checkin[activehospital.id].status'>-->
+                    <!--<button (click)='acceptpatient(patient)' *ngSwitchCase="0"-->
+                    <!--class="btn btn-primary button-size">Accept </button>-->
+                    <!--&lt;!&ndash; <button *ngSwitchCase="0" class="btn btn-warning button-size">Waiting </button> &ndash;&gt;-->
+                    <!--<button *ngSwitchCase="1" class="btn btn-success button-size">In Progress</button>-->
+                    <!--<button *ngSwitchCase="2" class="btn btn-info button-size">Complete</button>-->
+                    <!--</span>-->
+                    <!--<button *ngSwitchCase='adminqueue.patientdata.id'-->
+                    <!--class="btn btn-success button-size"-->
+                    <!--disabled>In Progress </button>-->
+                    <!--</span>-->
+                    <!--<ng-template #statusbuttons>-->
+                    <!--<span>-->
+                    <!--<button *ngIf='patient.checkin[activehospital.id].status == 0'-->
+                    <!--class="btn btn-warning button-size">Waiting </button>-->
+                    <!--<button *ngIf='patient.checkin[activehospital.id].status == 1'-->
+                    <!--class="btn btn-success button-size">In Progress</button>-->
+                    <!--<button *ngIf='patient.checkin[activehospital.id].status == 2'-->
+                    <!--class="btn btn-info button-size">Complete</button>-->
+                    <!--</span>-->
+                    <!--</ng-template>-->
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="patientsheaders; sticky:true"></mat-header-row>
+
+                <mat-row *matRowDef="let patient; columns: patientsheaders;"
+                         [routerLink]="'profile/'+patient.id"
+                         class="product"
+                         matRipple>
+                </mat-row>
+
+            </mat-table>
+
+            <mat-paginator #paginator
+                           [length]="patientsdatasource.data.length"
+                           [pageIndex]="0"
+                           [pageSizeOptions]="[5, 10, 25, 100]"
+                           [pageSize]="10">
+            </mat-paginator>
+
+        </div>
+
+
+    </div>
+</div>

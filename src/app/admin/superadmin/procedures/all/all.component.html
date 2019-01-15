@@ -1,0 +1,66 @@
+<mat-form-field appearance="outline" class="my-12 w-100-p">
+    <input (keyup)="applyFilter($event.target.value)" matInput placeholder="Filter">
+</mat-form-field>
+
+<mat-table [dataSource]="categoryprocedures" class="mat-elevation-z8" mat-table>
+    <!-- Checkbox Column -->
+    <ng-container matColumnDef="select">
+        <th *matHeaderCellDef mat-header-cell>
+            <mat-checkbox [checked]="selectedprocedure" disabled>
+            </mat-checkbox>
+        </th>
+        <td *matCellDef="let element" mat-cell>
+            <mat-checkbox (click)="selectedprocedure = element"
+                          [checked]="element === selectedprocedure">
+            </mat-checkbox>
+        </td>
+    </ng-container>
+    <ng-container matColumnDef="name">
+        <th *matHeaderCellDef mat-header-cell> Name</th>
+        <td *matCellDef="let element" mat-cell> {{element.name | titlecase}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="category">
+        <th *matHeaderCellDef mat-header-cell>Sub Category</th>
+        <td *matCellDef="let element" mat-cell> {{getcategory(element.category) | titlecase}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="minprice">
+        <th *matHeaderCellDef mat-header-cell> Min Price</th>
+        <td *matCellDef="let element" mat-cell> {{element.pricing.min }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="maxprice">
+        <th *matHeaderCellDef mat-header-cell> Max Price</th>
+        <td *matCellDef="let element" mat-cell> {{element.pricing.max}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="regprice">
+        <th *matHeaderCellDef mat-header-cell> Regular Price</th>
+        <td *matCellDef="let element" mat-cell>
+            <div>
+                <mat-form-field appearance="outline">
+                    <mat-label>Regular Price</mat-label>
+                    <input [disabled]="element!==selectedprocedure" matInput required>
+                    <mat-error>Regular Price is required!</mat-error>
+                </mat-form-field>
+            </div>
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="custprice">
+        <th *matHeaderCellDef mat-header-cell> Custom Price</th>
+        <td *matCellDef="let element" mat-cell>
+            <mat-checkbox>
+                Custom Insurance Price
+            </mat-checkbox>
+        </td>
+    </ng-container>
+
+    <tr *matHeaderRowDef="procedureheaders" mat-header-row></tr>
+    <tr *matRowDef="let row; columns: procedureheaders;" mat-row></tr>
+</mat-table>
+<mat-paginator [length]="categoryprocedures.data.length"
+               [pageSizeOptions]="[10, 25, 50, 100]"
+               [pageSize]="10">
+</mat-paginator>

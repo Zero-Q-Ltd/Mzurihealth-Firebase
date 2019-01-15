@@ -1,0 +1,79 @@
+<div>
+    <!-- SIDEBAR HEADER -->
+    <div class="header accent p-24" fxLayout="column" fxLayoutAlign="space-between">
+
+        <div class="toolbar" fxLayout="row" fxLayoutAlign="end center">
+
+            <button mat-icon-button matTooltip="Clear">
+                <mat-icon>clear</mat-icon>
+            </button>
+            <button aria-label="More" mat-icon-button matTooltip="Save">
+                <mat-icon>save</mat-icon>
+            </button>
+        </div>
+
+        <div>
+            <div class="title mb-8"><strong>{{selectedprocedure.name}}</strong></div>
+            <div class="subtitle secondary-text">
+                <span>Subcategory</span>
+                <span>: {{selectedprocedure.id}}</span>
+            </div>
+        </div>
+    </div>
+    <!-- / SIDEBAR HEADER -->
+
+    <!-- SIDEBAR CONTENT -->
+    <div class="content p-24" fusePerfectScrollbar>
+
+        <div [@animate]="{value:'*',params:{delay:'200ms'}}" class="file-details">
+            <div [@animate]="{value:'*',params:{delay:'200ms'}}"
+                 class="input-group col-sm-10">
+                <mat-form-field appearance="outline" fxFlex="100">
+                    <mat-label>Regular Price</mat-label>
+                    <input (keyup)="recordprice($event.target.value)" matInput type="number">
+                    <mat-icon class="disabled-text" matSuffix>attach_money</mat-icon>
+                </mat-form-field>
+            </div>
+            <div class="offline-switch">
+                <mat-slide-toggle [(ngModel)]="custominsuranceprice" labelPosition="before">Custom Prices for Insurance
+                </mat-slide-toggle>
+            </div>
+
+            <div *ngIf="custominsuranceprice " [@animate]="{value:'*',params:{delay:'200ms'}}"
+                 class="input-group col-sm-10">
+                <mat-form-field appearance="outline" fxFlex="100">
+                    <mat-label>Filter Insurance Companies</mat-label>
+                    <input (keyup)="recordprice($event.target.value)" matInput type="number">
+                    <mat-icon class="disabled-text" matSuffix>search</mat-icon>
+                </mat-form-field>
+            </div>
+            <table (matSortChange)="sortData($event)" *ngIf="custominsuranceprice"
+                   [@animate]="{value:'*',params:{y:'100%'}}"
+                   matSort>
+                <thead>
+                <tr>
+                    <th mat-sort-header="name"> Insurance Company Name</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor='let insurance of allinsurance'>
+                    <mat-form-field appearance="outline" fxFlex="100">
+                        <mat-label>{{insurance.name}}</mat-label>
+                        <input (keyup)="recordprice($event.target.value, insurance)"
+                               [value]='customconfig.insuranceprices[insurance.id]' matInput type="number">
+                        <mat-icon class="disabled-text" matSuffix>attach_money</mat-icon>
+                    </mat-form-field>
+                </tr>
+                </tbody>
+            </table>
+
+            <div fxLayout="row" fxLayoutAlign="center center">
+                <button (click)="saveprocedureconfig()" color="accent" mat-raised-button matStepperNext type="button">
+                    Save
+                </button>
+            </div>
+        </div>
+
+    </div>
+</div>
+<!-- / SIDEBAR CONTENT -->

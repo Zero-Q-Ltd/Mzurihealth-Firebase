@@ -17,6 +17,7 @@ export class QueueService {
   hospitaladmins: Array<HospitalAdmin> = [];
   userdata: HospitalAdmin;
 
+
   constructor(private db: AngularFirestore, private hospitalservice: HospitalService, private adminservice: AdminService) {
     this.hospitalservice.activehospital.subscribe(hospital => {
       if (hospital.id) {
@@ -75,5 +76,6 @@ export class QueueService {
         this.allpatientqueue.next(res);
       });
     });
+
   }
 }

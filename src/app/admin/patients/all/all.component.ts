@@ -50,7 +50,7 @@ export class AllComponent implements OnInit {
         });
         this.queueservice.allpatientqueue.subscribe(allpatientsinqueue => {
             this.allpatientqueue = allpatientsinqueue;
-            this.currentuserqueue = allpatientsinqueue.filter(patient => patient.checkin[this.activehospital.id].admin === this.userdata.id);
+            // this.currentuserqueue = allpatientsinqueue.filter(patient => patient.checkin[this.activehospital.id].admin === this.userdata.id);
         });
     }
 

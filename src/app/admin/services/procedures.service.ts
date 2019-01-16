@@ -16,8 +16,8 @@ import Timestamp = firestore.Timestamp;
     providedIn: 'root'
 })
 export class ProceduresService {
-    hospitalprocedures: BehaviorSubject<Array<{ rawprocedure: RawProcedure, configuration: CustomProcedure }>> =
-        new BehaviorSubject<Array<{ rawprocedure: RawProcedure, configuration: CustomProcedure }>>([]);
+    hospitalprocedures: BehaviorSubject<Array<{ rawprocedure: RawProcedure, customprocedure: CustomProcedure }>> =
+        new BehaviorSubject<Array<{ rawprocedure: RawProcedure, customprocedure: CustomProcedure }>>([]);
     activehospital: Hospital;
     procedurecategories: BehaviorSubject<Array<ProcedureCategory>> = new BehaviorSubject<Array<ProcedureCategory>>([]);
     userdata: HospitalAdmin;
@@ -48,8 +48,8 @@ export class ProceduresService {
                 let rawdata = await this.db.firestore.collection('procedures').doc(customdata.parentprocedureid).get();
                 let rawprocedure = rawdata.data() as RawProcedure;
                 rawprocedure.id = customdata.parentprocedureid;
-                console.log({rawprocedure: rawprocedure, configuration: customdata});
-                return {rawprocedure: rawprocedure, configuration: customdata};
+                console.log({rawprocedure: rawprocedure, customprocedure: customdata});
+                return {rawprocedure: rawprocedure, customprocedure: customdata};
             }));
             proceduredata.then(mergedData => {
                 console.log(mergedData);
@@ -156,6 +156,15 @@ export class ProceduresService {
             date: Timestamp.now()
         };
         return this.db.firestore.collection('procedureconfigs').add(customprocedure);
+    }
+
+    editcustomprocedure(customprocedure: CustomProcedure) {
+        customprocedure.creatorid = this.userdata.id;
+        customprocedure.metadata = {
+            lastedit: Timestamp.now(),
+            date: customprocedure.metadata.date
+        };
+        return this.db.firestore.collection('procedureconfigs').doc(customprocedure.id).update(customprocedure);
     }
 
     deactivateprocedure(procedureid: string) {

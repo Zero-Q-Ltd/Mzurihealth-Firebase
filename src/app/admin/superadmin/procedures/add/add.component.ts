@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {fuseAnimations} from '../../../../../@fuse/animations';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {ProceduresService} from '../../../services/procedures.service';
@@ -15,7 +15,7 @@ import {LocalcommunicationService} from '../localcommunication.service';
     styleUrls: ['./add.component.scss'],
     animations: [fuseAnimations]
 })
-export class AddComponent implements OnInit {
+export class AddComponent implements OnInit, AfterViewInit {
     proceduresform: FormGroup;
     procedurecategories: Array<ProcedureCategory> = [];
     loadingprocedures = false;

@@ -1,12 +1,12 @@
 import {Injectable} from '@angular/core';
 import {BehaviorSubject} from 'rxjs';
-import {emptyprocedureConfig, RawProcedure} from '../../../models/RawProcedure';
+import {emptyprawrocedure, RawProcedure} from '../../../models/RawProcedure';
 
 @Injectable({
     providedIn: 'root'
 })
 export class LocalcommunicationService {
-    onProcedureselected: BehaviorSubject<RawProcedure> = new BehaviorSubject<RawProcedure>({...emptyprocedureConfig});
+    onProcedureselected: BehaviorSubject<RawProcedure> = new BehaviorSubject<RawProcedure>({...emptyprawrocedure});
     selectedtype = new BehaviorSubject<string>(null);
 
     constructor() {
@@ -18,7 +18,7 @@ export class LocalcommunicationService {
     }
 
     resetall() {
-        this.onProcedureselected.next({...emptyprocedureConfig});
+        this.onProcedureselected.next({...emptyprawrocedure});
         this.selectedtype.next(null);
     }
 }

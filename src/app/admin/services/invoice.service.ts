@@ -3,7 +3,7 @@ import * as firebase from './firestore.service';
 import {AngularFirestore} from '@angular/fire/firestore';
 import {emptypatient} from '../../models/Patient';
 import {emptypatienthistory} from '../../models/PatientVisit';
-import {emptyprocedureConfig} from '../../models/RawProcedure';
+import {emptyprawrocedure} from '../../models/RawProcedure';
 
 @Injectable({
     providedIn: 'root'
@@ -75,7 +75,7 @@ export class InvoiceService {
                                                         let tempconfig = procedureconfig.data();
                                                         tempconfig['id'] = procedureconfig.id;
                                                         console.log(tempconfig);
-                                                        let tempconfig2 = emptyprocedureConfig;
+                                                        let tempconfig2 = emptyprawrocedure;
                                                         let emptyhisto = emptypatienthistory;
                                                         // this.caurrentpatientinvoice.todayprocedures.set(tempProcedures.id, { procedureconfig: this.objectassign(tempconfig), procedurehistory: this.objectassign(tempProcedures, emptypatienthistory) })
                                                         this.caurrentpatientinvoice.todayprocedures.set(tempProcedures.refid,

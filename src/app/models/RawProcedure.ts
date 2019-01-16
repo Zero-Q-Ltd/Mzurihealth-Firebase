@@ -15,7 +15,7 @@ export interface rawprocedurecategory {
     subcategoryid: string | null
 }
 
-export const emptyprocedureConfig: RawProcedure = {
+export const emptyprawrocedure: RawProcedure = {
     name: null,
     id: null,
     pricing: {

@@ -1,4 +1,4 @@
-import {Customfields} from './universal';
+import {Customfields, emptymetadata, Metadata} from './universal';
 import {firestore} from 'firebase';
 import {HospFile} from './HospFile';
 
@@ -36,10 +36,8 @@ export interface Patient {
     };
     exrainfo: string;
     customfuelds?: Array<Customfields>;
-    meta: {
-        primaryhosp: string,
-        date: firestore.Timestamp
-    };
+    primaryhosp: string,
+    metadata: Metadata
 }
 
 interface Insurance {
@@ -74,11 +72,9 @@ export const emptypatient: Patient = {
         allergies: [],
     },
     exrainfo: null,
+    primaryhosp: null,
     customfuelds: [],
-    meta: {
-        date: null,
-        primaryhosp: null
-    },
+    metadata: emptymetadata
 
 };
 

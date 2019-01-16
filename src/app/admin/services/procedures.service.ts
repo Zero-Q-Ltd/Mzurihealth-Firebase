@@ -3,20 +3,29 @@ import {AngularFirestore} from '@angular/fire/firestore';
 import {HospitalService} from './hospital.service';
 import {BehaviorSubject} from 'rxjs';
 import {Hospital} from '../../models/Hospital';
-import {RawProcedure} from '../../models/RawProcedure';
 import {CustomProcedure} from '../../models/CustomProcedure';
 import {ProcedureCategory} from '../../models/ProcedureCategory';
 import {NotificationService} from '../../shared/services/notifications.service';
+import {firestore} from 'firebase';
+import {RawProcedure} from '../../models/RawProcedure';
+import {HospitalAdmin} from '../../models/HospitalAdmin';
+import {AdminService} from './admin.service';
+import Timestamp = firestore.Timestamp;
 
 @Injectable({
     providedIn: 'root'
 })
 export class ProceduresService {
-    hospitalprocedures: Map<string, { procedure: CustomProcedure, procedureconfig?: RawProcedure }> = new Map();
+    hospitalprocedures: BehaviorSubject<Array<{ rawprocedure: RawProcedure, configuration: CustomProcedure }>> =
+        new BehaviorSubject<Array<{ rawprocedure: RawProcedure, configuration: CustomProcedure }>>([]);
     activehospital: Hospital;
     procedurecategories: BehaviorSubject<Array<ProcedureCategory>> = new BehaviorSubject<Array<ProcedureCategory>>([]);
+    userdata: HospitalAdmin;
 
-    constructor(private db: AngularFirestore, private hospitalservice: HospitalService, private notificationservice: NotificationService) {
+    constructor(private db: AngularFirestore,
+                private hospitalservice: HospitalService,
+                private notificationservice: NotificationService,
+                private adminservice: AdminService) {
         this.hospitalservice.activehospital.subscribe(hospital => {
             if (hospital.id) {
                 this.activehospital = hospital;
@@ -24,35 +33,29 @@ export class ProceduresService {
                 this.getprocedurecategories();
             }
         });
+        this.adminservice.observableuserdata.subscribe(userdata => {
+            this.userdata = userdata as HospitalAdmin;
+        });
     }
 
     getprocedures() {
-        Object.keys(this.activehospital.procedures).forEach(key => {
-            this.db.firestore.collection('procedures').doc(key)
-                .onSnapshot(procedure => {
-                    //Reset all the procedures when a the list changess
-                    if (procedure.exists) {
-                        this.hospitalprocedures.clear;
-                        let temp = procedure.data() as CustomProcedure;
-                        temp['refid'] = procedure.id;
-                        this.db.firestore.collection('procedures').doc(key).collection('hospitalconfigs').doc(this.activehospital.id)
-                            .onSnapshot(procedureconfig => {
-                                if (procedureconfig.exists) {
-                                    this.hospitalprocedures.set(key, {
-                                        procedure: Object.assign({}, temp),
-                                        procedureconfig: Object.assign({}, procedureconfig.data() as RawProcedure)
-                                    });
-                                } else {
-                                    this.hospitalprocedures.set(key, {procedure: Object.assign({}, temp)});
-                                }
-                                // console.log(this.hospitalprocedures)
-                            });
-                    }
-                }, err => {
-                    console.log(`Encountered error: ${err}`);
-                });
+        // this.db.firestore.runTransaction()
+        this.db.firestore.collection('procedureconfigs')
+            .where('hospitalid', '==', this.activehospital.id).onSnapshot(rawdata => {
+            let proceduredata = Promise.all(rawdata.docs.map(async data => {
+                let customdata = data.data() as CustomProcedure;
+                customdata.id = data.id;
+                let rawdata = await this.db.firestore.collection('procedures').doc(customdata.parentprocedureid).get();
+                let rawprocedure = rawdata.data() as RawProcedure;
+                rawprocedure.id = customdata.parentprocedureid;
+                console.log({rawprocedure: rawprocedure, configuration: customdata});
+                return {rawprocedure: rawprocedure, configuration: customdata};
+            }));
+            proceduredata.then(mergedData => {
+                console.log(mergedData);
+                this.hospitalprocedures.next(mergedData);
+            });
         });
-
     }
 
     fetchproceduresincategory(categoryid: string) {
@@ -145,22 +148,17 @@ export class ProceduresService {
            });*/
     }
 
-    addprocedure(procedureconfig: RawProcedure, tempprocedure) {
-        //For lack or a better method:
-        let procedureid = this.db.createId();
-        // console.log(procedureconfig, tempprocedure)
-        let batch = this.db.firestore.batch();
-        this.activehospital.procedures[procedureid] = 1;
-        //Update the hospital and assign that procedure to its list
-        batch.set(this.db.firestore.collection('hospitals').doc(this.activehospital.id), this.activehospital);
-        //Add the procedure to all procedures list
-        batch.set(this.db.firestore.collection('procedures').doc(procedureid), tempprocedure);
-        //Add the clinic procedure config to its unique id within the procedures/hospitalconfigs
-        batch.set(this.db.firestore.collection('procedures').doc(procedureid).collection('hospitalconfigs').doc(this.activehospital.id), procedureconfig);
-        return batch.commit();
+    addcustomprocedure(customprocedure: CustomProcedure) {
+        customprocedure.hospitalid = this.activehospital.id;
+        customprocedure.creatorid = this.userdata.id;
+        customprocedure.metadata = {
+            lastedit: Timestamp.now(),
+            date: Timestamp.now()
+        };
+        return this.db.firestore.collection('procedureconfigs').add(customprocedure);
     }
 
-    deleteprocedure(procedureid: string) {
+    deactivateprocedure(procedureid: string) {
 
         return this.db.firestore.collection('hospitals').doc(this.activehospital.id).collection('procedures').doc(procedureid).delete();
     }

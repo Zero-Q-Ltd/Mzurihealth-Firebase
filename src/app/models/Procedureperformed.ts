@@ -1,4 +1,4 @@
-export interface ProcedureHistory {
+export interface Procedureperformed {
   description: string;
   id: string;
   timestamp: number;
@@ -21,7 +21,7 @@ export interface ProcedureHistory {
   }>;
 }
 
-export const emptyprocedurehistory: ProcedureHistory = {
+export const procedureperformed: Procedureperformed = {
   id: null,
   name: null,
   timestamp: null,

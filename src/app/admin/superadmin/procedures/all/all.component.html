@@ -20,7 +20,9 @@
     </ng-container>
 
     <tr *matHeaderRowDef="procedureheaders" mat-header-row></tr>
-    <tr *matRowDef="let row; columns: procedureheaders;" mat-row></tr>
+    <tr *matRowDef="let row; columns: procedureheaders;" (click)="onSelect(row)"
+        [@animate]="{value:'*',params:{y:'100%'}}"
+        [ngClass]="{'selected' : row ===selectedprocedure}"  mat-row></tr>
 </mat-table>
 <mat-paginator [length]="hospitalprocedures.data.length"
                [pageSizeOptions]="[10, 25, 50, 100]"

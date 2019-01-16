@@ -1,24 +1,29 @@
 import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
-import {RawProcedure, rawprocedurecategory} from '../../../../models/RawProcedure';
+import {emptyprawrocedure, RawProcedure, rawprocedurecategory} from '../../../../models/RawProcedure';
 import {ProceduresService} from '../../../services/procedures.service';
 import {CustomProcedure} from '../../../../models/CustomProcedure';
 import {ProcedureCategory} from '../../../../models/ProcedureCategory';
+import {LocalcommunicationService} from '../localcommunication.service';
+import {fuseAnimations} from '../../../../../@fuse/animations';
 
 @Component({
     selector: 'procedures-all',
     templateUrl: './all.component.html',
-    styleUrls: ['./all.component.scss']
+    styleUrls: ['./all.component.scss'],
+    animations: [fuseAnimations]
 })
 export class AllComponent implements OnInit, AfterViewInit {
     hospitalprocedures = new MatTableDataSource<{ rawprocedure: RawProcedure, customprocedure: CustomProcedure }>();
     procedurecategories: Array<ProcedureCategory>;
     procedureheaders = ['name', 'category', 'regprice'];
+    selectedprocedure: RawProcedure = {...emptyprawrocedure};
 
     @ViewChild(MatPaginator) paginator: MatPaginator;
     @ViewChild(MatSort) sort: MatSort;
 
-    constructor(private procedureservice: ProceduresService) {
+    constructor(private procedureservice: ProceduresService,
+                private communicatioservice: LocalcommunicationService) {
         procedureservice.hospitalprocedures.subscribe(mergedprocedures => {
             this.hospitalprocedures.data = mergedprocedures;
         });
@@ -48,4 +53,14 @@ export class AllComponent implements OnInit, AfterViewInit {
             return '';
         }
     }
+    /**
+     * On select
+     *
+     * @param selected
+     */
+    onSelect(selected): void {
+        this.selectedprocedure = selected;
+        this.communicatioservice.onProcedureselected.next(selected);
+    }
+
 }

@@ -1,22 +1,29 @@
+import {firestore} from 'firebase';
+import {emptymetadata, Metadata} from './universal';
+
 export interface CustomProcedure {
-    createdby: string;
+    creatorid: string;
     name: string;
-    description: string;
-    refid: string;
-    price: number
-    // Within this collection are insuance prices for every hospital and
+    id: string;
+    regularprice: number
+    parentprocedureid: string,
+    hospitalid: string,
     insuranceprices: {
         [key: string]: {
             price: number
         }
     }
+    metadata: Metadata
 }
 
 export const emptycustomprocedure: CustomProcedure = {
-    createdby: null,
+    creatorid: null,
     name: null,
-    description: null,
-    refid: null,
-    price: 0,
-    insuranceprices: {}
+    id: null,
+    regularprice: 0,
+    insuranceprices: {},
+    parentprocedureid: null,
+    hospitalid: null,
+    metadata: emptymetadata
+
 };

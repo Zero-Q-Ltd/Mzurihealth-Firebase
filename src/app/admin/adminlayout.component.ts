@@ -18,6 +18,7 @@ import {AdminService} from './services/admin.service';
 import {HospitalService} from './services/hospital.service';
 import {AngularFireAuth} from '@angular/fire/auth';
 import {Router} from '@angular/router';
+import {ProceduresService} from './services/procedures.service';
 
 @Component({
     selector: 'app-adminlayout',
@@ -57,6 +58,7 @@ export class AdminlayoutComponent implements OnInit {
      * @param {TranslateService} _translateService
      * @param adminservice
      * @param hospitalservice
+     * @param procedureservice
      * @param afAuth
      * @param router
      */
@@ -71,6 +73,7 @@ export class AdminlayoutComponent implements OnInit {
         private _platform: Platform,
         private adminservice: AdminService,
         private hospitalservice: HospitalService,
+        private procedureservice: ProceduresService,
         private afAuth: AngularFireAuth,
         private router: Router,
     ) {

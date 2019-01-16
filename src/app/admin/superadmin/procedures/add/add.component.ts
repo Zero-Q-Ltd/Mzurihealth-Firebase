@@ -3,7 +3,7 @@ import {fuseAnimations} from '../../../../../@fuse/animations';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {ProceduresService} from '../../../services/procedures.service';
 import {ProcedureCategory} from '../../../../models/ProcedureCategory';
-import {emptyprocedureConfig, rawprocedurecategory, RawProcedure} from '../../../../models/RawProcedure';
+import {emptyprawrocedure, rawprocedurecategory, RawProcedure} from '../../../../models/RawProcedure';
 import {InsuranceCompany} from '../../../../models/InsuranceCompany';
 import {MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
 import {FuseSidebarService} from '../../../../../@fuse/components/sidebar/sidebar.service';
@@ -24,7 +24,7 @@ export class AddComponent implements OnInit {
     };
     expandedlist = 0;
     customprice = false;
-    selectedprocedure: RawProcedure = {...emptyprocedureConfig};
+    selectedprocedure: RawProcedure = {...emptyprawrocedure};
     procedurefilterFormControl = new FormControl('', [
         Validators.required,
         Validators.email,

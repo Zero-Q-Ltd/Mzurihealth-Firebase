@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {Patient} from '../../models/Patient';
 import {PatientVisit} from '../../models/PatientVisit';
 import {Patientnotes} from '../../models/PatienntNotes';
-import {ProcedureHistory} from '../../models/ProcedureHistory';
+import {Procedureperformed} from '../../models/Procedureperformed';
 import {RawProcedure} from '../../models/RawProcedure';
 import {Hospital} from '../../models/Hospital';
 import {HospitalAdmin} from '../../models/HospitalAdmin';
@@ -18,7 +18,7 @@ import {HospFile} from '../../models/HospFile';
 export class PatientService {
   currentpatient: {
     patientdata: Patient, patienthistory: PatientVisit[], todayhistoryid: string,
-    patientnotes: Patientnotes[], todayprocedures: ProcedureHistory[]
+    patientnotes: Patientnotes[], todayprocedures: Procedureperformed[]
   } = {
     patientdata: null,
     patienthistory: [],
@@ -28,7 +28,7 @@ export class PatientService {
   };
   caurrentpatientinvoice: {
     patientdata: Patient,
-    todayprocedures: Map<string, { procedurehistory: ProcedureHistory, procedureconfig: RawProcedure }>,
+    todayprocedures: Map<string, { procedurehistory: Procedureperformed, procedureconfig: RawProcedure }>,
     todayhistory: PatientVisit,
   } = {
     patientdata: null,
@@ -99,7 +99,7 @@ export class PatientService {
                 this.currentpatient.todayprocedures = [];
                 unsettledprocedures.forEach(proceduredata => {
                   // console.log(procedure.data())
-                  let procedure = proceduredata.data() as ProcedureHistory;
+                  let procedure = proceduredata.data() as Procedureperformed;
                   this.currentpatient.todayprocedures.push(Object.assign({}, procedure));
                 });
               }
@@ -153,7 +153,7 @@ export class PatientService {
     this.db.firestore.collection('patients').doc(patient.id).update({});
   }
 
-  addpatientprocedure(procedurehistory: ProcedureHistory) {
+  addpatientprocedure(procedurehistory: Procedureperformed) {
     console.log(procedurehistory);
     return this.db.firestore.collection('History').doc(this.currentpatient.todayhistoryid).collection('procedures').add(procedurehistory);
   }

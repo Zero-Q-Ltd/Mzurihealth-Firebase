@@ -7,7 +7,7 @@
             <button mat-icon-button matTooltip="Clear">
                 <mat-icon>clear</mat-icon>
             </button>
-            <button aria-label="More" mat-icon-button matTooltip="Save">
+            <button (click)="saveprocedureconfig()" aria-label="More" mat-icon-button matTooltip="Save">
                 <mat-icon>save</mat-icon>
             </button>
         </div>
@@ -30,7 +30,7 @@
                  class="input-group col-sm-10">
                 <mat-form-field appearance="outline" fxFlex="100">
                     <mat-label>Regular Price</mat-label>
-                    <input (keyup)="recordprice($event.target.value)" matInput type="number">
+                    <input [(ngModel)]="customconfig.regularprice" matInput type="number">
                     <mat-icon class="disabled-text" matSuffix>attach_money</mat-icon>
                 </mat-form-field>
             </div>
@@ -47,7 +47,7 @@
                     <mat-icon class="disabled-text" matSuffix>search</mat-icon>
                 </mat-form-field>
             </div>
-            <table (matSortChange)="sortData($event)" *ngIf="custominsuranceprice"
+            <table (matSortChange)="filterinsurance($event.target.value)" *ngIf="custominsuranceprice"
                    [@animate]="{value:'*',params:{y:'100%'}}"
                    matSort>
                 <thead>
@@ -59,19 +59,12 @@
                 <tr *ngFor='let insurance of allinsurance'>
                     <mat-form-field appearance="outline" fxFlex="100">
                         <mat-label>{{insurance.name}}</mat-label>
-                        <input (keyup)="recordprice($event.target.value, insurance)"
-                               [value]='customconfig.insuranceprices[insurance.id]' matInput type="number">
+                        <input [(ngModel)]='customconfig.insuranceprices[insurance.id]' matInput type="number">
                         <mat-icon class="disabled-text" matSuffix>attach_money</mat-icon>
                     </mat-form-field>
                 </tr>
                 </tbody>
             </table>
-
-            <div fxLayout="row" fxLayoutAlign="center center">
-                <button (click)="saveprocedureconfig()" color="accent" mat-raised-button matStepperNext type="button">
-                    Save
-                </button>
-            </div>
         </div>
 
     </div>

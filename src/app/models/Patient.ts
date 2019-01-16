@@ -17,6 +17,10 @@ export interface Patient {
     },
     fileinfo?: HospFile,
     id: string;
+    /**
+     * Optional parent id number for minors
+     */
+    parentid ?: string
     nextofkin: {
         name: string,
         relationship: string,

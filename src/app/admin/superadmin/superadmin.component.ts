@@ -45,7 +45,7 @@ export class SuperadminComponent implements OnInit {
 
     toggleactiveside() {
         this.activeside = !this.activeside;
-        this.procedureservice.syncprocedures();
+        // this.procedureservice.syncprocedures();
     }
 
     /**

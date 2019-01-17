@@ -1,5 +1,7 @@
-<mat-form-field appearance="outline" class="my-12 w-100-p">
-    <input (keyup)="applyFilter($event.target.value)" matInput placeholder="Filter">
+<mat-form-field appearance="outline" class="m-6 w-100-p">
+    <input (keyup)="applyFilter($event.target.value)" matInput>
+    <mat-icon class="disabled-text" matSuffix>search</mat-icon>
+    <mat-label>Filter</mat-label>
 </mat-form-field>
 
 <mat-table [dataSource]="hospitalprocedures" class="mat-elevation-z8 " mat-table>

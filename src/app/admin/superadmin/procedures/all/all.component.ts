@@ -1,8 +1,8 @@
 import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
-import {emptyprawrocedure, RawProcedure, rawprocedurecategory} from '../../../../models/RawProcedure';
+import {RawProcedure, rawprocedurecategory} from '../../../../models/RawProcedure';
 import {ProceduresService} from '../../../services/procedures.service';
-import {CustomProcedure} from '../../../../models/CustomProcedure';
+import {CustomProcedure, emptycustomprocedure} from '../../../../models/CustomProcedure';
 import {ProcedureCategory} from '../../../../models/ProcedureCategory';
 import {LocalcommunicationService} from '../localcommunication.service';
 import {fuseAnimations} from '../../../../../@fuse/animations';
@@ -17,8 +17,7 @@ export class AllComponent implements OnInit, AfterViewInit {
     hospitalprocedures = new MatTableDataSource<{ rawprocedure: RawProcedure, customprocedure: CustomProcedure }>();
     procedurecategories: Array<ProcedureCategory>;
     procedureheaders = ['name', 'category', 'regprice'];
-    selectedprocedure: RawProcedure = {...emptyprawrocedure};
-
+    selectedprocedure: CustomProcedure = {...emptycustomprocedure};
     @ViewChild(MatPaginator) paginator: MatPaginator;
     @ViewChild(MatSort) sort: MatSort;
 
@@ -53,14 +52,16 @@ export class AllComponent implements OnInit, AfterViewInit {
             return '';
         }
     }
+
     /**
      * On select
      *
      * @param selected
      */
-    onSelect(selected): void {
-        this.selectedprocedure = selected;
-        this.communicatioservice.onProcedureselected.next(selected);
+    onSelect(selected: { rawprocedure: RawProcedure, customprocedure: CustomProcedure }): void {
+        console.log(selected);
+        this.selectedprocedure = selected.customprocedure;
+        this.communicatioservice.onprocedureselected.next({selectiontype: 'customprocedure', selection: selected});
     }
 
 }

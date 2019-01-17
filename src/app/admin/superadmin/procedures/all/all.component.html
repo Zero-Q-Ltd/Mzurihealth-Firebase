@@ -2,27 +2,27 @@
     <input (keyup)="applyFilter($event.target.value)" matInput placeholder="Filter">
 </mat-form-field>
 
-<mat-table [dataSource]="hospitalprocedures" class="mat-elevation-z8" mat-table>
+<mat-table [dataSource]="hospitalprocedures" class="mat-elevation-z8 " mat-table>
 
     <ng-container matColumnDef="name">
-        <th *matHeaderCellDef mat-header-cell> Name</th>
-        <td *matCellDef="let element" mat-cell> {{element.rawprocedure.name | titlecase}} </td>
+        <mat-header-cell *matHeaderCellDef> Name</mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.rawprocedure.name | titlecase}} </mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="category">
-        <th *matHeaderCellDef mat-header-cell>Sub Category</th>
-        <td *matCellDef="let element" mat-cell> {{getcategory(element.rawprocedure.category) | titlecase}} </td>
+        <mat-header-cell *matHeaderCellDef>Sub Category</mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{getcategory(element.rawprocedure.category) | titlecase}} </mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="regprice">
-        <th *matHeaderCellDef mat-header-cell> Regular Price</th>
-        <td *matCellDef="let element" mat-cell> {{element.customprocedure.regularprice}} </td>
+        <mat-header-cell *matHeaderCellDef> Regular Price</mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.customprocedure.regularprice}} </mat-cell>
     </ng-container>
 
-    <tr *matHeaderRowDef="procedureheaders" mat-header-row></tr>
-    <tr *matRowDef="let row; columns: procedureheaders;" (click)="onSelect(row)"
-        [@animate]="{value:'*',params:{y:'100%'}}"
-        [ngClass]="{'selected' : row ===selectedprocedure}"  mat-row></tr>
+    <mat-header-row *matHeaderRowDef="procedureheaders"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: procedureheaders;" (click)="onSelect(row)"
+             [@animate]="{value:'*',params:{y:'100%'}}"
+             [ngClass]="{'selected' : row == selectedprocedure}" matRipple></mat-row>
 </mat-table>
 <mat-paginator [length]="hospitalprocedures.data.length"
                [pageSizeOptions]="[10, 25, 50, 100]"

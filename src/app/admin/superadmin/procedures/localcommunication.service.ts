@@ -1,24 +1,23 @@
 import {Injectable} from '@angular/core';
 import {BehaviorSubject} from 'rxjs';
-import {emptyprawrocedure, RawProcedure} from '../../../models/RawProcedure';
+import {RawProcedure} from '../../../models/RawProcedure';
+import {CustomProcedure} from '../../../models/CustomProcedure';
 
 @Injectable({
     providedIn: 'root'
 })
 export class LocalcommunicationService {
-    onProcedureselected: BehaviorSubject<RawProcedure> = new BehaviorSubject<RawProcedure>({...emptyprawrocedure});
-    selectedtype = new BehaviorSubject<string>(null);
+    onprocedureselected: BehaviorSubject<{
+        selectiontype: 'newprocedure' | 'customprocedure' | null,
+        selection: { rawprocedure: RawProcedure, customprocedure: CustomProcedure }
+    }> = new BehaviorSubject({selectiontype: null, selection: null});
+    activetab = new BehaviorSubject<number>(null);
 
     constructor() {
-        this.onProcedureselected.subscribe((procedure) => {
-            if (procedure.id) {
-                this.selectedtype.next('procedure');
-            }
-        });
+
     }
 
     resetall() {
-        this.onProcedureselected.next({...emptyprawrocedure});
-        this.selectedtype.next(null);
+        this.onprocedureselected.next({selectiontype: null, selection: null});
     }
 }

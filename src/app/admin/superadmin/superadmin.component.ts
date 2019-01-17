@@ -16,8 +16,8 @@ export class SuperadminComponent implements OnInit {
     sidebarstatus = false;
 
     constructor(private _fuseSidebarService: FuseSidebarService, private  communication: LocalcommunicationService) {
-        communication.selectedtype.subscribe(type => {
-            if (type) {
+        communication.onprocedureselected.subscribe(selection => {
+            if (selection.selectiontype) {
                 this.sidebarstatus = true;
             } else {
                 this.sidebarstatus = false;

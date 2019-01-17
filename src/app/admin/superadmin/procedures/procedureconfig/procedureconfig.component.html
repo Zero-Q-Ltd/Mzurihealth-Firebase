@@ -13,10 +13,10 @@
         </div>
 
         <div>
-            <div class="title mb-8"><strong>{{selectedprocedure.name}}</strong></div>
+            <div class="title mb-8"><strong>{{selectecustomprocedure.rawprocedure.name}}</strong></div>
             <div class="subtitle secondary-text">
-                <span>Subcategory</span>
-                <span>: {{selectedprocedure.id}}</span>
+                <span>Creation Date</span>
+                <span>: {{selectecustomprocedure.customprocedure.id}}</span>
             </div>
         </div>
     </div>
@@ -30,16 +30,16 @@
                  class="input-group col-sm-10">
                 <mat-form-field appearance="outline" fxFlex="100">
                     <mat-label>Regular Price</mat-label>
-                    <input [(ngModel)]="customconfig.regularprice" matInput type="number">
+                    <input [(ngModel)]="selectecustomprocedure.customprocedure.regularprice" matInput type="number">
                     <mat-icon class="disabled-text" matSuffix>attach_money</mat-icon>
                 </mat-form-field>
             </div>
             <div class="offline-switch">
-                <mat-slide-toggle [(ngModel)]="custominsuranceprice" labelPosition="before">Custom Prices for Insurance
+                <mat-slide-toggle [(ngModel)]="selectecustomprocedure.customprocedure.custominsuranceprice" labelPosition="before">Custom Prices for Insurance
                 </mat-slide-toggle>
             </div>
 
-            <div *ngIf="custominsuranceprice " [@animate]="{value:'*',params:{delay:'200ms'}}"
+            <div *ngIf="selectecustomprocedure.customprocedure.custominsuranceprice " [@animate]="{value:'*',params:{delay:'200ms'}}"
                  class="input-group col-sm-10">
                 <mat-form-field appearance="outline" fxFlex="100">
                     <mat-label>Filter Insurance Companies</mat-label>
@@ -47,7 +47,7 @@
                     <mat-icon class="disabled-text" matSuffix>search</mat-icon>
                 </mat-form-field>
             </div>
-            <table (matSortChange)="filterinsurance($event.target.value)" *ngIf="custominsuranceprice"
+            <table (matSortChange)="filterinsurance($event.target.value)" *ngIf="selectecustomprocedure.customprocedure.custominsuranceprice"
                    [@animate]="{value:'*',params:{y:'100%'}}"
                    matSort>
                 <thead>
@@ -59,7 +59,7 @@
                 <tr *ngFor='let insurance of allinsurance'>
                     <mat-form-field appearance="outline" fxFlex="100">
                         <mat-label>{{insurance.name}}</mat-label>
-                        <input [(ngModel)]='customconfig.insuranceprices[insurance.id]' matInput type="number">
+                        <input [(ngModel)]='selectecustomprocedure.customprocedure.insuranceprices[insurance.id]' matInput type="number">
                         <mat-icon class="disabled-text" matSuffix>attach_money</mat-icon>
                     </mat-form-field>
                 </tr>

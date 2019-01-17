@@ -18,20 +18,20 @@
     <mat-table #table [@animateStagger]="{value:'100'}" [dataSource]="categoryprocedures">
 
         <ng-container matColumnDef="name">
-            <th *matHeaderCellDef mat-header-cell> Name</th>
-            <td *matCellDef="let element" mat-cell> {{element.name | titlecase}} </td>
+            <mat-header-cell *matHeaderCellDef > Name</mat-header-cell>
+            <mat-cell *matCellDef="let element" > {{element.name | titlecase}} </mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="category">
-            <th *matHeaderCellDef mat-header-cell>Sub Category</th>
-            <td *matCellDef="let element" mat-cell> {{getcategory(element.category) | titlecase}} </td>
+            <mat-header-cell *matHeaderCellDef >Sub Category</mat-header-cell>
+            <mat-cell *matCellDef="let element" > {{getcategory(element.category) | titlecase}} </mat-cell>
         </ng-container>
 
         <mat-header-row *matHeaderRowDef="procedureheaders"></mat-header-row>
         <mat-row (click)="onSelect(row)"
                  *matRowDef="let row; columns: procedureheaders;"
                  [@animate]="{value:'*',params:{y:'100%'}}"
-                 [ngClass]="{'selected' : row ===selectedprocedure}" matRipple>
+                 [ngClass]="{'highlight' : row == selectedprocedure}" matRipple>
         </mat-row>
     </mat-table>
     <mat-paginator [length]="categoryprocedures.data.length"

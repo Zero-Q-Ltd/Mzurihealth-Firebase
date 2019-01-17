@@ -48,11 +48,10 @@ export class ProceduresService {
                 let rawdata = await this.db.firestore.collection('procedures').doc(customdata.parentprocedureid).get();
                 let rawprocedure = rawdata.data() as RawProcedure;
                 rawprocedure.id = customdata.parentprocedureid;
-                console.log({rawprocedure: rawprocedure, customprocedure: customdata});
                 return {rawprocedure: rawprocedure, customprocedure: customdata};
             }));
             proceduredata.then(mergedData => {
-                console.log(mergedData);
+                // console.log(mergedData);
                 this.hospitalprocedures.next(mergedData);
             });
         });
@@ -164,6 +163,7 @@ export class ProceduresService {
             lastedit: Timestamp.now(),
             date: customprocedure.metadata.date
         };
+        console.log(customprocedure)
         return this.db.firestore.collection('procedureconfigs').doc(customprocedure.id).update(customprocedure);
     }
 

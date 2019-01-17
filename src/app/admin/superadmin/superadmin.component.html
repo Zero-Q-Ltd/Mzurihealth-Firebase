@@ -41,33 +41,27 @@
         <!-- CONTENT CARD -->
         <div class="content-card">
 
-            <!-- CONTENT -->
-            <div class="content">
+            <mat-tab-group (selectedTabChange)="tabChanged($event)">
+                <mat-tab label="Procedures">
+                    <div *ngIf="activetabindex === 0" class="tab-content p-24" fusePerfectScrollbar>
+                        <procedures-all *ngIf="!activeside"></procedures-all>
+                        <procedure-add *ngIf="activeside"></procedure-add>
+                    </div>
+                </mat-tab>
 
-                <mat-tab-group (selectedTabChange)="tabChanged($event)">
-                    <mat-tab label="Procedures">
-                        <div class="tab-content p-24" fusePerfectScrollbar>
-                            <procedures-all *ngIf="!activeside && activetabindex === 0"></procedures-all>
-                            <procedure-add *ngIf="activeside && activetabindex === 0"></procedure-add>
-                        </div>
-                    </mat-tab>
+                <mat-tab label="Admins">
+                    <div *ngIf="activetabindex === 1" class="tab-content p-24" fusePerfectScrollbar>
+                        <admins-all *ngIf="!activeside"></admins-all>
+                        <admin-add *ngIf="activeside"></admin-add>
+                    </div>
+                </mat-tab>
 
-                    <mat-tab label="Admins">
-                        <div class="tab-content p-24" fusePerfectScrollbar>
-                            <admins-all *ngIf="!activeside && activetabindex === 1"></admins-all>
-                            <admin-add *ngIf="activeside && activetabindex === 1"></admin-add>
-                        </div>
-                    </mat-tab>
-
-                    <mat-tab label="Hospital Config">
-                        <div class="tab-content p-24" fusePerfectScrollbar>
-                            <app-hospconfig></app-hospconfig>
-                        </div>
-                    </mat-tab>
-                </mat-tab-group>
-
-            </div>
-            <!-- / CONTENT -->
+                <mat-tab label="Hospital Config">
+                    <div class="tab-content p-24" fusePerfectScrollbar>
+                        <app-hospconfig></app-hospconfig>
+                    </div>
+                </mat-tab>
+            </mat-tab-group>
 
         </div>
         <!-- / CONTENT CARD -->

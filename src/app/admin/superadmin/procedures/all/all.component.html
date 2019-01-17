@@ -18,6 +18,14 @@
         <mat-header-cell *matHeaderCellDef> Regular Price</mat-header-cell>
         <mat-cell *matCellDef="let element"> {{element.customprocedure.regularprice}} </mat-cell>
     </ng-container>
+    <ng-container matColumnDef="minprice">
+        <mat-header-cell *matHeaderCellDef> Regular Price</mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.rawprocedure.pricing.min}} </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="maxprice">
+        <mat-header-cell *matHeaderCellDef> Regular Price</mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.rawprocedure.pricing.max}} </mat-cell>
+    </ng-container>
 
     <mat-header-row *matHeaderRowDef="procedureheaders"></mat-header-row>
     <mat-row *matRowDef="let row; columns: procedureheaders;" (click)="onSelect(row)"

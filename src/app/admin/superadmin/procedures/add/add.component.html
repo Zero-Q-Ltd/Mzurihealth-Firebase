@@ -18,13 +18,23 @@
     <mat-table #table [@animateStagger]="{value:'100'}" [dataSource]="categoryprocedures">
 
         <ng-container matColumnDef="name">
-            <mat-header-cell *matHeaderCellDef > Name</mat-header-cell>
-            <mat-cell *matCellDef="let element" > {{element.name | titlecase}} </mat-cell>
+            <mat-header-cell *matHeaderCellDef> Name</mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.name | titlecase}} </mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="category">
-            <mat-header-cell *matHeaderCellDef >Sub Category</mat-header-cell>
-            <mat-cell *matCellDef="let element" > {{getcategory(element.category) | titlecase}} </mat-cell>
+            <mat-header-cell *matHeaderCellDef>Sub Category</mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{getcategory(element.category) | titlecase}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="minprice">
+            <mat-header-cell *matHeaderCellDef>Min Price</mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{getcategory(element.pricing.min) }} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="maxprice">
+            <mat-header-cell *matHeaderCellDef>Min Price</mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{getcategory(element.pricing.max)}} </mat-cell>
         </ng-container>
 
         <mat-header-row *matHeaderRowDef="procedureheaders"></mat-header-row>

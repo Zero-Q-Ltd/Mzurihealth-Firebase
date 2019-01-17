@@ -11,6 +11,7 @@ import {RawProcedure} from '../../models/RawProcedure';
 import {HospitalAdmin} from '../../models/HospitalAdmin';
 import {AdminService} from './admin.service';
 import Timestamp = firestore.Timestamp;
+import * as proceduredata from 'assets/procedures.json'
 
 @Injectable({
     providedIn: 'root'
@@ -99,12 +100,12 @@ export class ProceduresService {
           batch.set(this.db.firestore.collection('procedurecategories').doc(this.db.createId()), category);
           return await batch.commit();
         });*/
-        /*   return Promise.all(
+           return Promise.all(
              proceduredata['Table 1'].forEach(async (proc: rawprocedure) => {
                let batch = this.db.firestore.batch();
 
                let procedurecategory = this.procedurecategories.value.find(cat => {
-                 return cat.name.toLofwerCase() == proc.Type.toLocaleLowerCase();
+                 return cat.name.toLowerCase() == proc.Type.toLocaleLowerCase();
                });
                let subcategories = procedurecategory.subcategories;
                let belongingcategory = Object.entries(subcategories || {}).find((val) => {
@@ -128,7 +129,7 @@ export class ProceduresService {
                  },
                  category: {
                    id: procedurecategory.id,
-                   subcategoryid: belongingcategory ? Number(belongingcategory[0]) : null,
+                   subcategoryid: belongingcategory ? belongingcategory[0] : null,
                    code: proc.Code || null
                  },
                  id: null,
@@ -144,7 +145,7 @@ export class ProceduresService {
                title: 'Success',
                placement: 'center'
              });
-           });*/
+           });
     }
 
     addcustomprocedure(customprocedure: CustomProcedure) {

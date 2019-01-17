@@ -6,7 +6,7 @@ export interface RawProcedure {
         min: number | string,
     },
     category: rawprocedurecategory
-
+    numericid : number
 }
 
 export interface rawprocedurecategory {
@@ -22,6 +22,7 @@ export const emptyprawrocedure: RawProcedure = {
         min: 0,
         max: 0
     },
+    numericid : null,
     category: {
         id: null,
         code: null,

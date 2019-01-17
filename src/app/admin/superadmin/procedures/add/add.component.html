@@ -29,12 +29,12 @@
 
         <ng-container matColumnDef="minprice">
             <mat-header-cell *matHeaderCellDef>Min Price</mat-header-cell>
-            <mat-cell *matCellDef="let element"> {{getcategory(element.pricing.min) }} </mat-cell>
+            <mat-cell *matCellDef="let element"> {{element.pricing.min | number }} </mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="maxprice">
             <mat-header-cell *matHeaderCellDef>Min Price</mat-header-cell>
-            <mat-cell *matCellDef="let element"> {{getcategory(element.pricing.max)}} </mat-cell>
+            <mat-cell *matCellDef="let element"> {{element.pricing.min | number}} </mat-cell>
         </ng-container>
 
         <mat-header-row *matHeaderRowDef="procedureheaders"></mat-header-row>

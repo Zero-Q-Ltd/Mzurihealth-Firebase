@@ -26,7 +26,7 @@ export class AddComponent implements OnInit, AfterViewInit {
     };
     expandedlist = 0;
     selectedprocedure: RawProcedure = {...emptyprawrocedure};
-    procedureheaders = ['name', 'category'];
+    procedureheaders = ['name', 'category', 'minprice', 'maxprice'];
     categoryprocedures = new MatTableDataSource<RawProcedure>();
 
     @ViewChild(MatPaginator) paginator: MatPaginator;

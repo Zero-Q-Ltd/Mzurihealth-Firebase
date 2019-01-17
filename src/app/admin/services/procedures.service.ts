@@ -10,6 +10,7 @@ import {firestore} from 'firebase';
 import {RawProcedure} from '../../models/RawProcedure';
 import {HospitalAdmin} from '../../models/HospitalAdmin';
 import {AdminService} from './admin.service';
+import * as proceduredata from 'assets/procedures.json';
 import Timestamp = firestore.Timestamp;
 
 @Injectable({
@@ -81,7 +82,8 @@ export class ProceduresService {
             'Type': string,
             'Category': string,
             'Code': string,
-            'SubCategoty': string
+            'SubCategoty': string,
+            'NUMERICID': string
         }
 
         /**
@@ -99,52 +101,53 @@ export class ProceduresService {
           batch.set(this.db.firestore.collection('procedurecategories').doc(this.db.createId()), category);
           return await batch.commit();
         });*/
-        /*   return Promise.all(
-             proceduredata['Table 1'].forEach(async (proc: rawprocedure) => {
-               let batch = this.db.firestore.batch();
-
-               let procedurecategory = this.procedurecategories.value.find(cat => {
-                 return cat.name.toLofwerCase() == proc.Type.toLocaleLowerCase();
-               });
-               let subcategories = procedurecategory.subcategories;
-               let belongingcategory = Object.entries(subcategories || {}).find((val) => {
-                 if (val) {
-                   if (proc.SubCategoty) {
-                     return val[1].name.toLocaleLowerCase() === proc.SubCategoty.toLocaleLowerCase();
-                   } else {
-                     if (proc.Category) {
-                       return val[1].name.toLocaleLowerCase() === proc.Category.toLocaleLowerCase();
-                     } else {
-                       console.log('This procedure does not belong to any category');
-                       return false;
-                     }
-                   }
-                 }
-               });
-               let newprocedure: RawProcedure = {
-                 pricing: {
-                   max: proc.Maximum || null,
-                   min: proc.Minimum || null
-                 },
-                 category: {
-                   id: procedurecategory.id,
-                   subcategoryid: belongingcategory ? Number(belongingcategory[0]) : null,
-                   code: proc.Code || null
-                 },
-                 id: null,
-                 name: proc.Name ? proc.Name.toLowerCase() : ''
-               };
-               console.log(newprocedure);
-               batch.set(this.db.firestore.collection('procedures').doc(this.db.createId()), newprocedure);
-               return await batch.commit();
-             })).then(() => {
-             this.notificationservice.notify({
-               alert_type: 'success',
-               body: 'Procedures added',
-               title: 'Success',
-               placement: 'center'
-             });
-           });*/
+        // return Promise.all(
+        //     proceduredata['Table 1'].forEach(async (proc: rawprocedure) => {
+        //         let batch = this.db.firestore.batch();
+        //
+        //         let procedurecategory = this.procedurecategories.value.find(cat => {
+        //             return cat.name.toLowerCase() == proc.Type.toLocaleLowerCase();
+        //         });
+        //         let subcategories = procedurecategory.subcategories;
+        //         let belongingcategory = Object.entries(subcategories || {}).find((val) => {
+        //             if (val) {
+        //                 if (proc.SubCategoty) {
+        //                     return val[1].name.toLocaleLowerCase() === proc.SubCategoty.toLocaleLowerCase();
+        //                 } else {
+        //                     if (proc.Category) {
+        //                         return val[1].name.toLocaleLowerCase() === proc.Category.toLocaleLowerCase();
+        //                     } else {
+        //                         console.log('This procedure does not belong to any category');
+        //                         return false;
+        //                     }
+        //                 }
+        //             }
+        //         });
+        //         let newprocedure: RawProcedure = {
+        //             pricing: {
+        //                 max: Number(proc.Maximum) || null,
+        //                 min: Number(proc.Minimum) || null
+        //             },
+        //             category: {
+        //                 id: procedurecategory.id,
+        //                 subcategoryid: belongingcategory ? belongingcategory[0] : null,
+        //                 code: proc.Code || null
+        //             },
+        //             numericid: Number(proc.NUMERICID) || null,
+        //             id: null,
+        //             name: proc.Name ? proc.Name.toLowerCase() : ''
+        //         };
+        //         console.log(newprocedure);
+        //         batch.set(this.db.firestore.collection('procedures').doc(this.db.createId()), newprocedure);
+        //         return await batch.commit();
+        //     })).then(() => {
+        //     this.notificationservice.notify({
+        //         alert_type: 'success',
+        //         body: 'Procedures added',
+        //         title: 'Success',
+        //         placement: 'center'
+        //     });
+        // });
     }
 
     addcustomprocedure(customprocedure: CustomProcedure) {
@@ -154,6 +157,14 @@ export class ProceduresService {
             lastedit: Timestamp.now(),
             date: Timestamp.now()
         };
+        /**
+         * remove insurance prices set to 0
+         */
+        Object.keys(customprocedure.insuranceprices).forEach(key => {
+            if (customprocedure.insuranceprices[key].price === 0 || customprocedure.insuranceprices[key].price === null) {
+                delete customprocedure.insuranceprices[key];
+            }
+        });
         return this.db.firestore.collection('procedureconfigs').add(customprocedure);
     }
 
@@ -163,7 +174,14 @@ export class ProceduresService {
             lastedit: Timestamp.now(),
             date: customprocedure.metadata.date
         };
-        console.log(customprocedure)
+        /**
+         * remove insurance prices set to 0
+         */
+        Object.keys(customprocedure.insuranceprices).forEach(key => {
+            if (!customprocedure.insuranceprices[key] || customprocedure.insuranceprices[key].price === 0 || customprocedure.insuranceprices[key].price === null) {
+                delete customprocedure.insuranceprices[key];
+            }
+        });
         return this.db.firestore.collection('procedureconfigs').doc(customprocedure.id).update(customprocedure);
     }
 

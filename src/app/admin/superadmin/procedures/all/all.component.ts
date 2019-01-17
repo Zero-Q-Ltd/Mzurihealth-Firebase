@@ -16,7 +16,7 @@ import {fuseAnimations} from '../../../../../@fuse/animations';
 export class AllComponent implements OnInit, AfterViewInit {
     hospitalprocedures = new MatTableDataSource<{ rawprocedure: RawProcedure, customprocedure: CustomProcedure }>();
     procedurecategories: Array<ProcedureCategory>;
-    procedureheaders = ['name', 'category', 'regprice'];
+    procedureheaders = ['name', 'category', 'regprice', 'minprice', 'maxprice'];
     selectedprocedure: CustomProcedure = {...emptycustomprocedure};
     @ViewChild(MatPaginator) paginator: MatPaginator;
     @ViewChild(MatSort) sort: MatSort;
@@ -59,7 +59,6 @@ export class AllComponent implements OnInit, AfterViewInit {
      * @param selected
      */
     onSelect(selected: { rawprocedure: RawProcedure, customprocedure: CustomProcedure }): void {
-        console.log(selected);
         this.selectedprocedure = selected.customprocedure;
         this.communicatioservice.onprocedureselected.next({selectiontype: 'customprocedure', selection: selected});
     }

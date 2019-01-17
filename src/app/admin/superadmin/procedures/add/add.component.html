@@ -8,10 +8,10 @@
                 </mat-option>
             </mat-select>
             <mat-icon *ngIf="!loadingprocedures" class="secondary-text" matSuffix>apps</mat-icon>
-            <mat-spinner *ngIf='loadingprocedures' [diameter]="19" matSuffix></mat-spinner>
             <mat-error>Category is required!</mat-error>
         </mat-form-field>
     </form>
+    <mat-progress-bar *ngIf="loadingprocedures" mode="indeterminate"></mat-progress-bar>
     <mat-form-field appearance="outline" class="m-6 w-100-p">
         <input (keyup)="applyFilter($event.target.value)" matInput>
         <mat-label>Filter</mat-label>
@@ -36,7 +36,7 @@
 
         <ng-container matColumnDef="maxprice">
             <mat-header-cell *matHeaderCellDef>Min Price</mat-header-cell>
-            <mat-cell *matCellDef="let element"> {{element.pricing.min | number}} </mat-cell>
+            <mat-cell *matCellDef="let element"> {{element.pricing.max | number}} </mat-cell>
         </ng-container>
 
         <mat-header-row *matHeaderRowDef="procedureheaders"></mat-header-row>

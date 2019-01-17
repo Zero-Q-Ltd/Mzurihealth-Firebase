@@ -48,6 +48,7 @@ export class AddComponent implements OnInit, AfterViewInit {
         });
         this.proceduresform.get('category').valueChanges.subscribe((category: ProcedureCategory) => {
             this.loadingprocedures = true;
+            this.categoryprocedures.data = [];
             this.procedureservice.fetchproceduresincategory(category.id).get().then(rawprocedures => {
                 this.categoryprocedures.data = rawprocedures.docs.map(rawcat => {
                     const cat = rawcat.data() as RawProcedure;

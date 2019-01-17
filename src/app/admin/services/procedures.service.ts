@@ -10,7 +10,6 @@ import {firestore} from 'firebase';
 import {RawProcedure} from '../../models/RawProcedure';
 import {HospitalAdmin} from '../../models/HospitalAdmin';
 import {AdminService} from './admin.service';
-import * as proceduredata from 'assets/procedures.json';
 import Timestamp = firestore.Timestamp;
 
 @Injectable({
@@ -89,6 +88,7 @@ export class ProceduresService {
         /**
          * In case you ever need to rewrite the categories again, make sure to also rewrite the procedures as new ids will be assigned
          * also remember to add the import statement for the json
+         * import * as proceduredata from 'assets/procedures.json';
          */
         /*procedurecats.categories.forEach(async (category: ProcedureCategory) => {
           let batch = this.db.firestore.batch();

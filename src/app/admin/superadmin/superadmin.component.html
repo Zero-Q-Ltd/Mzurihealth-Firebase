@@ -18,6 +18,11 @@
 
 
             <div class="logo" fxLayout="row" fxLayoutAlign="start center">
+
+                <button mat-icon-button class="sidebar-toggle mr-8" fxHide.gt-md
+                        (click)="toggleSidebar('procedureconfig-sidebar')">
+                    <mat-icon>menu</mat-icon>
+                </button>
                 <mat-icon [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
                           class="logo-icon mr-16">settings
                 </mat-icon>

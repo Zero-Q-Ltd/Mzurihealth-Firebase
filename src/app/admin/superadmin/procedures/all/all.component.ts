@@ -59,7 +59,6 @@ export class AllComponent implements OnInit, AfterViewInit {
      * @param selected
      */
     onSelect(selected: { rawprocedure: RawProcedure, customprocedure: CustomProcedure }): void {
-        console.log(selected);
         this.selectedprocedure = selected.customprocedure;
         this.communicatioservice.onprocedureselected.next({selectiontype: 'customprocedure', selection: selected});
     }

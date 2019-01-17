@@ -7,6 +7,8 @@ import {InsuranceCompany} from '../../../../models/InsuranceCompany';
 import {CustomProcedure, emptycustomprocedure} from '../../../../models/CustomProcedure';
 import {ProceduresService} from '../../../services/procedures.service';
 import {NotificationService} from '../../../../shared/services/notifications.service';
+import * as moment from 'moment';
+import {FormControl, Validators} from '@angular/forms';
 
 @Component({
     selector: 'app-procedureconfig',
@@ -21,19 +23,26 @@ export class ProcedureconfigComponent implements OnInit {
 
     allinsurance: Array<InsuranceCompany> = [];
     filteredinsurance: Array<InsuranceCompany> = [];
+    regularpricecontrol = new FormControl('', [
+        Validators.required,
+        Validators.min(0),
+    ]);
 
     constructor(private communicatioservice: LocalcommunicationService,
                 private insuranceservice: InsuranceService,
                 private procedureservice: ProceduresService,
                 private notificationservice: NotificationService) {
         this.communicatioservice.onprocedureselected.subscribe(selection => {
-            console.log(selection);
+            if (!selection.selectiontype) {
+                return;
+            }
             this.selectecustomprocedure = selection.selection;
-
+            this.regularpricecontrol.patchValue(this.selectecustomprocedure.customprocedure.regularprice);
         });
 
         this.insuranceservice.allinsurance.subscribe(insurance => {
             this.allinsurance = insurance;
+            this.filteredinsurance = insurance;
         });
     }
 
@@ -43,34 +52,53 @@ export class ProcedureconfigComponent implements OnInit {
     filterinsurance(filterValue: string) {
         if (filterValue) {
             let temp = [];
-            filterValue = filterValue.trim(); // Remove whitespace
-            filterValue = filterValue.toLowerCase(); // MatTableDataSource defaults to lowercase matches
+            filterValue = filterValue.trim();
+            filterValue = filterValue.toLowerCase();
             this.insuranceservice.allinsurance.value.filter(data => {
                 if (data['name'].toLowerCase().indexOf(filterValue) > -1) {
                     temp.push(data);
                 }
             });
             this.filteredinsurance = temp;
+        } else {
+            this.filteredinsurance = this.allinsurance;
         }
     }
 
+    getdate() {
+        return moment().toDate().toDateString();
+    }
+
+    clearselection() {
+        this.communicatioservice.resetall();
+    }
+
     saveprocedureconfig() {
-        if (this.communicatioservice.onprocedureselected.value.selectiontype === 'newprocedure') {
-            this.selectecustomprocedure.customprocedure.parentprocedureid = this.selectecustomprocedure.rawprocedure.id;
-            this.procedureservice.addcustomprocedure(this.selectecustomprocedure.customprocedure).then(() => {
-                this.notificationservice.notify({
-                    placement: 'centre',
-                    title: 'Success',
-                    alert_type: 'success',
-                    body: 'Successfully saved'
+        if (!this.regularpricecontrol.errors) {
+            this.selectecustomprocedure.customprocedure.regularprice = this.regularpricecontrol.value;
+            if (this.communicatioservice.onprocedureselected.value.selectiontype === 'newprocedure') {
+                this.selectecustomprocedure.customprocedure.parentprocedureid = this.selectecustomprocedure.rawprocedure.id;
+                this.procedureservice.addcustomprocedure(this.selectecustomprocedure.customprocedure).then(() => {
+                    this.notificationservice.notify({
+                        placement: 'centre',
+                        title: 'Success',
+                        alert_type: 'success',
+                        body: 'Successfully saved'
+                    });
+                    this.communicatioservice.resetall();
                 });
-                this.communicatioservice.resetall();
-            });
+            } else {
+                this.procedureservice.editcustomprocedure(this.selectecustomprocedure.customprocedure).then(() => {
+                    this.communicatioservice.resetall();
+                });
+            }
         } else {
-            this.procedureservice.editcustomprocedure(this.selectecustomprocedure.customprocedure).then(() => {
-                this.communicatioservice.resetall();
+            this.notificationservice.notify({
+                placement: 'centre',
+                title: 'Error',
+                alert_type: 'error',
+                body: 'Regular price is required'
             });
         }
-
     }
 }

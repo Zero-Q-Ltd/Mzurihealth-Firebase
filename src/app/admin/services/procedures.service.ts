@@ -154,6 +154,14 @@ export class ProceduresService {
             lastedit: Timestamp.now(),
             date: Timestamp.now()
         };
+        /**
+         * remove insurance prices set to 0
+         */
+        Object.keys(customprocedure.insuranceprices).forEach(key => {
+            if (customprocedure.insuranceprices[key].price === 0 || customprocedure.insuranceprices[key].price === null) {
+                delete customprocedure.insuranceprices[key];
+            }
+        });
         return this.db.firestore.collection('procedureconfigs').add(customprocedure);
     }
 
@@ -163,7 +171,14 @@ export class ProceduresService {
             lastedit: Timestamp.now(),
             date: customprocedure.metadata.date
         };
-        console.log(customprocedure)
+        /**
+         * remove insurance prices set to 0
+         */
+        Object.keys(customprocedure.insuranceprices).forEach(key => {
+            if (!customprocedure.insuranceprices[key] || customprocedure.insuranceprices[key].price === 0 || customprocedure.insuranceprices[key].price === null) {
+                delete customprocedure.insuranceprices[key];
+            }
+        });
         return this.db.firestore.collection('procedureconfigs').doc(customprocedure.id).update(customprocedure);
     }
 

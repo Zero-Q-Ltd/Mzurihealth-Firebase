@@ -19,8 +19,10 @@ export class SuperadminComponent implements OnInit {
         communication.onprocedureselected.subscribe(selection => {
             if (selection.selectiontype) {
                 this.sidebarstatus = true;
+                // this._fuseSidebarService.getSidebar('procedureconfig-sidebar').toggleOpen()
             } else {
                 this.sidebarstatus = false;
+                // this._fuseSidebarService.getSidebar('procedureconfig-sidebar').toggleOpen()
             }
 
         });
@@ -40,5 +42,14 @@ export class SuperadminComponent implements OnInit {
 
     toggleactiveside() {
         this.activeside = !this.activeside;
+    }
+
+    /**
+     * used to display the sidebar
+     * @param name
+     */
+    toggleSidebar(name): void
+    {
+        this._fuseSidebarService.getSidebar(name).toggleOpen();
     }
 }

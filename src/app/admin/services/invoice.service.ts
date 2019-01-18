@@ -16,7 +16,7 @@ export class InvoiceService {
     //     console.log(this.caurrentpatientinvoice.todayhistory);
     //     if (this.caurrentpatientinvoice.todayhistory.paid) {
     //         console.log('submitting');
-    //         batch.update(this.db.firestore.collection('History').doc(this.caurrentpatientinvoice.todayhistory.refid), this.caurrentpatientinvoice.todayhistory);
+    //         batch.update(this.db.firestore.collection('History').doc(this.caurrentpatientinvoice.todayhistory.id), this.caurrentpatientinvoice.todayhistory);
     //     }
     //     return batch.commit();
     // }
@@ -39,7 +39,7 @@ export class InvoiceService {
     //                 _.extend(this.caurrentpatientinvoice.patientdata, temppatientdata);
     //                 // I had to nest this so that we are sure the patient data is already loaded by the time the history is being fetched
     //                 this.db.firestore.collection('History')
-    //                     .where('patientref', '==', patientid)
+    //                     .where('patientid', '==', patientid)
     //                     .orderBy('timestamp')
     //                     .limit(1).onSnapshot(patienthistory => {
     //                     // console.log(patientid ,patienthistory)
@@ -50,7 +50,7 @@ export class InvoiceService {
     //                         if (!temphisto['paid']) {
     //                             this.caurrentpatientinvoice.todayhistory = emptypatienthistory;
     //                             _.extend(this.caurrentpatientinvoice.todayhistory, temphisto);
-    //                             this.db.firestore.collection('History').doc(temphisto.refid).collection('procedures').onSnapshot(unsettledprocedures => {
+    //                             this.db.firestore.collection('History').doc(temphisto.id).collection('procedures').onSnapshot(unsettledprocedures => {
     //                                 if (!unsettledprocedures.empty) {
     //                                     // unsettledprocedures.
     //
@@ -66,7 +66,7 @@ export class InvoiceService {
     //                                             }
     //                                             console.log(tempProcedures);
     //                                             // this.caurrentpatientinvoice.todayprocedures.push(this.objectassign(tempProcedures, emptypatienthistory))
-    //                                             this.db.firestore.collection('procedures').doc(tempProcedures.refid).collection('hospitalconfigs').doc(this.activehospital.id).get().then(procedureconfig => {
+    //                                             this.db.firestore.collection('procedures').doc(tempProcedures.id).collection('hospitalconfigs').doc(this.activehospital.id).get().then(procedureconfig => {
     //                                                 if (procedureconfig.exists) {
     //                                                     let tempconfig = procedureconfig.data();
     //                                                     tempconfig['id'] = procedureconfig.id;
@@ -74,7 +74,7 @@ export class InvoiceService {
     //                                                     let tempconfig2 = emptyprawrocedure;
     //                                                     let emptyhisto = emptypatienthistory;
     //                                                     // this.caurrentpatientinvoice.todayprocedures.set(tempProcedures.id, { procedureconfig: this.objectassign(tempconfig), procedurehistory: this.objectassign(tempProcedures, emptypatienthistory) })
-    //                                                     this.caurrentpatientinvoice.todayprocedures.set(tempProcedures.refid,
+    //                                                     this.caurrentpatientinvoice.todayprocedures.set(tempProcedures.id,
     //                                                         {procedureconfig: _.extend(tempconfig2, tempconfig), procedurehistory: _.extend(emptyhisto, tempProcedures)});
     //                                                 } else {
     //                                                     //this procedure has been deleted

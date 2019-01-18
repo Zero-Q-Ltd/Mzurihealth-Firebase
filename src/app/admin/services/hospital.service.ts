@@ -60,7 +60,7 @@ export class HospitalService {
                     }
                     this.gethospitaladmins();
                 } else {
-                    // this.showNotification('error', 'The associated Clinic has been deleted. Please contact us for instrustions', 'bottom', 5000);
+                    // this.showNotification('error', 'The associated Clinic has been deleted. Please contactperson us for instrustions', 'bottom', 5000);
                     // this.afAuth.auth.signOut();
                     // this.router.navigate(['//authentication/signin']);
                 }

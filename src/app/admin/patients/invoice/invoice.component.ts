@@ -1,5 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Subject} from 'rxjs';
+import {HospitalService} from '../../services/hospital.service';
+import {Hospital} from '../../../models/Hospital';
 
 @Component({
     selector: 'app-invoice',
@@ -11,16 +13,20 @@ export class InvoiceComponent implements OnInit, OnDestroy {
 
     // Private
     private _unsubscribeAll: Subject<any>;
+    activehospital: Hospital;
+
 
     /**
      * Constructor
      *
      * @param {InvoiceService} _invoiceService
      */
-    constructor() {
+    constructor(private hospitalservice: HospitalService) {
         // Set the private defaults
         this._unsubscribeAll = new Subject();
-
+        this.hospitalservice.activehospital.subscribe(hosp => {
+            this.activehospital = hosp;
+        });
     }
 
     // -----------------------------------------------------------------------------------------------------

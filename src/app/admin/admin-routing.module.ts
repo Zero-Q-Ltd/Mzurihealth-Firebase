@@ -2,9 +2,6 @@ import {RouterModule, Routes} from '@angular/router';
 import {UsersGuard} from './guards/users.guard';
 import {NgModule} from '@angular/core';
 import {DashboardComponent} from './dashboard/dashboard.component';
-// import {AppointmentComponent} from './appointment/appointment.component';
-// import { AdminLayoutComponent } from './adminlayout.component';
-import {SuperadminComponent} from './superadmin/superadmin.component';
 import {AdminlayoutComponent} from './adminlayout.component';
 import {AdminprofileComponent} from './adminprofile/adminprofile.component';
 
@@ -12,6 +9,7 @@ const routes: Routes = [
     {
         path: '',
         canActivate: [UsersGuard],
+        canLoad: [UsersGuard],
         component: AdminlayoutComponent,
         children: [
             {
@@ -66,8 +64,8 @@ const routes: Routes = [
         ]
     },
     {
-      path: 'authentication',
-      loadChildren: 'app/admin/authentication/authentication.module#AuthenticationModule'
+        path: 'authentication',
+        loadChildren: 'app/admin/authentication/authentication.module#AuthenticationModule'
     },
 ];
 

@@ -18,10 +18,10 @@ export interface PatientVisit {
         heartrate: number,
         respiration: number
     };
-    notes: {
-        // The doctor's id then the notes
-    };
-
+    generalnotes: Array<{
+        adminid: string,
+        notes: string
+    }>,
     patientid: string;
     hospitalid: string;
     prescription: string;
@@ -56,9 +56,7 @@ export const emptypatienthistory: PatientVisit = {
         heartrate: null,
         respiration: null
     },
-    notes: {
-        // The doctor's id then the notes
-    },
+    generalnotes: [],
     checkin: {
         status: null,
         admin: null

@@ -140,7 +140,6 @@ export class PatientService {
         newhistory.hospitalid = this.activehospital.id;
         newhistory.patientid = patientid;
         newhistory.timestamp = timestamp;
-        newhistory.status = 0;
         batch.set(this.db.firestore.collection('hospitalvisits').doc(this.db.createId()), newhistory);
       }
     }

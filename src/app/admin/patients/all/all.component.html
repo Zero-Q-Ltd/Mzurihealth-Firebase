@@ -127,7 +127,7 @@
                     <!--<span-->
                     <!--*ngIf="((index === 0 || patientsdatasource.data[index-1].queuedata.status === 2) && userdata.config.occupied === '' ) ; else statusbuttons"-->
                     <!--[ngSwitch]="userdata.config.occupied">-->
-                    <!--<span *ngSwitchDefault [ngSwitch]='patient.checkin[activehospital.id].status'>-->
+                    <!--<span *ngSwitchDefault [ngSwitch]='patient.Checkin[activehospital.id].status'>-->
                     <!--<button (click)='acceptpatient(patient)' *ngSwitchCase="0"-->
                     <!--class="btn btn-primary button-size">Accept </button>-->
                     <!--&lt;!&ndash; <button *ngSwitchCase="0" class="btn btn-warning button-size">Waiting </button> &ndash;&gt;-->
@@ -140,11 +140,11 @@
                     <!--</span>-->
                     <!--<ng-template #statusbuttons>-->
                     <!--<span>-->
-                    <!--<button *ngIf='patient.checkin[activehospital.id].status == 0'-->
+                    <!--<button *ngIf='patient.Checkin[activehospital.id].status == 0'-->
                     <!--class="btn btn-warning button-size">Waiting </button>-->
-                    <!--<button *ngIf='patient.checkin[activehospital.id].status == 1'-->
+                    <!--<button *ngIf='patient.Checkin[activehospital.id].status == 1'-->
                     <!--class="btn btn-success button-size">In Progress</button>-->
-                    <!--<button *ngIf='patient.checkin[activehospital.id].status == 2'-->
+                    <!--<button *ngIf='patient.Checkin[activehospital.id].status == 2'-->
                     <!--class="btn btn-info button-size">Complete</button>-->
                     <!--</span>-->
                     <!--</ng-template>-->

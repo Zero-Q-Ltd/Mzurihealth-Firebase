@@ -10,6 +10,7 @@ import {firestore} from 'firebase';
 import {RawProcedure} from '../../models/RawProcedure';
 import {HospitalAdmin} from '../../models/HospitalAdmin';
 import {AdminService} from './admin.service';
+import 'rxjs/add/operator/mergeMap';
 import Timestamp = firestore.Timestamp;
 
 @Injectable({
@@ -38,15 +39,15 @@ export class ProceduresService {
         });
     }
 
-    getprocedures() {
+    getprocedures(): void {
         // this.db.firestore.runTransaction()
         this.db.firestore.collection('procedureconfigs')
-            .where('hospitalid', '==', this.activehospital.id).onSnapshot(rawdata => {
-            let proceduredata = Promise.all(rawdata.docs.map(async data => {
-                let customdata = data.data() as CustomProcedure;
+            .where('hospitalid', '==', this.activehospital.id).onSnapshot(rawfetcheddata => {
+            const proceduredata = Promise.all(rawfetcheddata.docs.map(async data => {
+                const customdata = data.data() as CustomProcedure;
                 customdata.id = data.id;
-                let rawdata = await this.db.firestore.collection('procedures').doc(customdata.parentprocedureid).get();
-                let rawprocedure = rawdata.data() as RawProcedure;
+                const rawdata = await this.db.firestore.collection('procedures').doc(customdata.parentprocedureid).get();
+                const rawprocedure = rawdata.data() as RawProcedure;
                 rawprocedure.id = customdata.parentprocedureid;
                 return {rawprocedure: rawprocedure, customprocedure: customdata};
             }));
@@ -55,6 +56,13 @@ export class ProceduresService {
                 this.hospitalprocedures.next(mergedData);
             });
         });
+        this.db.collection('procedureconfigs').snapshotChanges().flatMap(customprocedures => {
+            return customprocedures;
+        }).subscribe(customproceduresdata => {
+            const customprocedure = customproceduresdata.payload.doc.data() as CustomProcedure;
+            return this.db.firestore.collection('procedures').doc(customprocedure.parentprocedureid).get();
+        });
+
     }
 
     fetchproceduresincategory(categoryid: string) {

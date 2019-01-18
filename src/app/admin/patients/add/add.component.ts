@@ -26,7 +26,7 @@ export class AddComponent implements OnInit {
     temppatient: Patient = emptypatient;
     insurancename: any;
     invalidinsurance: boolean = true;
-    temphistory: PatientVisit = emptypatienthistory;
+    temphistory: PatientVisit = {... emptypatienthistory};
     activehospital: Hospital = Object.assign({}, emptyhospital);
     allinsurance = [];
     patientsform: FormGroup;
@@ -59,7 +59,7 @@ export class AddComponent implements OnInit {
             insuranceno: '',
             id: insurance.id
         };
-        this.temphistory.paymentmethod.data = data.item;
+        // this.temphistory.paymentmethod.data = data.item;
     }
 
     resetinsurance(data) {
@@ -92,7 +92,7 @@ export class AddComponent implements OnInit {
 
     addpatient(saveandqueue: boolean) {
         if (saveandqueue) {
-            // this.temppatient.checkin[this.activehospital.id] = {
+            // this.temppatient.Checkin[this.activehospital.id] = {
             //     superadmin: null,
             //     status: 0
             // };

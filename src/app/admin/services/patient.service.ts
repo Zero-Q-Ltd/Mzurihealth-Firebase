@@ -83,7 +83,7 @@ export class PatientService {
         }
       });
       this.db.firestore.collection('History')
-        .where('patientref', '==', patientid)
+        .where('patientid', '==', patientid)
         .orderBy('timestamp')
         .limit(10).onSnapshot(patienthistory => {
         // console.log(patientid ,patienthistory)
@@ -138,7 +138,7 @@ export class PatientService {
     if (saveandqueue) {
       {
         newhistory.hospitalid = this.activehospital.id;
-        newhistory.patientref = patientid;
+        newhistory.patientid = patientid;
         newhistory.timestamp = timestamp;
         newhistory.status = 0;
         batch.set(this.db.firestore.collection('hospitalvisits').doc(this.db.createId()), newhistory);

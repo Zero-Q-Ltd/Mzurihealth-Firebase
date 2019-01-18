@@ -5,41 +5,47 @@ export interface Hospital {
     location: firestore.GeoPoint;
     name: string;
     userid: string;
-    phone: string;
-    email: string;
     id: string;
     description: string;
-    contact: {
+    contactperson: {
         name: string,
         phone: string,
         email: string,
-        position: string
+        position: string,
+        address: string
     };
+    contactdetails: {
+        phone: string,
+        email: string,
+        address: string
+    };
+    paymentchannels: Array<{ name: string, ref: number }>;
     patientcount: number;
     invoicecount: number;
-    // Patientid :
-    procedures: object;
-    metadata: Metadata
+    metadata: Metadata;
 
 }
 
 export const emptyhospital: Hospital = {
-    contact: {
+    contactperson: {
         email: null,
         name: null,
         phone: null,
-        position: null
+        position: null,
+        address: null
     },
-    phone: null,
-    email: null,
+    contactdetails: {
+        email: null,
+        phone: null,
+        address: null
+    },
     location: new firestore.GeoPoint(0, 0),
     name: null,
     id: null,
     userid: null,
     description: null,
-    procedures: {},
     patientcount: null,
     invoicecount: null,
-    metadata: emptymetadata
-
+    metadata: emptymetadata,
+    paymentchannels: []
 };

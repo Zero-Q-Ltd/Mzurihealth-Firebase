@@ -109,7 +109,7 @@ export class AdminService {
                     // console.log('User does not exist!!')
                     this.notificationservice.notify({
                         alert_type: 'error',
-                        body: 'You have not registered with any Hospital. Please contact us for instrustions',
+                        body: 'You have not registered with any Hospital. Please contactperson us for instrustions',
                         title: 'ERROR', duration: 10000,
                         icon: '',
                         placement: 'center'

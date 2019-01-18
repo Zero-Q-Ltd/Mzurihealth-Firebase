@@ -24,7 +24,7 @@ import {
     MatTooltipModule,
     MatProgressBarModule
 } from '@angular/material';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatMomentDateModule} from '@angular/material-moment-adapter';
 import {FuseSharedModule} from '../../../@fuse/shared.module';
 import {FuseConfirmDialogModule, FuseProgressBarModule, FuseSidebarModule, FuseThemeOptionsModule} from '../../../@fuse/components';
@@ -61,7 +61,7 @@ import {RouterModule} from '@angular/router';
         MatProgressBarModule,
 
         FormsModule,
-
+        ReactiveFormsModule,
         // Fuse shared Module
         FuseSharedModule,
         MatMomentDateModule,
@@ -101,7 +101,7 @@ import {RouterModule} from '@angular/router';
         MatProgressBarModule,
 
         FormsModule,
-
+        ReactiveFormsModule,
         // Fuse shared Module
         FuseSharedModule,
         MatMomentDateModule,

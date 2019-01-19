@@ -44,7 +44,7 @@ export class ProceduresService {
          * I honestly am not sure why the following code works so well
          * Please.... be very careful before changing
          */
-        this.db.collection('procedureconfigs').snapshotChanges().pipe(
+        this.db.collection('procedureconfigs', ref => ref.where('hospitalid', '==', this.activehospital.id)).snapshotChanges().pipe(
             switchMap(f => {
                 return combineLatest(...f.map(t => {
                     const customprocedure = t.payload.doc.data() as CustomProcedure;

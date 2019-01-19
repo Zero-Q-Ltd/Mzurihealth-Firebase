@@ -2,6 +2,9 @@ import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {MatTableDataSource} from '@angular/material';
 import {HospitalAdmin} from '../../../../models/HospitalAdmin';
 import {fuseAnimations} from '../../../../../@fuse/animations';
+import {HospitalService} from '../../../services/hospital.service';
+import {AdminService} from '../../../services/admin.service';
+import {ProceduresService} from '../../../services/procedures.service';
 
 @Component({
     selector: 'admins-all',
@@ -14,13 +17,18 @@ export class AlladminComponent implements OnInit {
     adminheaders = ['Photo', 'Name', 'Email', 'Phone', 'Address', 'Level', 'Status', 'Action'];
     adminsdatasource = new MatTableDataSource<HospitalAdmin>();
 
-    constructor() {
+    constructor(private hospitalservice: HospitalService,
+                private adminservice: AdminService,
+                private procedureservice: ProceduresService) {
+        this.hospitalservice.hospitaladmins.subscribe(admins => {
+            this.adminsdatasource.data = admins;
+        });
     }
 
-    ngOnInit() {
+    ngOnInit(): void {
     }
 
-    leveltext(level) {
+    leveltext(level): string {
         level = Number(level);
         switch (level) {
             case 0:

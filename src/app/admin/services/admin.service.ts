@@ -13,7 +13,7 @@ export class AdminService {
     observableuserdata = new ReplaySubject(1);
     userdata: HospitalAdmin = emptyadmin;
     activeurl: string = null;
-    firstlogin: boolean = false;
+    firstlogin = false;
     validuser: boolean;
 
     constructor(private afAuth: AngularFireAuth, private db: AngularFirestore, private router: Router, private notificationservice: NotificationService) {
@@ -38,22 +38,22 @@ export class AdminService {
     }
 
     // The the status of the activeadmin
-    setstatus(availability: number) {
-        let config = this.userdata.config;
+    setstatus(availability: number): void {
+        const config = this.userdata.config;
         config.availability = availability;
         this.db.firestore.collection('hospitaladmins').doc(this.userdata.data.uid).update({config: config});
     }
 
-    getuser(user) {
+    getuser(user): void {
         this.db.firestore.collection('hospitaladmins').doc(user.uid)
             .onSnapshot(userdata => {
                 if (userdata.exists) {
                     // console.log(userdata.data());
-                    let temp = userdata.data() as HospitalAdmin;
+                    const temp = userdata.data() as HospitalAdmin;
                     temp.id = userdata.id;
 
                     if (temp['config']['availability'] == null) {
-                        let config = temp['config'];
+                        const config = temp['config'];
                         config['availability'] = 2;
                         this.db.firestore.collection('hospitaladmins').doc(user.uid).update({config: config});
                     }
@@ -75,8 +75,8 @@ export class AdminService {
             });
     }
 
-    checkinvite(user: firebase.User) {
-        let invitequery = this.db.firestore.collection('admininvites')
+    checkinvite(user: firebase.User): void {
+        const invitequery = this.db.firestore.collection('admininvites')
             .where('data.email', '==', user.email)
             .limit(1)
             .get().then(snapshot => {
@@ -90,17 +90,17 @@ export class AdminService {
                             icon: '',
                             placement: 'center'
                         });
-                        //Update the details for the first time the user logs in
+                        // Update the details for the first time the user logs in
                         let dataobject = {};
                         dataobject = {};
                         dataobject['email'] = user.email;
                         dataobject['uid'] = user.uid;
                         dataobject['photoURL'] = user.photoURL;
                         dataobject['displayName'] = user.displayName;
-                        let copy = docdata.data();
+                        const copy = docdata.data();
                         copy.data = dataobject;
                         this.db.firestore.collection(`hospitaladmins`).doc(user.uid).set(copy).then(result => {
-                            if (this.activeurl == '/authentication/signin') {
+                            if (this.activeurl === '/authentication/signin') {
                                 this.router.navigate(['/dashboard']);
                             }
                         });
@@ -121,7 +121,7 @@ export class AdminService {
     }
 
 
-    createinvite(userdata: HospitalAdmin) {
+    createinvite(userdata: HospitalAdmin): Promise<any> {
         return this.afAuth.auth.sendSignInLinkToEmail(userdata.data.email, {
             handleCodeInApp: true,
             url: 'https://mzurihealth.firebaseapp.com/authentication/signin'

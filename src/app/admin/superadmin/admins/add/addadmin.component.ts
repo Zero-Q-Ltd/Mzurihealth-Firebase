@@ -5,6 +5,7 @@ import {AdminService} from '../../../services/admin.service';
 import {ProceduresService} from '../../../services/procedures.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {NotificationService} from '../../../../shared/services/notifications.service';
+import {AdminCategory} from '../../../../models/AdminCategory';
 
 @Component({
     selector: 'admin-add',
@@ -14,12 +15,16 @@ import {NotificationService} from '../../../../shared/services/notifications.ser
 export class AddadminComponent implements OnInit {
     tempuser: HospitalAdmin = emptyadmin;
     adminsform: FormGroup;
+    admincategories: Array<AdminCategory> = [];
 
     constructor(private hospitalservice: HospitalService,
                 private adminservice: AdminService,
                 private _formBuilder: FormBuilder,
                 private procedureservice: ProceduresService,
                 private notificationservice: NotificationService) {
+        this.adminservice.admincategories.subscribe(categories => {
+            this.admincategories = categories;
+        });
     }
 
     ngOnInit(): void {

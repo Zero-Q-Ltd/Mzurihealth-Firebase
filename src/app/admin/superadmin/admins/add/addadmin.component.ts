@@ -3,6 +3,8 @@ import {emptyadmin, HospitalAdmin} from '../../../../models/HospitalAdmin';
 import {HospitalService} from '../../../services/hospital.service';
 import {AdminService} from '../../../services/admin.service';
 import {ProceduresService} from '../../../services/procedures.service';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {NotificationService} from '../../../../shared/services/notifications.service';
 
 @Component({
     selector: 'admin-add',
@@ -11,20 +13,28 @@ import {ProceduresService} from '../../../services/procedures.service';
 })
 export class AddadminComponent implements OnInit {
     tempuser: HospitalAdmin = emptyadmin;
+    adminsform: FormGroup;
 
-    constructor( private hospitalservice: HospitalService,
-                 private adminservice: AdminService,
-                 private procedureservice: ProceduresService) {
+    constructor(private hospitalservice: HospitalService,
+                private adminservice: AdminService,
+                private _formBuilder: FormBuilder,
+                private procedureservice: ProceduresService,
+                private notificationservice: NotificationService) {
     }
 
-    ngOnInit() {
+    ngOnInit(): void {
+        this.adminsform = this._formBuilder.group({
+            name: ['', Validators.required],
+            email: ['', Validators.required, Validators.email],
+            phone: ['', Validators.required],
+            role: ['', Validators.required]
+        });
     }
 
-    sendinvite() {
-        // this.tempuser = this.firestore.emptyuser
+    sendinvite(): void {
         console.log(this.tempuser);
-        // console.log(emptyuser.data.displayName)
-        if (this.nameControl.valid && this.emailControl.valid && this.phoneControl.valid && this.tempuser.config.level > 0) {
+        if (this.adminsform.valid) {
+            this.tempuser;
             console.log(this.tempuser);
             this.tempuser.config.hospitalid = this.hospitalservice.activehospital.value.id;
 

@@ -4,6 +4,7 @@ import {MatTabChangeEvent} from '@angular/material';
 import {FuseSidebarService} from '../../../@fuse/components/sidebar/sidebar.service';
 import {LocalcommunicationService} from './procedures/localcommunication.service';
 import {ProceduresService} from '../services/procedures.service';
+import {AdminService} from '../services/admin.service';
 
 @Component({
     selector: 'app-admin',
@@ -18,7 +19,8 @@ export class SuperadminComponent implements OnInit {
 
     constructor(private _fuseSidebarService: FuseSidebarService,
                 private  communication: LocalcommunicationService,
-                private procedureservice: ProceduresService) {
+                private procedureservice: ProceduresService,
+                private adminservice: AdminService) {
         communication.onprocedureselected.subscribe(selection => {
             if (selection.selectiontype) {
                 this.sidebarstatus = true;
@@ -31,7 +33,7 @@ export class SuperadminComponent implements OnInit {
         });
     }
 
-    ngOnInit() {
+    ngOnInit(): void {
         /**
          * Clear the buffers on load
          */
@@ -43,9 +45,10 @@ export class SuperadminComponent implements OnInit {
         this.activetabindex = tabChangeEvent.index;
     };
 
-    toggleactiveside() {
+    toggleactiveside(): void {
         this.activeside = !this.activeside;
         // this.procedureservice.syncprocedures();
+        // this.adminservice.initusertypes();
     }
 
     /**

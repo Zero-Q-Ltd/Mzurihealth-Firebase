@@ -5,6 +5,7 @@ import {fuseAnimations} from '../../../../../@fuse/animations';
 import {HospitalService} from '../../../services/hospital.service';
 import {AdminService} from '../../../services/admin.service';
 import {ProceduresService} from '../../../services/procedures.service';
+import {LocalcommunicationService} from '../../procedures/localcommunication.service';
 
 @Component({
     selector: 'admins-all',
@@ -14,12 +15,14 @@ import {ProceduresService} from '../../../services/procedures.service';
     animations: fuseAnimations
 })
 export class AlladminComponent implements OnInit {
-    adminheaders = ['Photo', 'Name', 'Email', 'Phone', 'Address', 'Level', 'Status', 'Action'];
+    adminheaders = ['image', 'Name', 'Email', 'Phone', 'Address', 'Level', 'Status', 'Action'];
     adminsdatasource = new MatTableDataSource<HospitalAdmin>();
+    selectedadmin: HospitalAdmin;
 
     constructor(private hospitalservice: HospitalService,
                 private adminservice: AdminService,
-                private procedureservice: ProceduresService) {
+                private procedureservice: ProceduresService,
+                private communicationService: LocalcommunicationService) {
         this.hospitalservice.hospitaladmins.subscribe(admins => {
             this.adminsdatasource.data = admins;
         });
@@ -44,5 +47,15 @@ export class AlladminComponent implements OnInit {
                 return 'Receptionist';
 
         }
+    }
+
+    /**
+     * On select
+     *
+     * @param selected
+     */
+    onSelect(selected: HospitalAdmin): void {
+        this.selectedadmin = selected;
+        this.communicationService.onadminselected.next(selected);
     }
 }

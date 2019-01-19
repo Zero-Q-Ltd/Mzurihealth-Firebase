@@ -5,7 +5,7 @@
            matSort>
 
     <!-- Image Column -->
-    <ng-container matColumnDef="Photo">
+    <ng-container matColumnDef="image">
         <mat-header-cell *matHeaderCellDef></mat-header-cell>
         <mat-cell *matCellDef="let admin">
             <img alt=""
@@ -18,7 +18,7 @@
     <ng-container matColumnDef="Name">
         <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
         <mat-cell *matCellDef="let admin">
-            <p class="text-truncate">{{admin.data.displayName}}}</p>
+            <p class="text-truncate">{{admin.data.displayName}}</p>
         </mat-cell>
     </ng-container>
 
@@ -82,10 +82,9 @@
         </mat-cell>
     </ng-container>
 
-    <mat-header-row *matHeaderRowDef="adminheaders; sticky:true"></mat-header-row>
+    <mat-header-row *matHeaderRowDef="adminheaders; sticky:true" (click)="onSelect(row)"></mat-header-row>
 
     <mat-row *matRowDef="let admin; columns: adminheaders;"
-             [routerLink]="'profile/'+admin.id"
              class="product"
              matRipple>
     </mat-row>

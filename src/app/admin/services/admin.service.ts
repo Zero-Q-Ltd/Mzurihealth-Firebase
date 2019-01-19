@@ -1,10 +1,11 @@
 import {Injectable} from '@angular/core';
-import {ReplaySubject} from 'rxjs';
+import {BehaviorSubject, ReplaySubject} from 'rxjs';
 import {AngularFireAuth} from '@angular/fire/auth';
 import {AngularFirestore} from '@angular/fire/firestore';
 import {Router} from '@angular/router';
 import {emptyadmin, HospitalAdmin} from '../../models/HospitalAdmin';
 import {NotificationService} from '../../shared/services/notifications.service';
+import {AdminCategory} from '../../models/AdminCategory';
 
 @Injectable({
     providedIn: 'root'
@@ -15,19 +16,12 @@ export class AdminService {
     activeurl: string = null;
     firstlogin = false;
     validuser: boolean;
+    admincategories: BehaviorSubject<Array<AdminCategory>> = new BehaviorSubject<Array<AdminCategory>>([]);
 
     constructor(private afAuth: AngularFireAuth, private db: AngularFirestore, private router: Router, private notificationservice: NotificationService) {
-        this.router.events.subscribe((route) => {
-            this.activeurl = route['url'];
-            // console.log(this.activeurl)
-            // console.log(firebase.firestore.FieldValue.serverTimestamp())
-        });
         afAuth.authState.subscribe((state) => {
             if (state) {
                 // console.log('Logged In')
-                // Shows that user is logged in but not in the system hence no data(yet) within the object
-                // this.observableuserdata.next(true)
-
                 this.getuser(afAuth.auth.currentUser);
             } else {
                 console.log('Logged out');
@@ -64,6 +58,7 @@ export class AdminService {
                     // this.showNotification('success', `Welcome ${user.displayName}`, 'bottom', 5000)
 
                     this.observableuserdata.next(this.userdata);
+                    this.getadmincategories();
 
                 } else {
                     this.checkinvite(user);
@@ -73,6 +68,31 @@ export class AdminService {
             }, err => {
                 console.log(`Encountered error: ${err}`);
             });
+    }
+
+    getadmincategories(): void {
+        this.db.firestore.collection('admincategories').onSnapshot(allcategorydata => {
+            this.admincategories.next(allcategorydata.docs.map(categorydata => {
+                const category = categorydata.data() as AdminCategory;
+                category.id = categorydata.id;
+                return category;
+            }));
+        });
+    }
+
+    initusertypes(): void {
+        // admincategorydata.admincategories.forEach(async (category: AdminCategory) => {
+        //     const batch = this.db.firestore.batch();
+        //     category.name = category.name.toLowerCase();
+        //     if (category.subcategories) {
+        //         Object.keys(category.subcategories).forEach(key => {
+        //             category.subcategories[key].name = category.subcategories[key].name.toLowerCase();
+        //             category.subcategories[key].description = category.subcategories[key].description.toLowerCase();
+        //         });
+        //     }
+        //     batch.set(this.db.firestore.collection('admincategories').doc(this.db.createId()), category);
+        //     return await batch.commit();
+        // });
     }
 
     checkinvite(user: firebase.User): void {

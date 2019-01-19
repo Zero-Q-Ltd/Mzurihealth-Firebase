@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
-import {AngularFirestore} from '@angular/fire/firestore';
+import {AngularFirestore, Query} from '@angular/fire/firestore';
 import {HospitalService} from './hospital.service';
-import {BehaviorSubject} from 'rxjs';
+import {BehaviorSubject, combineLatest} from 'rxjs';
 import {Hospital} from '../../models/Hospital';
 import {CustomProcedure} from '../../models/CustomProcedure';
 import {ProcedureCategory} from '../../models/ProcedureCategory';
@@ -10,7 +10,7 @@ import {firestore} from 'firebase';
 import {RawProcedure} from '../../models/RawProcedure';
 import {HospitalAdmin} from '../../models/HospitalAdmin';
 import {AdminService} from './admin.service';
-import 'rxjs/add/operator/mergeMap';
+import {map, switchMap} from 'rxjs/operators';
 import Timestamp = firestore.Timestamp;
 
 @Injectable({
@@ -40,39 +40,37 @@ export class ProceduresService {
     }
 
     getprocedures(): void {
-        // this.db.firestore.runTransaction()
-        this.db.firestore.collection('procedureconfigs')
-            .where('hospitalid', '==', this.activehospital.id).onSnapshot(rawfetcheddata => {
-            const proceduredata = Promise.all(rawfetcheddata.docs.map(async data => {
-                const customdata = data.data() as CustomProcedure;
-                customdata.id = data.id;
-                const rawdata = await this.db.firestore.collection('procedures').doc(customdata.parentprocedureid).get();
-                const rawprocedure = rawdata.data() as RawProcedure;
-                rawprocedure.id = customdata.parentprocedureid;
-                return {rawprocedure: rawprocedure, customprocedure: customdata};
-            }));
-            proceduredata.then(mergedData => {
-                // console.log(mergedData);
-                this.hospitalprocedures.next(mergedData);
-            });
+        /**
+         * I honestly am not sure why the following code works so well
+         * Please.... be very careful before changing
+         */
+        this.db.collection('procedureconfigs', ref => ref.where('hospitalid', '==', this.activehospital.id)).snapshotChanges().pipe(
+            switchMap(f => {
+                return combineLatest(...f.map(t => {
+                    const customprocedure = t.payload.doc.data() as CustomProcedure;
+                    customprocedure.id = t.payload.doc.id;
+                    return this.db.collection('procedures').doc(customprocedure.parentprocedureid).snapshotChanges().pipe(
+                        map(originalproceduredata => {
+                            const rawprocedure = originalproceduredata.payload.data() as RawProcedure;
+                            rawprocedure.id = originalproceduredata.payload.id;
+                            return ({rawprocedure: rawprocedure, customprocedure: customprocedure});
+                        })
+                    );
+                }));
+            })
+        ).subscribe(mergedData => {
+            this.hospitalprocedures.next(mergedData);
         });
-        this.db.collection('procedureconfigs').snapshotChanges().flatMap(customprocedures => {
-            return customprocedures;
-        }).subscribe(customproceduresdata => {
-            const customprocedure = customproceduresdata.payload.doc.data() as CustomProcedure;
-            return this.db.firestore.collection('procedures').doc(customprocedure.parentprocedureid).get();
-        });
-
     }
 
-    fetchproceduresincategory(categoryid: string) {
+    fetchproceduresincategory(categoryid: string): Query {
         return this.db.firestore.collection('procedures').where('category.id', '==', categoryid);
     }
 
-    getprocedurecategories() {
+    getprocedurecategories(): void {
         this.db.firestore.collection('procedurecategories').orderBy('name', 'asc').onSnapshot(rawdocs => {
             this.procedurecategories.next(rawdocs.docs.map(rawdoc => {
-                let procedurecategory: ProcedureCategory = rawdoc.data() as ProcedureCategory;
+                const procedurecategory: ProcedureCategory = rawdoc.data() as ProcedureCategory;
                 procedurecategory.id = rawdoc.id;
                 return procedurecategory;
             }));
@@ -80,17 +78,17 @@ export class ProceduresService {
         });
     }
 
-    syncprocedures() {
-        interface rawprocedure {
-            'CODE': string,
-            'Name': string,
-            'Minimum': string,
-            'Maximum': string,
-            'Type': string,
-            'Category': string,
-            'Code': string,
-            'SubCategoty': string,
-            'NUMERICID': string
+    syncprocedures(): any {
+        interface RawprocedureFromjson {
+            'CODE': string;
+            'Name': string;
+            'Minimum': string;
+            'Maximum': string;
+            'Type': string;
+            'Category': string;
+            'Code': string;
+            'SubCategoty': string;
+            'NUMERICID': string;
         }
 
         /**
@@ -158,7 +156,7 @@ export class ProceduresService {
         // });
     }
 
-    addcustomprocedure(customprocedure: CustomProcedure) {
+    addcustomprocedure(customprocedure: CustomProcedure): Promise<any> {
         customprocedure.hospitalid = this.activehospital.id;
         customprocedure.creatorid = this.userdata.id;
         customprocedure.metadata = {
@@ -176,7 +174,7 @@ export class ProceduresService {
         return this.db.firestore.collection('procedureconfigs').add(customprocedure);
     }
 
-    editcustomprocedure(customprocedure: CustomProcedure) {
+    editcustomprocedure(customprocedure: CustomProcedure): Promise<any> {
         customprocedure.creatorid = this.userdata.id;
         customprocedure.metadata = {
             lastedit: Timestamp.now(),
@@ -193,7 +191,7 @@ export class ProceduresService {
         return this.db.firestore.collection('procedureconfigs').doc(customprocedure.id).update(customprocedure);
     }
 
-    deactivateprocedure(procedureid: string) {
+    deactivateprocedure(procedureid: string): Promise<any> {
 
         return this.db.firestore.collection('hospitals').doc(this.activehospital.id).collection('procedures').doc(procedureid).delete();
     }

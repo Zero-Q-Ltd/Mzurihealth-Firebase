@@ -21,6 +21,10 @@ export class SuperadminComponent implements OnInit {
                 private  communication: LocalcommunicationService,
                 private procedureservice: ProceduresService,
                 private adminservice: AdminService) {
+        /**
+         * toggle the sidebar when aither an admin or a procedure is selected
+         * Each one has a different child component attached
+         */
         communication.onprocedureselected.subscribe(selection => {
             if (selection.selectiontype) {
                 this.sidebarstatus = true;
@@ -29,7 +33,13 @@ export class SuperadminComponent implements OnInit {
                 this.sidebarstatus = false;
                 // this._fuseSidebarService.getSidebar('procedureconfig-sidebar').toggleOpen()
             }
-
+        });
+        communication.onadminselected.subscribe(admin => {
+            if (admin.id) {
+                this.sidebarstatus = true;
+            } else {
+                this.sidebarstatus = true;
+            }
         });
     }
 

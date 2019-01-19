@@ -82,9 +82,9 @@
         </mat-cell>
     </ng-container>
 
-    <mat-header-row *matHeaderRowDef="adminheaders; sticky:true" (click)="onSelect(row)"></mat-header-row>
+    <mat-header-row *matHeaderRowDef="adminheaders; sticky:true"></mat-header-row>
 
-    <mat-row *matRowDef="let admin; columns: adminheaders;"
+    <mat-row (click)="onSelect(admin)" *matRowDef="let admin; columns: adminheaders;"
              class="product"
              matRipple>
     </mat-row>

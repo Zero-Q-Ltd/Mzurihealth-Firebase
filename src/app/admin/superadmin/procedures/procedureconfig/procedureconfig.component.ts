@@ -46,12 +46,12 @@ export class ProcedureconfigComponent implements OnInit {
         });
     }
 
-    ngOnInit() {
+    ngOnInit(): void {
     }
 
-    filterinsurance(filterValue: string) {
+    filterinsurance(filterValue: string): void {
         if (filterValue) {
-            let temp = [];
+            const temp = [];
             filterValue = filterValue.trim();
             filterValue = filterValue.toLowerCase();
             this.insuranceservice.allinsurance.value.filter(data => {
@@ -65,15 +65,15 @@ export class ProcedureconfigComponent implements OnInit {
         }
     }
 
-    getdate() {
+    getdate(): string {
         return moment().toDate().toDateString();
     }
 
-    clearselection() {
+    clearselection(): void {
         this.communicatioservice.resetall();
     }
 
-    saveprocedureconfig() {
+    saveprocedureconfig(): void {
         if (!this.regularpricecontrol.errors) {
             this.selectecustomprocedure.customprocedure.regularprice = this.regularpricecontrol.value;
             if (this.communicatioservice.onprocedureselected.value.selectiontype === 'newprocedure') {

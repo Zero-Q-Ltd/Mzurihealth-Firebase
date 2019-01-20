@@ -102,6 +102,10 @@ export class AdminService {
         return this.db.firestore.collection('hospitaladmins').doc(adminid).update({status: true});
     }
 
+    deleteinvite(inviteid: string): void {
+        this.db.firestore.collection('admininvites').doc(inviteid).delete();
+    }
+
     initusertypes(): void {
         // admincategorydata.admincategories.forEach(async (category: AdminCategory) => {
         //     const batch = this.db.firestore.batch();
@@ -119,7 +123,7 @@ export class AdminService {
 
     checkinvite(user: firebase.User): void {
         const invitequery = this.db.firestore.collection('admininvites')
-            .where('data.email', '==', user.email)
+            .where('email', '==', user.email)
             .limit(1)
             .get().then(snapshot => {
                 if (!snapshot.empty) {

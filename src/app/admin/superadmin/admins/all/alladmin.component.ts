@@ -61,8 +61,8 @@ export class AlladminComponent implements OnInit {
         }
     }
 
-    cancelinvite(user: HospitalAdmin): void {
-
+    cancelinvite(user: AdminInvite): void {
+        this.adminservice.deleteinvite(user.id);
     }
 
     disableadmin(user: HospitalAdmin): void {

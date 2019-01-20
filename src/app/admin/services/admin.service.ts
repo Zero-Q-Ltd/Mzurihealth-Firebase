@@ -94,6 +94,10 @@ export class AdminService {
         });
     }
 
+    disableadmin(adminid: string) {
+        return this.db.firestore.collection('hospitaladmins').doc(adminid).update({status: false});
+    }
+
     initusertypes(): void {
         // admincategorydata.admincategories.forEach(async (category: AdminCategory) => {
         //     const batch = this.db.firestore.batch();

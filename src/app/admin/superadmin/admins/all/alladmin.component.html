@@ -78,11 +78,17 @@
         <mat-header-cell *matHeaderCellDef>Action
         </mat-header-cell>
         <mat-cell *matCellDef="let admin">
-            <button (click)='disableuser() ; false' class="sendbutton" color="warn"
+            <button (click)='disableuser() ; false' class="sendbutton" color="warn" *ngIf="admin.status"
                     [disabled]="userdata.config.level>admin.config.level || userdata.id === admin.id " mat-raised-button
                     matRipple>
                 Disable User
-                <mat-icon aria-label="Example icon-button with a heart icon">cancel</mat-icon>
+                <mat-icon >cancel</mat-icon>
+            </button>
+            <button (click)='enableuser() ; false' class="sendbutton" color="accent" *ngIf="admin.status"
+                    [disabled]="userdata.config.level>admin.config.level || userdata.id === admin.id " mat-raised-button
+                    matRipple>
+                Enable User
+                <mat-icon >transit_enterexit</mat-icon>
             </button>
         </mat-cell>
     </ng-container>

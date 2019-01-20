@@ -61,13 +61,16 @@ export class AlladminComponent implements OnInit {
         }
     }
 
-    cancelinvite(event): boolean {
-        event.preventDefault();
-        return false;
+    cancelinvite(user: HospitalAdmin): void {
+
     }
 
-    disableuser(event): boolean {
-        return false;
+    disableuser(user: HospitalAdmin): void {
+
+    }
+
+    enableuser(user: HospitalAdmin): void {
+
     }
 
     ondeselect(): void {

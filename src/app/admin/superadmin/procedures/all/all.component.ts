@@ -1,11 +1,13 @@
 import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
-import {MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
+import {MatDialog, MatDialogRef, MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
 import {RawProcedure, rawprocedurecategory} from '../../../../models/RawProcedure';
 import {ProceduresService} from '../../../services/procedures.service';
 import {CustomProcedure, emptycustomprocedure} from '../../../../models/CustomProcedure';
 import {ProcedureCategory} from '../../../../models/ProcedureCategory';
 import {LocalcommunicationService} from '../localcommunication.service';
 import {fuseAnimations} from '../../../../../@fuse/animations';
+import {FuseConfirmDialogComponent} from '../../../../../@fuse/components/confirm-dialog/confirm-dialog.component';
+import {NotificationService} from '../../../../shared/services/notifications.service';
 
 @Component({
     selector: 'procedures-all',
@@ -18,11 +20,15 @@ export class AllComponent implements OnInit, AfterViewInit {
     procedurecategories: Array<ProcedureCategory>;
     procedureheaders = ['name', 'category', 'regprice', 'minprice', 'maxprice', 'action'];
     selectedprocedure: CustomProcedure = {...emptycustomprocedure};
+    confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
+
     @ViewChild(MatPaginator) paginator: MatPaginator;
     @ViewChild(MatSort) sort: MatSort;
 
     constructor(private procedureservice: ProceduresService,
-                private communicatioservice: LocalcommunicationService) {
+                private communicationservice: LocalcommunicationService,
+                private _matDialog: MatDialog,
+                private notificationservice: NotificationService) {
         procedureservice.hospitalprocedures.subscribe(mergedprocedures => {
             this.hospitalprocedures.data = mergedprocedures;
         });
@@ -53,7 +59,28 @@ export class AllComponent implements OnInit, AfterViewInit {
         }
     }
 
-    disableprocedure(): void {
+    dileteprocedure(procedure: CustomProcedure): void {
+        console.log(procedure);
+        this.confirmDialogRef = this._matDialog.open(FuseConfirmDialogComponent, {
+            disableClose: false
+        });
+
+        this.confirmDialogRef.componentInstance.confirmMessage = 'Are you sure you want to delete this procedure?';
+
+        this.confirmDialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                this.procedureservice.deleteprocedure(procedure.id).then(() => {
+                    this.communicationservice.resetall();
+
+                    this.notificationservice.notify({
+                        placement: 'centre',
+                        title: 'Success',
+                        alert_type: 'success',
+                        body: 'Deleted'
+                    });
+                });
+            }
+        });
 
     }
 
@@ -64,7 +91,7 @@ export class AllComponent implements OnInit, AfterViewInit {
      */
     onSelect(selected: { rawprocedure: RawProcedure, customprocedure: CustomProcedure }): void {
         this.selectedprocedure = selected.customprocedure;
-        this.communicatioservice.onprocedureselected.next({selectiontype: 'customprocedure', selection: selected});
+        this.communicationservice.onprocedureselected.next({selectiontype: 'customprocedure', selection: selected});
     }
 
 }

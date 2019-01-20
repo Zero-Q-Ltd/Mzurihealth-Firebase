@@ -67,6 +67,10 @@ export class ProceduresService {
         return this.db.firestore.collection('procedures').where('category.id', '==', categoryid);
     }
 
+    deleteprocedure(procedureid: string): Promise<void> {
+        return this.db.firestore.collection('procedureconfigs').doc(procedureid).delete();
+    }
+
     getprocedurecategories(): void {
         this.db.firestore.collection('procedurecategories').orderBy('name', 'asc').onSnapshot(rawdocs => {
             this.procedurecategories.next(rawdocs.docs.map(rawdoc => {

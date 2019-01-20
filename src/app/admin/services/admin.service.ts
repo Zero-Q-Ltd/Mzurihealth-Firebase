@@ -94,16 +94,16 @@ export class AdminService {
         });
     }
 
-    disableadmin(adminid: string): Promise<any> {
+    disableadmin(adminid: string): Promise<void> {
         return this.db.firestore.collection('hospitaladmins').doc(adminid).update({status: false});
     }
 
-    enableadmin(adminid: string): Promise<any> {
+    enableadmin(adminid: string): Promise<void> {
         return this.db.firestore.collection('hospitaladmins').doc(adminid).update({status: true});
     }
 
-    deleteinvite(inviteid: string): void {
-        this.db.firestore.collection('admininvites').doc(inviteid).delete();
+    deleteinvite(inviteid: string): Promise<void> {
+        return this.db.firestore.collection('admininvites').doc(inviteid).delete();
     }
 
     initusertypes(): void {

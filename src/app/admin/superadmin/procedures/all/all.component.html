@@ -31,8 +31,8 @@
     <ng-container matColumnDef="action">
         <mat-header-cell *matHeaderCellDef> Action</mat-header-cell>
         <mat-cell *matCellDef="let element">
-            <button (keydown)='disableprocedure($event)' class="sendbutton" color="warn" mat-raised-button matRipple>
-                Disable
+            <button (click)='dileteprocedure(element.customprocedure)' class="sendbutton" color="warn" mat-raised-button matRipple>
+                Delete!
                 <mat-icon>cancel</mat-icon>
             </button>
         </mat-cell>

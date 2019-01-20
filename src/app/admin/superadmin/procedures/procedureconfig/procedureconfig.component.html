@@ -1,20 +1,23 @@
 <div>
     <!-- SIDEBAR HEADER -->
-    <div class="header accent p-24" fxLayout="column" fxLayoutAlign="space-between">
+    <div class="header accent p-12" fxLayout="column" fxLayoutAlign="space-between">
 
         <div class="toolbar" fxLayout="row" fxLayoutAlign="end center">
-
-            <button (click)="clearselection()" mat-icon-button matTooltip="Clear">
-                <mat-icon>clear</mat-icon>
-            </button>
-            <button (click)="saveprocedureconfig()" aria-label="More" mat-icon-button matTooltip="Save">
-                <mat-icon>save</mat-icon>
-            </button>
+            <div fxFlex="50" fxLayoutAlign="end">
+                <button (click)="clearselection()" mat-icon-button mat-raised-button matTooltip="Clear">
+                    <mat-icon>clear</mat-icon>
+                </button>
+            </div>
+            <div fxFlex="50"  fxLayoutAlign="end">
+                <button (click)="saveprocedureconfig()" aria-label="More"  mat-icon-button
+                        mat-raised-button matTooltip="Save">
+                    <mat-icon>save</mat-icon>
+                </button>
+            </div>
         </div>
-
         <div>
-            <div class="title mb-8"><strong>{{selectecustomprocedure.rawprocedure.name | titlecase}}</strong></div>
-            <div class="subtitle secondary-text">
+            <div class="h3 "><strong>{{selectecustomprocedure.rawprocedure.name | titlecase}}</strong></div>
+            <div class="h4 secondary-text">
                 <span>Creation Date</span>
                 <span>: {{selectecustomprocedure.customprocedure.metadata.date?.toDate().toDateString() || getdate()}}</span>
             </div>
@@ -23,8 +26,7 @@
     <!-- / SIDEBAR HEADER -->
 
     <!-- SIDEBAR CONTENT -->
-    <div class="content p-24" fusePerfectScrollbar>
-
+    <div class="content limitheight p-24" fusePerfectScrollbar>
         <div [@animate]="{value:'*',params:{delay:'200ms'}}" class="file-details">
             <div [@animate]="{value:'*',params:{delay:'200ms'}}"
                  class="input-group col-sm-10">
@@ -40,7 +42,6 @@
                                   labelPosition="before">Custom Prices for Insurance
                 </mat-slide-toggle>
             </div>
-
             <div *ngIf="selectecustomprocedure.customprocedure.custominsuranceprice "
                  [@animate]="{value:'*',params:{delay:'200ms'}}"
                  class="input-group col-sm-10">
@@ -60,9 +61,7 @@
                 </mat-form-field>
                 </span>
             </div>
-
         </div>
-
     </div>
+    <!-- / SIDEBAR CONTENT -->
 </div>
-<!-- / SIDEBAR CONTENT -->

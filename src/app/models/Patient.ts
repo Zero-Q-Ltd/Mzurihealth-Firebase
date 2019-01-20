@@ -14,13 +14,13 @@ export interface Patient {
         email: string,
         idno: string,
         dob: firestore.Timestamp,
-    },
-    fileinfo?: HospFile,
+    };
+    fileinfo?: HospFile;
     id: string;
     /**
      * Optional parent id number for minors
      */
-    parentid ?: string
+    parentid?: string;
     nextofkin: {
         name: string,
         relationship: string,
@@ -38,10 +38,14 @@ export interface Patient {
         conditions: Array<Coditions>
         allergies: Array<string>;
     };
+    /**
+     * used in queries so that you can optionally disable some patients
+     */
+    status: boolean;
     exrainfo: string;
     customfuelds?: Array<Customfields>;
-    primaryhosp: string,
-    metadata: Metadata
+    primaryhosp: string;
+    metadata: Metadata;
 }
 
 interface Insurance {
@@ -75,6 +79,7 @@ export const emptypatient: Patient = {
         conditions: [],
         allergies: [],
     },
+    status: null,
     exrainfo: null,
     primaryhosp: null,
     customfuelds: [],

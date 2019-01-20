@@ -52,7 +52,7 @@ export class AdminconfigComponent implements OnInit {
         }
     }
 
-    saveprocedureconfig(): void {
+    saveadminconfig(): void {
         if (!null) {
 
         } else {

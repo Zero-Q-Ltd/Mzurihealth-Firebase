@@ -45,13 +45,13 @@ export class AlladminComponent implements OnInit {
     ngOnInit(): void {
     }
 
-    categorytext(level): string {
+    categorytext(categoryid: string): string {
         if (this.admincategories.length > 0) {
             if (this.admincategories.find(cat => {
-                return cat.level === level;
+                return cat.id === categoryid;
             })) {
                 return this.admincategories.find(cat => {
-                    return cat.level === level;
+                    return cat.id === categoryid;
                 }).name;
             } else {
                 return 'Invalid';
@@ -61,13 +61,16 @@ export class AlladminComponent implements OnInit {
         }
     }
 
-    cancelinvite(event): boolean {
-        event.preventDefault();
-        return false;
+    cancelinvite(user: HospitalAdmin): void {
+
     }
 
-    disableuser(event): boolean {
-        return false;
+    disableadmin(user: HospitalAdmin): void {
+        this.adminservice.disableadmin(user.id);
+    }
+
+    enableadmin(user: HospitalAdmin): void {
+        this.adminservice.enableadmin(user.id);
     }
 
     ondeselect(): void {

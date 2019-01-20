@@ -1,4 +1,4 @@
-<div class="page-layout carded fullwidth tabbed inner-scroll" id="patients">
+<div class="page-layout carded fullwidth tabbed " id="patients">
 
     <!-- TOP BACKGROUND -->
     <div class="top-bg accent"></div>
@@ -39,8 +39,8 @@
             <!-- CONTENT -->
             <div class="content">
 
-                <form [formGroup]="patientsform" class=" p-24 m-24" fxFlex="1 0 auto"
-                      fxLayout="column" fxLayoutAlign="start" name="form">
+                <form [formGroup]="patientsForm" class=" p-24 m-24" fxFlex="1 0 auto"
+                      fxLayout="column" fxLayoutAlign="start" name="form" (ngSubmit)="submitPatientsForm()">
 
                     <!--<div class="h2 mb-24">New Patient</div>-->
 
@@ -69,6 +69,7 @@
                         <mat-form-field appearance="outline" fxFlex="100">
                             <mat-label>Occupation</mat-label>
                             <input formControlName="occupation" matInput required>
+                            <mat-error>Occupation is required</mat-error>
                             <mat-icon class="secondary-text" matSuffix>domain</mat-icon>
                         </mat-form-field>
 
@@ -79,18 +80,18 @@
 
                         <mat-form-field appearance="outline" class="pr-4" fxFlex="33">
                             <mat-label>ID number</mat-label>
-                            <input formControlName="idNumber" matInput required>
+                            <input type= "number" formControlName="idNumber" matInput required>
                             <mat-icon class="secondary-text" matSuffix>account_circle</mat-icon>
                             <mat-error>ID number is required!</mat-error>
                         </mat-form-field>
 
                         <mat-form-field appearance="outline" class="pl-4" fxFlex="33">
                             <mat-label>Gender</mat-label>
-                            <mat-select formControlName="country" required>
-                                <mat-option [value]="'Male'">
+                            <mat-select formControlName="gender" required>
+                                <mat-option [value]="'male'">
                                     Male
                                 </mat-option>
-                                <mat-option [value]="'Female'">
+                                <mat-option [value]="'female'">
                                     Female
                                 </mat-option>
                             </mat-select>
@@ -101,9 +102,12 @@
 
                         <mat-form-field appearance="outline" class="pl-4" fxFlex="33">
                             <mat-label>Enter date of birth</mat-label>
-                            <input matInput [matDatepicker]="myDatepicker">
+                            <input matInput [matDatepicker]="myDatepicker" formControlName="birthDate">
                             <mat-datepicker-toggle matSuffix [for]="myDatepicker"></mat-datepicker-toggle>
                             <mat-datepicker #myDatepicker></mat-datepicker>
+
+                            <mat-error>Date of birth is required</mat-error>
+                            <mat-error>Date of birth should be valid</mat-error>
                         </mat-form-field>
 
                     </div>
@@ -114,7 +118,7 @@
 
                         <mat-form-field appearance="outline" fxFlex="100">
                             <mat-label>Email Address</mat-label>
-                            <input matInput placeholder="Enter your email" [formControl]="email" required>
+                            <input matInput placeholder="Enter your email" formControlName="email" required>
                             <mat-error>Address is required!</mat-error>
                         </mat-form-field>
 
@@ -133,9 +137,9 @@
 
                         <mat-form-field appearance="outline" class="px-8" fxFlex="34">
                             <mat-label>Mobile Number</mat-label>
-                            <input formControlName="phone" matInput required>
+                            <input type="number" formControlName="phone" matInput required>
                             <mat-icon class="secondary-text" matSuffix>local_phone</mat-icon>
-                            <mat-error>State is required!</mat-error>
+                            <mat-error>Phone number is required!</mat-error>
                         </mat-form-field>
 
                         <mat-form-field appearance="outline" fxFlex="33">
@@ -154,15 +158,25 @@
                     <div fxFlex="1 0 auto" fxLayout="row" fxLayoutAlign="start center">
 
                         <mat-form-field appearance="outline" class="pr-4" fxFlex="50">
-                            <mat-label>Issurance Company</mat-label>
-                            <input formControlName="insuranceComp" matInput>
+                            <mat-label>Insurance Company</mat-label>
+
+                            <input type="text" matInput formControlName="insuranceComp" [matAutocomplete]="auto">
+                            <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+                                <mat-option *ngFor="let option of filteredOptions | async" [value]="option?.name">
+                                    {{option?.name}}
+                                </mat-option>
+                            </mat-autocomplete>
                             <mat-icon class="secondary-text" matSuffix>local_hospital</mat-icon>
+                            <mat-error>Insurance should be among the list.</mat-error>
                         </mat-form-field>
 
                         <mat-form-field appearance="outline" class="pl-4" fxFlex="50">
                             <mat-label>Insurance Number</mat-label>
-                            <input formControlName="insuranceNO" matInput>
+                            <input formControlName="insuranceNO" matInput required>
                             <mat-icon class="secondary-text" matSuffix>confirmation_number</mat-icon>
+
+                            <mat-error>Issurance number is required</mat-error>
+
                         </mat-form-field>
 
                     </div>
@@ -172,7 +186,7 @@
 
                         <mat-form-field appearance="outline" fxFlex="100">
                             <mat-label>Relationship Status</mat-label>
-                            <mat-select formControlName="rship" required>
+                            <mat-select formControlName="rShip" required>
                                 <mat-option [value]="'single'">
                                     Single
                                 </mat-option>
@@ -197,7 +211,7 @@
 
                         <mat-form-field appearance="outline" class="pl-4" fxFlex="50">
                             <mat-label>Kin Phone</mat-label>
-                            <input formControlName="kinPhone" matInput>
+                            <input formControlName="kinPhone" matInput required type="number">
                             <mat-icon class="secondary-text" matSuffix>local_phone</mat-icon>
                         </mat-form-field>
                     </div>
@@ -211,146 +225,3 @@
         </div>
     </div>
 </div>
-
-<!--<mat-dialog-content>-->
-<!--<div class='body'>-->
-<!--<div class='row clearfix'>-->
-<!--<div class='col-sm-3'>-->
-<!--<div class='form-group'>-->
-<!--<legend matDialogTitle>-->
-<!--<strong>New Patient &nbsp;&nbsp;</strong>-->
-<!--<small>{{gettime()}}</small>&nbsp;&nbsp;-->
-<!--<input [(ngModel)]='patientfileno.no' class='form-control' placeholder='Custom File Number' type='text'>-->
-<!--</legend>-->
-<!--<input type='text' [(ngModel)]='temppatient.personalinfo.name' class='form-control' placeholder='Full Name'>-->
-<!--</div>-->
-<!--</div>-->
-<!--<div class='col-sm-3'>-->
-<!--<select [(ngModel)]='temppatient.personalinfo.gender' class='form-control show-tick'>-->
-<!--<option value=0>- Gender -</option>-->
-<!--<option value=1>Male</option>-->
-<!--<option value=2>Female</option>-->
-<!--</select>-->
-<!--</div>-->
-<!--<div class='col-sm-3'>-->
-<!--<div class='form-group'>-->
-<!--<input type='text' class='form-control' [(ngModel)]='temppatient.personalinfo.idno' placeholder='ID Number'>-->
-<!--</div>-->
-<!--</div>-->
-<!--<div class='col-sm-3'>-->
-<!--<mat-form-field class="calendarinput">-->
-<!--<input class='form-control calendarinputstyle' matInput [(ngModel)]='temppatient.personalinfo.dob'-->
-<!--[matDatepicker]="picker" (click)="picker.open()"-->
-<!--placeholder="Date of Birth">-->
-<!--<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>-->
-<!--<mat-datepicker disabled='false' touchUi="true" #picker></mat-datepicker>-->
-<!--</mat-form-field>-->
-<!--</div>-->
-<!--</div>-->
-<!--<div class='row clearfix'>-->
-<!--<div class='col-sm-3'>-->
-<!--<div class='form-group'>-->
-<!--<input type='text' class='form-control' [(ngModel)]='temppatient.personalinfo.occupation'-->
-<!--placeholder='Occupation'>-->
-<!--</div>-->
-<!--</div>-->
-<!--<div class='col-sm-3'>-->
-<!--<div class='form-group'>-->
-<!--<input type='text' class='form-control' [(ngModel)]='temppatient.personalinfo.address'-->
-<!--placeholder='Postal Adress '>-->
-<!--</div>-->
-<!--</div>-->
-<!--<div class='col-sm-3'>-->
-<!--<div class='form-group'>-->
-<!--<input type='text' class='form-control' [(ngModel)]='temppatient.personalinfo.workplace'-->
-<!--placeholder='Place of Work'>-->
-<!--</div>-->
-<!--</div>-->
-<!--<div class='col-sm-3'>-->
-<!--<div class='form-group'>-->
-<!--<input type='text' class='form-control' [(ngModel)]='temppatient.personalinfo.phone' placeholder='Phone No.'>-->
-<!--</div>-->
-<!--</div>-->
-
-<!--</div>-->
-<!--<div class='row clearfix'>-->
-
-<!--<div class='col-sm-3'>-->
-<!--<div class='form-group'>-->
-<!--<input type='email' class='form-control' [(ngModel)]='temppatient.personalinfo.email' placeholder='Email.'>-->
-<!--</div>-->
-<!--</div>-->
-
-<!--<div class='col-sm-3'>-->
-<!--<div [ngClass]="{'has-danger' : invalidinsurance}" class='form-group'>-->
-<!--&lt;!&ndash;<input placeholder='Insurance Company' [typeahead]="allinsurance" [typeaheadScrollable]="true"&ndash;&gt;-->
-<!--&lt;!&ndash;[typeaheadOptionsInScrollableView]="5"&ndash;&gt;-->
-<!--&lt;!&ndash;[(ngModel)]='insurancename ' (typeaheadNoResults)="resetinsurance($event)" typeaheadOptionField="name"&ndash;&gt;-->
-<!--&lt;!&ndash;(typeaheadOnSelect)="selectinsurance($event)" class="form-control form-control-danger">&ndash;&gt;-->
-<!--</div>-->
-<!--</div>-->
-<!--<div class='col-sm-3'>-->
-<!--<div class='form-group'>-->
-<!--&lt;!&ndash;Only allow entry of isnurance number if at least one insuranc eis chosen&ndash;&gt;-->
-<!--<input type='text' class='form-control' *ngFor="let selectedinsurance of temppatient.insurance | keyvalue"-->
-<!--[(ngModel)]='temppatient.insurance[selectedinsurance.key].insuranceno' placeholder='Insurance No.'>-->
-<!--</div>-->
-<!--</div>-->
-<!--<div class='col-sm-3'>-->
-<!--<select [(ngModel)]='temphistory.paymentmethod.type' class='form-control show-tick'>-->
-<!--<option value=-1>- Payment Mode -</option>-->
-<!--<option value=0>Cash</option>-->
-<!--<option value=1>Mobile Money</option>-->
-<!--<option value=2>Card</option>-->
-<!--<option value=3>Insurance</option>-->
-<!--<option value=3>Cheque</option>-->
-<!--</select>-->
-<!--</div>-->
-<!--</div>-->
-<!--<div class='row clearfix'>-->
-<!--<div class='col-sm-3'>-->
-<!--<div class='form-group'>-->
-<!--<input type='text' [(ngModel)]='temppatient.nextofkin.name' class='form-control' placeholder='Next of Kin'>-->
-<!--</div>-->
-<!--</div>-->
-<!--<div class='col-sm-3'>-->
-<!--<div class='form-group'>-->
-<!--<input type='text' [(ngModel)]='temppatient.nextofkin.relationship' class='form-control'-->
-<!--placeholder='Relationship'>-->
-<!--</div>-->
-<!--</div>-->
-<!--<div class='col-sm-3'>-->
-<!--<div class='form-group'>-->
-<!--<input type='number' [(ngModel)]='temppatient.nextofkin.phone' class='form-control' placeholder='Tel'>-->
-<!--</div>-->
-<!--</div>-->
-<!--<div class='col-sm-3'>-->
-<!--<div class='form-group'>-->
-<!--<input type='text' [(ngModel)]='temppatient.nextofkin.workplace' class='form-control'-->
-<!--placeholder='Place of Work'>-->
-<!--</div>-->
-<!--</div>-->
-<!--</div>-->
-<!--<div class='row clearfix'>-->
-
-<!--<div class='col-sm-6'>-->
-<!--<div class='form-group'>-->
-<!--<textarea rows='3' class='form-control no-resize' [(ngModel)]='temppatient.exrainfo'-->
-<!--placeholder='Additional Personal Info'></textarea>-->
-<!--</div>-->
-<!--</div>-->
-<!--<div class='col-sm-6'>-->
-<!--<div class='form-group'>-->
-<!--<textarea rows='3' class='form-control no-resize' [(ngModel)]='temphistory.visitdescription'-->
-<!--placeholder="Brief description of today's visit"></textarea>-->
-<!--</div>-->
-<!--</div>-->
-
-<!--</div>-->
-<!--</div>-->
-<!--</mat-dialog-content>-->
-<!--<div class='col-sm-12'>-->
-<!--<button matDialogClose class="btn btn-danger btn-simple btn-round float-left">DISMISS</button>-->
-<!--<button (click)="addpatient(false)" class="btn btn-default btn-round btn-primary float-none">SAVE ONLY</button>-->
-<!--<button (click)="addpatient(true)" class="btn btn-default btn-round btn-primary float-right">SAVE AND QUEUE</button>-->
-<!--</div>-->

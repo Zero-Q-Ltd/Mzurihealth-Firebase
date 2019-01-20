@@ -7,6 +7,7 @@ export interface Hospital {
     userid: string;
     id: string;
     description: string;
+    status: boolean;
     contactperson: {
         name: string,
         phone: string,
@@ -34,6 +35,7 @@ export const emptyhospital: Hospital = {
         position: null,
         address: null
     },
+    status: null,
     contactdetails: {
         email: null,
         phone: null,

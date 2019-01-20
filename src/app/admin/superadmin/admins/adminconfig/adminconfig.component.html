@@ -15,11 +15,9 @@
         <div>
             <div class="title mb-8"><strong>{{clickedadmin.data.displayName| titlecase}}</strong></div>
             <div class="subtitle secondary-text">
-                <span>Level :
-                    <mat-chip-list>
+                <mat-chip-list>Level :
                     <mat-chip  *ngFor="let text of categoryarray()" color="primary" selected>{{text}}</mat-chip>
                 </mat-chip-list>
-                </span>
 
             </div>
         </div>

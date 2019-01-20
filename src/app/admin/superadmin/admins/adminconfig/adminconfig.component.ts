@@ -42,7 +42,7 @@ export class AdminconfigComponent implements OnInit {
                 const admincategory = this.admincategories.find(cat => {
                     return cat.id === categoryid;
                 });
-                const adinsubcategory = admincategory.subcategories[subcategory].name;
+                const adinsubcategory = `${admincategory.subcategories[subcategory].level} : ${admincategory.subcategories[subcategory].name}`;
                 return [admincategory.name, adinsubcategory];
             } else {
                 return ['Invalid'];

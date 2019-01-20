@@ -2,6 +2,7 @@ import {emptymetadata, Metadata} from './universal';
 
 export interface HospitalAdmin {
     id: string;
+    status: boolean;
     data: {
         uid: string,
         email: string,
@@ -35,6 +36,7 @@ export const emptyadmin: HospitalAdmin = {
         occupied: null,
         categoryid: null
     },
+    status: null,
     data: {
         email: null,
         uid: null,

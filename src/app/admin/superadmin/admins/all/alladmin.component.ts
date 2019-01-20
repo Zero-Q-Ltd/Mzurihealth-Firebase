@@ -65,12 +65,12 @@ export class AlladminComponent implements OnInit {
 
     }
 
-    disableuser(user: HospitalAdmin): void {
-
+    disableadmin(user: HospitalAdmin): void {
+        this.adminservice.disableadmin(user.id);
     }
 
-    enableuser(user: HospitalAdmin): void {
-
+    enableadmin(user: HospitalAdmin): void {
+        this.adminservice.enableadmin(user.id);
     }
 
     ondeselect(): void {

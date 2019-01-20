@@ -94,8 +94,12 @@ export class AdminService {
         });
     }
 
-    disableadmin(adminid: string) {
+    disableadmin(adminid: string): Promise<any> {
         return this.db.firestore.collection('hospitaladmins').doc(adminid).update({status: false});
+    }
+
+    enableadmin(adminid: string): Promise<any> {
+        return this.db.firestore.collection('hospitaladmins').doc(adminid).update({status: true});
     }
 
     initusertypes(): void {

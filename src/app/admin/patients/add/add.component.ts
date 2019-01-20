@@ -11,7 +11,7 @@ import {emptypatienthistory, PatientVisit} from '../../../models/PatientVisit';
 import {emptypatient, Patient} from '../../../models/Patient';
 import {emptyfile, HospFile} from '../../../models/HospFile';
 import * as moment from 'moment';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {fuseAnimations} from '../../../../@fuse/animations';
 import {Observable} from 'rxjs';
 import {InsuranceValidator} from '../../validators/insurance.validator';
@@ -61,7 +61,10 @@ export class AddComponent implements OnInit {
         * */
         this.insuranceservice.allinsurance.subscribe(insurances => {
             this.allInsurance = insurances;
-            this.patientsForm.controls['insuranceComp'].setValidators([InsuranceValidator.available(insurances)]);
+            this.patientsForm.controls['insuranceComp'].setValidators([
+                InsuranceValidator.available(insurances),
+                this.shouldEnableInsuranceNumber.bind(this)]);
+
             this.patientsForm.controls['insuranceComp'].updateValueAndValidity();
         });
     }
@@ -132,6 +135,25 @@ export class AddComponent implements OnInit {
             .map(v => {
                 return v;
             });
+    }
+
+    /**
+     * validator like to listen to changes of the value
+     * */
+    shouldEnableInsuranceNumber(control: AbstractControl): any {
+
+        console.log();
+
+        if (control.value !== '') {
+            this.patientsForm.controls['insuranceNO'].enable({onlySelf: true});
+
+        } else {
+            this.patientsForm.controls['insuranceNO'].patchValue('');
+            this.patientsForm.controls['insuranceNO'].disable();
+        }
+
+        // not interest in the errors.
+        return null;
     }
 
 

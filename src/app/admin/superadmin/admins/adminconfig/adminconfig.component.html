@@ -13,10 +13,10 @@
         </div>
 
         <div>
-            <div class="title mb-8"><strong>{{selectecustomprocedure.rawprocedure.name | titlecase}}</strong></div>
+            <div class="title mb-8"><strong>{{clickedadmin.data.displayName| titlecase}}</strong></div>
             <div class="subtitle secondary-text">
-                <span>Creation Date</span>
-                <span>: {{selectecustomprocedure.customprocedure.metadata.date?.toDate().toDateString() || getdate()}}</span>
+                <span>Level</span>
+                <span>: {{clickedadmin.config.level}}</span>
             </div>
         </div>
     </div>

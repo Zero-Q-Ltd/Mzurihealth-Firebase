@@ -4,6 +4,7 @@ import {AdminService} from './admin.service';
 import {BehaviorSubject} from 'rxjs';
 import {HospitalAdmin} from '../../models/HospitalAdmin';
 import {emptyhospital, Hospital} from '../../models/Hospital';
+import {AdminInvite} from '../../models/AdminInvite';
 
 @Injectable({
     providedIn: 'root'
@@ -13,6 +14,7 @@ export class HospitalService {
     activehospital: BehaviorSubject<Hospital> = new BehaviorSubject<Hospital>(emptyhospital);
     userdata: HospitalAdmin;
     hospitalerror: boolean;
+    invitedadmins: BehaviorSubject<Array<AdminInvite>> = new BehaviorSubject<Array<AdminInvite>>([]);
 
     constructor(private db: AngularFirestore, private adminservice: AdminService) {
         adminservice.observableuserdata.subscribe((admin: HospitalAdmin) => {
@@ -38,11 +40,28 @@ export class HospitalService {
             });
     }
 
+    getinvitedadmins(): void {
+        this.db.firestore.collection('admininvites').where('hospitalid', '==', this.activehospital.value.id).onSnapshot(invitesdata => {
+            this.invitedadmins.next(invitesdata.docs.map(inviteedata => {
+                const invitee = inviteedata.data() as AdminInvite;
+                invitee.id = inviteedata.id;
+                return invitee;
+            }));
+        });
+    }
+
     savehospitalchanges(): Promise<any> {
         return this.db.firestore.collection('hospitals').doc(this.userdata.config.hospitalid).set(this.activehospital);
     }
 
-    gethospitaldetails() : void {
+    adminexists(email: string): any {
+        return this.hospitaladmins.value.find(admin => {
+            return admin.data.email === email;
+        });
+    }
+
+
+    gethospitaldetails(): void {
 
         this.db.firestore.collection('hospitals').doc(this.userdata.config.hospitalid)
             .onSnapshot(hospitaldata => {
@@ -59,6 +78,7 @@ export class HospitalService {
                         this.db.firestore.collection('hospitals').doc(this.userdata.config.hospitalid).collection('admins').doc(this.userdata.data.uid).set({status: true});
                     }
                     this.gethospitaladmins();
+                    this.getinvitedadmins();
                 } else {
                     // this.showNotification('error', 'The associated Clinic has been deleted. Please contactperson us for instrustions', 'bottom', 5000);
                     // this.afAuth.auth.signOut();

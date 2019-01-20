@@ -6,19 +6,22 @@ import {Router} from '@angular/router';
 import {emptyadmin, HospitalAdmin} from '../../models/HospitalAdmin';
 import {NotificationService} from '../../shared/services/notifications.service';
 import {AdminCategory} from '../../models/AdminCategory';
+import {AdminInvite} from '../../models/AdminInvite';
 
 @Injectable({
     providedIn: 'root'
 })
 export class AdminService {
-    observableuserdata = new ReplaySubject(1);
+    observableuserdata: ReplaySubject<HospitalAdmin> = new ReplaySubject(1);
     userdata: HospitalAdmin = emptyadmin;
     activeurl: string = null;
     firstlogin = false;
     validuser: boolean;
     admincategories: BehaviorSubject<Array<AdminCategory>> = new BehaviorSubject<Array<AdminCategory>>([]);
 
-    constructor(private afAuth: AngularFireAuth, private db: AngularFirestore, private router: Router, private notificationservice: NotificationService) {
+    constructor(private afAuth: AngularFireAuth, private db: AngularFirestore,
+                private router: Router,
+                private notificationservice: NotificationService) {
         afAuth.authState.subscribe((state) => {
             if (state) {
                 // console.log('Logged In')
@@ -26,7 +29,7 @@ export class AdminService {
             } else {
                 console.log('Logged out');
                 this.userdata = emptyadmin;
-                this.observableuserdata.next(false);
+                this.observableuserdata.next(null);
             }
         });
     }
@@ -141,11 +144,11 @@ export class AdminService {
     }
 
 
-    createinvite(userdata: HospitalAdmin): Promise<any> {
-        return this.afAuth.auth.sendSignInLinkToEmail(userdata.data.email, {
+    createinvite(userdata: AdminInvite): Promise<any> {
+        return this.afAuth.auth.sendSignInLinkToEmail(userdata.email, {
             handleCodeInApp: true,
-            url: 'https://mzurihealth.firebaseapp.com/authentication/signin'
-        }).then((success) => {
+            url: 'https://mzurihealth.firebaseapp.com/admin/authentication/signin',
+        }).then(() => {
             this.db.firestore.collection('admininvites').add(userdata);
         });
 

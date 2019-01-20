@@ -22,7 +22,7 @@ import {
     MatTabsModule,
     MatToolbarModule,
     MatTooltipModule,
-    MatProgressBarModule
+    MatProgressBarModule, MatChipsModule
 } from '@angular/material';
 import {FormsModule} from '@angular/forms';
 import {MatMomentDateModule} from '@angular/material-moment-adapter';
@@ -59,6 +59,7 @@ import {RouterModule} from '@angular/router';
         MatToolbarModule,
         MatTooltipModule,
         MatProgressBarModule,
+        MatChipsModule,
 
         FormsModule,
 
@@ -99,6 +100,7 @@ import {RouterModule} from '@angular/router';
         MatToolbarModule,
         MatTooltipModule,
         MatProgressBarModule,
+        MatChipsModule,
 
         FormsModule,
 

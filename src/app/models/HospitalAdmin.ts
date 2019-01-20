@@ -8,8 +8,9 @@ export interface HospitalAdmin {
         photoURL: string,
         displayName: string,
     };
-    config?: {
+    config: {
         hospitalid: string
+        categoryid: string
         level: number
         availability: number // Whether on break , away or available
         occupied: string // iud of patient
@@ -21,7 +22,7 @@ export interface HospitalAdmin {
         phone: string,
         status?: Boolean, // Whether olnine or offline
     };
-    metadata: Metadata
+    metadata: Metadata;
 
 }
 
@@ -31,7 +32,8 @@ export const emptyadmin: HospitalAdmin = {
         level: null,
         hospitalid: null,
         availability: 0,
-        occupied: null
+        occupied: null,
+        categoryid: null
     },
     data: {
         email: null,

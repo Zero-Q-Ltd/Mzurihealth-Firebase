@@ -6,6 +6,7 @@ import {HospitalService} from '../../../services/hospital.service';
 import {AdminService} from '../../../services/admin.service';
 import {ProceduresService} from '../../../services/procedures.service';
 import {LocalcommunicationService} from '../../procedures/localcommunication.service';
+import {AdminInvite} from '../../../../models/AdminInvite';
 
 @Component({
     selector: 'admins-all',
@@ -17,6 +18,7 @@ import {LocalcommunicationService} from '../../procedures/localcommunication.ser
 export class AlladminComponent implements OnInit {
     adminheaders = ['image', 'Name', 'Email', 'Phone', 'Address', 'Level', 'Status', 'Action'];
     adminsdatasource = new MatTableDataSource<HospitalAdmin>();
+    invitedadminsdatasource = new MatTableDataSource<AdminInvite>();
     selectedadmin: HospitalAdmin;
 
     constructor(private hospitalservice: HospitalService,
@@ -25,6 +27,9 @@ export class AlladminComponent implements OnInit {
                 private communicationService: LocalcommunicationService) {
         this.hospitalservice.hospitaladmins.subscribe(admins => {
             this.adminsdatasource.data = admins;
+        });
+        this.hospitalservice.invitedadmins.subscribe(admins => {
+            this.invitedadminsdatasource.data = admins;
         });
     }
 
@@ -47,6 +52,14 @@ export class AlladminComponent implements OnInit {
                 return 'Receptionist';
 
         }
+    }
+
+    cancelinvite(): void {
+
+    }
+
+    ondeselect(): void {
+        this.communicationService.resetall();
     }
 
     /**

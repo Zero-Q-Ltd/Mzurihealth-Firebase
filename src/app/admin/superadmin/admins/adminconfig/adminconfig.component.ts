@@ -32,6 +32,26 @@ export class AdminconfigComponent implements OnInit {
         this.communicationservice.resetall();
     }
 
+    categoryarray(): Array<string> {
+        const categoryid = this.clickedadmin.config.categoryid;
+        const subcategory = this.clickedadmin.config.level;
+        if (this.admincategories.length > 0) {
+            if (this.admincategories.find(cat => {
+                return cat.id === categoryid;
+            })) {
+                const admincategory = this.admincategories.find(cat => {
+                    return cat.id === categoryid;
+                });
+                const adinsubcategory = admincategory.subcategories[subcategory].name;
+                return [admincategory.name, adinsubcategory];
+            } else {
+                return ['Invalid'];
+            }
+        } else {
+            return ['loading...'];
+        }
+    }
+
     saveprocedureconfig(): void {
         if (!null) {
 

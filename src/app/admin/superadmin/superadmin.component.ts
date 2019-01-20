@@ -15,7 +15,10 @@ import {AdminService} from '../services/admin.service';
 export class SuperadminComponent implements OnInit {
     activeside = false;
     activetabindex = 0;
-    sidebarstatus = false;
+    /**
+     * which sidebar to display, or none
+     */
+    sidebarstatus = 0;
 
     constructor(private _fuseSidebarService: FuseSidebarService,
                 private  communication: LocalcommunicationService,
@@ -27,18 +30,18 @@ export class SuperadminComponent implements OnInit {
          */
         communication.onprocedureselected.subscribe(selection => {
             if (selection.selectiontype) {
-                this.sidebarstatus = true;
+                this.sidebarstatus = 1;
                 // this._fuseSidebarService.getSidebar('procedureconfig-sidebar').toggleOpen()
             } else {
-                this.sidebarstatus = false;
+                this.sidebarstatus = 0;
                 // this._fuseSidebarService.getSidebar('procedureconfig-sidebar').toggleOpen()
             }
         });
         communication.onadminselected.subscribe(admin => {
             if (admin.id) {
-                this.sidebarstatus = true;
+                this.sidebarstatus = 2;
             } else {
-                this.sidebarstatus = true;
+                this.sidebarstatus = 0;
             }
         });
     }

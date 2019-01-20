@@ -7,7 +7,8 @@
     <fuse-sidebar *ngIf="sidebarstatus" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" class="sidebar "
                   lockedOpen="gt-md" name="procedureconfig-sidebar"
                   position="right">
-        <app-procedureconfig class="right-navbar"></app-procedureconfig>
+        <app-procedureconfig *ngIf="sidebarstatus ===1" class="right-navbar"></app-procedureconfig>
+        <admins-adminconfig *ngIf="sidebarstatus ===2" class="right-navbar"></admins-adminconfig>
     </fuse-sidebar>
     <!-- / SIDEBAR -->
     <!-- CENTER -->

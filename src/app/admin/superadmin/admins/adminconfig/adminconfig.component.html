@@ -1,23 +1,27 @@
 <div>
     <!-- SIDEBAR HEADER -->
-    <div class="header accent p-24" fxLayout="column" fxLayoutAlign="space-between">
+    <div class="header accent p-12" fxLayout="column" fxLayoutAlign="space-between">
 
         <div class="toolbar" fxLayout="row" fxLayoutAlign="end center">
-
-            <button (click)="clearselection()" mat-icon-button matTooltip="Clear">
-                <mat-icon>clear</mat-icon>
-            </button>
-            <button (click)="saveprocedureconfig()" aria-label="More" mat-icon-button matTooltip="Save">
-                <mat-icon>save</mat-icon>
-            </button>
+            <div fxFlex="50" fxLayoutAlign="end">
+                <button (click)="clearselection()" mat-icon-button mat-raised-button matTooltip="Clear">
+                    <mat-icon>clear</mat-icon>
+                </button>
+            </div>
+            <div fxFlex="50" fxLayoutAlign="end">
+                <button (click)="saveadminconfig()" aria-label="More" mat-icon-button
+                        mat-raised-button matTooltip="Save">
+                    <mat-icon>save</mat-icon>
+                </button>
+            </div>
         </div>
 
         <div>
-            <div class="title mb-8"><strong>{{clickedadmin.data.displayName| titlecase}}</strong></div>
-            <div class="subtitle secondary-text">
-                <mat-chip-list>Level :
-                    <mat-chip *ngFor="let text of categoryarray()" color="primary" selected>{{text}}</mat-chip>
-                </mat-chip-list>
+            <div class="h3"><strong>{{clickedadmin.data.displayName| titlecase}}</strong></div>
+            <div class="h4 secondary-text">Level :
+                <span *ngFor="let text of categoryarray()">
+                    {{text}}
+                </span>
 
             </div>
         </div>
@@ -28,5 +32,5 @@
     <div class="content p-24" fusePerfectScrollbar>
         Coming soon...
     </div>
+    <!-- / SIDEBAR CONTENT -->
 </div>
-<!-- / SIDEBAR CONTENT -->

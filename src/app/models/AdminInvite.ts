@@ -4,7 +4,7 @@ export interface AdminInvite {
     email: string;
     name: string;
     phone: string;
-    subcategoyid: string;
+    categoyid: string;
     level: number;
     inviterid: string;
     hospitalid: string;
@@ -16,7 +16,7 @@ export const emptyadmininvite = {
     email: null,
     name: null,
     phone: null,
-    subcategoyid: null,
+    categoyid: null,
     level: null,
     inviterid: null,
     hospitalid: null,

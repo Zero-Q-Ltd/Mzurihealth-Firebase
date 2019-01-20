@@ -48,6 +48,17 @@ export class AdminService {
                     // console.log(userdata.data());
                     const temp = userdata.data() as HospitalAdmin;
                     temp.id = userdata.id;
+                    if (!temp.status) {
+                        this.observableuserdata.next(null);
+                        this.notificationservice.notify({
+                            alert_type: 'info',
+                            body: 'Your account has been disabled!! Please contact us for more information',
+                            title: 'Error!',
+                            duration: 10000,
+                            icon: '',
+                            placement: 'center'
+                        });
+                    }
 
                     if (temp['config']['availability'] == null) {
                         const config = temp['config'];

@@ -16,7 +16,7 @@ import {fuseAnimations} from '../../../../../@fuse/animations';
 export class AllComponent implements OnInit, AfterViewInit {
     hospitalprocedures = new MatTableDataSource<{ rawprocedure: RawProcedure, customprocedure: CustomProcedure }>();
     procedurecategories: Array<ProcedureCategory>;
-    procedureheaders = ['name', 'category', 'regprice', 'minprice', 'maxprice'];
+    procedureheaders = ['name', 'category', 'regprice', 'minprice', 'maxprice', 'action'];
     selectedprocedure: CustomProcedure = {...emptycustomprocedure};
     @ViewChild(MatPaginator) paginator: MatPaginator;
     @ViewChild(MatSort) sort: MatSort;
@@ -31,19 +31,19 @@ export class AllComponent implements OnInit, AfterViewInit {
         });
     }
 
-    ngOnInit() {
+    ngOnInit(): void {
     }
 
-    ngAfterViewInit() {
+    ngAfterViewInit(): void {
         this.hospitalprocedures.paginator = this.paginator;
         this.hospitalprocedures.sort = this.sort;
     }
 
-    applyFilter(filterValue: string) {
+    applyFilter(filterValue: string): void {
         this.hospitalprocedures.filter = filterValue.trim().toLowerCase();
     }
 
-    getcategory(category: rawprocedurecategory) {
+    getcategory(category: rawprocedurecategory): string {
         if (category.subcategoryid) {
             return this.procedurecategories.find(cat => {
                 return cat.id === category.id;
@@ -51,6 +51,10 @@ export class AllComponent implements OnInit, AfterViewInit {
         } else {
             return '';
         }
+    }
+
+    disableprocedure(): void {
+
     }
 
     /**

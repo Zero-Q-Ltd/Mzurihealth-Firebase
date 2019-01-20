@@ -2,14 +2,16 @@ import {emptymetadata, Metadata} from './universal';
 
 export interface HospitalAdmin {
     id: string;
+    status: boolean;
     data: {
         uid: string,
         email: string,
         photoURL: string,
         displayName: string,
     };
-    config?: {
+    config: {
         hospitalid: string
+        categoryid: string
         level: number
         availability: number // Whether on break , away or available
         occupied: string // iud of patient
@@ -21,7 +23,7 @@ export interface HospitalAdmin {
         phone: string,
         status?: Boolean, // Whether olnine or offline
     };
-    metadata: Metadata
+    metadata: Metadata;
 
 }
 
@@ -31,8 +33,10 @@ export const emptyadmin: HospitalAdmin = {
         level: null,
         hospitalid: null,
         availability: 0,
-        occupied: null
+        occupied: null,
+        categoryid: null
     },
+    status: null,
     data: {
         email: null,
         uid: null,

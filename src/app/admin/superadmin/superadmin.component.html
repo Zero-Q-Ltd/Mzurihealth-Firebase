@@ -7,7 +7,8 @@
     <fuse-sidebar *ngIf="sidebarstatus" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" class="sidebar "
                   lockedOpen="gt-md" name="procedureconfig-sidebar"
                   position="right">
-        <app-procedureconfig class="right-navbar"></app-procedureconfig>
+        <app-procedureconfig *ngIf="sidebarstatus ===1" class="right-navbar"></app-procedureconfig>
+        <admins-adminconfig *ngIf="sidebarstatus ===2" class="right-navbar"></admins-adminconfig>
     </fuse-sidebar>
     <!-- / SIDEBAR -->
     <!-- CENTER -->
@@ -32,7 +33,7 @@
             </div>
             <button (click)="toggleactiveside()"
                     [@animate]="{value:'*', params:{delay:'300ms',scale:'0.2'}}"
-                    [@fadeInOut]="activetabindex !== 2"
+                    [@fadeInOut]="activetabindex === 0"
                     [color]="activeside ? 'accent' : 'warn' "
                     aria-label="Add Procedure"
                     class="vutadown"
@@ -56,8 +57,7 @@
 
                 <mat-tab label="Admins">
                     <div *ngIf="activetabindex === 1" class="tab-content p-24" fusePerfectScrollbar>
-                        <admins-all *ngIf="!activeside"></admins-all>
-                        <admin-add *ngIf="activeside"></admin-add>
+                        <admins-all ></admins-all>
                     </div>
                 </mat-tab>
 

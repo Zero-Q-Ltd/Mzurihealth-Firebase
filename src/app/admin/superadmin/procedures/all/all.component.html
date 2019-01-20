@@ -28,6 +28,15 @@
         <mat-header-cell *matHeaderCellDef> Max Price</mat-header-cell>
         <mat-cell *matCellDef="let element"> {{element.rawprocedure.pricing.max}} </mat-cell>
     </ng-container>
+    <ng-container matColumnDef="action">
+        <mat-header-cell *matHeaderCellDef> Action</mat-header-cell>
+        <mat-cell *matCellDef="let element">
+            <button (keydown)='disableprocedure($event)' class="sendbutton" color="warn" mat-raised-button matRipple>
+                Disable
+                <mat-icon aria-label="Example icon-button with a heart icon">cancel</mat-icon>
+            </button>
+        </mat-cell>
+    </ng-container>
 
     <mat-header-row *matHeaderRowDef="procedureheaders"></mat-header-row>
     <mat-row *matRowDef="let row; columns: procedureheaders;" (click)="onSelect(row)"

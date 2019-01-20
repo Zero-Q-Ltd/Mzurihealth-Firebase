@@ -13,10 +13,12 @@
         </div>
 
         <div>
-            <div class="title mb-8"><strong>{{selectecustomprocedure.rawprocedure.name | titlecase}}</strong></div>
+            <div class="title mb-8"><strong>{{clickedadmin.data.displayName| titlecase}}</strong></div>
             <div class="subtitle secondary-text">
-                <span>Creation Date</span>
-                <span>: {{selectecustomprocedure.customprocedure.metadata.date?.toDate().toDateString() || getdate()}}</span>
+                <mat-chip-list>Level :
+                    <mat-chip *ngFor="let text of categoryarray()" color="primary" selected>{{text}}</mat-chip>
+                </mat-chip-list>
+
             </div>
         </div>
     </div>
@@ -24,45 +26,7 @@
 
     <!-- SIDEBAR CONTENT -->
     <div class="content p-24" fusePerfectScrollbar>
-
-        <div [@animate]="{value:'*',params:{delay:'200ms'}}" class="file-details">
-            <div [@animate]="{value:'*',params:{delay:'200ms'}}"
-                 class="input-group col-sm-10">
-                <mat-form-field appearance="outline" fxFlex="100">
-                    <mat-label>Regular Price</mat-label>
-                    <input [formControl]="regularpricecontrol" [required]="true" matInput
-                           type="number">
-                    <mat-icon class="disabled-text" matSuffix>attach_money</mat-icon>
-                </mat-form-field>
-            </div>
-            <div class="offline-switch">
-                <mat-slide-toggle [(ngModel)]="selectecustomprocedure.customprocedure.custominsuranceprice"
-                                  labelPosition="before">Custom Prices for Insurance
-                </mat-slide-toggle>
-            </div>
-
-            <div *ngIf="selectecustomprocedure.customprocedure.custominsuranceprice "
-                 [@animate]="{value:'*',params:{delay:'200ms'}}"
-                 class="input-group col-sm-10">
-                <mat-form-field appearance="outline" fxFlex="100">
-                    <mat-label>Filter Insurance Companies</mat-label>
-                    <input (keyup)="filterinsurance($event.target.value)" matInput>
-                    <mat-icon class="disabled-text" matSuffix>search</mat-icon>
-                </mat-form-field>
-            </div>
-            <div *ngIf="selectecustomprocedure.customprocedure.custominsuranceprice ">
-                <span *ngFor='let insurance of filteredinsurance' [@animate]="{value:'*',params:{y:'100%'}}">
-                <mat-form-field appearance="outline" fxFlex="100">
-                <mat-label>{{insurance.name}}</mat-label>
-                <input [(ngModel)]='selectecustomprocedure.customprocedure.insuranceprices[insurance.id]' matInput
-                       type="number">
-                <mat-icon class="disabled-text" matSuffix>attach_money</mat-icon>
-                </mat-form-field>
-                </span>
-            </div>
-
-        </div>
-
+        Coming soon...
     </div>
 </div>
 <!-- / SIDEBAR CONTENT -->

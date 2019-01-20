@@ -6,6 +6,8 @@ import {HospitalService} from '../../../services/hospital.service';
 import {AdminService} from '../../../services/admin.service';
 import {ProceduresService} from '../../../services/procedures.service';
 import {LocalcommunicationService} from '../../procedures/localcommunication.service';
+import {AdminInvite} from '../../../../models/AdminInvite';
+import {AdminCategory} from '../../../../models/AdminCategory';
 
 @Component({
     selector: 'admins-all',
@@ -17,7 +19,10 @@ import {LocalcommunicationService} from '../../procedures/localcommunication.ser
 export class AlladminComponent implements OnInit {
     adminheaders = ['image', 'Name', 'Email', 'Phone', 'Address', 'Level', 'Status', 'Action'];
     adminsdatasource = new MatTableDataSource<HospitalAdmin>();
+    invitedadminsdatasource = new MatTableDataSource<AdminInvite>();
     selectedadmin: HospitalAdmin;
+    userdata: HospitalAdmin;
+    admincategories: Array<AdminCategory> = [];
 
     constructor(private hospitalservice: HospitalService,
                 private adminservice: AdminService,
@@ -26,27 +31,47 @@ export class AlladminComponent implements OnInit {
         this.hospitalservice.hospitaladmins.subscribe(admins => {
             this.adminsdatasource.data = admins;
         });
+        this.hospitalservice.invitedadmins.subscribe(admins => {
+            this.invitedadminsdatasource.data = admins;
+        });
+        this.adminservice.observableuserdata.subscribe(value => {
+            this.userdata = value;
+        });
+        this.adminservice.admincategories.subscribe(categories => {
+            this.admincategories = categories;
+        });
     }
 
     ngOnInit(): void {
     }
 
-    leveltext(level): string {
-        level = Number(level);
-        switch (level) {
-            case 0:
-                return 'System Admin';
-
-            case 1:
-                return 'Doctor';
-
-            case 2:
-                return 'Nurse';
-
-            case 3:
-                return 'Receptionist';
-
+    categorytext(level): string {
+        if (this.admincategories.length > 0) {
+            if (this.admincategories.find(cat => {
+                return cat.level === level;
+            })) {
+                return this.admincategories.find(cat => {
+                    return cat.level === level;
+                }).name;
+            } else {
+                return 'Invalid';
+            }
+        } else {
+            return 'loading...';
         }
+    }
+
+    cancelinvite(event): boolean {
+        event.preventDefault();
+        return false;
+    }
+
+    disableuser(event): boolean {
+        return false;
+    }
+
+    ondeselect(): void {
+        this.communicationService.resetall();
     }
 
     /**

@@ -94,12 +94,16 @@ export class AdminService {
         });
     }
 
-    disableadmin(adminid: string): Promise<any> {
+    disableadmin(adminid: string): Promise<void> {
         return this.db.firestore.collection('hospitaladmins').doc(adminid).update({status: false});
     }
 
-    enableadmin(adminid: string): Promise<any> {
+    enableadmin(adminid: string): Promise<void> {
         return this.db.firestore.collection('hospitaladmins').doc(adminid).update({status: true});
+    }
+
+    deleteinvite(inviteid: string): Promise<void> {
+        return this.db.firestore.collection('admininvites').doc(inviteid).delete();
     }
 
     initusertypes(): void {
@@ -119,7 +123,7 @@ export class AdminService {
 
     checkinvite(user: firebase.User): void {
         const invitequery = this.db.firestore.collection('admininvites')
-            .where('data.email', '==', user.email)
+            .where('email', '==', user.email)
             .limit(1)
             .get().then(snapshot => {
                 if (!snapshot.empty) {

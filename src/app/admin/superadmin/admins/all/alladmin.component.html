@@ -78,13 +78,13 @@
         <mat-header-cell *matHeaderCellDef>Action
         </mat-header-cell>
         <mat-cell *matCellDef="let admin">
-            <button (click)='disableadmin() ; false' class="sendbutton" color="warn" *ngIf="admin.status"
+            <button (click)='disableadmin(admin) ; false' class="sendbutton" color="warn" *ngIf="admin.status"
                     [disabled]="userdata.config.level>admin.config.level || userdata.id === admin.id " mat-raised-button
                     matRipple>
                 Disable User
                 <mat-icon >cancel</mat-icon>
             </button>
-            <button (click)='enableadmin() ; false' class="sendbutton" color="accent" *ngIf="admin.status"
+            <button (click)='enableadmin(admin) ; false' class="sendbutton" color="accent" *ngIf="!admin.status"
                     [disabled]="userdata.config.level>admin.config.level || userdata.id === admin.id " mat-raised-button
                     matRipple>
                 Enable User
@@ -177,14 +177,14 @@
         <mat-header-cell *matHeaderCellDef>Action
         </mat-header-cell>
         <mat-cell *matCellDef="let admin">
-            <button (keydown)='cancelinvite($event)' class="sendbutton" color="warn" mat-raised-button matRipple>
+            <button (click)='cancelinvite(admin)' class="sendbutton" color="warn" mat-raised-button matRipple>
                 Cancel Invite
                 <mat-icon aria-label="Example icon-button with a heart icon">cancel</mat-icon>
             </button>
         </mat-cell>
     </ng-container>
 
-    <mat-row (click)="ondeselect($event)" *matRowDef="let admin; columns: adminheaders;"
+    <mat-row (click)="ondeselect()" *matRowDef="let admin; columns: adminheaders;"
              class="product"
              matRipple>
     </mat-row>

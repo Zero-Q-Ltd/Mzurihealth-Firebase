@@ -13,6 +13,8 @@ import {emptyfile, HospFile} from '../../../models/HospFile';
 import * as moment from 'moment';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {fuseAnimations} from '../../../../@fuse/animations';
+import {Observable} from 'rxjs';
+import {map, startWith} from 'rxjs/operators';
 
 @Component({
     selector: 'app-add',
@@ -26,28 +28,32 @@ export class AddComponent implements OnInit {
     temppatient: Patient = emptypatient;
     insurancename: any;
     invalidinsurance: boolean = true;
-    temphistory: PatientVisit = {... emptypatienthistory};
+    temphistory: PatientVisit = emptypatienthistory;
     activehospital: Hospital = Object.assign({}, emptyhospital);
-    allinsurance = [];
-    patientsform: FormGroup;
+    allInsurance = [];
+    patientsForm: FormGroup;
+
+    filteredOptions: Observable<InsuranceCompany[]>;
 
     constructor(private adminservice: AdminService,
                 private patientservice: PatientService,
-                private _formBuilder: FormBuilder,
+                private formBuilder: FormBuilder,
                 private hospitalservice: HospitalService,
                 private insuranceservice: InsuranceService,
                 private notificationservice: NotificationService,
                 @Optional() @Inject(MAT_DIALOG_DATA) public data?: any) {
-        this.hospitalservice.activehospital.subscribe(hospital => {
-            if (hospital.id) {
-                this.activehospital = hospital;
-                this.patientfileno.no = (hospital.patientcount + 1).toString();
-            }
-        });
-        this.insuranceservice.allinsurance.subscribe(insurances => {
-            this.allinsurance = insurances;
-        });
 
+        // this.hospitalservice.activehospital.subscribe(hospital => {
+        //     if (hospital.id) {
+        //         this.activehospital = hospital;
+        //         this.patientfileno.no = (hospital.patientcount + 1).toString();
+        //     }
+        // });
+        this.initFormBuilder();
+
+        this.insuranceservice.allinsurance.subscribe(insurances => {
+            this.allInsurance = insurances;
+        });
     }
 
     selectinsurance(data) {
@@ -70,29 +76,64 @@ export class AddComponent implements OnInit {
         return moment().format('LLL');
     }
 
-    ngOnInit() {
-        this.patientsform = this._formBuilder.group({
-            company: [
-                {
-                    value: 'Google',
-                    disabled: true
-                }, Validators.required
-            ],
+    ngOnInit(): void {
+
+        this.filteredOptions = this.patientsForm.controls.insuranceComp.valueChanges.pipe(
+            map(value => this._filter(value))
+        );
+    }
+
+    /**
+     * Init form values inside a here.
+     * */
+    private initFormBuilder(): void {
+        this.patientsForm = this.formBuilder.group({
             firstName: ['', Validators.required],
             lastName: ['', Validators.required],
-            address: ['', Validators.required],
-            address2: ['', Validators.required],
-            city: ['', Validators.required],
-            state: ['', Validators.required],
-            postalCode: ['', [Validators.required, Validators.maxLength(5)]],
-            country: ['', Validators.required]
+            occupation: [''],
+            idNumber: ['', Validators.required],
+            gender: ['', Validators.required],
+            birthDate: ['', Validators.required],
+            email: ['', Validators.compose([
+                Validators.required,
+                Validators.email
+            ])],
+            workplace: ['', Validators.required],
+            phone: ['', Validators.required],
+            postalCode: ['', Validators.compose([
+                Validators.required,
+                Validators.maxLength(10)
+            ])],
+            insuranceComp: [''],
+            insuranceNO: ['', Validators.required],
+            rShip: ['', Validators.required],
+            kin: ['', Validators.required],
+            kinPhone: ['', Validators.required],
         });
+    }
 
+    /**
+     * filter and return an object
+     * */
+    private _filter(value: string): InsuranceCompany[] {
+        const filterValue = value.toLowerCase();
+
+        return this.allInsurance
+            .filter(option => option.name.toLowerCase().indexOf(filterValue) === 0)
+            .map(v => {
+                return v;
+            });
+    }
+
+
+    submitPatientsForm(): void {
+        console.log('magic mike');
+        console.log(this.patientsForm);
     }
 
     addpatient(saveandqueue: boolean) {
         if (saveandqueue) {
-            // this.temppatient.Checkin[this.activehospital.id] = {
+            // this.temppatient.checkin[this.activehospital.id] = {
             //     superadmin: null,
             //     status: 0
             // };

@@ -14,6 +14,7 @@ import * as moment from 'moment';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {fuseAnimations} from '../../../../@fuse/animations';
 import {Observable} from 'rxjs';
+import {InsuranceValidator} from '../../validators/insurance.validator';
 import {map, startWith} from 'rxjs/operators';
 
 @Component({
@@ -30,7 +31,7 @@ export class AddComponent implements OnInit {
     invalidinsurance: boolean = true;
     temphistory: PatientVisit = emptypatienthistory;
     activehospital: Hospital = Object.assign({}, emptyhospital);
-    allInsurance = [];
+    allInsurance: InsuranceCompany[];
     patientsForm: FormGroup;
 
     filteredOptions: Observable<InsuranceCompany[]>;
@@ -49,10 +50,19 @@ export class AddComponent implements OnInit {
         //         this.patientfileno.no = (hospital.patientcount + 1).toString();
         //     }
         // });
+
+        /**
+         * initialize forms
+         * */
         this.initFormBuilder();
 
+        /*
+        * get list of insurance in kenya
+        * */
         this.insuranceservice.allinsurance.subscribe(insurances => {
             this.allInsurance = insurances;
+            this.patientsForm.controls['insuranceComp'].setValidators([InsuranceValidator.available(insurances)]);
+            this.patientsForm.controls['insuranceComp'].updateValueAndValidity();
         });
     }
 
@@ -77,7 +87,6 @@ export class AddComponent implements OnInit {
     }
 
     ngOnInit(): void {
-
         this.filteredOptions = this.patientsForm.controls.insuranceComp.valueChanges.pipe(
             map(value => this._filter(value))
         );

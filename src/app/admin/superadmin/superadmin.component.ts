@@ -44,6 +44,9 @@ export class SuperadminComponent implements OnInit {
                 this.sidebarstatus = 0;
             }
         });
+        this.communication.ontabchanged.subscribe(tabindex => {
+            this.activetabindex = tabindex;
+        });
     }
 
     ngOnInit(): void {
@@ -56,7 +59,7 @@ export class SuperadminComponent implements OnInit {
     tabChanged = (tabChangeEvent: MatTabChangeEvent): void => {
         this.communication.resetall();
         this.activeside = false;
-        this.activetabindex = tabChangeEvent.index;
+        this.communication.ontabchanged.next(tabChangeEvent.index);
     };
 
     toggleactiveside(): void {

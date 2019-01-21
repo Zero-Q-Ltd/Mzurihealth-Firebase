@@ -13,13 +13,13 @@ export class LocalcommunicationService {
         selection: { rawprocedure: RawProcedure, customprocedure: CustomProcedure }
     }> = new BehaviorSubject({selectiontype: null, selection: null});
     onadminselected: BehaviorSubject<HospitalAdmin> = new BehaviorSubject<HospitalAdmin>({...emptyadmin});
-    activetab = new BehaviorSubject<number>(null);
+    ontabchanged = new BehaviorSubject<number>(0);
 
     constructor() {
 
     }
 
-    resetall() {
+    resetall(): void {
         this.onprocedureselected.next({selectiontype: null, selection: null});
     }
 }

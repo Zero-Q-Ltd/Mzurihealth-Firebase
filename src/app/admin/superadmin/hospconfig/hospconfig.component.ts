@@ -9,6 +9,7 @@ import {NotificationService} from '../../../shared/services/notifications.servic
 import {FuseConfirmDialogComponent} from '../../../../@fuse/components/confirm-dialog/confirm-dialog.component';
 import {MatDialog, MatDialogRef} from '@angular/material';
 import {emptypaymentmethod} from '../../../models/PaymentMethod';
+import {LocalcommunicationService} from '../procedures/localcommunication.service';
 
 declare let google: any;
 
@@ -23,18 +24,36 @@ export class HospconfigComponent implements OnInit {
     defaultlat = -1.2939519;
     defaultlng = 36.8311134;
     zoom = 12;
-    activehospital: Hospital = emptyhospital;
+    activehospital: Hospital = {...emptyhospital};
     paymentchannels: Array<PaymentChannel> = [];
 
     constructor(private paymentmethodService: PaymentmethodService,
                 private hospitalservice: HospitalService,
                 private notificationservice: NotificationService,
+                private communicatioservice: LocalcommunicationService,
                 private _matDialog: MatDialog) {
         this.paymentmethodService.allpaymentchannels.subscribe(channels => {
             this.allpaymentchannels = channels;
         });
+        /**
+         * because this component is ot using reactive forms which is not neccessary, subscribe to tab changes and reset the values so
+         * that unsaved changes are ignored and the view is reset to the old values
+         */
+        communicatioservice.ontabchanged.subscribe(tab => {
+            console.log('tabchanged');
+            if (tab === 2) {
+                this.initvalues();
+            }
+        });
+    }
+
+    initvalues(): void {
         this.hospitalservice.activehospital.subscribe(hosp => {
-            this.activehospital = hosp;
+            console.log(hosp);
+            /**
+             * create a new variable
+             */
+            this.activehospital = Object.assign({}, hosp);
             /**
              * initialize some vars
              */
@@ -101,6 +120,10 @@ export class HospconfigComponent implements OnInit {
         });
         // console.log(paymentchannel);
         return paymentchannel;
+    }
+
+    deletepayment(index: number): void {
+        this.activehospital.paymentmethods.splice(index, 1);
     }
 
     getpaymentmethod(paymentchannelid: string, paymentmethodid: string): string | null {

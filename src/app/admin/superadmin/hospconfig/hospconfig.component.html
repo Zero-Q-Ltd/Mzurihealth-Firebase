@@ -90,8 +90,8 @@
         </mat-form-field>
     </div>
     <span class="pl-24" fxFlex="1 1 100%">Payment Options</span>
-    <div *ngFor="let paymentchannel of activehospital.paymentmethods ; let i = index" class="p-8" fxFlex="1 1 100%">
-        <mat-form-field appearance="outline" class="pl-4" fxFlex="25">
+    <div *ngFor="let paymentchannel of activehospital.paymentmethods ; let i = index" class="px-8" fxFlex="1 1 100%">
+        <mat-form-field appearance="outline" class="pl-4" fxFlex="24">
             <mat-label>Channel</mat-label>
             <mat-select [(ngModel)]="activehospital.paymentmethods[i].paymentchannelid" required>
                 <mat-option *ngFor="let channel of allpaymentchannels" [value]="channel.id">
@@ -103,7 +103,7 @@
             </mat-icon>
         </mat-form-field>
 
-        <mat-form-field appearance="outline" class="pl-4" fxFlex="25">
+        <mat-form-field appearance="outline" class="pl-4" fxFlex="24">
             <mat-label>Method</mat-label>
             <mat-select [(ngModel)]="activehospital.paymentmethods[i].paymentmethodid" required>
                 <mat-option
@@ -115,25 +115,33 @@
             <mat-icon class="secondary-text" matSuffix>apps</mat-icon>
         </mat-form-field>
 
-        <mat-form-field appearance="outline" class="pl-4" fxFlex="25">
+        <mat-form-field appearance="outline" class="pl-4" fxFlex="24">
             <mat-label>Account Number</mat-label>
             <input [(ngModel)]="activehospital.paymentmethods[i].accountnumber" matInput required>
-            <mat-icon class="secondary-text" matSuffix>account_circle</mat-icon>
+            <mat-icon class="secondary-text" matSuffix>account_balance_wallet</mat-icon>
         </mat-form-field>
 
-        <mat-form-field appearance="outline" class="pl-4" fxFlex="25">
+        <mat-form-field appearance="outline" class="pl-4" fxFlex="24">
             <mat-label>Extra Info</mat-label>
             <input [(ngModel)]="activehospital.paymentmethods[i].extrainfo" matInput required>
-            <mat-icon class="secondary-text" matSuffix>account_circle</mat-icon>
+            <mat-icon class="secondary-text" matSuffix>description</mat-icon>
         </mat-form-field>
-
+        <div class="pl-4" fxFlex="2">
+            <button (click)="deletepayment(i)" class="deletebutton" color="warn" mat-mini-fab>
+                <mat-icon aria-label="Example icon-button with a heart icon">delete</mat-icon>
+            </button>
+        </div>
     </div>
-    <div class="pl-24" fxFlex="1 1 100%">
-        <button (click)="addpaymentarray()" class="p-8" color="accent" mat-raised-button>ADD</button>
+    <div class="pb-24" fxFlex="1 1 100%" class="pl-8">
+        <button (click)="addpaymentarray()"  color="primary"  mat-mini-fab>
+            <mat-icon aria-label="Example icon-button with a heart icon">add</mat-icon>
+        </button>
     </div>
-
-    <button (click)="savehospitalchanges()" class="p-8" color="accent" fxLayoutAlign="end" mat-raised-button>SAVE
-        CONFIGURATION
-    </button>
-
+    <div class="p-24">
+        <div >
+            <button (click)="savehospitalchanges()" class="p-8" color="accent" mat-raised-button>SAVE
+                CONFIGURATION
+            </button>
+        </div>
+    </div>
 </div>

@@ -56,6 +56,7 @@ export class SuperadminComponent implements OnInit {
     tabChanged = (tabChangeEvent: MatTabChangeEvent): void => {
         this.communication.resetall();
         this.activeside = false;
+        this.communication.ontabchanged.next(tabChangeEvent.index)
         this.activetabindex = tabChangeEvent.index;
     };
 

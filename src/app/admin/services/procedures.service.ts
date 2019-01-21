@@ -44,7 +44,7 @@ export class ProceduresService {
          * I honestly am not sure why the following code works so well
          * Please.... be very careful before changing
          */
-        this.db.collection('procedureconfigs', ref => ref.where('hospitalid', '==', this.activehospital.id)).snapshotChanges().pipe(
+        this.db.collection('procedureconfigs', ref => ref.where('hospitalid', '==', this.activehospital.id).where('status', '==', true)).snapshotChanges().pipe(
             switchMap(f => {
                 return combineLatest(...f.map(t => {
                     const customprocedure = t.payload.doc.data() as CustomProcedure;
@@ -67,8 +67,8 @@ export class ProceduresService {
         return this.db.firestore.collection('procedures').where('category.id', '==', categoryid);
     }
 
-    deleteprocedure(procedureid: string): Promise<void> {
-        return this.db.firestore.collection('procedureconfigs').doc(procedureid).delete();
+    disableprocedure(procedureid: string): Promise<void> {
+        return this.db.firestore.collection('procedureconfigs').doc(procedureid).update({status: false});
     }
 
     getprocedurecategories(): void {

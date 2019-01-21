@@ -50,11 +50,11 @@ export class HospitalService {
         });
     }
 
-    savehospitalchanges(): Promise<any> {
-        return this.db.firestore.collection('hospitals').doc(this.userdata.config.hospitalid).set(this.activehospital);
+    savehospitalchanges(hospital: Hospital): Promise<void> {
+        return this.db.firestore.collection('hospitals').doc(hospital.id).set(hospital);
     }
 
-    adminexists(email: string): any {
+    adminexists(email: string): HospitalAdmin | undefined {
         return this.hospitaladmins.value.find(admin => {
             return admin.data.email === email;
         });

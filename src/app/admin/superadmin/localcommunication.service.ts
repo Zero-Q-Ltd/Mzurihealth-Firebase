@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
 import {BehaviorSubject} from 'rxjs';
-import {RawProcedure} from '../../../models/RawProcedure';
-import {CustomProcedure} from '../../../models/CustomProcedure';
-import {emptyadmin, HospitalAdmin} from '../../../models/HospitalAdmin';
+import {RawProcedure} from '../../models/RawProcedure';
+import {CustomProcedure} from '../../models/CustomProcedure';
+import {emptyadmin, HospitalAdmin} from '../../models/HospitalAdmin';
 
 @Injectable({
     providedIn: 'root'

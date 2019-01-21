@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {LocalcommunicationService} from '../../procedures/localcommunication.service';
+import {LocalcommunicationService} from '../../localcommunication.service';
 import {AdminService} from '../../../services/admin.service';
 import {NotificationService} from '../../../../shared/services/notifications.service';
 import {HospitalAdmin} from '../../../../models/HospitalAdmin';

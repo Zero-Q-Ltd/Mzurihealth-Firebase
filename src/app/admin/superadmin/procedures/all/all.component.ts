@@ -4,7 +4,7 @@ import {RawProcedure, rawprocedurecategory} from '../../../../models/RawProcedur
 import {ProceduresService} from '../../../services/procedures.service';
 import {CustomProcedure, emptycustomprocedure} from '../../../../models/CustomProcedure';
 import {ProcedureCategory} from '../../../../models/ProcedureCategory';
-import {LocalcommunicationService} from '../localcommunication.service';
+import {LocalcommunicationService} from '../../localcommunication.service';
 import {fuseAnimations} from '../../../../../@fuse/animations';
 import {FuseConfirmDialogComponent} from '../../../../../@fuse/components/confirm-dialog/confirm-dialog.component';
 import {NotificationService} from '../../../../shared/services/notifications.service';

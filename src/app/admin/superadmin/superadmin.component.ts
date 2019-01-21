@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {fuseAnimations} from '../../../@fuse/animations';
 import {MatTabChangeEvent} from '@angular/material';
 import {FuseSidebarService} from '../../../@fuse/components/sidebar/sidebar.service';
-import {LocalcommunicationService} from './procedures/localcommunication.service';
+import {LocalcommunicationService} from './localcommunication.service';
 import {ProceduresService} from '../services/procedures.service';
 import {AdminService} from '../services/admin.service';
 

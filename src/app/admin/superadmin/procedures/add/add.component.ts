@@ -7,7 +7,7 @@ import {emptyprawrocedure, RawProcedure, rawprocedurecategory} from '../../../..
 import {InsuranceCompany} from '../../../../models/InsuranceCompany';
 import {MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
 import {FuseSidebarService} from '../../../../../@fuse/components/sidebar/sidebar.service';
-import {LocalcommunicationService} from '../localcommunication.service';
+import {LocalcommunicationService} from '../../localcommunication.service';
 import {NotificationService} from '../../../../shared/services/notifications.service';
 import {emptycustomprocedure} from '../../../../models/CustomProcedure';
 

@@ -162,6 +162,7 @@ export class ProceduresService {
 
     addcustomprocedure(customprocedure: CustomProcedure): Promise<any> {
         customprocedure.hospitalid = this.activehospital.id;
+        customprocedure.status = true;
         customprocedure.creatorid = this.userdata.id;
         customprocedure.metadata = {
             lastedit: Timestamp.now(),

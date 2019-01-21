@@ -13,6 +13,11 @@
 
             <!-- APP TITLE -->
             <div fxLayout="row" fxLayoutAlign="start center">
+                <!--only show the sidebar toggle button when the active page is current patient-->
+                <button (click)="toggleSidebar('current-patients-sidebar')" *ngIf="activetabindex === 2" class="sidebar-toggle mr-12" fxHide.gt-sm
+                        mat-icon-button>
+                    <mat-icon>menu</mat-icon>
+                </button>
 
                 <div class="logo" fxLayout="row" fxLayoutAlign="start center">
                     <mat-icon [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
@@ -25,7 +30,8 @@
             <!-- / APP TITLE -->
 
             <!-- SEARCH -->
-            <div class="ml-sm-32" fxFlex fxLayout="row" fxLayoutAlign="center center"  [@animate]="{value:'*', params:{delay:'150ms',scale:'0.2'}}">
+            <div [@animate]="{value:'*', params:{delay:'150ms',scale:'0.2'}}" class="ml-sm-32" fxFlex fxLayout="row"
+                 fxLayoutAlign="center center">
 
                 <div class="search-wrapper mt-16 mt-sm-0">
 
@@ -46,26 +52,29 @@
             <!-- CONTENT -->
 
 
-                <mat-tab-group>
+            <mat-tab-group (selectedTabChange)="tabChanged($event)">
+                <a mat-tab-link [routerLink]="['/main']">Main Queue</a>
 
-                    <mat-tab label="Main Queue">
-                        <div class="tab-content p-24" fusePerfectScrollbar>
-                           <queue-mine></queue-mine>
-                        </div>
-                    </mat-tab>
+                <mat-tab label="Main Queue">
+                    <div class="tab-content p-24" fusePerfectScrollbar>
+                        <queue-mine></queue-mine>
+                    </div>
+                </mat-tab>
 
-                    <mat-tab label="My Queue">
-                        <div class="tab-content p-24" fusePerfectScrollbar>
-                           <queue-main></queue-main>
-                        </div>
-                    </mat-tab>
+                <mat-tab label="My Queue">
+                    <a [routerLink]="['/mine']"></a>
+                    <div class="tab-content p-24" fusePerfectScrollbar>
+                        <queue-main></queue-main>
+                    </div>
+                </mat-tab>
 
-                    <mat-tab label="Current">
-                        <div class="tab-content p-24" fusePerfectScrollbar>
-                          <patient-current></patient-current>
-                        </div>
-                    </mat-tab>
-                </mat-tab-group>
+                <mat-tab label="Current">
+                    <a [routerLink]="['/current']"></a>
+                    <div class="tab-content p-24" fusePerfectScrollbar>
+                        <patient-current></patient-current>
+                    </div>
+                </mat-tab>
+            </mat-tab-group>
             <!-- / CONTENT -->
         </div>
         <!-- / CONTENT CARD -->

@@ -40,6 +40,8 @@ export class HospconfigComponent implements OnInit {
              */
             if (!hosp.location) {
                 this.activehospital.location = new firestore.GeoPoint(this.defaultlat, this.defaultlng);
+            } else {
+                this.zoom = 15;
             }
             if (hosp.paymentmethods.length < 1) {
                 this.addpaymentarray();
@@ -94,9 +96,11 @@ export class HospconfigComponent implements OnInit {
         if (!id) {
             return null;
         }
-        return this.allpaymentchannels.find(channel => {
+        const paymentchannel = this.allpaymentchannels.find(channel => {
             return channel.id === id;
         });
+        // console.log(paymentchannel);
+        return paymentchannel;
     }
 
     getpaymentmethod(paymentchannelid: string, paymentmethodid: string): string | null {

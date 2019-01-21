@@ -16,10 +16,10 @@
             </mat-panel-description>
         </mat-expansion-panel-header>
         <agm-map (mapClick)="mapClicked($event)"
-                 [zoom]="zoom"
                  [latitude]="defaultlat"
                  [longitude]="defaultlng"
-                 [zoomControl]="false">
+                 [zoomControl]="false"
+                 [zoom]="zoom">
             <agm-marker [latitude]="activehospital.location.latitude"
                         [longitude]="activehospital.location.longitude"
                         [markerDraggable]=true>
@@ -79,13 +79,13 @@
 
         <mat-form-field appearance="outline" class="pl-4" fxFlex="20">
             <mat-label>Position</mat-label>
-            <input matInput [(ngModel)]="activehospital.contactperson.position" required>
+            <input [(ngModel)]="activehospital.contactperson.position" matInput required>
             <mat-icon class="secondary-text" matSuffix>account_circle</mat-icon>
         </mat-form-field>
 
         <mat-form-field appearance="outline" class="px-4" fxFlex="20">
             <mat-label>Address</mat-label>
-            <input matInput [(ngModel)]="activehospital.contactperson.address" required>
+            <input [(ngModel)]="activehospital.contactperson.address" matInput required>
             <mat-icon class="secondary-text" matSuffix>account_circle</mat-icon>
         </mat-form-field>
     </div>
@@ -93,9 +93,8 @@
     <div *ngFor="let paymentchannel of activehospital.paymentmethods ; let i = index" class="p-8" fxFlex="1 1 100%">
         <mat-form-field appearance="outline" class="pl-4" fxFlex="25">
             <mat-label>Channel</mat-label>
-            <mat-select required>
-                <mat-option (onSelectionChange)="channelselected(channel, i)" *ngFor="let channel of allpaymentchannels"
-                            [value]="getpaymentchannel(paymentchannel.paymentchannelid)">
+            <mat-select [(ngModel)]="activehospital.paymentmethods[i].paymentchannelid" required>
+                <mat-option *ngFor="let channel of allpaymentchannels" [value]="channel.id">
                     {{channel.name |titlecase}}
                 </mat-option>
             </mat-select>
@@ -106,9 +105,10 @@
 
         <mat-form-field appearance="outline" class="pl-4" fxFlex="25">
             <mat-label>Method</mat-label>
-            <mat-select required>
-                <mat-option *ngFor="let paymentmethod of getpaymentchannel(paymentchannel.paymentchannelid)?.methods | keyvalue"
-                            [value]="paymentchannel.paymentmethodid" (onSelectionChange)="methodselected(paymentmethod.key, i)">
+            <mat-select [(ngModel)]="activehospital.paymentmethods[i].paymentmethodid" required>
+                <mat-option
+                    *ngFor="let paymentmethod of getpaymentchannel(paymentchannel.paymentchannelid)?.methods | keyvalue"
+                    [value]="paymentmethod.key">
                     {{paymentmethod.value.name |titlecase}}
                 </mat-option>
             </mat-select>
@@ -132,6 +132,8 @@
         <button (click)="addpaymentarray()" class="p-8" color="accent" mat-raised-button>ADD</button>
     </div>
 
-    <button (click)="savehospitalchanges()" class="p-8" color="accent" fxLayoutAlign="end" mat-raised-button>SAVE CONFIGURATION</button>
+    <button (click)="savehospitalchanges()" class="p-8" color="accent" fxLayoutAlign="end" mat-raised-button>SAVE
+        CONFIGURATION
+    </button>
 
 </div>

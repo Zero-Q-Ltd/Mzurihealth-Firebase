@@ -29,7 +29,6 @@ export class HospconfigComponent implements OnInit {
     zoom = 12;
     temphospital: Hospital = {...emptyhospital};
     originalhspital: Hospital = {...emptyhospital};
-
     paymentchannels: Array<PaymentChannel> = [];
 
     constructor(private paymentmethodService: PaymentmethodService,
@@ -45,7 +44,6 @@ export class HospconfigComponent implements OnInit {
          * that unsaved changes are ignored and the view is reset to the old values
          */
         communicatioservice.ontabchanged.subscribe(tab => {
-            // console.log('tabchanged');
             if (tab === 2) {
                 this.initvalues();
             }
@@ -62,7 +60,12 @@ export class HospconfigComponent implements OnInit {
             if (hosp.paymentmethods.length < 1) {
                 this.originalhspital.paymentmethods.push({...emptypaymentmethod});
             }
-            this.temphospital = {...this.originalhspital};
+            /**
+             * TODO : Find a better solution
+             * Somehow all the other methods that I've tried are mutating the original value
+             * This is just a temporary solution that works but is not the best
+             */
+            this.temphospital = JSON.parse(JSON.stringify(this.originalhspital));
             /**
              * initialize some vars
              */
@@ -73,7 +76,6 @@ export class HospconfigComponent implements OnInit {
                 this.defaultlng = hosp.location.longitude;
                 this.zoom = 15;
             }
-
         });
     }
 
@@ -86,8 +88,11 @@ export class HospconfigComponent implements OnInit {
 
     }
 
+    changestosave(): boolean {
+        return JSON.stringify(this.temphospital) === JSON.stringify(this.originalhspital);
+    }
+
     savehospitalchanges(): void {
-        console.log(JSON.stringify(this.temphospital) === JSON.stringify(this.originalhspital));
         this.confirmDialogRef = this._matDialog.open(FuseConfirmDialogComponent, {
             disableClose: false
         });
@@ -111,15 +116,6 @@ export class HospconfigComponent implements OnInit {
         this.temphospital.paymentmethods.push({...emptypaymentmethod});
     }
 
-    channelselected(channel: PaymentChannel, index: number): void {
-        this.temphospital.paymentmethods[index].paymentchannelid = channel.id;
-    }
-
-    methodselected(methodid: string, index: number): void {
-        this.temphospital.paymentmethods[index].paymentmethodid = methodid;
-        console.log(this.temphospital.paymentmethods[index]);
-    }
-
     getpaymentchannel(id: string): PaymentChannel | null {
         if (!id) {
             return null;
@@ -134,18 +130,4 @@ export class HospconfigComponent implements OnInit {
     deletepayment(index: number): void {
         this.temphospital.paymentmethods.splice(index, 1);
     }
-
-    getpaymentmethod(paymentchannelid: string, paymentmethodid: string): string | null {
-        if (!paymentchannelid || !paymentmethodid) {
-            return null;
-        }
-        return this.allpaymentchannels.find(channel => {
-            return channel.id === paymentchannelid;
-        }).methods[paymentmethodid].name;
-    }
-
-    Addpaymentmethods(): void {
-        // this.paymentmethodService.addallpaymnetmethods();
-    }
-
 }

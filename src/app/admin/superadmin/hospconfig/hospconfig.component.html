@@ -141,8 +141,8 @@
     </div>
     <div class="p-24">
         <div>
-            <button (click)="savehospitalchanges()" class="p-8" color="accent" mat-raised-button>SAVE
-                CONFIGURATION
+            <button (click)="savehospitalchanges()" [disabled]="changestosave()" class="p-8" color="accent"
+                    mat-raised-button>SAVE CONFIGURATION
             </button>
         </div>
     </div>

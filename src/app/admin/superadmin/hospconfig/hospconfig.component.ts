@@ -20,9 +20,9 @@ declare let google: any;
 export class HospconfigComponent implements OnInit {
     allpaymentchannels: Array<PaymentChannel>;
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
-    defaultlat = 0;
-    defaultlng = 38;
-    zoom = 7;
+    defaultlat = -1.2939519;
+    defaultlng = 36.8311134;
+    zoom = 12;
     activehospital: Hospital = emptyhospital;
     paymentchannels: Array<PaymentChannel> = [];
 

@@ -15,7 +15,9 @@
                 </mat-icon>
             </mat-panel-description>
         </mat-expansion-panel-header>
-        <agm-map (mapClick)="mapClicked($event)" [latitude]="defaultlat"
+        <agm-map (mapClick)="mapClicked($event)"
+                 [zoom]="zoom"
+                 [latitude]="defaultlat"
                  [longitude]="defaultlng"
                  [zoomControl]="false">
             <agm-marker [latitude]="activehospital.location.latitude"
@@ -93,11 +95,13 @@
             <mat-label>Channel</mat-label>
             <mat-select required>
                 <mat-option (onSelectionChange)="channelselected(channel, i)" *ngFor="let channel of allpaymentchannels"
-                            [value]="paymentchannel.paymentchannelid">
+                            [value]="getpaymentchannel(paymentchannel.paymentchannelid)">
                     {{channel.name |titlecase}}
                 </mat-option>
             </mat-select>
-            <mat-icon class="secondary-text" matSuffix>apps</mat-icon>
+            <mat-icon class="secondary-text" matSuffix>
+                monetization_on
+            </mat-icon>
         </mat-form-field>
 
         <mat-form-field appearance="outline" class="pl-4" fxFlex="25">

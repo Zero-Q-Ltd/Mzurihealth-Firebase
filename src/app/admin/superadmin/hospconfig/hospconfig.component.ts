@@ -35,8 +35,14 @@ export class HospconfigComponent implements OnInit {
         });
         this.hospitalservice.activehospital.subscribe(hosp => {
             this.activehospital = hosp;
+            /**
+             * initialize some vars
+             */
             if (!hosp.location) {
                 this.activehospital.location = new firestore.GeoPoint(this.defaultlat, this.defaultlng);
+            }
+            if (hosp.paymentmethods.length < 1) {
+                this.addpaymentarray();
             }
         });
     }
@@ -44,7 +50,6 @@ export class HospconfigComponent implements OnInit {
     mapClicked($event: MouseEvent): void {
         const location: firestore.GeoPoint = new firestore.GeoPoint($event.coords.lat, $event.coords.lng);
         this.activehospital.location = location;
-
     }
 
     ngOnInit(): void {
@@ -52,6 +57,7 @@ export class HospconfigComponent implements OnInit {
     }
 
     savehospitalchanges(): void {
+        console.log(this.activehospital);
         this.confirmDialogRef = this._matDialog.open(FuseConfirmDialogComponent, {
             disableClose: false
         });
@@ -72,12 +78,16 @@ export class HospconfigComponent implements OnInit {
     }
 
     addpaymentarray(): void {
-        this.activehospital.paymentmethods.push({... emptypaymentmethod});
+        this.activehospital.paymentmethods.push({...emptypaymentmethod});
     }
 
-    channelselecte(channel: PaymentChannel, index: number): void {
-        console.log(this.activehospital.paymentmethods);
+    channelselected(channel: PaymentChannel, index: number): void {
         this.activehospital.paymentmethods[index].paymentchannelid = channel.id;
+    }
+
+    methodselected(methodid: string, index: number): void {
+        this.activehospital.paymentmethods[index].paymentmethodid = methodid;
+        console.log(this.activehospital.paymentmethods[index]);
     }
 
     getpaymentchannel(id: string): PaymentChannel | null {

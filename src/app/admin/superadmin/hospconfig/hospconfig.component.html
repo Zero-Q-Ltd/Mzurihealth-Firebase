@@ -27,7 +27,7 @@
 
     <div class="p-8" fxFlex="1 1 100%">
         <mat-form-field appearance="outline" class="pl-4" fxFlex="100">
-            <mat-label>Name</mat-label>
+            <mat-label>Hospital Name</mat-label>
             <input [(ngModel)]="activehospital.name" matInput required>
             <mat-icon class="secondary-text" matSuffix>account_circle</mat-icon>
             <mat-error>Name is required!</mat-error>
@@ -39,19 +39,19 @@
     <div class="p-8" fxFlex="1 1 100%">
         <mat-form-field appearance="outline" class="pl-4" fxFlex="33">
             <mat-label>Phone</mat-label>
-            <input [(ngModel)]="activehospital.name" matInput required>
+            <input [(ngModel)]="activehospital.contactdetails.phone" matInput required>
             <mat-icon class="secondary-text" matSuffix>account_circle</mat-icon>
         </mat-form-field>
 
         <mat-form-field appearance="outline" class="pl-4" fxFlex="34">
             <mat-label>Email</mat-label>
-            <input matInput required>
+            <input [(ngModel)]="activehospital.contactdetails.email" matInput required>
             <mat-icon class="secondary-text" matSuffix>account_circle</mat-icon>
         </mat-form-field>
 
         <mat-form-field appearance="outline" class="px-4" fxFlex="33">
             <mat-label>Address</mat-label>
-            <input matInput required>
+            <input [(ngModel)]="activehospital.contactdetails.address" matInput required>
             <mat-icon class="secondary-text" matSuffix>account_circle</mat-icon>
         </mat-form-field>
     </div>
@@ -59,75 +59,75 @@
     <div class="p-8" fxFlex="1 1 100%">
         <mat-form-field appearance="outline" class="pl-4" fxFlex="20">
             <mat-label>Name</mat-label>
-            <input [(ngModel)]="activehospital.name" matInput required>
+            <input [(ngModel)]="activehospital.contactperson.name" matInput required>
             <mat-icon class="secondary-text" matSuffix>account_circle</mat-icon>
         </mat-form-field>
 
         <mat-form-field appearance="outline" class="pl-4" fxFlex="20">
             <mat-label>Phone</mat-label>
-            <input [(ngModel)]="activehospital.name" matInput required>
+            <input [(ngModel)]="activehospital.contactperson.phone" matInput required>
             <mat-icon class="secondary-text" matSuffix>account_circle</mat-icon>
         </mat-form-field>
 
         <mat-form-field appearance="outline" class="pl-4" fxFlex="20">
             <mat-label>Email</mat-label>
-            <input matInput required>
+            <input [(ngModel)]="activehospital.contactperson.email" matInput required>
             <mat-icon class="secondary-text" matSuffix>account_circle</mat-icon>
         </mat-form-field>
 
         <mat-form-field appearance="outline" class="pl-4" fxFlex="20">
             <mat-label>Position</mat-label>
-            <input matInput required>
+            <input matInput [(ngModel)]="activehospital.contactperson.position" required>
             <mat-icon class="secondary-text" matSuffix>account_circle</mat-icon>
         </mat-form-field>
 
         <mat-form-field appearance="outline" class="px-4" fxFlex="20">
             <mat-label>Address</mat-label>
-            <input matInput required>
+            <input matInput [(ngModel)]="activehospital.contactperson.address" required>
             <mat-icon class="secondary-text" matSuffix>account_circle</mat-icon>
         </mat-form-field>
     </div>
     <span class="pl-24" fxFlex="1 1 100%">Payment Options</span>
     <div *ngFor="let paymentchannel of activehospital.paymentmethods ; let i = index" class="p-8" fxFlex="1 1 100%">
-        <mat-form-field appearance="outline" class="pl-4" fxFlex="20">
+        <mat-form-field appearance="outline" class="pl-4" fxFlex="25">
             <mat-label>Channel</mat-label>
             <mat-select required>
-                <mat-option (onSelectionChange)="channelselecte(channel, i)" *ngFor="let channel of allpaymentchannels"
-                            [value]="getpaymentchannel(paymentchannel?.paymentchannelid)">
+                <mat-option (onSelectionChange)="channelselected(channel, i)" *ngFor="let channel of allpaymentchannels"
+                            [value]="paymentchannel.paymentchannelid">
                     {{channel.name |titlecase}}
                 </mat-option>
             </mat-select>
             <mat-icon class="secondary-text" matSuffix>apps</mat-icon>
-            <mat-error>Category is required!</mat-error>
         </mat-form-field>
 
-        <mat-form-field appearance="outline" class="pl-4" fxFlex="20">
-            <mat-label>Channel</mat-label>
+        <mat-form-field appearance="outline" class="pl-4" fxFlex="25">
+            <mat-label>Method</mat-label>
             <mat-select required>
-                <mat-option *ngFor="let paymentmethod of getpaymentchannel(paymentmethod?.paymentchannelid)?.methods"
-                            [value]="getpaymentmethod(paymentchannel.paymentchannelid, paymentchannel.paymentmethodid)">
-                    {{paymentmethod.name |titlecase}}
+                <mat-option *ngFor="let paymentmethod of getpaymentchannel(paymentchannel.paymentchannelid)?.methods | keyvalue"
+                            [value]="paymentchannel.paymentmethodid" (onSelectionChange)="methodselected(paymentmethod.key, i)">
+                    {{paymentmethod.value.name |titlecase}}
                 </mat-option>
             </mat-select>
             <mat-icon class="secondary-text" matSuffix>apps</mat-icon>
-            <mat-error>Category is required!</mat-error>
         </mat-form-field>
 
-        <mat-form-field appearance="outline" class="pl-4" fxFlex="20">
+        <mat-form-field appearance="outline" class="pl-4" fxFlex="25">
             <mat-label>Account Number</mat-label>
-            <input [(ngModel)]="activehospital.name" matInput required>
+            <input [(ngModel)]="activehospital.paymentmethods[i].accountnumber" matInput required>
             <mat-icon class="secondary-text" matSuffix>account_circle</mat-icon>
         </mat-form-field>
 
-        <mat-form-field appearance="outline" class="pl-4" fxFlex="20">
+        <mat-form-field appearance="outline" class="pl-4" fxFlex="25">
             <mat-label>Extra Info</mat-label>
-            <input [(ngModel)]="activehospital.name" matInput required>
+            <input [(ngModel)]="activehospital.paymentmethods[i].extrainfo" matInput required>
             <mat-icon class="secondary-text" matSuffix>account_circle</mat-icon>
         </mat-form-field>
 
     </div>
-    <button (click)="addpaymentarray()" class="p-8" color="accent" mat-raised-button>ADD PAYMENT METHOD</button>
+    <div class="pl-24" fxFlex="1 1 100%">
+        <button (click)="addpaymentarray()" class="p-8" color="accent" mat-raised-button>ADD</button>
+    </div>
 
-    <button (click)="savehospitalchanges()" class="p-8" color="accent" fxLayoutAlign="end" mat-raised-button>SAVE</button>
+    <button (click)="savehospitalchanges()" class="p-8" color="accent" fxLayoutAlign="end" mat-raised-button>SAVE CONFIGURATION</button>
 
 </div>

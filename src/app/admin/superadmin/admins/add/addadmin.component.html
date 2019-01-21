@@ -1,4 +1,4 @@
-<mat-accordion >
+<mat-accordion>
     <mat-expansion-panel>
         <mat-expansion-panel-header class="expansion-headers-align">
             <mat-panel-title>
@@ -45,7 +45,8 @@
                 <mat-form-field #rolefield appearance="outline" class="pl-4" fxFlex="33">
                     <mat-label>Role</mat-label>
                     <mat-select formControlName="role" required>
-                        <mat-option *ngFor="let category of admincategories" [disabled]="userdata.config.level>category.level"
+                        <mat-option *ngFor="let category of admincategories"
+                                    [disabled]="userdata.config.level>category.level"
                                     [value]="category">
                             {{category.name |titlecase}}
                         </mat-option>
@@ -66,8 +67,7 @@
                     <mat-error>Level is required!</mat-error>
                 </mat-form-field>
                 <div class="pl-4" fxFlex="33">
-                    <button (click)='sendinvite()' class="sendbutton" color="accent" fxFlex="100" mat-raised-button
-                            matRipple>
+                    <button (click)='sendinvite()' class="sendbutton" color="accent" mat-raised-button matRipple>
                         Send Invite
                         <mat-icon aria-label="Example icon-button with a heart icon">send</mat-icon>
                     </button>

@@ -1,3 +1,12 @@
 .sendbutton {
     height: 100% !important;
 }
+.expansion-headers-align .mat-expansion-panel-header-title,
+.expansion-headers-align .mat-expansion-panel-header-description {
+    flex-basis: 0;
+}
+
+.expansion-headers-align .mat-expansion-panel-header-description {
+    justify-content: space-between;
+    align-items: center;
+}

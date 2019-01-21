@@ -1,5 +1,6 @@
 import {firestore} from 'firebase';
 import {emptymetadata, Metadata} from './universal';
+import {PaymentMethod} from './PaymentMethod';
 
 export interface Hospital {
     location: firestore.GeoPoint;
@@ -24,12 +25,6 @@ export interface Hospital {
     invoicecount: number;
     metadata: Metadata;
     paymentmethods: Array<PaymentMethod>;
-}
-
-export interface PaymentMethod {
-    accountnumber: string;
-    extrainfo: string;
-    id: string;
 }
 
 export const emptyhospital: Hospital = {

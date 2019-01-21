@@ -5,6 +5,8 @@ import {Hospital} from '../../models/Hospital';
 import {PaymentChannel} from '../../models/PaymentChannel';
 import {BehaviorSubject} from 'rxjs';
 
+// import * as paymentchannels from 'assets/paymentchannels.json';
+
 @Injectable({
     providedIn: 'root'
 })
@@ -41,9 +43,15 @@ export class PaymentmethodService {
         //
         // paymnetmethodkeys.forEach(async (methodname: string) => {
         //     console.log(methodname);
+        //     const channelmethods: Array<Paymentmethods> = paymentchannels.channels[methodname];
         //     const paymentchannel: PaymentChannel = {
         //         name: methodname,
-        //         methods: paymentchannels.channels[methodname]
+        //         id: null,
+        //         /**
+        //          * Convert the array to object without giving a fuck
+        //          */
+        //         // @ts-ignore
+        //         methods: {...channelmethods}
         //     };
         //     batch.set(this.db.firestore.collection('paymentchannels').doc(this.db.createId()), paymentchannel);
         // });

@@ -5,9 +5,10 @@ import {AddComponent} from './add/add.component';
 import {PatientsRoutingModule} from './patients-routing.module';
 import {AdminSharedModule} from '../shared/admin-shared.module';
 import {InvoiceComponent} from './invoice/invoice.component';
+import { ProfileComponent } from './profile/profile.component';
 
 @NgModule({
-    declarations: [AllComponent, AddComponent, InvoiceComponent],
+    declarations: [AllComponent, AddComponent, InvoiceComponent, ProfileComponent],
     imports: [
         CommonModule,
         PatientsRoutingModule,

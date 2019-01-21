@@ -122,10 +122,10 @@
                 <div class="note">Please make your payment within 1 day of the date of issue of the date of our invoice
                     or otherwise in accordance with any credit terms agreed between us via the following channels
                     <table>
-                        <tr *ngFor="let paymentchannel of activehospital.paymentchannels">
-                            <td>{{paymentchannel.name}}</td>
+                        <tr *ngFor="let paymentchannel of activehospital.paymentmethods">
+                            <td>{{paymentchannel.paymentmethodid}}</td>
                             :
-                            <td>{{paymentchannel.ref}}</td>
+                            <td>{{paymentchannel.paymentchannelid}}</td>
                         </tr>
                     </table>
                 </div>

@@ -20,6 +20,8 @@ import {FuseSharedModule} from '../@fuse/shared.module';
 import {Error404Module} from './errorpages/404/error-404.module';
 import {Error500Module} from './errorpages/500/error-500.module';
 import {FrontendModule} from './frontend/frontend.module';
+import {AgmCoreModule} from '@agm/core';
+import {CommonModule} from '@angular/common';
 
 export const firebaseConfig = {
     apiKey: 'AIzaSyDaiEsgWOaeopaYQTgTWPIatMeKLZjZc-A',
@@ -38,6 +40,10 @@ export const firebaseConfig = {
         BrowserModule,
         BrowserAnimationsModule,
         HttpClientModule,
+        CommonModule,
+        AgmCoreModule.forRoot({
+            apiKey: 'AIzaSyBLs7FSznETgYbDW0E3tR26lKFBzE43iaQ'
+        }),
         FuseModule.forRoot(fuseConfig),
         FuseSharedModule,
         FuseProgressBarModule,

@@ -9,9 +9,12 @@ import {PaymentChannel} from '../../../models/PaymentChannel';
 })
 export class HospconfigComponent implements OnInit {
     allpaymentmethods: Array<PaymentChannel>;
+    title: string = 'My first AGM project';
+    lat: number = 51.678418;
+    lng: number = 7.809007;
 
     constructor(private paymentmethods: PaymentmethodService) {
-        this.paymentmethods.allpaymentmethods.subscribe(methods => {
+        this.paymentmethods.allpaymentchannels.subscribe(methods => {
             this.allpaymentmethods = methods;
         });
     }

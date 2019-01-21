@@ -12,8 +12,9 @@ import {AdminlayoutComponent} from './adminlayout.component';
 import {DocumentationModule} from './documentation/documentation.module';
 import {AuthenticationModule} from './authentication/authentication.module';
 import {CalendarModule} from './calendar/calendar.module';
-import {SharedModule} from './shared/shared.module';
+import {AdminSharedModule} from './shared/admin-shared.module';
 import { AdminprofileComponent } from './adminprofile/adminprofile.component';
+import {AgmCoreModule, AgmMap} from '@agm/core';
 
 @NgModule({
     imports: [
@@ -36,14 +37,15 @@ import { AdminprofileComponent } from './adminprofile/adminprofile.component';
         AuthenticationModule,
         CalendarModule,
 
-        SharedModule
+        AdminSharedModule,
+
     ],
     declarations: [
         DashboardComponent,
         AdminlayoutComponent,
         AdminprofileComponent,
     ],
-    exports: [SharedModule],
+    exports: [AdminSharedModule],
     entryComponents: [],
     providers: [UsersGuard]
 })

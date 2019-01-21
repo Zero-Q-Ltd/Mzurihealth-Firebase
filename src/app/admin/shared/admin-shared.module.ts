@@ -32,9 +32,11 @@ import {MatMomentDateModule} from '@angular/material-moment-adapter';
 import {FuseSharedModule} from '../../../@fuse/shared.module';
 import {FuseConfirmDialogModule, FuseProgressBarModule, FuseSidebarModule, FuseThemeOptionsModule} from '../../../@fuse/components';
 import {RouterModule} from '@angular/router';
+import {AgmCoreModule} from '@agm/core';
 
 @NgModule({
     imports: [
+        AgmCoreModule,
 
         RouterModule,
 
@@ -78,6 +80,7 @@ import {RouterModule} from '@angular/router';
         FuseThemeOptionsModule
     ],
     exports: [
+        AgmCoreModule,
 
         RouterModule,
 
@@ -121,5 +124,5 @@ import {RouterModule} from '@angular/router';
         FuseThemeOptionsModule
     ]
 })
-export class SharedModule {
+export class AdminSharedModule {
 }

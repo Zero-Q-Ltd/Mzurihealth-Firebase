@@ -5,14 +5,14 @@ import {MineComponent} from './mine/mine.component';
 import {CurrrentComponent} from './currrent/currrent.component';
 import {QueueRoutingModule} from './queue-routing.module';
 import {QueueComponent} from './queue.component';
-import {SharedModule} from '../../shared/shared.module';
+import {AdminSharedModule} from '../../shared/admin-shared.module';
 
 @NgModule({
     declarations: [MainComponent, MineComponent, CurrrentComponent, QueueComponent],
     imports: [
         CommonModule,
         QueueRoutingModule,
-        SharedModule
+        AdminSharedModule
     ],
 })
 export class QueueModule {

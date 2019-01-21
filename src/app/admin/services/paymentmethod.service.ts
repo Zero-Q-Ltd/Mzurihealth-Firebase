@@ -10,20 +10,26 @@ import {BehaviorSubject} from 'rxjs';
 })
 export class PaymentmethodService {
     activehospital: Hospital;
-    allpaymentmethods: BehaviorSubject<Array<PaymentChannel>> = new BehaviorSubject<Array<PaymentChannel>>([]);
+    allpaymentchannels: BehaviorSubject<Array<PaymentChannel>> = new BehaviorSubject<Array<PaymentChannel>>([]);
 
     constructor(private db: AngularFirestore,
                 private hospitalservice: HospitalService) {
         this.hospitalservice.activehospital.subscribe(hospital => {
             if (hospital.id) {
                 this.activehospital = hospital;
-                this.getallpaymentmethods();
+                this.getallpaymentchannels();
             }
         });
     }
 
-    getallpaymentmethods(): void {
-
+    getallpaymentchannels(): void {
+        this.db.firestore.collection('paymentchannels').onSnapshot(paymentmethodsdata => {
+            this.allpaymentchannels.next(paymentmethodsdata.docs.map(methodata => {
+                const paymentChannel = methodata.data() as PaymentChannel;
+                paymentChannel.id = methodata.id;
+                return paymentChannel;
+            }));
+        });
     }
 
     async addallpaymnetmethods(): Promise<void> {

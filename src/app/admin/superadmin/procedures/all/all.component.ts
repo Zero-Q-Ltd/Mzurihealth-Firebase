@@ -60,13 +60,10 @@ export class AllComponent implements OnInit, AfterViewInit {
     }
 
     dileteprocedure(procedure: CustomProcedure): void {
-        console.log(procedure);
         this.confirmDialogRef = this._matDialog.open(FuseConfirmDialogComponent, {
             disableClose: false
         });
-
         this.confirmDialogRef.componentInstance.confirmMessage = 'Are you sure you want to delete this procedure?';
-
         this.confirmDialogRef.afterClosed().subscribe(result => {
             if (result) {
                 this.procedureservice.deleteprocedure(procedure.id).then(() => {

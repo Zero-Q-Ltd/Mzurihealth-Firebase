@@ -67,13 +67,10 @@ export class AlladminComponent implements OnInit {
     }
 
     cancelinvite(user: AdminInvite): void {
-
         this.confirmDialogRef = this._matDialog.open(FuseConfirmDialogComponent, {
             disableClose: false
         });
-
         this.confirmDialogRef.componentInstance.confirmMessage = 'Are you sure you want to cancel this invite?';
-
         this.confirmDialogRef.afterClosed().subscribe(result => {
             if (result) {
                 this.adminservice.deleteinvite(user.id).then(() => {
@@ -92,13 +89,10 @@ export class AlladminComponent implements OnInit {
     }
 
     disableadmin(user: HospitalAdmin): void {
-
         this.confirmDialogRef = this._matDialog.open(FuseConfirmDialogComponent, {
             disableClose: false
         });
-
         this.confirmDialogRef.componentInstance.confirmMessage = 'Are you sure you want disable this admin?';
-
         this.confirmDialogRef.afterClosed().subscribe(result => {
             if (result) {
                 this.adminservice.disableadmin(user.id).then(() => {
@@ -116,13 +110,10 @@ export class AlladminComponent implements OnInit {
     }
 
     enableadmin(user: HospitalAdmin): void {
-
         this.confirmDialogRef = this._matDialog.open(FuseConfirmDialogComponent, {
             disableClose: false
         });
-
         this.confirmDialogRef.componentInstance.confirmMessage = 'Are you sure you want enable this admin?';
-
         this.confirmDialogRef.afterClosed().subscribe(result => {
             if (result) {
                 this.adminservice.enableadmin(user.id).then(() => {

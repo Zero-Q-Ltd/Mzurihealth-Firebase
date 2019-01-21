@@ -2,7 +2,7 @@ import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {SuperadminRoutingModule} from './superadmin-routing.module';
 import {SuperadminComponent} from './superadmin.component';
-import {SharedModule} from '../shared/shared.module';
+import {AdminSharedModule} from '../shared/admin-shared.module';
 import {HospconfigComponent} from './hospconfig/hospconfig.component';
 import {AllComponent} from './procedures/all/all.component';
 import {ProcedureconfigComponent} from './procedures/procedureconfig/procedureconfig.component';
@@ -29,7 +29,7 @@ import { AdminconfigComponent } from './admins/adminconfig/adminconfig.component
     imports: [
         CommonModule,
         SuperadminRoutingModule,
-        SharedModule,
+        AdminSharedModule,
     ]
 })
 export class SuperAdminModule {

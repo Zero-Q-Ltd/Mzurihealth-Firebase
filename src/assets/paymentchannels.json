@@ -1,0 +1,210 @@
+{
+    "channels": {
+        "mobilemoney": [
+            {
+                "name": "airtel",
+                "imageurl": ""
+            },
+            {
+                "name": "mpesa",
+                "imageurl": ""
+            },
+            {
+                "name": "mtn",
+                "imageurl": ""
+            },
+            {
+                "name": "mtn",
+                "imageurl": ""
+            },
+            {
+                "name": "tigo",
+                "imageurl": ""
+            },
+            {
+                "name": "voda",
+                "imageurl": ""
+            }
+        ],
+        "card": [
+            {
+                "name": "visa",
+                "imageurl": ""
+            },
+            {
+                "name": "mastercard",
+                "imageurl": ""
+            }
+        ],
+        "bank": [
+            {
+                "name": "abc bank (kenya)",
+                "imageurl": ""
+            },
+            {
+                "name": "victoria commercial bank",
+                "imageurl": ""
+            },
+            {
+                "name": "united bank for africa",
+                "imageurl": ""
+            },
+            {
+                "name": "trans national bank kenya",
+                "imageurl": ""
+            },
+            {
+                "name": "standard chartered kenya",
+                "imageurl": ""
+            },
+            {
+                "name": "stanbic bank kenya",
+                "imageurl": ""
+            },
+            {
+                "name": "spire bank",
+                "imageurl": ""
+            },
+            {
+                "name": "sidian bank",
+                "imageurl": ""
+            },
+            {
+                "name": "sbm bank kenya limited",
+                "imageurl": ""
+            },
+            {
+                "name": "prime bank (kenya)",
+                "imageurl": ""
+            },
+            {
+                "name": "paramount universal bank",
+                "imageurl": ""
+            },
+            {
+                "name": "oriental commercial bank",
+                "imageurl": ""
+            },
+            {
+                "name": "nic bank",
+                "imageurl": ""
+            },
+            {
+                "name": "national bank of kenya",
+                "imageurl": ""
+            },
+            {
+                "name": "middle east bank kenya",
+                "imageurl": ""
+            },
+            {
+                "name": "mayfair bank",
+                "imageurl": ""
+            },
+            {
+                "name": "kenya commercial bank",
+                "imageurl": ""
+            },
+            {
+                "name": "jamii bora bank",
+                "imageurl": ""
+            },
+            {
+                "name": "imperial bank kenya (in receivership)",
+                "imageurl": ""
+            },
+            {
+                "name": "i&m bank",
+                "imageurl": ""
+            },
+            {
+                "name": "housing finance company of kenya",
+                "imageurl": ""
+            },
+            {
+                "name": "habib bank ag zurich",
+                "imageurl": ""
+            },
+            {
+                "name": "gulf african bank",
+                "imageurl": ""
+            },
+            {
+                "name": "guardian bank",
+                "imageurl": ""
+            },
+            {
+                "name": "guaranty trust bank kenya",
+                "imageurl": ""
+            },
+            {
+                "name": "first community bank",
+                "imageurl": ""
+            },
+            {
+                "name": "family bank",
+                "imageurl": ""
+            },
+            {
+                "name": "equity bank",
+                "imageurl": ""
+            },
+            {
+                "name": "ecobank kenya",
+                "imageurl": ""
+            },
+            {
+                "name": "dubai islamic bank",
+                "imageurl": ""
+            },
+            {
+                "name": "diamond trust bank",
+                "imageurl": ""
+            },
+            {
+                "name": "development bank of kenya",
+                "imageurl": ""
+            },
+            {
+                "name": "credit bank",
+                "imageurl": ""
+            },
+            {
+                "name": "cooperative bank of kenya",
+                "imageurl": ""
+            },
+            {
+                "name": "consolidated bank of kenya",
+                "imageurl": ""
+            },
+            {
+                "name": "commercial bank of africa",
+                "imageurl": ""
+            },
+            {
+                "name": "citibank",
+                "imageurl": ""
+            },
+            {
+                "name": "chase bank kenya",
+                "imageurl": ""
+            },
+            {
+                "name": "barclays bank of kenya",
+                "imageurl": ""
+            },
+            {
+                "name": "bank of india",
+                "imageurl": ""
+            },
+            {
+                "name": "bank of baroda",
+                "imageurl": ""
+            },
+            {
+                "name": "bank of africa",
+                "imageurl": ""
+            }
+        ]
+    }
+}

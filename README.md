@@ -1,12 +1,9 @@
 # Mzurihealth
+Hospital management system for patient records, queues and appointments
+## The Theme
+Built on top of fuse theme
 
-Material Design Admin Template with Angular 7+ and Angular Material
-
-## The Community
-
-Share your ideas, discuss Fuse and help each other.
-
-[Click here](http://fusetheme.com/community) to see our Community page.
+[Click here](http://fusetheme.com/community) to see the Community page.
 
 ## Development server
 

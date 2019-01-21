@@ -20,11 +20,16 @@ export interface Hospital {
         email: string,
         address: string
     };
-    paymentchannels: Array<{ name: string, ref: number }>;
     patientcount: number;
     invoicecount: number;
     metadata: Metadata;
+    paymentmethods: Array<PaymentMethod>;
+}
 
+export interface PaymentMethod {
+    accountnumber: string;
+    extrainfo: string;
+    id: string;
 }
 
 export const emptyhospital: Hospital = {
@@ -49,5 +54,5 @@ export const emptyhospital: Hospital = {
     patientcount: null,
     invoicecount: null,
     metadata: emptymetadata,
-    paymentchannels: []
+    paymentmethods: []
 };

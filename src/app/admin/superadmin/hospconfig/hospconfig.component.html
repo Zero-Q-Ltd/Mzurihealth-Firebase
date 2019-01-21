@@ -90,7 +90,9 @@
         </mat-form-field>
     </div>
     <span class="pl-24" fxFlex="1 1 100%">Payment Options</span>
-    <div *ngFor="let paymentchannel of activehospital.paymentmethods ; let i = index" class="px-8" fxFlex="1 1 100%">
+    <div *ngFor="let paymentchannel of activehospital.paymentmethods ; let i = index"
+         [@animate]="{value:'*',params:{y:'100%'}}"
+         class="px-8" fxFlex="1 1 100%">
         <mat-form-field appearance="outline" class="pl-4" fxFlex="24">
             <mat-label>Channel</mat-label>
             <mat-select [(ngModel)]="activehospital.paymentmethods[i].paymentchannelid" required>
@@ -132,13 +134,13 @@
             </button>
         </div>
     </div>
-    <div class="pb-24" fxFlex="1 1 100%" class="pl-8">
-        <button (click)="addpaymentarray()"  color="primary"  mat-mini-fab>
+    <div class="pb-24" class="pl-8" fxFlex="1 1 100%">
+        <button (click)="addpaymentarray()" color="primary" mat-mini-fab>
             <mat-icon aria-label="Example icon-button with a heart icon">add</mat-icon>
         </button>
     </div>
     <div class="p-24">
-        <div >
+        <div>
             <button (click)="savehospitalchanges()" class="p-8" color="accent" mat-raised-button>SAVE
                 CONFIGURATION
             </button>

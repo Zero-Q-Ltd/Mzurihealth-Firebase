@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {PaymentmethodService} from '../../services/paymentmethod.service';
 import {PaymentChannel} from '../../../models/PaymentChannel';
 import {emptyhospital, Hospital} from '../../../models/Hospital';
@@ -10,13 +10,16 @@ import {FuseConfirmDialogComponent} from '../../../../@fuse/components/confirm-d
 import {MatDialog, MatDialogRef} from '@angular/material';
 import {emptypaymentmethod} from '../../../models/PaymentMethod';
 import {LocalcommunicationService} from '../procedures/localcommunication.service';
+import {fuseAnimations} from '../../../../@fuse/animations';
 
 declare let google: any;
 
 @Component({
     selector: 'app-hospconfig',
     templateUrl: './hospconfig.component.html',
-    styleUrls: ['./hospconfig.component.scss']
+    styleUrls: ['./hospconfig.component.scss'],
+    encapsulation: ViewEncapsulation.None,
+    animations: fuseAnimations
 })
 export class HospconfigComponent implements OnInit {
     allpaymentchannels: Array<PaymentChannel>;
@@ -24,7 +27,9 @@ export class HospconfigComponent implements OnInit {
     defaultlat = -1.2939519;
     defaultlng = 36.8311134;
     zoom = 12;
-    activehospital: Hospital = {...emptyhospital};
+    temphospital: Hospital = {...emptyhospital};
+    originalhspital: Hospital = {...emptyhospital};
+
     paymentchannels: Array<PaymentChannel> = [];
 
     constructor(private paymentmethodService: PaymentmethodService,
@@ -40,7 +45,7 @@ export class HospconfigComponent implements OnInit {
          * that unsaved changes are ignored and the view is reset to the old values
          */
         communicatioservice.ontabchanged.subscribe(tab => {
-            console.log('tabchanged');
+            // console.log('tabchanged');
             if (tab === 2) {
                 this.initvalues();
             }
@@ -49,28 +54,32 @@ export class HospconfigComponent implements OnInit {
 
     initvalues(): void {
         this.hospitalservice.activehospital.subscribe(hosp => {
-            console.log(hosp);
+            // console.log(hosp);
             /**
              * create a new variable
              */
-            this.activehospital = Object.assign({}, hosp);
+            this.originalhspital = hosp;
+            if (hosp.paymentmethods.length < 1) {
+                this.originalhspital.paymentmethods.push({...emptypaymentmethod});
+            }
+            this.temphospital = {...this.originalhspital};
             /**
              * initialize some vars
              */
             if (!hosp.location) {
-                this.activehospital.location = new firestore.GeoPoint(this.defaultlat, this.defaultlng);
+                this.temphospital.location = new firestore.GeoPoint(this.defaultlat, this.defaultlng);
             } else {
+                this.defaultlat = hosp.location.latitude;
+                this.defaultlng = hosp.location.longitude;
                 this.zoom = 15;
             }
-            if (hosp.paymentmethods.length < 1) {
-                this.addpaymentarray();
-            }
+
         });
     }
 
     mapClicked($event: MouseEvent): void {
         const location: firestore.GeoPoint = new firestore.GeoPoint($event.coords.lat, $event.coords.lng);
-        this.activehospital.location = location;
+        this.temphospital.location = location;
     }
 
     ngOnInit(): void {
@@ -78,14 +87,14 @@ export class HospconfigComponent implements OnInit {
     }
 
     savehospitalchanges(): void {
-        console.log(this.activehospital);
+        console.log(JSON.stringify(this.temphospital) === JSON.stringify(this.originalhspital));
         this.confirmDialogRef = this._matDialog.open(FuseConfirmDialogComponent, {
             disableClose: false
         });
         this.confirmDialogRef.componentInstance.confirmMessage = 'Are you sure you want to save these changes?';
         this.confirmDialogRef.afterClosed().subscribe(result => {
             if (result) {
-                this.hospitalservice.savehospitalchanges(this.activehospital).then(() => {
+                this.hospitalservice.savehospitalchanges(this.temphospital).then(() => {
 
                     this.notificationservice.notify({
                         placement: 'centre',
@@ -99,16 +108,16 @@ export class HospconfigComponent implements OnInit {
     }
 
     addpaymentarray(): void {
-        this.activehospital.paymentmethods.push({...emptypaymentmethod});
+        this.temphospital.paymentmethods.push({...emptypaymentmethod});
     }
 
     channelselected(channel: PaymentChannel, index: number): void {
-        this.activehospital.paymentmethods[index].paymentchannelid = channel.id;
+        this.temphospital.paymentmethods[index].paymentchannelid = channel.id;
     }
 
     methodselected(methodid: string, index: number): void {
-        this.activehospital.paymentmethods[index].paymentmethodid = methodid;
-        console.log(this.activehospital.paymentmethods[index]);
+        this.temphospital.paymentmethods[index].paymentmethodid = methodid;
+        console.log(this.temphospital.paymentmethods[index]);
     }
 
     getpaymentchannel(id: string): PaymentChannel | null {
@@ -123,7 +132,7 @@ export class HospconfigComponent implements OnInit {
     }
 
     deletepayment(index: number): void {
-        this.activehospital.paymentmethods.splice(index, 1);
+        this.temphospital.paymentmethods.splice(index, 1);
     }
 
     getpaymentmethod(paymentchannelid: string, paymentmethodid: string): string | null {

@@ -8,8 +8,8 @@
                     <mat-icon>clear</mat-icon>
                 </button>
             </div>
-            <div fxFlex="50"  fxLayoutAlign="end">
-                <button (click)="saveprocedureconfig()" aria-label="More"  mat-icon-button
+            <div fxFlex="50" fxLayoutAlign="end">
+                <button (click)="saveprocedureconfig()" aria-label="More" mat-icon-button
                         mat-raised-button matTooltip="Save">
                     <mat-icon>save</mat-icon>
                 </button>
@@ -51,14 +51,15 @@
                     <mat-icon class="disabled-text" matSuffix>search</mat-icon>
                 </mat-form-field>
             </div>
-            <div *ngIf="selectecustomprocedure.customprocedure.custominsuranceprice ">
+            <div *ngIf="selectecustomprocedure.customprocedure.custominsuranceprice " [@animateStagger]="{value:'50'}">
                 <span *ngFor='let insurance of filteredinsurance' [@animate]="{value:'*',params:{y:'100%'}}">
-                <mat-form-field appearance="outline" fxFlex="100">
-                <mat-label>{{insurance.name}}</mat-label>
-                <input [(ngModel)]='selectecustomprocedure.customprocedure.insuranceprices[insurance.id]' matInput
-                       type="number">
-                <mat-icon class="disabled-text" matSuffix>attach_money</mat-icon>
-                </mat-form-field>
+                    <mat-form-field appearance="outline" fxFlex="100">
+                        <mat-label>{{insurance.name}}</mat-label>
+                        <input [(ngModel)]='selectecustomprocedure.customprocedure.insuranceprices[insurance.id]'
+                               matInput
+                               type="number">
+                        <mat-icon class="disabled-text" matSuffix>attach_money</mat-icon>
+                    </mat-form-field>
                 </span>
             </div>
         </div>

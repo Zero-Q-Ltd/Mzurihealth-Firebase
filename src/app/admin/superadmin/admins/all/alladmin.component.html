@@ -185,7 +185,7 @@
     </ng-container>
 
     <mat-row (click)="ondeselect()" *matRowDef="let admin; columns: adminheaders;"
-             class="product"
+             class="product" [@animate]="{value:'*',params:{y:'100%'}}"
              matRipple>
     </mat-row>
 

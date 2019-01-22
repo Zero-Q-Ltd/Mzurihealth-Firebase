@@ -14,7 +14,8 @@
             <!-- APP TITLE -->
             <div fxLayout="row" fxLayoutAlign="start center">
                 <!--only show the sidebar toggle button when the active page is current patient-->
-                <button (click)="toggleSidebar('current-patients-sidebar')" *ngIf="activetabindex === 2" class="sidebar-toggle mr-12" fxHide.gt-sm
+                <button (click)="toggleSidebar('current-patients-sidebar')" *ngIf="activetabindex === 2"
+                        class="sidebar-toggle mr-12" fxHide.gt-sm
                         mat-icon-button>
                     <mat-icon>menu</mat-icon>
                 </button>
@@ -51,10 +52,27 @@
 
             <!-- CONTENT -->
 
-
+            <!--<nav mat-tab-nav-bar>-->
+                <!--<a (click)="activeLink = 'main'"-->
+                   <!--[active]="activeLink === 'main'"-->
+                   <!--[routerLink]="['main']"-->
+                   <!--mat-tab-link>-->
+                    <!--Main Queue-->
+                <!--</a>-->
+                <!--<a (click)="activeLink = 'mine'"-->
+                   <!--[active]="activeLink === 'mine'"-->
+                   <!--[routerLink]="['mine']"-->
+                   <!--mat-tab-link>-->
+                    <!--My Queue-->
+                <!--</a>-->
+                <!--<a (click)="activeLink = 'current'"-->
+                   <!--[active]="activeLink === 'current'"-->
+                   <!--[routerLink]="['current']"-->
+                   <!--mat-tab-link>-->
+                    <!--Current-->
+                <!--</a>-->
+            <!--</nav>-->
             <mat-tab-group (selectedTabChange)="tabChanged($event)">
-                <a mat-tab-link [routerLink]="['/main']">Main Queue</a>
-
                 <mat-tab label="Main Queue">
                     <div class="tab-content p-24" fusePerfectScrollbar>
                         <queue-mine></queue-mine>

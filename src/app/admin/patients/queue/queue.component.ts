@@ -16,6 +16,8 @@ import {LocalcommunicationService} from './current/localcommunication.service';
 export class QueueComponent implements OnInit {
     searchInput: FormControl;
     activetabindex = 0;
+    links = ['/First', 'Second', 'Third'];
+    activeLink = this.links[0];
 
     constructor(private _fuseSidebarService: FuseSidebarService, private communication: LocalcommunicationService) {
         this.communication.ontabchanged.subscribe(tabindex => {

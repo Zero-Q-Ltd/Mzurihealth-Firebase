@@ -33,7 +33,7 @@ export class HospitalService {
             .where('config.hospitalid', '==', this.activehospital.value.id)
             .onSnapshot(hospitaladmindocs => {
                 this.hospitaladmins.next(hospitaladmindocs.docs.map(hospitaladmin => {
-                    const admin = hospitaladmin.data() as HospitalAdmin;
+                    const admin = Object.assign({}, hospitaladmin.data() as HospitalAdmin);
                     admin.id = hospitaladmin.id;
                     return admin;
                 }));

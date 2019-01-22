@@ -34,7 +34,7 @@
             <div [@animate]="{value:'*', params:{delay:'150ms',scale:'0.2'}}" class="ml-sm-32" fxFlex fxLayout="row"
                  fxLayoutAlign="center center">
 
-                <div class="search-wrapper mt-16 mt-sm-0">
+                <div class="search-wrapper mt-16 mt-sm-0" [@fadeInOut]="activetabindex !== 2">
 
                     <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
                         <mat-icon>search</mat-icon>
@@ -53,24 +53,24 @@
             <!-- CONTENT -->
 
             <!--<nav mat-tab-nav-bar>-->
-                <!--<a (click)="activeLink = 'main'"-->
-                   <!--[active]="activeLink === 'main'"-->
-                   <!--[routerLink]="['main']"-->
-                   <!--mat-tab-link>-->
-                    <!--Main Queue-->
-                <!--</a>-->
-                <!--<a (click)="activeLink = 'mine'"-->
-                   <!--[active]="activeLink === 'mine'"-->
-                   <!--[routerLink]="['mine']"-->
-                   <!--mat-tab-link>-->
-                    <!--My Queue-->
-                <!--</a>-->
-                <!--<a (click)="activeLink = 'current'"-->
-                   <!--[active]="activeLink === 'current'"-->
-                   <!--[routerLink]="['current']"-->
-                   <!--mat-tab-link>-->
-                    <!--Current-->
-                <!--</a>-->
+            <!--<a (click)="activeLink = 'main'"-->
+            <!--[active]="activeLink === 'main'"-->
+            <!--[routerLink]="['main']"-->
+            <!--mat-tab-link>-->
+            <!--Main Queue-->
+            <!--</a>-->
+            <!--<a (click)="activeLink = 'mine'"-->
+            <!--[active]="activeLink === 'mine'"-->
+            <!--[routerLink]="['mine']"-->
+            <!--mat-tab-link>-->
+            <!--My Queue-->
+            <!--</a>-->
+            <!--<a (click)="activeLink = 'current'"-->
+            <!--[active]="activeLink === 'current'"-->
+            <!--[routerLink]="['current']"-->
+            <!--mat-tab-link>-->
+            <!--Current-->
+            <!--</a>-->
             <!--</nav>-->
             <mat-tab-group (selectedTabChange)="tabChanged($event)">
                 <mat-tab label="Main Queue">

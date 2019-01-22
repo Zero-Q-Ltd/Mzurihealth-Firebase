@@ -16,16 +16,18 @@
                 </mat-icon>
             </mat-panel-description>
         </mat-expansion-panel-header>
-        <agm-map (mapClick)="mapClicked($event)"
-                 [latitude]="defaultlat"
-                 [longitude]="defaultlng"
-                 [zoomControl]="false"
-                 [zoom]="zoom">
-            <agm-marker [latitude]="temphospital.location.latitude"
-                        [longitude]="temphospital.location.longitude"
-                        [markerDraggable]=true>
-            </agm-marker>
-        </agm-map>
+        <ng-template matExpansionPanelContent>
+            <agm-map (mapClick)="mapClicked($event)"
+                     [latitude]="defaultlat"
+                     [longitude]="defaultlng"
+                     [zoomControl]="false"
+                     [zoom]="zoom">
+                <agm-marker [latitude]="temphospital.location.latitude"
+                            [longitude]="temphospital.location.longitude"
+                            [markerDraggable]=true>
+                </agm-marker>
+            </agm-map>
+        </ng-template>
     </mat-expansion-panel>
 
     <div class="p-8" fxFlex="1 1 100%">

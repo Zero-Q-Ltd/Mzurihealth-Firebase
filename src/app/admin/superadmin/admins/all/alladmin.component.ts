@@ -5,7 +5,7 @@ import {fuseAnimations} from '../../../../../@fuse/animations';
 import {HospitalService} from '../../../services/hospital.service';
 import {AdminService} from '../../../services/admin.service';
 import {ProceduresService} from '../../../services/procedures.service';
-import {LocalcommunicationService} from '../../procedures/localcommunication.service';
+import {LocalcommunicationService} from '../../localcommunication.service';
 import {AdminInvite} from '../../../../models/AdminInvite';
 import {AdminCategory} from '../../../../models/AdminCategory';
 import {FuseConfirmDialogComponent} from '../../../../../@fuse/components/confirm-dialog/confirm-dialog.component';

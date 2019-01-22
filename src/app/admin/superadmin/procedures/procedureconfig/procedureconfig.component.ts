@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {fuseAnimations} from '../../../../../@fuse/animations';
-import {LocalcommunicationService} from '../localcommunication.service';
+import {LocalcommunicationService} from '../../localcommunication.service';
 import {emptyprawrocedure, RawProcedure} from '../../../../models/RawProcedure';
 import {InsuranceService} from '../../../services/insurance.service';
 import {InsuranceCompany} from '../../../../models/InsuranceCompany';

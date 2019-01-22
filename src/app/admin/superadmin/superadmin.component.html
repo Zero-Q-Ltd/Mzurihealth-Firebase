@@ -20,8 +20,8 @@
 
             <div class="logo" fxLayout="row" fxLayoutAlign="start center">
 
-                <button mat-icon-button class="sidebar-toggle mr-8" fxHide.gt-md
-                        (click)="toggleSidebar('procedureconfig-sidebar')">
+                <button (click)="toggleSidebar('procedureconfig-sidebar')" class="sidebar-toggle mr-8" fxHide.gt-md
+                        mat-icon-button>
                     <mat-icon>menu</mat-icon>
                 </button>
                 <mat-icon [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
@@ -34,7 +34,7 @@
             <button (click)="toggleactiveside()"
                     [@animate]="{value:'*', params:{delay:'300ms',scale:'0.2'}}"
                     [@fadeInOut]="activetabindex === 0"
-                    [color]="activeside ? 'accent' : 'warn' "
+                    [color]="activeside ? 'primary' : 'warn' "
                     aria-label="Add Procedure"
                     class="vutadown"
                     mat-fab>
@@ -49,22 +49,28 @@
 
             <mat-tab-group (selectedTabChange)="tabChanged($event)">
                 <mat-tab label="Procedures">
-                    <div *ngIf="activetabindex === 0" class="tab-content p-24" fusePerfectScrollbar>
-                        <procedures-all *ngIf="!activeside"></procedures-all>
-                        <procedure-add *ngIf="activeside"></procedure-add>
-                    </div>
+                    <ng-template matTabContent>
+                        <div *ngIf="activetabindex === 0" class="tab-content p-24" fusePerfectScrollbar>
+                            <procedures-all *ngIf="!activeside"></procedures-all>
+                            <procedure-add *ngIf="activeside"></procedure-add>
+                        </div>
+                    </ng-template>
                 </mat-tab>
 
                 <mat-tab label="Admins">
-                    <div *ngIf="activetabindex === 1" class="tab-content p-24" fusePerfectScrollbar>
-                        <admins-all ></admins-all>
-                    </div>
+                    <ng-template matTabContent>
+                        <div *ngIf="activetabindex === 1" class="tab-content p-24" fusePerfectScrollbar>
+                            <admins-all></admins-all>
+                        </div>
+                    </ng-template>
                 </mat-tab>
 
                 <mat-tab label="Hospital Config">
-                    <div class="tab-content p-24" fusePerfectScrollbar>
-                        <app-hospconfig></app-hospconfig>
-                    </div>
+                    <ng-template matTabContent>
+                        <div class="tab-content p-24" fusePerfectScrollbar>
+                            <app-hospconfig></app-hospconfig>
+                        </div>
+                    </ng-template>
                 </mat-tab>
             </mat-tab-group>
 

@@ -9,7 +9,7 @@ import {NotificationService} from '../../../shared/services/notifications.servic
 import {FuseConfirmDialogComponent} from '../../../../@fuse/components/confirm-dialog/confirm-dialog.component';
 import {MatDialog, MatDialogRef} from '@angular/material';
 import {emptypaymentmethod} from '../../../models/PaymentMethod';
-import {LocalcommunicationService} from '../procedures/localcommunication.service';
+import {LocalcommunicationService} from '../localcommunication.service';
 import {fuseAnimations} from '../../../../@fuse/animations';
 
 declare let google: any;

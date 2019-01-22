@@ -4,7 +4,10 @@ import {QueueComponent} from './queue.component';
 
 const routes: Routes = [
     {
-        path: '',
+        /**
+         * Route everything to the main component
+         */
+        path: '**',
         component: QueueComponent,
     },
 ];

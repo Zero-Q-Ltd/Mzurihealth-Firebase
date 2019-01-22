@@ -6,21 +6,25 @@ export interface Patient {
     personalinfo: {
         address: string,
         photoURL: string
-        name: string,
+        name?: string,
+        firstname: string,
+        secondname: string,
         gender: number,
         occupation: string,
         workplace: string,
         phone: number,
         email: string,
         idno: string,
+        birth: string,
         dob: firestore.Timestamp,
     };
     fileinfo?: HospFile;
-    id: string;
+    id?: string;
     /**
      * Optional parent id number for minors
      */
     parentid?: string;
+
     nextofkin: {
         name: string,
         relationship: string,
@@ -58,6 +62,8 @@ export const emptypatient: Patient = {
         address: null,
         photoURL: null,
         name: null,
+        firstname: null,
+        secondname: null,
         gender: 0,
         occupation: null,
         workplace: null,
@@ -65,6 +71,7 @@ export const emptypatient: Patient = {
         email: null,
         idno: null,
         dob: null,
+        birth: null
     },
     id: null,
     nextofkin: {

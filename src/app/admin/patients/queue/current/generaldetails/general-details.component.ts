@@ -1,7 +1,6 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {fuseAnimations} from '../../../../../../@fuse/animations';
 import {emptypatient, Patient} from '../../../../../models/Patient';
-import {LocalcommunicationService} from '../localcommunication.service';
 import * as moment from 'moment';
 
 @Component({
@@ -12,12 +11,10 @@ import * as moment from 'moment';
 
 })
 export class GeneralDetailsComponent implements OnInit {
-    patient: Patient = {...emptypatient};
+    @Input() patient: Patient = {...emptypatient};
 
-    constructor(private communication: LocalcommunicationService) {
-        communication.selectedpatient.subscribe(patient => {
-            this.patient = patient;
-        });
+    constructor() {
+
     }
 
     ngOnInit(): void {

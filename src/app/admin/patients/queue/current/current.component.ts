@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {fuseAnimations} from '../../../../../@fuse/animations';
 import {LocalcommunicationService} from './localcommunication.service';
+import {Patient} from '../../../../models/Patient';
 
 @Component({
     selector: 'patient-current',
@@ -10,10 +11,14 @@ import {LocalcommunicationService} from './localcommunication.service';
 })
 export class CurrentComponent implements OnInit {
     activepage: string = 'generaldetails';
+    patient: Patient;
 
     constructor(private communication: LocalcommunicationService) {
         communication.onactivechildpagechanged.subscribe(page => {
             this.activepage = page;
+        });
+        communication.selectedpatient.subscribe(patient => {
+            this.patient = patient;
         });
     }
 

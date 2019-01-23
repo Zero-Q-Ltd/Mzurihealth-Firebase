@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
+import {emptypatient, Patient} from '../../../../../models/Patient';
 
 @Component({
   selector: 'patient-history',
@@ -6,6 +7,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./history.component.scss']
 })
 export class HistoryComponent implements OnInit {
+    @Input() patient: Patient = {...emptypatient};
 
   constructor() { }
 

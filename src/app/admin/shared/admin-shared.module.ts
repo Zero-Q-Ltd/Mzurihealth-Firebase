@@ -33,9 +33,11 @@ import {FuseSharedModule} from '../../../@fuse/shared.module';
 import {FuseConfirmDialogModule, FuseProgressBarModule, FuseSidebarModule, FuseThemeOptionsModule} from '../../../@fuse/components';
 import {RouterModule} from '@angular/router';
 import {AgmCoreModule} from '@agm/core';
+import {CommonModule} from '@angular/common';
 
 @NgModule({
     imports: [
+        CommonModule,
         AgmCoreModule,
 
         RouterModule,
@@ -81,6 +83,7 @@ import {AgmCoreModule} from '@agm/core';
         FuseThemeOptionsModule
     ],
     exports: [
+        CommonModule,
         AgmCoreModule,
 
         RouterModule,

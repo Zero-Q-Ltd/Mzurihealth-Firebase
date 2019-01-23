@@ -16,7 +16,7 @@
             </div>
         </div>
         <div>
-            <div class="h3 "><span>{{selectecustomprocedure.rawprocedure.name | titlecase}}</span></div>
+            <div class="h3 "><strong>{{selectecustomprocedure.rawprocedure.name | titlecase}}</strong></div>
             <div class="h4 secondary-text">
                 <span>Creation Date</span>
                 <span>: {{selectecustomprocedure.customprocedure.metadata.date?.toDate().toDateString() || getdate()}}</span>

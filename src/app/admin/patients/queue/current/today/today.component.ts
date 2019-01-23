@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
+import {emptypatient, Patient} from '../../../../../models/Patient';
 
 @Component({
   selector: 'patient-today',
@@ -6,6 +7,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./today.component.scss']
 })
 export class TodayComponent implements OnInit {
+    @Input() patient: Patient = {...emptypatient};
 
   constructor() { }
 

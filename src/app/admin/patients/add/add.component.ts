@@ -11,7 +11,7 @@ import {emptypatienthistory, PatientVisit} from '../../../models/PatientVisit';
 import {emptypatient, Patient} from '../../../models/Patient';
 import {emptyfile, HospFile} from '../../../models/HospFile';
 import * as moment from 'moment';
-import {AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {fuseAnimations} from '../../../../@fuse/animations';
 import {Observable} from 'rxjs';
 
@@ -113,8 +113,7 @@ export class AddComponent implements OnInit {
         const userWorkplace = new FormControl('', Validators.required);
         const userPhone = new FormControl('', Validators.required);
         const address = new FormControl('', Validators.compose([
-            Validators.required,
-            Validators.email
+            Validators.required
         ]));
 
         const fileno = new FormControl('', Validators.required);
@@ -144,7 +143,7 @@ export class AddComponent implements OnInit {
         const kinWorkplace = new FormControl('', Validators.required);
 
         this.nextofkin = new FormGroup({
-            relationship,
+            relationship: relationship,
             name: kinName,
             phone: kinPhone,
             workplace: kinWorkplace
@@ -168,32 +167,12 @@ export class AddComponent implements OnInit {
         this.insurance = this.patientsForm.get('insurance') as FormArray;
     }
 
-    /**
-     * validator like to listen to changes of the value
-     * */
-    shouldEnableInsuranceNumber(control: AbstractControl): any {
-
-        for (const formG of this.insurance.controls) {
-
-            if (control.value !== '') {
-                formG.get('insurance').enable({onlySelf: true});
-
-            } else {
-                formG.get('insurance').patchValue('');
-                formG.get('insurance').disable();
-            }
-        }
-        // not interest in the errors.
-        return null;
-    }
-
 
     submitPatientsForm(): void {
-        console.log(this.patientsForm);
-        console.log('raw data');
-        console.log(this.patientsForm.getRawValue());
         if (this.patientsForm.valid) {
-
+            this.patientservice.savePatient(this.patientsForm.getRawValue()).then(() => {
+                console.log('patient added successfully');
+            });
         } else {
             this.notificationservice.notify({
                 alert_type: 'error',
@@ -213,7 +192,7 @@ export class AddComponent implements OnInit {
         });
 
         return this.formBuilder.group({
-            insurance: insurancex,
+            id: insurancex,
             insurancenumber: insurancenumber
         });
     }
@@ -221,9 +200,9 @@ export class AddComponent implements OnInit {
     insurancechanges(): void {
 
         this.insurance.controls.forEach(x => {
-            x.get('insurance').valueChanges.subscribe(g => {
+            x.get('id').valueChanges.subscribe(g => {
                 if (g) {
-                    if (x.get('insurance').value.toString().length > -1) {
+                    if (x.get('id').value.toString().length > -1) {
                         x.get('insurancenumber').enable({emitEvent: false});
                     } else {
                         x.get('insurancenumber').disable({emitEvent: false});

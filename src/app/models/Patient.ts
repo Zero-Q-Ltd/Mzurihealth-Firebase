@@ -6,20 +6,17 @@ export interface Patient {
     personalinfo: {
         address: string,
         photoURL: string
-        name?: string,
-        firstname: string,
-        secondname: string,
+        name: string,
         gender: number,
         occupation: string,
         workplace: string,
         phone: number,
         email: string,
         idno: string,
-        birth: string,
         dob: firestore.Timestamp,
     };
     fileinfo?: HospFile;
-    id?: string;
+    id: string;
     /**
      * Optional parent id number for minors
      */
@@ -41,6 +38,7 @@ export interface Patient {
         bloodtype: string,
         conditions: Array<Coditions>
         allergies: Array<string>;
+        metadata: Metadata;
     };
     /**
      * used in queries so that you can optionally disable some patients
@@ -62,8 +60,6 @@ export const emptypatient: Patient = {
         address: null,
         photoURL: null,
         name: null,
-        firstname: null,
-        secondname: null,
         gender: 0,
         occupation: null,
         workplace: null,
@@ -71,7 +67,6 @@ export const emptypatient: Patient = {
         email: null,
         idno: null,
         dob: null,
-        birth: null
     },
     id: null,
     nextofkin: {
@@ -85,8 +80,9 @@ export const emptypatient: Patient = {
         bloodtype: null,
         conditions: [],
         allergies: [],
+        metadata: emptymetadata
     },
-    status: null,
+    status: true,
     exrainfo: null,
     primaryhosp: null,
     customfuelds: [],

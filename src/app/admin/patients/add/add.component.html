@@ -117,7 +117,18 @@
                             <mat-form-field appearance="outline" fxFlex="100">
                                 <mat-label>Email Address</mat-label>
                                 <input matInput placeholder="Enter your email" formControlName="email" required>
-                                <mat-error>Address is required!</mat-error>
+                                <mat-error>Email address is required!</mat-error>
+                            </mat-form-field>
+
+                        </div>
+
+                        <!--Email address-->
+                        <div fxFlex="1 0 auto" fxLayout="row wrap" fxLayoutAlign="start center">
+
+                            <mat-form-field appearance="outline" fxFlex="100">
+                                <mat-label>Ocupation</mat-label>
+                                <input matInput placeholder="Enter your occupation" formControlName="occupation">
+                                <mat-error>Occupation is required!</mat-error>
                             </mat-form-field>
 
                         </div>
@@ -164,9 +175,9 @@
                             <mat-form-field appearance="outline" class="pr-4" fxFlex="50">
                                 <mat-label>Insurance Company</mat-label>
 
-                                <mat-select formControlName="insurance" required>
-                                    <mat-option *ngFor="let option of allInsurance" [value]="option?.name">
-                                       {{option.name}}
+                                <mat-select formControlName="id" required>
+                                    <mat-option *ngFor="let option of allInsurance" [value]="option?.id">
+                                        {{option.name}}
                                     </mat-option>
                                 </mat-select>
                                 <mat-icon class="secondary-text" matSuffix>local_hospital</mat-icon>
@@ -185,7 +196,8 @@
 
                     </section>
                     <div fxFlex="1 0 auto" fxLayout="column" fxLayoutAlign="start start">
-                        <button  type="button" color="accent" mat-raised-button (click)="addInsurance()">Add Insurance</button>
+                        <button type="button" color="accent" mat-raised-button (click)="addInsurance()">Add Insurance
+                        </button>
                     </div>
 
 
@@ -200,16 +212,9 @@
 
                             <mat-form-field appearance="outline" fxFlex="100">
                                 <mat-label>Relationship Status</mat-label>
-                                <mat-select formControlName="relationship" required>
-                                    <mat-option [value]="'single'">
-                                        Single
-                                    </mat-option>
-                                    <mat-option [value]="'married'">
-                                        Married
-                                    </mat-option>
-                                </mat-select>
+                                <input formControlName="relationship" matInput required>
                                 <mat-icon class="secondary-text" matSuffix>outlined_flag</mat-icon>
-                                <mat-error>Country is required!</mat-error>
+                                <mat-error>Relationship is required!</mat-error>
                             </mat-form-field>
 
                         </div>

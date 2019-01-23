@@ -14,8 +14,6 @@ import * as moment from 'moment';
 import {AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {fuseAnimations} from '../../../../@fuse/animations';
 import {Observable} from 'rxjs';
-import {InsuranceValidator} from '../../validators/insurance.validator';
-import {map, startWith} from 'rxjs/operators';
 
 @Component({
     selector: 'app-add',
@@ -48,13 +46,6 @@ export class AddComponent implements OnInit {
                 private notificationservice: NotificationService,
                 @Optional() @Inject(MAT_DIALOG_DATA) public data?: any) {
 
-        this.hospitalservice.activehospital.subscribe(hospital => {
-            if (hospital.id) {
-                this.activehospital = hospital;
-                this.patientfileno.no = (hospital.patientcount + 1).toString();
-            }
-        });
-
 
         /**
          * initialize forms
@@ -66,16 +57,30 @@ export class AddComponent implements OnInit {
         * */
         this.insuranceservice.allinsurance.subscribe(insurances => {
             this.allInsurance = insurances;
-            // iterate the whole array and set validators
-            for (const formG of this.insurance.controls) {
-                formG.get('insurance').setValidators([
-                    InsuranceValidator.available(insurances),
-                    this.shouldEnableInsuranceNumber.bind(this)]);
+        });
 
-                formG.get('insurance').updateValueAndValidity();
+
+        this.hospitalservice.activehospital.subscribe(hospital => {
+            if (hospital.id) {
+                this.activehospital = hospital;
+                this.patientfileno.no = (hospital.patientcount + 1).toString();
+
+                /**
+                 * set the form data and disable it
+                 * */
+                this.patientsForm.controls['personalinfo']
+                    .get('fileno').patchValue(this.patientfileno.no);
+
+                this.patientsForm.controls['personalinfo']
+                    .get('fileno').disable({onlySelf: true});
             }
         });
 
+
+        /**
+         *
+         * */
+        this.insurancechanges();
 
     }
 
@@ -84,7 +89,6 @@ export class AddComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.filterInsurance();
     }
 
 
@@ -113,6 +117,8 @@ export class AddComponent implements OnInit {
             Validators.email
         ]));
 
+        const fileno = new FormControl('', Validators.required);
+
         this.personalinfo = new FormGroup({
             firstname: firstname,
             lastname: lastname,
@@ -123,7 +129,8 @@ export class AddComponent implements OnInit {
             email: email,
             workplace: userWorkplace,
             phone: userPhone,
-            address: address
+            address: address,
+            fileno: fileno
         });
 
 
@@ -162,45 +169,20 @@ export class AddComponent implements OnInit {
     }
 
     /**
-     * filter and return an object
-     * */
-    private _filter(value: string): InsuranceCompany[] {
-        const filterValue = value.toLowerCase();
-
-        return this.allInsurance
-            .filter(option => option.name.toLowerCase().indexOf(filterValue) === 0)
-            .map(v => {
-                return v;
-            });
-    }
-
-    /*
-    * init filter
-    * **/
-    private filterInsurance(): any {
-        for (const formG of this.insurance.controls) {
-
-            this.filteredOptions = formG.get('insurance').valueChanges.pipe(
-                map(value => this._filter(value))
-            );
-        }
-
-        console.log(this.filteredOptions);
-    }
-
-    /**
      * validator like to listen to changes of the value
      * */
     shouldEnableInsuranceNumber(control: AbstractControl): any {
-        //
-        // if (control.value !== '') {
-        //     this.patientsForm.controls['insuranceNO'].enable({onlySelf: true});
-        //
-        // } else {
-        //     this.patientsForm.controls['insuranceNO'].patchValue('');
-        //     this.patientsForm.controls['insuranceNO'].disable();
-        // }
 
+        for (const formG of this.insurance.controls) {
+
+            if (control.value !== '') {
+                formG.get('insurance').enable({onlySelf: true});
+
+            } else {
+                formG.get('insurance').patchValue('');
+                formG.get('insurance').disable();
+            }
+        }
         // not interest in the errors.
         return null;
     }
@@ -208,6 +190,8 @@ export class AddComponent implements OnInit {
 
     submitPatientsForm(): void {
         console.log(this.patientsForm);
+        console.log('raw data');
+        console.log(this.patientsForm.getRawValue());
         if (this.patientsForm.valid) {
 
         } else {
@@ -223,7 +207,10 @@ export class AddComponent implements OnInit {
     createInsurance(): FormGroup {
         const insurancex = new FormControl('');
 
-        const insurancenumber = new FormControl('');
+        const insurancenumber = new FormControl({
+            value: '',
+            disabled: true
+        });
 
         return this.formBuilder.group({
             insurance: insurancex,
@@ -231,8 +218,24 @@ export class AddComponent implements OnInit {
         });
     }
 
+    insurancechanges(): void {
+
+        this.insurance.controls.forEach(x => {
+            x.get('insurance').valueChanges.subscribe(g => {
+                if (g) {
+                    if (x.get('insurance').value.toString().length > -1) {
+                        x.get('insurancenumber').enable({emitEvent: false});
+                    } else {
+                        x.get('insurancenumber').disable({emitEvent: false});
+                    }
+                }
+            });
+        });
+    }
+
     addInsurance(): void {
         this.insurance.push(this.createInsurance());
+        this.insurancechanges();
     }
 
     addpatient(saveandqueue: boolean) {

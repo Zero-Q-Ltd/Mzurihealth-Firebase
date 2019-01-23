@@ -7,7 +7,6 @@ import {emptypatient, Patient} from '../../../../../models/Patient';
   styleUrls: ['./history.component.scss']
 })
 export class HistoryComponent implements OnInit {
-    @Input() patient: Patient = {...emptypatient};
 
   constructor() { }
 

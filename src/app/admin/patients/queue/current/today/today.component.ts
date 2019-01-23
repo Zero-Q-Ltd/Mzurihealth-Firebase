@@ -7,7 +7,6 @@ import {emptypatient, Patient} from '../../../../../models/Patient';
   styleUrls: ['./today.component.scss']
 })
 export class TodayComponent implements OnInit {
-    @Input() patient: Patient = {...emptypatient};
 
   constructor() { }
 

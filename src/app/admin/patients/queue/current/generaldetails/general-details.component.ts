@@ -23,7 +23,6 @@ import {MAT_DIALOG_DATA} from '@angular/material';
 
 })
 export class GeneralDetailsComponent implements OnInit {
-    @Input() patient: Patient = {...emptypatient};
     patientfileno: HospFile = Object.assign({}, emptyfile);
     temppatient: Patient = emptypatient;
     temphistory: PatientVisit = emptypatienthistory;

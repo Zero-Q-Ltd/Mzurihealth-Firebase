@@ -11,13 +11,17 @@ import {TodayComponent} from './current/today/today.component';
 import {CurrentComponent} from './current/current.component';
 import {SidebarComponent} from './current/sidebar/sidebar.component';
 import {GeneralDetailsComponent} from './current/generaldetails/general-details.component';
+import {FuseSharedModule} from '../../../../@fuse/shared.module';
+import {FuseWidgetModule} from '../../../../@fuse/components';
 
 @NgModule({
     declarations: [MainComponent, MineComponent, QueueComponent, GeneralDetailsComponent, NotesComponent, HistoryComponent, TodayComponent, CurrentComponent, SidebarComponent],
     imports: [
         CommonModule,
         QueueRoutingModule,
-        AdminSharedModule
+        AdminSharedModule,
+        FuseSharedModule,
+        FuseWidgetModule
     ],
 })
 export class QueueModule {

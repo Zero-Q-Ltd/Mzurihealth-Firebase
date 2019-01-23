@@ -1,3 +1,67 @@
-<p>
-  profile works!
-</p>
+<div class="about-content" fxFlex="100" fxFlex.gt-md="65" fxFlex.gt-sm="50" fxLayout="column">
+
+    <div class="fuse-card">
+
+        <header class="accent">
+            <div class="title">General Information</div>
+        </header>
+
+        <div class="content">
+            <div class="info-line">
+                <div class="title">Gender</div>
+                <div class="info">{{patient.personalinfo.gender === 1 ? 'Male' : 'Female'}}</div>
+            </div>
+
+            <div class="info-line">
+                <div class="title">Age</div>
+                <div class="info">{{getage(patient.personalinfo.dob)}}</div>
+            </div>
+
+
+            <div class="info-line">
+                <div class="title">Extra Info</div>
+                <div class="info">{{patient.exrainfo}}</div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="fuse-card">
+
+        <header class="accent">
+            <div class="title">Work</div>
+        </header>
+
+        <div class="content">
+            <div class="info-line">
+                <div class="title">Occupation</div>
+                <div class="info">{{patient.personalinfo.occupation}}</div>
+            </div>
+            <div class="info-line">
+                <div class="title">Place of work</div>
+                <div class="info">{{patient.personalinfo.workplace}}</div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="fuse-card">
+
+        <header class="accent">
+            <div class="title">Contact</div>
+        </header>
+
+        <div class="content">
+            <div class="info-line">
+                <div class="title">Address</div>
+                <div class="info">{{patient.personalinfo.address}}</div>
+            </div>
+            <div class="info-line">
+                <div class="title">Phone</div>
+                <div class="info">{{patient.personalinfo.phone}}</div>
+            </div>
+        </div>
+
+    </div>
+
+</div>

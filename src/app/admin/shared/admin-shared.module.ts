@@ -18,7 +18,7 @@ import {
     MatProgressSpinnerModule,
     MatRippleModule,
     MatSelectModule,
-    MatSidenavModule,
+    MatSidenavModule, MatSliderModule,
     MatSlideToggleModule,
     MatSnackBarModule,
     MatSortModule,
@@ -67,6 +67,7 @@ import {AgmCoreModule} from '@agm/core';
         MatTooltipModule,
         MatProgressBarModule,
         MatChipsModule,
+        MatSliderModule,
 
         FormsModule,
         ReactiveFormsModule,
@@ -111,6 +112,7 @@ import {AgmCoreModule} from '@agm/core';
         MatTooltipModule,
         MatProgressBarModule,
         MatChipsModule,
+        MatSliderModule,
 
         FormsModule,
         ReactiveFormsModule,

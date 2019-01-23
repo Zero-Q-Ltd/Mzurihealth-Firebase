@@ -1,24 +1,19 @@
 <div class="sidebar-content">
 
     <div class="card">
-
         <!-- SIDEBAR HEADER -->
-        <div class="header p-24" fxLayout="row" fxLayoutAlign="start center">
-
+        <div class="header p-12" fxLayout="row" fxLayoutAlign="start center">
             <!-- USER -->
             <img [alt]="patient.personalinfo.name"
                  [src]="patient.personalinfo.photoURL || '/assets/images/avatars/patient.svg'" class="avatar mr-16"/>
             <span class="h5">{{patient.personalinfo.name}}</span>
             <!-- / USER -->
-
         </div>
         <!-- / SIDEBAR HEADER -->
 
         <!-- SIDEBAR CONTENT -->
         <div class="content py-16" fusePerfectScrollbar>
-
             <div class="nav material2">
-
                 <div class="nav-item">
                     <a (click)="changeactivepage('generaldetails')"
                        [ngClass]="{'active accent':activepage ==='generaldetails'}" class="nav-link"
@@ -57,8 +52,63 @@
                     </a>
                 </div>
             </div>
-
         </div>
+    </div>
+
+    <div class="card my-12">
+        <!-- SIDEBAR HEADER -->
+        <div class="header p-12" fxLayout="row" fxLayoutAlign="start center">
+            <!-- USER -->
+            <span class="h4">GENERAL REPORT</span>
+            <!-- / USER -->
+        </div>
+        <!-- / SIDEBAR HEADER -->
+
+        <!-- SIDEBAR CONTENT -->
+        <mat-accordion fusePerfectScrollbar>
+            <mat-expansion-panel>
+                <mat-expansion-panel-header>
+                    Physio
+                </mat-expansion-panel-header>
+                <div class=" py-8">
+                    <span class="w-100"> Blood Pressure</span>
+                    <mat-progress-bar mode="determinate" value="40"></mat-progress-bar>
+                </div>
+                <div class=" py-8">
+                    <span class="w-100"> Heart Beat </span>
+                    <mat-progress-bar mode="determinate" value="50"></mat-progress-bar>
+                </div>
+                <div class=" py-8">
+                    <span class="w-100"> Haemoglobin </span>
+                    <mat-progress-bar mode="determinate" value="95"></mat-progress-bar>
+                </div>
+                <div class=" py-8">
+                    <span class="w-100"> Sugar </span>
+                    <mat-progress-bar mode="determinate" value="12"></mat-progress-bar>
+                </div>
+                <div class="pt-8">
+                    <span class="w-100">Weight: 65 &nbsp;&nbsp;&nbsp;&nbsp; Height: 65</span>
+                </div>
+                <div class=" pb-8">
+                    <span class="w-100"> BMI </span>
+                    <mat-progress-bar mode="determinate" value="40"></mat-progress-bar>
+                </div>
+            </mat-expansion-panel>
+            <mat-expansion-panel>
+                <mat-expansion-panel-header>
+                    Allergies ({{ patient.medicalinfo.allergies.length}})
+                </mat-expansion-panel-header>
+                <span *ngFor="let allergy of patient.medicalinfo.allergies">{{allergy}}</span>
+            </mat-expansion-panel>
+
+            <mat-expansion-panel>
+                <mat-expansion-panel-header>
+                    Conditions ({{patient.medicalinfo.conditions.length}})
+                </mat-expansion-panel-header>
+                <span *ngFor="let condition of patient.medicalinfo.conditions">{{condition}}</span>
+            </mat-expansion-panel>
+
+        </mat-accordion>
 
     </div>
 

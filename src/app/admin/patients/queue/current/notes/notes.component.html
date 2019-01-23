@@ -1,3 +1,19 @@
-<p>
-  notes works!
-</p>
+<div *ngFor="let note of patientnotes">
+    <mat-card class="example-card">
+        <mat-card-header>
+            <div class="example-header-image" mat-card-avatar></div>
+            <mat-card-title>{{note.title}}</mat-card-title>
+            <mat-card-subtitle>{{note.admin.name}}
+                : {{note.metadata.lastedit?.toDate().toDateString()}}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+            <p>
+                {{note.note}}
+            </p>
+        </mat-card-content>
+        <mat-card-actions>
+            <button (click)="addhelpful()"  mat-raised-button color="accent" matBadge="{{note.helpful}}" matBadgeColor="warn" >Helpful</button>
+            <button mat-button>Question</button>
+        </mat-card-actions>
+    </mat-card>
+</div>

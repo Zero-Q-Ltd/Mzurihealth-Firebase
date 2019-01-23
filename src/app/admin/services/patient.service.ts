@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Patient, emptypatient} from '../../models/Patient';
 import {PatientVisit} from '../../models/PatientVisit';
-import {Patientnotes} from '../../models/PatienntNotes';
+import {Patientnotes} from '../../models/PatientNotes';
 import {Procedureperformed} from '../../models/Procedureperformed';
 import {RawProcedure} from '../../models/RawProcedure';
 import {Hospital} from '../../models/Hospital';

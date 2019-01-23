@@ -5,6 +5,7 @@ import {FuseSidebarService} from '../../../@fuse/components/sidebar/sidebar.serv
 import {LocalcommunicationService} from './localcommunication.service';
 import {ProceduresService} from '../services/procedures.service';
 import {AdminService} from '../services/admin.service';
+import {HospitalAdmin} from '../../models/HospitalAdmin';
 
 @Component({
     selector: 'app-admin',
@@ -19,6 +20,7 @@ export class SuperadminComponent implements OnInit {
      * which sidebar to display, or none
      */
     sidebarstatus = 0;
+    clickedadmin: HospitalAdmin;
 
     constructor(private _fuseSidebarService: FuseSidebarService,
                 private  communication: LocalcommunicationService,
@@ -36,6 +38,9 @@ export class SuperadminComponent implements OnInit {
                 this.sidebarstatus = 0;
                 // this._fuseSidebarService.getSidebar('procedureconfig-sidebar').toggleOpen()
             }
+        });
+        this.communication.onadminselected.subscribe(admin => {
+            this.clickedadmin = admin;
         });
         communication.onadminselected.subscribe(admin => {
             if (admin.id) {

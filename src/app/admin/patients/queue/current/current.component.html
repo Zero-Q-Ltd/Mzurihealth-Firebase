@@ -3,7 +3,7 @@
     <div class="content">
 
         <!-- SIDEBAR -->
-        <fuse-sidebar class="sidebar" lockedOpen="gt-sm" name="current-patients-sidebar" position="left">
+        <fuse-sidebar class="sidebar" foldedWidth="" lockedOpen="gt-sm" name="current-patients-sidebar" position="left">
 
             <!-- SIDEBAR CONTENT -->
             <div class="content" fusePerfectScrollbar>
@@ -18,7 +18,7 @@
         <div class="center pl-12 pb-56 pr-4" fusePerfectScrollbar>
 
             <!-- CONTENT -->
-            <div [ngSwitch]="activepage" class="content songesha">
+            <div [ngSwitch]="activepage" class="content ">
                 <general-details *ngSwitchCase="'generaldetails'"></general-details>
                 <patient-notes *ngSwitchCase="'notes'"></patient-notes>
                 <patient-history *ngSwitchCase="'history'"></patient-history>

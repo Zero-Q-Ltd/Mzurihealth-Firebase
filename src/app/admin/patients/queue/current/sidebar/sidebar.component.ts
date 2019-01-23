@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {LocalcommunicationService} from '../localcommunication.service';
 import {emptypatient, Patient} from '../../../../../models/Patient';
+import * as moment from 'moment';
 
 @Component({
     selector: 'current-patients-sidebar',
@@ -22,6 +23,10 @@ export class SidebarComponent implements OnInit {
 
     changeactivepage(page: string): void {
         this.communication.onactivechildpagechanged.next(page);
+    }
+
+    getage(dob): number {
+        return moment().diff(dob, 'years');
     }
 
     ngOnInit(): void {

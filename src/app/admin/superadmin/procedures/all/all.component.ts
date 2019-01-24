@@ -21,7 +21,7 @@ export class AllComponent implements OnInit, AfterViewInit {
     procedureheaders = ['name', 'category', 'regprice', 'minprice', 'maxprice', 'action'];
     selectedprocedure: CustomProcedure = {...emptycustomprocedure};
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
-
+    disableripple: boolean;
     @ViewChild(MatPaginator) paginator: MatPaginator;
     @ViewChild(MatSort) sort: MatSort;
 

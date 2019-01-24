@@ -11,6 +11,7 @@ import {AdminService} from '../../services/admin.service';
 import {InsuranceService} from '../../services/insurance.service';
 import {PatientService} from '../../services/patient.service';
 import {HospitalService} from '../../services/hospital.service';
+import {isArray} from 'util';
 
 @Component({
     selector: 'all-patients',
@@ -54,7 +55,10 @@ export class AllComponent implements OnInit {
         });
     }
 
-    ngOnInit() {
+    ngOnInit(): void {
+        this.patientservice.getHospitalPatients('lUk37B4ykG8RFpYpGGeY').then(patients => {
+            this.patientsdatasource.data = patients;
+        });
     }
 
     getage(birtday: firestore.Timestamp) {

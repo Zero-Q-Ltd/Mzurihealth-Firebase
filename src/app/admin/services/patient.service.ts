@@ -14,6 +14,7 @@ import {HospFile} from '../../models/HospFile';
 import {AddPatientFormModel} from '../../models/AddPatientForm.model';
 import {firestore} from 'firebase';
 import {Metadata} from '../../models/universal';
+import {map} from 'rxjs/operators';
 
 @Injectable({
     providedIn: 'root'
@@ -38,6 +39,7 @@ export class PatientService {
         todayprocedures: new Map(),
         todayhistory: null,
     };
+
     activehospital: Hospital;
     userdata: HospitalAdmin;
 
@@ -235,6 +237,7 @@ export class PatientService {
          * hospital file number
          * */
         const hospitalFileNumber = {
+            id: patientID,
             date: todayDate,
             lastvisit: todayDate,
             no: personalinfo.fileno,
@@ -265,6 +268,31 @@ export class PatientService {
 
 
         return batch.commit();
+    }
+
+
+    /**
+     * get all patients
+     * */
+    getHospitalPatients(hospitalId: string): Promise<Patient[]> {
+
+        return new Promise((resolve, reject) => {
+
+            this.db.firestore.collection('hospitals')
+                .doc(hospitalId).collection('filenumbers').onSnapshot(fileNumbers => {
+                Promise.all(fileNumbers.docs.map(async singleFileData => {
+                    const hospitaFile = singleFileData.data() as HospFile;
+                    const patientData = await this.db.firestore.collection('patients').doc(hospitaFile.id).get();
+
+                    // TODO: dont show status == false;
+
+                    return Object.assign(emptypatient, patientData.data(), {fileinfo: hospitaFile});
+                })).then(v => {
+                    const hosiPatients = v as Array<Patient>;
+                    resolve(hosiPatients);
+                }).catch(error => reject(error));
+            });
+        });
     }
 
 }

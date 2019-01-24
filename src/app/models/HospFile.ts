@@ -1,6 +1,7 @@
 import {firestore} from 'firebase';
 
 export interface HospFile {
+    id: string;
     date: firestore.Timestamp;
     lastvisit: firestore.Timestamp;
     no: string;
@@ -8,6 +9,7 @@ export interface HospFile {
 }
 
 export const emptyfile: HospFile = {
+    id: null,
     date: new firestore.Timestamp(0, 0),
     lastvisit: new firestore.Timestamp(0, 0),
     no: '0',

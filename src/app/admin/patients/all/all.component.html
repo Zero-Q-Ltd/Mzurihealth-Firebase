@@ -61,6 +61,7 @@
                 <!-- Image Column -->
                 <ng-container matColumnDef="Photo">
                     <mat-header-cell *matHeaderCellDef></mat-header-cell>
+
                     <mat-cell *matCellDef="let patient">
                         <img *ngIf="patient.personalinfo.gender == 1" alt=""
                              class="patients-img"
@@ -102,8 +103,7 @@
                 </ng-container>
                 <!-- Price Column -->
                 <ng-container matColumnDef="Phone">
-                    <mat-header-cell *matHeaderCellDef>Phone
-                    </mat-header-cell>
+                    <mat-header-cell *matHeaderCellDef>Phone</mat-header-cell>
                     <mat-cell *matCellDef="let patient">
                         <p class="price text-truncate">
                             {{patient.personalinfo.phone}}
@@ -112,8 +112,7 @@
                 </ng-container>
 
                 <ng-container matColumnDef="Last Visit">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>Last Visit
-                    </mat-header-cell>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Last Visit</mat-header-cell>
                     <mat-cell *matCellDef="let patient">
                         <p class="price text-truncate">
                             {{patient.fileinfo.lastvisit.toDate()}}
@@ -122,8 +121,7 @@
                 </ng-container>
 
                 <ng-container matColumnDef="Status">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>Status
-                    </mat-header-cell>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Status</mat-header-cell>
                     <!--<span-->
                     <!--*ngIf="((index === 0 || patientsdatasource.data[index-1].queuedata.status === 2) && userdata.config.occupied === '' ) ; else statusbuttons"-->
                     <!--[ngSwitch]="userdata.config.occupied">-->

@@ -38,6 +38,14 @@ export interface Patient {
         bloodtype: string,
         conditions: Array<Coditions>
         allergies: Array<string>;
+        vitals: {
+            height: number,
+            weight: number,
+            pressure: number,
+            sugar: number,
+            heartrate: number,
+            respiration: number
+        };
         metadata: Metadata;
     };
     /**
@@ -80,6 +88,14 @@ export const emptypatient: Patient = {
         bloodtype: null,
         conditions: [],
         allergies: [],
+        vitals: {
+            height: null,
+            weight: null,
+            pressure: null,
+            sugar: null,
+            heartrate: null,
+            respiration: null
+        },
         metadata: emptymetadata
     },
     status: true,

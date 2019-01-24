@@ -10,8 +10,7 @@ import {FormControl, FormGroup, Validators} from '@angular/forms';
 })
 export class NotesComponent implements OnInit {
     patientnotes: Array<Patientnote> = [];
-    emptynote: Patientnote = {...emptynote};
-    newnote: FormGroup;
+    newnoteform: FormGroup;
 
     constructor(private patientservice: PatientService) {
         this.initformm();
@@ -21,10 +20,9 @@ export class NotesComponent implements OnInit {
     }
 
     initformm(): void {
-        const title = new FormControl('', [Validators.required, Validators.maxLength(80)]);
-        const note = new FormControl('', [Validators.required, Validators.maxLength(600)]);
-
-        this.newnote = new FormGroup({
+        const title = new FormControl('', [Validators.required, Validators.maxLength(80), Validators.minLength(10)]);
+        const note = new FormControl('', [Validators.required, Validators.maxLength(600), Validators.minLength(20)]);
+        this.newnoteform = new FormGroup({
             title: title,
             note: note
         });
@@ -35,6 +33,9 @@ export class NotesComponent implements OnInit {
     }
 
     addnote(): void {
-        // patientservice.addpatientnote();
+        if (this.newnoteform.valid) {
+            const newnote: Patientnote = Object.assign({}, emptynote, this.newnoteform.getRawValue());
+            this.patientservice.addpatientnote(newnote);
+        }
     }
 }

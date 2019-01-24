@@ -161,7 +161,7 @@
                 <mat-header-row *matHeaderRowDef="patientsheaders; sticky:true"></mat-header-row>
 
                 <mat-row *matRowDef="let patient; columns: patientsheaders;"
-                         [routerLink]="'profile/'+patient.id"
+                         (click)="addToQueue(patient)"
                          class="product"
                          matRipple>
                 </mat-row>

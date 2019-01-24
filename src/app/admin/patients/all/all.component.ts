@@ -11,6 +11,7 @@ import {AdminService} from '../../services/admin.service';
 import {InsuranceService} from '../../services/insurance.service';
 import {PatientService} from '../../services/patient.service';
 import {HospitalService} from '../../services/hospital.service';
+import {PushqueueComponent} from '../pushqueue/pushqueue.component';
 
 @Component({
     selector: 'all-patients',
@@ -28,13 +29,15 @@ export class AllComponent implements OnInit {
     userdata: HospitalAdmin;
     allpatientqueue: Array<Patient> = [];
     currentuserqueue: Array<Patient> = [];
+    dialogRef: any;
 
     constructor(private adminservice: AdminService,
                 private patientservice: PatientService,
                 private queueservice: QueueService,
                 private hospitalservice: HospitalService,
                 private insuranceservice: InsuranceService,
-                private dialog: MatDialog) {
+                private dialog: MatDialog,
+                public _matDialog: MatDialog) {
         this.hospitalservice.activehospital.subscribe(hospital => {
             if (hospital.id) {
                 this.activehospital = hospital;
@@ -63,6 +66,16 @@ export class AllComponent implements OnInit {
 
     getAge(birtday: firestore.Timestamp): number {
         return moment().diff(birtday.toDate().toLocaleDateString(), 'years');
+    }
+
+    addToQueue(patient: Patient): void {
+        this.dialogRef = this._matDialog.open(PushqueueComponent, {
+            panelClass: 'all-patients',
+            data: {
+                patient: patient,
+                action: 'edit'
+            }
+        });
     }
 
     chooseadmin(patientdata: Patient) {

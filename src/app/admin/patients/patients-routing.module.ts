@@ -20,7 +20,7 @@ const routes: Routes = [
     {
         path: 'queue',
         loadChildren: 'app/admin/patients/queue/queue.module#QueueModule'
-    },
+    }
 ];
 
 

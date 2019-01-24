@@ -60,15 +60,20 @@
 
                 <!-- Image Column -->
                 <ng-container matColumnDef="Photo">
-                    <mat-header-cell *matHeaderCellDef></mat-header-cell>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Photo</mat-header-cell>
 
                     <mat-cell *matCellDef="let patient">
-                        <img *ngIf="patient.personalinfo.gender == 1" alt=""
-                             class="patients-img"
-                             src="{{patient.personalinfo.photoURL || 'assets/images/icons/male.png'}}">
-                        <img *ngIf="patient.personalinfo.gender == 2" alt=""
-                             class="patients-img"
-                             src="{{patient.personalinfo.gender || 'assets/images/icons/female.png'}}">
+
+                        <p>
+                            <img class="avatar" *ngIf="patient.personalinfo.gender == 1"
+                                 [src]="patient.personalinfo.photoURL || 'assets/images/avatars/male.png'"
+                                 alt="male avatar"/>
+
+                            <img class="avatar" *ngIf="patient.personalinfo.gender == 0"
+                                 [src]="patient.personalinfo.photoURL || 'assets/images/avatars/female.png'"
+                                 alt="female avatar"/>
+                        </p>
+
                     </mat-cell>
                 </ng-container>
 
@@ -76,7 +81,7 @@
                 <ng-container matColumnDef="Name">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
                     <mat-cell *matCellDef="let patient">
-                        <p class="text-truncate">{{patient.personalinfo.name}}}</p>
+                        <p class="text-truncate">{{patient.personalinfo.name}}</p>
                     </mat-cell>
                 </ng-container>
 
@@ -87,7 +92,7 @@
                     </mat-header-cell>
                     <mat-cell *matCellDef="let patient">
                         <p class="price text-truncate">
-                            {{getage(patient.personalinfo.dob)}}
+                            {{getAge(patient.personalinfo.dob)}}
                         </p>
                     </mat-cell>
                 </ng-container>
@@ -115,7 +120,7 @@
                     <mat-header-cell *matHeaderCellDef mat-sort-header>Last Visit</mat-header-cell>
                     <mat-cell *matCellDef="let patient">
                         <p class="price text-truncate">
-                            {{patient.fileinfo.lastvisit.toDate()}}
+                            {{patient.fileinfo.lastvisit.toDate().toDateString()}}
                         </p>
                     </mat-cell>
                 </ng-container>
@@ -123,7 +128,9 @@
                 <ng-container matColumnDef="Status">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>Status</mat-header-cell>
                     <mat-cell *matCellDef="let patient">
-
+                        <p class="price text-truncate">
+                            {{patient.status}}
+                        </p>
                     </mat-cell>
                     <!--<span-->
                     <!--*ngIf="((index === 0 || patientsdatasource.data[index-1].queuedata.status === 2) && userdata.config.occupied === '' ) ; else statusbuttons"-->

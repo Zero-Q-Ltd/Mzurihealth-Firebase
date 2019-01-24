@@ -61,8 +61,8 @@ export class AllComponent implements OnInit {
 
     }
 
-    getage(birtday: firestore.Timestamp) {
-        return moment().diff(birtday.toDate(), 'years');
+    getAge(birtday: firestore.Timestamp): number {
+        return moment().diff(birtday.toDate().toLocaleDateString(), 'years');
     }
 
     chooseadmin(patientdata: Patient) {

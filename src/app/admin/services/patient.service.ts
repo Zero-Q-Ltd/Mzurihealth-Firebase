@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Patient, emptypatient} from '../../models/Patient';
+import {emptypatient, Patient} from '../../models/Patient';
 import {PatientVisit} from '../../models/PatientVisit';
 import {Patientnote} from '../../models/Patientnote';
 import {Procedureperformed} from '../../models/Procedureperformed';
@@ -12,9 +12,8 @@ import {AngularFirestore} from '@angular/fire/firestore';
 import * as moment from 'moment';
 import {HospFile} from '../../models/HospFile';
 import {AddPatientFormModel} from '../../models/AddPatientForm.model';
-import {firestore} from 'firebase';
-import {Metadata} from '../../models/universal';
-import {map} from 'rxjs/operators';
+import {map, switchMap} from 'rxjs/operators';
+import {BehaviorSubject, combineLatest} from 'rxjs';
 
 @Injectable({
     providedIn: 'root'
@@ -42,11 +41,13 @@ export class PatientService {
 
     activehospital: Hospital;
     userdata: HospitalAdmin;
+    hospitalpatients: BehaviorSubject<Array<Patient>> = new BehaviorSubject([]);
 
     constructor(private db: AngularFirestore, private hospitalservice: HospitalService, private adminservice: AdminService) {
         this.hospitalservice.activehospital.subscribe(hospital => {
             if (hospital.id) {
                 this.activehospital = hospital;
+                this.getHospitalPatients();
             }
         });
         adminservice.observableuserdata.subscribe((admin: HospitalAdmin) => {
@@ -274,25 +275,44 @@ export class PatientService {
     /**
      * get all patients
      * */
-    getHospitalPatients(hospitalId: string): Promise<Patient[]> {
-
-        return new Promise((resolve, reject) => {
-
-            this.db.firestore.collection('hospitals')
-                .doc(hospitalId).collection('filenumbers').onSnapshot(fileNumbers => {
-                Promise.all(fileNumbers.docs.map(async singleFileData => {
-                    const hospitaFile = singleFileData.data() as HospFile;
-                    const patientData = await this.db.firestore.collection('patients').doc(hospitaFile.id).get();
-
-                    // TODO: dont show status == false;
-
-                    return Object.assign(emptypatient, patientData.data(), {fileinfo: hospitaFile});
-                })).then(v => {
-                    const hosiPatients = v as Array<Patient>;
-                    resolve(hosiPatients);
-                }).catch(error => reject(error));
-            });
+    getHospitalPatients(): void {
+        this.db.collection('hospitals').doc(this.activehospital.id).collection('filenumbers', ref => ref.limit(100)).snapshotChanges().pipe(
+            switchMap(f => {
+                return combineLatest(...f.map(t => {
+                    const hospitalfile = t.payload.doc.data() as HospFile;
+                    hospitalfile.id = t.payload.doc.id;
+                    return this.db.collection('patients').doc(hospitalfile.id).snapshotChanges().pipe(
+                        map(patientdata => {
+                            const patient = patientdata.payload.data() as Patient;
+                            patient.id = patientdata.payload.id;
+                            patient.fileinfo = hospitalfile;
+                            return Object.assign({}, emptypatient, patient);
+                        })
+                    );
+                }));
+            })
+        ).subscribe(mergedData => {
+            console.log(mergedData);
+            this.hospitalpatients.next(mergedData);
         });
+        // return new Promise((resolve, reject) => {
+        //
+        //
+        //     this.db.firestore.collection('hospitals')
+        //         .doc(hospitalId).collection('filenumbers').onSnapshot(fileNumbers => {
+        //         Promise.all(fileNumbers.docs.map(async singleFileData => {
+        //             const hospitaFile = singleFileData.data() as HospFile;
+        //             const patientData = await this.db.firestore.collection('patients').doc(hospitaFile.id).get();
+        //
+        //             // TODO: dont show status == false;
+        //
+        //             return Object.assign(emptypatient, patientData.data(), {fileinfo: hospitaFile});
+        //         })).then(v => {
+        //             const hosiPatients = v as Array<Patient>;
+        //             resolve(hosiPatients);
+        //         }).catch(error => reject(error));
+        //     });
+        // });
     }
 
 }

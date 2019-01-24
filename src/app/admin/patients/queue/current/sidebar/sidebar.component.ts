@@ -32,4 +32,8 @@ export class SidebarComponent implements OnInit {
     ngOnInit(): void {
     }
 
+    timediff() {
+        moment().fromNow();
+    }
+
 }

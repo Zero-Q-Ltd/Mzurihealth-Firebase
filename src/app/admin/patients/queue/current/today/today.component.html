@@ -45,7 +45,7 @@
     </mat-expansion-panel>
     <mat-expansion-panel>
         <mat-expansion-panel-header>
-            Performed ({{procedurestoday.length}})
+            Procedures Performed ({{procedurestoday.length}})
         </mat-expansion-panel-header>
         <div *ngFor="let procedure of procedurestoday">
             <mat-card class="p-24">
@@ -74,7 +74,7 @@
 
     <mat-expansion-panel expanded="true">
         <mat-expansion-panel-header>
-            Add New
+            Perform Procedure
         </mat-expansion-panel-header>
 
         <form (ngSubmit)="addprocedure()" [formGroup]="procedureperformed" class=" p-24" fxFlex="1 0 auto"
@@ -94,7 +94,7 @@
                 </mat-form-field>
             </div>
             <div fxFlex="1 0 auto" fxLayout="row" fxLayoutAlign="start center">
-                <button class="py-4" color="accent" mat-raised-button>Save Note</button>
+                <button class="py-4" color="accent" mat-raised-button>Save Procedure</button>
             </div>
         </form>
 

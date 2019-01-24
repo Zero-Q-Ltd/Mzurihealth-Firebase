@@ -56,9 +56,9 @@ export class AllComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.patientservice.getHospitalPatients('lUk37B4ykG8RFpYpGGeY').then(patients => {
-            this.patientsdatasource.data = patients;
-        });
+        // this.patientservice.getHospitalPatients('lUk37B4ykG8RFpYpGGeY').then(patients => {
+        //     this.patientsdatasource.data = patients;
+        // });
     }
 
     getage(birtday: firestore.Timestamp) {

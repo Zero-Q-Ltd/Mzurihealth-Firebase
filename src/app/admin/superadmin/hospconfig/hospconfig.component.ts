@@ -65,7 +65,10 @@ export class HospconfigComponent implements OnInit {
              * Somehow all the other methods that I've tried are mutating the original value
              * This is just a temporary solution that works but is not the best
              */
-            this.temphospital = JSON.parse(JSON.stringify(this.originalhspital));
+            // this.temphospital = JSON.parse(JSON.stringify(this.originalhspital));
+            // this.temphospital.location = this.originalhspital.location;
+
+            this.temphospital = {...this.originalhspital};
             /**
              * initialize some vars
              */
@@ -93,6 +96,8 @@ export class HospconfigComponent implements OnInit {
     }
 
     savehospitalchanges(): void {
+        console.log(this.temphospital, this.originalhspital);
+        return;
         this.confirmDialogRef = this._matDialog.open(FuseConfirmDialogComponent, {
             disableClose: false
         });

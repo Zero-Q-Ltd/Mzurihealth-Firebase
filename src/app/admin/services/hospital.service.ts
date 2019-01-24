@@ -11,7 +11,7 @@ import {AdminInvite} from '../../models/AdminInvite';
 })
 export class HospitalService {
     hospitaladmins: BehaviorSubject<HospitalAdmin[]> = new BehaviorSubject([]);
-    activehospital: BehaviorSubject<Hospital> = new BehaviorSubject<Hospital>(emptyhospital);
+    activehospital: BehaviorSubject<Hospital> = new BehaviorSubject<Hospital>({... emptyhospital});
     userdata: HospitalAdmin;
     hospitalerror: boolean;
     invitedadmins: BehaviorSubject<Array<AdminInvite>> = new BehaviorSubject<Array<AdminInvite>>([]);

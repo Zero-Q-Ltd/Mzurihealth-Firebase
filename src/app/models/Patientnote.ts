@@ -1,6 +1,6 @@
 import {emptymetadata, Metadata} from './universal';
 
-export interface Patientnotes {
+export interface Patientnote {
     title: string;
     note: string;
     admin: {
@@ -16,7 +16,7 @@ export interface Patientnotes {
     helpful: number;
 }
 
-export const emptynote: Patientnotes = {
+export const emptynote: Patientnote = {
     title: null,
     note: null,
     patientid: null,

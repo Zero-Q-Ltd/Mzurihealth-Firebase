@@ -1,3 +1,103 @@
-<p>
-  today works!
-</p>
+<mat-accordion >
+    <mat-expansion-panel>
+        <mat-expansion-panel-header>
+            Vitals
+        </mat-expansion-panel-header>
+        <form class="content" (ngSubmit)="addprocedure()" [formGroup]="vitalsform" class=" p-8" fxFlex="1 1 auto"
+              fxLayout="column" fxLayoutAlign="start">
+            <div fxFlex="1 1 auto" fxLayout="row" fxLayoutAlign="start center">
+                <mat-form-field appearance="outline" class="pr-4 " fxFlex="15">
+                    <mat-label>height</mat-label>
+                    <input formControlName="height" matInput required>
+                    <mat-icon class="secondary-text" matSuffix>title</mat-icon>
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="pr-4 " fxFlex="15">
+                    <mat-label>Weight</mat-label>
+                    <input formControlName="weight" matInput required>
+                    <mat-icon class="secondary-text" matSuffix>title</mat-icon>
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="pr-4 " fxFlex="15">
+                    <mat-label>Pressure</mat-label>
+                    <input formControlName="pressure" matInput required>
+                    <mat-icon class="secondary-text" matSuffix>title</mat-icon>
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="pr-4 " fxFlex="15">
+                    <mat-label>Heart Rate</mat-label>
+                    <input formControlName="heartrate" matInput required>
+                    <mat-icon class="secondary-text" matSuffix>title</mat-icon>
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="pr-4 " fxFlex="15">
+                    <mat-label>Sugar</mat-label>
+                    <input formControlName="sugar" matInput required>
+                    <mat-icon class="secondary-text" matSuffix>title</mat-icon>
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="pr-4 " fxFlex="15">
+                    <mat-label>Respiration</mat-label>
+                    <input formControlName="respiration" matInput required>
+                    <mat-icon class="secondary-text" matSuffix>title</mat-icon>
+                </mat-form-field>
+            </div>
+
+            <div fxFlex="1 0 auto" fxLayout="row" fxLayoutAlign="start center">
+                <button class="py-4" color="accent" mat-raised-button>Save Vitals</button>
+            </div>
+        </form>
+    </mat-expansion-panel>
+    <mat-expansion-panel>
+        <mat-expansion-panel-header>
+            Performed ({{procedurestoday.length}})
+        </mat-expansion-panel-header>
+        <div *ngFor="let procedure of procedurestoday">
+            <mat-card class="p-24">
+                <mat-card-header>
+                    <div class="example-header-image" mat-card-avatar></div>
+                    <mat-card-title>{{procedure.name}}</mat-card-title>
+                    <mat-card-subtitle>{{getadmin(procedure.adminid)}}
+                        : {{procedure.metadata.lastedit?.toDate().toDateString()}}</mat-card-subtitle>
+                </mat-card-header>
+                <mat-card-content>
+                    <p>
+                        {{procedure.notes}}
+                    </p>
+                    <p>
+                        {{procedure.results}}
+                    </p>
+                </mat-card-content>
+                <mat-card-actions>
+                    <button (click)="addhelpful()" color="accent" mat-raised-button matBadge="{{note.helpful}}"
+                            matBadgeColor="warn">Save
+                    </button>
+                </mat-card-actions>
+            </mat-card>
+        </div>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel expanded="true">
+        <mat-expansion-panel-header>
+            Add New
+        </mat-expansion-panel-header>
+
+        <form (ngSubmit)="addprocedure()" [formGroup]="procedureperformed" class=" p-24" fxFlex="1 0 auto"
+              fxLayout="column" fxLayoutAlign="start">
+            <div fxFlex="1 0 auto" fxLayout="row" fxLayoutAlign="start center">
+                <mat-form-field appearance="outline" class="pr-4 " fxFlex="100">
+                    <mat-label>Title</mat-label>
+                    <input formControlName="results" matInput required>
+                    <mat-icon class="secondary-text" matSuffix>title</mat-icon>
+                    <mat-error>Title required!</mat-error>
+                </mat-form-field>
+            </div>
+            <div fxFlex="1 0 auto" fxLayout="row" fxLayoutAlign="start center">
+                <mat-form-field appearance="outline" fxFlex="100">
+                    <mat-label>Note</mat-label>
+                    <textarea formControlName="results" matInput required></textarea>
+                </mat-form-field>
+            </div>
+            <div fxFlex="1 0 auto" fxLayout="row" fxLayoutAlign="start center">
+                <button class="py-4" color="accent" mat-raised-button>Save Note</button>
+            </div>
+        </form>
+
+    </mat-expansion-panel>
+
+</mat-accordion>

@@ -66,7 +66,9 @@ export class AlladminComponent implements OnInit {
         }
     }
 
-    cancelinvite(user: AdminInvite): void {
+    cancelinvite(event, user: AdminInvite): void {
+        event.stopPropagation();
+
         this.confirmDialogRef = this._matDialog.open(FuseConfirmDialogComponent, {
             disableClose: false
         });
@@ -88,7 +90,9 @@ export class AlladminComponent implements OnInit {
 
     }
 
-    disableadmin(user: HospitalAdmin): void {
+    disableadmin(event, user: HospitalAdmin): void {
+        event.stopPropagation();
+
         this.confirmDialogRef = this._matDialog.open(FuseConfirmDialogComponent, {
             disableClose: false
         });
@@ -109,7 +113,9 @@ export class AlladminComponent implements OnInit {
         });
     }
 
-    enableadmin(user: HospitalAdmin): void {
+    enableadmin(event, user: HospitalAdmin): void {
+        event.stopPropagation();
+
         this.confirmDialogRef = this._matDialog.open(FuseConfirmDialogComponent, {
             disableClose: false
         });

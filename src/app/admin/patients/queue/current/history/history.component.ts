@@ -1,16 +1,17 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {emptypatient, Patient} from '../../../../../models/Patient';
+import {Component, OnInit} from '@angular/core';
+import {PatienthistoryService} from '../../../../services/patienthistory.service';
 
 @Component({
-  selector: 'patient-history',
-  templateUrl: './history.component.html',
-  styleUrls: ['./history.component.scss']
+    selector: 'patient-history',
+    templateUrl: './history.component.html',
+    styleUrls: ['./history.component.scss']
 })
 export class HistoryComponent implements OnInit {
 
-  constructor() { }
+    constructor(private patienthistory: PatienthistoryService) {
+    }
 
-  ngOnInit() {
-  }
+    ngOnInit() {
+    }
 
 }

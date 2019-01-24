@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Patient, emptypatient} from '../../models/Patient';
 import {PatientVisit} from '../../models/PatientVisit';
-import {Patientnotes} from '../../models/PatientNotes';
+import {Patientnote} from '../../models/Patientnote';
 import {Procedureperformed} from '../../models/Procedureperformed';
 import {RawProcedure} from '../../models/RawProcedure';
 import {Hospital} from '../../models/Hospital';
@@ -21,7 +21,7 @@ import {Metadata} from '../../models/universal';
 export class PatientService {
     currentpatient: {
         patientdata: Patient, patienthistory: PatientVisit[], todayhistoryid: string,
-        patientnotes: Patientnotes[], todayprocedures: Procedureperformed[]
+        patientnotes: Patientnote[], todayprocedures: Procedureperformed[]
     } = {
         patientdata: null,
         patienthistory: [],
@@ -68,7 +68,7 @@ export class PatientService {
                             this.currentpatient.patientnotes = [];
                             if (!patientnotes.empty) {
                                 patientnotes.forEach(note => {
-                                    let patientnote = note.data() as Patientnotes;
+                                    let patientnote = note.data() as Patientnote;
                                     this.currentpatient.patientnotes.push(Object.assign({}, patientnote));
                                 });
                             }
@@ -160,7 +160,7 @@ export class PatientService {
         return this.db.firestore.collection('History').doc(this.currentpatient.todayhistoryid).collection('procedures').add(procedurehistory);
     }
 
-    addpatientnote(note: Patientnotes) {
+    addpatientnote(note: Patientnote) {
         return this.db.firestore.collection('patients').doc(this.currentpatient.patientdata.id).collection('notes').add(note);
     }
 

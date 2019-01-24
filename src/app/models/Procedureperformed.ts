@@ -1,12 +1,21 @@
+import {emptymetadata, Metadata} from './universal';
+
 export interface Procedureperformed {
     description: string;
     id: string;
-    timestamp: number;
     results: string;
-    notes: string;
+    notes: Array<{
+        note: string;
+        admin: {
+            id: string,
+            name: string
+        };
+    }>;
     adminid: string;
     name: string;
     visitid: string;
+    procedureid: string;
+    metadata: Metadata;
     paymentmethod: Array<{
         type: number,
         data: {
@@ -18,16 +27,16 @@ export interface Procedureperformed {
     }>;
 }
 
-export const procedureperformed: Procedureperformed = {
+export const emptyprocedureperformed: Procedureperformed = {
     id: null,
     name: null,
-    timestamp: null,
     results: null,
-    notes: null,
     adminid: null,
     paymentmethod: [],
     description: null,
-    visitid: null
-
+    visitid: null,
+    procedureid: null,
+    metadata: emptymetadata,
+    notes: []
 };
 

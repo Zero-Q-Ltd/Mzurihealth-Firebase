@@ -11,7 +11,6 @@ import {AdminService} from '../../services/admin.service';
 import {InsuranceService} from '../../services/insurance.service';
 import {PatientService} from '../../services/patient.service';
 import {HospitalService} from '../../services/hospital.service';
-import {isArray} from 'util';
 
 @Component({
     selector: 'all-patients',
@@ -49,6 +48,9 @@ export class AllComponent implements OnInit {
                 this.userdata = admin;
             }
         });
+        this.patientservice.hospitalpatients.subscribe(patients => {
+            this.patientsdatasource.data = patients;
+        });
         this.queueservice.allpatientqueue.subscribe(allpatientsinqueue => {
             this.allpatientqueue = allpatientsinqueue;
             // this.currentuserqueue = allpatientsinqueue.filter(patient => patient.Checkin[this.activehospital.id].admin === this.userdata.id);
@@ -56,9 +58,7 @@ export class AllComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        // this.patientservice.getHospitalPatients('lUk37B4ykG8RFpYpGGeY').then(patients => {
-        //     this.patientsdatasource.data = patients;
-        // });
+
     }
 
     getage(birtday: firestore.Timestamp) {

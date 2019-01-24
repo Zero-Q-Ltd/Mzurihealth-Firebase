@@ -9,34 +9,34 @@
 
         <!-- HEADER -->
         <div class="header accent"
-             fxLayout="column" fxLayoutAlign="center center"
-             fxLayout.gt-sm="row" fxLayoutAlign.gt-sm="space-between center">
+             fxLayout="column" fxLayout.gt-sm="row"
+             fxLayoutAlign="center center" fxLayoutAlign.gt-sm="space-between center">
 
             <!-- APP TITLE -->
             <div class="logo mb-24 mb-md-0"
                  fxLayout="row" fxLayoutAlign="start center">
-                <mat-icon class="logo-icon s-32 mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
+                <mat-icon [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}" class="logo-icon s-32 mr-16">
                     shopping_basket
                 </mat-icon>
-                <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" class="logo-text h1">
                     All PAtients
                 </span>
             </div>
             <!-- / APP TITLE -->
 
             <!-- SEARCH -->
-            <div class="search-wrapper mx-32 mx-md-0" [@animate]="{value:'*', params:{delay:'150ms',scale:'0.2'}}">
+            <div [@animate]="{value:'*', params:{delay:'150ms',scale:'0.2'}}" class="search-wrapper mx-32 mx-md-0">
                 <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
                     <mat-icon>search</mat-icon>
                     <input #filter placeholder="Search for a patient">
                 </div>
             </div>
             <!-- / SEARCH -->
-            <button mat-fab
-                    color="warn"
-                    aria-label="Add patient"
+            <button [@animate]="{value:'*', params:{delay:'300ms',scale:'0.2'}}"
                     [routerLink]="'/admin/patients/add'"
-                    [@animate]="{value:'*', params:{delay:'300ms',scale:'0.2'}}">
+                    aria-label="Add patient"
+                    color="warn"
+                    mat-fab>
                 <mat-icon>person_add</mat-icon>
             </button>
 
@@ -122,6 +122,9 @@
 
                 <ng-container matColumnDef="Status">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>Status</mat-header-cell>
+                    <mat-cell *matCellDef="let patient">
+
+                    </mat-cell>
                     <!--<span-->
                     <!--*ngIf="((index === 0 || patientsdatasource.data[index-1].queuedata.status === 2) && userdata.config.occupied === '' ) ; else statusbuttons"-->
                     <!--[ngSwitch]="userdata.config.occupied">-->

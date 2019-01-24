@@ -11,6 +11,10 @@ import {AdminService} from '../../services/admin.service';
 import {InsuranceService} from '../../services/insurance.service';
 import {PatientService} from '../../services/patient.service';
 import {HospitalService} from '../../services/hospital.service';
+import {PushqueueComponent} from '../pushqueue/pushqueue.component';
+import {FormGroup} from '@angular/forms';
+import {NotificationService} from '../../../shared/services/notifications.service';
+import {Router} from '@angular/router';
 
 @Component({
     selector: 'all-patients',
@@ -28,13 +32,16 @@ export class AllComponent implements OnInit {
     userdata: HospitalAdmin;
     allpatientqueue: Array<Patient> = [];
     currentuserqueue: Array<Patient> = [];
+    dialogRef: any;
 
     constructor(private adminservice: AdminService,
                 private patientservice: PatientService,
                 private queueservice: QueueService,
                 private hospitalservice: HospitalService,
                 private insuranceservice: InsuranceService,
-                private dialog: MatDialog) {
+                private notificationservice: NotificationService,
+                private dialog: MatDialog,
+                public _matDialog: MatDialog, private router: Router) {
         this.hospitalservice.activehospital.subscribe(hospital => {
             if (hospital.id) {
                 this.activehospital = hospital;
@@ -61,15 +68,58 @@ export class AllComponent implements OnInit {
 
     }
 
-    getage(birtday: firestore.Timestamp) {
-        return moment().diff(birtday.toDate(), 'years');
+    getAge(birtday: firestore.Timestamp): number {
+        return moment().diff(birtday.toDate().toLocaleDateString(), 'years');
     }
 
-    chooseadmin(patientdata: Patient) {
+    addToQueue(patient: Patient): void {
+        this.dialogRef = this._matDialog.open(PushqueueComponent, {
+            panelClass: 'all-patients',
+            data: {
+                patient: patient,
+                action: 'save'
+            }
+        });
+
+        this.dialogRef.afterClosed()
+            .subscribe(response => {
+                if (!response) {
+                    return;
+                }
+                const actionType: string = response[0];
+                const formData: FormGroup = response[1];
+                switch (actionType) {
+                    /**
+                     * Save
+                     */
+                    case 'save':
+                        this.patientservice.addPatientToQueue(formData.getRawValue(), patient)
+                            .then(() => {
+                                // navigate to queues
+                                this.router.navigate(['admin/patients/queue']);
+                            }).catch(error => {
+                            console.log('form error');
+                            console.log(error);
+
+
+                            this.notificationservice.notify({
+                                alert_type: 'error',
+                                body: 'An error occurred',
+                                title: 'ERROR',
+                                placement: 'center'
+                            });
+                        });
+
+                        break;
+                }
+            });
+    }
+
+    chooseadmin(patientdata: Patient): any {
         this.queueservice.assignadmin(patientdata);
     }
 
-    showinvoice(patientid, adminid) {
+    showinvoice(patientid, adminid): any {
         // let dialogRef = this.dialog.open(InvoiceComponent, {
         //     width: '95%',
         //     data: {['patientid']: patientid, ['adminid']: adminid}

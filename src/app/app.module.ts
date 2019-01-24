@@ -58,7 +58,7 @@ export const firebaseConfig = {
         }),
         Error404Module,
         Error500Module,
-        FrontendModule
+        FrontendModule,
     ],
     providers: [AngularFireAuth],
     bootstrap: [

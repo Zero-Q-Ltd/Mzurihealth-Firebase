@@ -59,7 +59,8 @@ export class AllComponent implements OnInit, AfterViewInit {
         }
     }
 
-    disableeprocedure(procedure: CustomProcedure): void {
+    disableeprocedure(event, procedure: CustomProcedure): void {
+        event.stopPropagation();
         this.confirmDialogRef = this._matDialog.open(FuseConfirmDialogComponent, {
             disableClose: false
         });

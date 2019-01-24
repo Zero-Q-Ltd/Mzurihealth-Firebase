@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {emptypatient, Patient} from '../../models/Patient';
-import {PatientVisit} from '../../models/PatientVisit';
+import {PatientVisit, emptypatienthistory} from '../../models/PatientVisit';
 import {Patientnote} from '../../models/Patientnote';
 import {Procedureperformed} from '../../models/Procedureperformed';
 import {RawProcedure} from '../../models/RawProcedure';
@@ -297,6 +297,44 @@ export class PatientService {
         ).subscribe(mergedData => {
             this.hospitalpatients.next(mergedData);
         });
+    }
+
+    addPatientToQueue({type, description}: { type: string, description: string }, patient: Patient): Promise<void> {
+        /**
+         * add patient to queue
+         * */
+            // todays date
+        const todayDate = moment().toDate();
+
+        /**
+         * patient document ID
+         * **/
+        const patientID = this.db.createId();
+
+        const tempVisit = {
+            paymentmethod: {
+                type: type
+            },
+            visitdescription: description,
+            patientid: patient.id,
+            hospitalid: this.activehospital.id,
+            timestamp: todayDate,
+            id: patientID,
+            checkin: {
+                status: 0,
+                admin: null
+            }
+        };
+
+        /**
+         * steps
+         * 1. hospitalvisits
+         * 2. filenumber last visit -- maybe when everything is done
+         * 3.
+         * */
+        const combineData = Object.assign(emptypatienthistory, tempVisit);
+        return this.db.collection('hospitalvisits').doc(patientID).set(combineData);
+
     }
 
 }

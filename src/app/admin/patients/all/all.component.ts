@@ -12,6 +12,9 @@ import {InsuranceService} from '../../services/insurance.service';
 import {PatientService} from '../../services/patient.service';
 import {HospitalService} from '../../services/hospital.service';
 import {PushqueueComponent} from '../pushqueue/pushqueue.component';
+import {FormGroup} from '@angular/forms';
+import {NotificationService} from '../../../shared/services/notifications.service';
+import {Router} from '@angular/router';
 
 @Component({
     selector: 'all-patients',
@@ -36,8 +39,9 @@ export class AllComponent implements OnInit {
                 private queueservice: QueueService,
                 private hospitalservice: HospitalService,
                 private insuranceservice: InsuranceService,
+                private notificationservice: NotificationService,
                 private dialog: MatDialog,
-                public _matDialog: MatDialog) {
+                public _matDialog: MatDialog, private router: Router) {
         this.hospitalservice.activehospital.subscribe(hospital => {
             if (hospital.id) {
                 this.activehospital = hospital;
@@ -73,16 +77,49 @@ export class AllComponent implements OnInit {
             panelClass: 'all-patients',
             data: {
                 patient: patient,
-                action: 'edit'
+                action: 'save'
             }
         });
+
+        this.dialogRef.afterClosed()
+            .subscribe(response => {
+                if (!response) {
+                    return;
+                }
+                const actionType: string = response[0];
+                const formData: FormGroup = response[1];
+                switch (actionType) {
+                    /**
+                     * Save
+                     */
+                    case 'save':
+                        this.patientservice.addPatientToQueue(formData.getRawValue(), patient)
+                            .then(() => {
+                                // navigate to queues
+                                this.router.navigate(['admin/patients/queue']);
+                            }).catch(error => {
+                            console.log('form error');
+                            console.log(error);
+
+
+                            this.notificationservice.notify({
+                                alert_type: 'error',
+                                body: 'An error occurred',
+                                title: 'ERROR',
+                                placement: 'center'
+                            });
+                        });
+
+                        break;
+                }
+            });
     }
 
-    chooseadmin(patientdata: Patient) {
+    chooseadmin(patientdata: Patient): any {
         this.queueservice.assignadmin(patientdata);
     }
 
-    showinvoice(patientid, adminid) {
+    showinvoice(patientid, adminid): any {
         // let dialogRef = this.dialog.open(InvoiceComponent, {
         //     width: '95%',
         //     data: {['patientid']: patientid, ['adminid']: adminid}

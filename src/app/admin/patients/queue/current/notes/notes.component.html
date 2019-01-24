@@ -1,3 +1,24 @@
+<form (ngSubmit)="addnote()" [formGroup]="newnote" class=" p-8 m-24" fxFlex="1 0 auto"
+      fxLayout="column" fxLayoutAlign="start">
+    <div fxFlex="1 0 auto" fxLayout="row" fxLayoutAlign="start center">
+        <mat-form-field appearance="outline" class="pr-4 " fxFlex="100">
+            <mat-label>Title</mat-label>
+            <input formControlName="title" matInput required>
+            <mat-icon class="secondary-text" matSuffix>title</mat-icon>
+            <mat-error>Title required!</mat-error>
+        </mat-form-field>
+    </div>
+    <div fxFlex="1 0 auto" fxLayout="row" fxLayoutAlign="start center">
+        <mat-form-field appearance="outline" fxFlex="100">
+            <mat-label>Note</mat-label>
+            <textarea formControlName="note" matInput required></textarea>
+        </mat-form-field>
+    </div>
+    <div fxFlex="1 0 auto" fxLayout="row" fxLayoutAlign="start center">
+        <button class="py-4" color="accent" mat-raised-button>Save Note</button>
+    </div>
+</form>
+
 <div *ngFor="let note of patientnotes">
     <mat-card class="example-card">
         <mat-card-header>
@@ -12,7 +33,9 @@
             </p>
         </mat-card-content>
         <mat-card-actions>
-            <button (click)="addhelpful()"  mat-raised-button color="accent" matBadge="{{note.helpful}}" matBadgeColor="warn" >Helpful</button>
+            <button (click)="addhelpful()" mat-raised-button color="accent" matBadge="{{note.helpful}}"
+                    matBadgeColor="warn">Helpful
+            </button>
             <button mat-button>Question</button>
         </mat-card-actions>
     </mat-card>

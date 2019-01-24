@@ -5,20 +5,29 @@ import {HospitalService} from '../../../../services/hospital.service';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {PatientService} from '../../../../services/patient.service';
 import {PatienthistoryService} from '../../../../services/patienthistory.service';
-import {RawProcedure} from '../../../../../models/RawProcedure';
+import {RawProcedure, rawprocedurecategory} from '../../../../../models/RawProcedure';
 import {CustomProcedure} from '../../../../../models/CustomProcedure';
 import {ProceduresService} from '../../../../services/procedures.service';
+import {MatTableDataSource} from '@angular/material';
+import {fuseAnimations} from '../../../../../../@fuse/animations';
+import {ProcedureCategory} from '../../../../../models/ProcedureCategory';
 
 @Component({
     selector: 'patient-today',
     templateUrl: './today.component.html',
-    styleUrls: ['./today.component.scss']
+    styleUrls: ['./today.component.scss'],
+    animations: [fuseAnimations]
+
 })
 export class TodayComponent implements OnInit {
     procedurestoday: Array<Procedureperformed> = [];
     procedureperformed: FormGroup;
     vitalsform: FormGroup;
-    hospitalprocedures: Array<{ rawprocedure: RawProcedure, customprocedure: CustomProcedure }> = [];
+    hospitalprocedures: MatTableDataSource<{ rawprocedure: RawProcedure, customprocedure: CustomProcedure }> = new MatTableDataSource();
+    procedureheaders = ['name', 'category'];
+    selectedprocedure: { rawprocedure: RawProcedure, customprocedure: CustomProcedure };
+    expand = true;
+    procedurecategories: Array<ProcedureCategory>;
 
     constructor(private hospitalservice: HospitalService,
                 private formBuilder: FormBuilder,
@@ -26,10 +35,15 @@ export class TodayComponent implements OnInit {
                 private procedureservice: ProceduresService,
                 private patienthistory: PatienthistoryService) {
         procedureservice.hospitalprocedures.subscribe(mergedprocedures => {
-            this.hospitalprocedures = mergedprocedures;
+            this.hospitalprocedures.data = mergedprocedures;
+        });
+        procedureservice.procedurecategories.subscribe(categories => {
+            this.procedurecategories = categories;
         });
         this.initproceduresformm();
         this.initvitalsformm();
+
+        this.hospitalprocedures.filterPredicate = (data: { rawprocedure: RawProcedure, customprocedure: CustomProcedure }, filter: string) => data.rawprocedure.name.indexOf(filter) !== -1;
     }
 
     getadmin(adminid: string): HospitalAdmin {
@@ -45,6 +59,25 @@ export class TodayComponent implements OnInit {
             notes: this.createNotes()
         });
     }
+
+    applyFilter(filterValue: string): void {
+        this.hospitalprocedures.filter = filterValue.trim().toLowerCase();
+    }
+
+    onSelect(selected: { rawprocedure: RawProcedure, customprocedure: CustomProcedure }): void {
+        this.selectedprocedure = selected;
+    }
+
+    getcategory(category: rawprocedurecategory): string {
+        if (category && category.subcategoryid) {
+            return this.procedurecategories.find(cat => {
+                return cat.id === category.id;
+            }).subcategories[category.subcategoryid].name;
+        } else {
+            return '';
+        }
+    }
+
 
     initvitalsformm(): void {
         const height = new FormControl('',);
@@ -72,6 +105,7 @@ export class TodayComponent implements OnInit {
 
     addprocedure(): void {
         if (this.procedureperformed.valid) {
+            this.expand = false;
             const procedure: Procedureperformed = Object.assign({}, {...emptyprocedureperformed}, this.procedureperformed.getRawValue());
             // this.patientservice.
         }

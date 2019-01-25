@@ -21,7 +21,7 @@ import {
     MatSidenavModule, MatSliderModule,
     MatSlideToggleModule,
     MatSnackBarModule,
-    MatSortModule,
+    MatSortModule, MatStepperModule,
     MatTableModule,
     MatTabsModule,
     MatToolbarModule,
@@ -71,6 +71,7 @@ import {CommonModule} from '@angular/common';
         MatChipsModule,
         MatSliderModule,
         MatBadgeModule,
+        MatStepperModule,
 
         FormsModule,
         ReactiveFormsModule,
@@ -118,6 +119,7 @@ import {CommonModule} from '@angular/common';
         MatChipsModule,
         MatSliderModule,
         MatBadgeModule,
+        MatStepperModule,
 
         FormsModule,
         ReactiveFormsModule,

@@ -70,7 +70,7 @@
     <mat-expansion-panel [expanded]="expand">
         <mat-expansion-panel-header>
             <mat-panel-title>
-                Select Procedure
+                Perform Procedure
             </mat-panel-title>
             <mat-panel-description>
                 {{selectedprocedure?.rawprocedure?.name}}
@@ -78,79 +78,81 @@
             </mat-panel-description>
         </mat-expansion-panel-header>
         <ng-template matExpansionPanelContent>
-            <div>
-                <mat-form-field appearance="outline" class=" ml-24">
-                    <input (keyup)="applyFilter($event.target.value)" matInput>
-                    <mat-label>Filter</mat-label>
-                    <mat-icon class="disabled-text" matSuffix>search</mat-icon>
-                </mat-form-field>
-                <mat-table [@animateStagger]="{value:'200'}" [dataSource]="hospitalprocedures">
 
-                    <ng-container matColumnDef="name">
-                        <mat-header-cell *matHeaderCellDef> Name</mat-header-cell>
-                        <mat-cell *matCellDef="let element">
-                                <span class="text-truncate">
-                                    {{element.rawprocedure.name | titlecase}}
-                                </span>
-                        </mat-cell>
-                    </ng-container>
+            <!-- HORIZONTAL STEPPER -->
+            <mat-horizontal-stepper [linear]="true" class="mat-elevation-z4">
 
-                    <ng-container matColumnDef="category">
-                        <mat-header-cell *matHeaderCellDef> Category</mat-header-cell>
-                        <mat-cell
-                            *matCellDef="let element"> {{getcategory(element.rawprocedure.category) | titlecase | titlecase}} </mat-cell>
-                    </ng-container>
+                <mat-step [stepControl]="procedureselection">
+                    <ng-template matStepLabel>Select Procedure</ng-template>
 
-                    <mat-row (click)="onSelect(row)"
-                             *matRowDef="let row; columns: procedureheaders;"
-                             [@animate]="{value:'*',params:{y:'100%'}}"
-                             [ngClass]="{'highlight' : row == selectedprocedure}" matRipple>
-                    </mat-row>
-                </mat-table>
-                <mat-paginator [length]="hospitalprocedures.data.length"
-                               [pageSizeOptions]="[10, 25, 50, 100]"
-                               [pageSize]="10">
-                </mat-paginator>
-            </div>
-        </ng-template>
-    </mat-expansion-panel>
-    <mat-expansion-panel>
-        <mat-expansion-panel-header>
-            <mat-panel-title>
-                Procedure results
-            </mat-panel-title>
-            <mat-panel-description>
-
-            </mat-panel-description>
-        </mat-expansion-panel-header>
-        <ng-template matExpansionPanelContent>
-            <div [@animate]="{value:'*', params:{delay:'400ms',scale:'0.2'}}">
-                <form (ngSubmit)="addprocedure()" [formGroup]="procedureperformed" class=" p-24" fxFlex="1 0 auto"
-                      fxLayout="column" fxLayoutAlign="start">
-                    <div fxFlex="1 0 auto" fxLayout="row" fxLayoutAlign="start center">
-                        <mat-form-field appearance="outline" class="pr-4 " fxFlex="100">
-                            <mat-label>Results</mat-label>
-                            <input formControlName="results" matInput required>
-                            <mat-icon class="secondary-text" matSuffix>title</mat-icon>
-                            <mat-error>Results required!</mat-error>
-                        </mat-form-field>
-                    </div>
-                    <div fxFlex="1 0 auto" fxLayout="row" fxLayoutAlign="start center">
+                    <form [formGroup]="procedureselection"   fxFlex="1 0 auto"
+                          fxLayout="column" fxLayoutAlign="start">
                         <mat-form-field appearance="outline" fxFlex="100">
-                            <mat-label>Notes</mat-label>
-                            <textarea cdkAutosizeMaxRows="25"
-                                      cdkAutosizeMinRows="2"
-                                      cdkTextareaAutosize
-                                      formControlName="results"
-                                      matInput
-                                      required></textarea>
+                            <mat-label>Select Procedure</mat-label>
+                            <input [matAutocomplete]="auto" aria-label="Number" formControlName="selection" matInput
+                                   type="text">
+                            <mat-error>Procedure required!</mat-error>
                         </mat-form-field>
+                        <mat-autocomplete #auto="matAutocomplete" fxFlex="100">
+                            <mat-option *ngFor="let procedure of filteredprocedures | async"
+                                        [value]="procedure.rawprocedure.name">
+                                {{procedure.rawprocedure.name}}
+                            </mat-option>
+                        </mat-autocomplete>
+                    </form>
+
+                    <div fxLayout="row" fxLayoutAlign="center center">
+                        <button color="accent" mat-raised-button matStepperNext type="button">
+                            Next
+                        </button>
                     </div>
-                    <div fxFlex="1 0 auto" fxLayout="row" fxLayoutAlign="start center">
-                        <button class="py-4" color="accent" mat-raised-button>Save Procedure</button>
+                </mat-step>
+
+                <mat-step>
+
+                    <ng-template matStepLabel>Procedure Results</ng-template>
+
+                    <div [@animate]="{value:'*', params:{delay:'400ms',scale:'0.2'}}">
+                        <form (ngSubmit)="addprocedure()" [formGroup]="procedureperformed"
+                              class=" p-24"
+                              fxFlex="1 0 auto"
+                              fxLayout="column"
+                              fxLayoutAlign="start">
+                            <div fxFlex="1 0 auto" fxLayout="row" fxLayoutAlign="start center">
+                                <mat-form-field appearance="outline" class="pr-4 " fxFlex="100">
+                                    <mat-label>Results</mat-label>
+                                    <input formControlName="results" matInput required>
+                                    <mat-icon class="secondary-text" matSuffix>title</mat-icon>
+                                    <mat-error>Results required!</mat-error>
+                                </mat-form-field>
+                            </div>
+                            <div fxFlex="1 0 auto" fxLayout="row" fxLayoutAlign="start center">
+                                <mat-form-field appearance="outline" fxFlex="100">
+                                    <mat-label>Notes</mat-label>
+                                    <textarea cdkAutosizeMaxRows="25"
+                                              cdkAutosizeMinRows="2"
+                                              cdkTextareaAutosize
+                                              formControlName="results"
+                                              matInput
+                                              required></textarea>
+                                </mat-form-field>
+                            </div>
+
+                            <div fxLayout="row" fxLayoutAlign="center center">
+                                <button class="mr-8" color="primary" mat-raised-button matStepperPrevious type="button">
+                                    Previous
+                                </button>
+                                <button color="accent" mat-raised-button type="button">
+                                    Save Procedure
+                                </button>
+                            </div>
+                        </form>
                     </div>
-                </form>
-            </div>
+
+                </mat-step>
+
+            </mat-horizontal-stepper>
+            <!-- / HORIZONTAL STEPPER -->
         </ng-template>
     </mat-expansion-panel>
 </mat-accordion>

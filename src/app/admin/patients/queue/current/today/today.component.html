@@ -74,7 +74,7 @@
             </mat-panel-title>
             <mat-panel-description>
                 {{selectedprocedure?.rawprocedure?.name}}
-                --- {{getcategory(selectedprocedure?.rawprocedure?.category) }}
+                --> {{getcategory(selectedprocedure?.rawprocedure?.category) }}
             </mat-panel-description>
         </mat-expansion-panel-header>
         <ng-template matExpansionPanelContent>
@@ -85,7 +85,7 @@
                 <mat-step [stepControl]="procedureselection">
                     <ng-template matStepLabel>Select Procedure</ng-template>
 
-                    <form [formGroup]="procedureselection"   fxFlex="1 0 auto"
+                    <form [formGroup]="procedureselection" fxFlex="1 0 auto"
                           fxLayout="column" fxLayoutAlign="start">
                         <mat-form-field appearance="outline" fxFlex="100">
                             <mat-label>Select Procedure</mat-label>
@@ -93,10 +93,12 @@
                                    type="text">
                             <mat-error>Procedure required!</mat-error>
                         </mat-form-field>
-                        <mat-autocomplete #auto="matAutocomplete" fxFlex="100">
+                        <mat-autocomplete #auto="matAutocomplete"fxFlex="1 0 auto" fxFlex="100"
+                                          fxLayout="column" fxLayoutAlign="start">
                             <mat-option *ngFor="let procedure of filteredprocedures | async"
                                         [value]="procedure.rawprocedure.name">
-                                {{procedure.rawprocedure.name}}
+                                <span fxFlex="100">{{procedure.rawprocedure.name }}</span> -->
+                                <span class="text-right text-italic" fxFlex="100">{{getcategory(procedure.rawprocedure.category) }}</span>
                             </mat-option>
                         </mat-autocomplete>
                     </form>

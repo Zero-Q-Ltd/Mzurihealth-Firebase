@@ -14,6 +14,7 @@ import {HospitalService} from '../../../../services/hospital.service';
 import {InsuranceService} from '../../../../services/insurance.service';
 import {NotificationService} from '../../../../../shared/services/notifications.service';
 import {MAT_DIALOG_DATA} from '@angular/material';
+import {MatTooltipModule} from '@angular/material/tooltip';
 
 @Component({
     selector: 'general-details',

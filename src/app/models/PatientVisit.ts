@@ -61,7 +61,7 @@ export const emptypatienthistory: PatientVisit = {
         status: null,
         admin: null
     },
-    paid: null,
+    paid: false,
     patientid: null,
     hospitalid: null,
     prescription: null,

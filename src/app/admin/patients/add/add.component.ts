@@ -14,6 +14,7 @@ import * as moment from 'moment';
 import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {fuseAnimations} from '../../../../@fuse/animations';
 import {Observable} from 'rxjs';
+import {Router} from '@angular/router';
 
 @Component({
     selector: 'app-add',
@@ -43,6 +44,7 @@ export class AddComponent implements OnInit {
                 private formBuilder: FormBuilder,
                 private hospitalservice: HospitalService,
                 private insuranceservice: InsuranceService,
+                private router: Router,
                 private notificationservice: NotificationService,
                 @Optional() @Inject(MAT_DIALOG_DATA) public data?: any) {
 
@@ -172,6 +174,7 @@ export class AddComponent implements OnInit {
         if (this.patientsForm.valid) {
             this.patientservice.savePatient(this.patientsForm.getRawValue()).then(() => {
                 console.log('patient added successfully');
+                this.router.navigate(['admin/patients/all']);
             });
         } else {
             this.notificationservice.notify({
@@ -237,12 +240,7 @@ export class AddComponent implements OnInit {
                     this.temppatient = emptypatient;
                 });
             } else {
-                this.notificationservice.notify({
-                    alert_type: 'error',
-                    body: 'File number has been used',
-                    title: 'ERROR',
-                    placement: 'center'
-                });
+
             }
         });
 

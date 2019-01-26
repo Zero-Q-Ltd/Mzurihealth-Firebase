@@ -130,10 +130,8 @@
 
         <!--Insurance company, Insurance Number-->
         <div fxFlex="1 0 auto" fxLayout="row" fxLayoutAlign="start center" [formGroupName]="i">
-
             <mat-form-field appearance="outline" class="pr-4" fxFlex="50">
                 <mat-label>Insurance Company</mat-label>
-
                 <mat-select formControlName="id" required>
                     <mat-option *ngFor="let option of allInsurance" [value]="option?.id">
                         {{option.name}}
@@ -142,7 +140,7 @@
                 <mat-icon class="secondary-text" matSuffix>local_hospital</mat-icon>
             </mat-form-field>
 
-            <mat-form-field appearance="outline" class="pl-4" fxFlex="50">
+            <mat-form-field appearance="outline" class="pl-4" fxFlex="45">
                 <mat-label>Insurance Number</mat-label>
                 <input formControlName="insurancenumber" matInput required>
                 <mat-icon class="secondary-text" matSuffix>confirmation_number</mat-icon>
@@ -150,15 +148,19 @@
                 <mat-error>Insurance number is required</mat-error>
 
             </mat-form-field>
-
+            <div class="pl-8" fxFlex="5">
+                <button color="warn" mat-mini-fab>
+                    <mat-icon>delete</mat-icon>
+                </button>
+            </div>
         </div>
-
     </section>
     <div fxFlex="1 0 auto" fxLayout="column" fxLayoutAlign="start start">
-        <button type="button" color="accent" mat-raised-button (click)="addInsurance()">Add Insurance
+        <button type="button" color="basic" mat-mini-fab (click)="addInsurance()">
+            <mat-icon >library_add</mat-icon>
         </button>
+        <br>
     </div>
-
 
     <span class="pl-24" fxFlex="1 1 100%">Next of kin information</span>
 

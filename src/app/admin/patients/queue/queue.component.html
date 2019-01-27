@@ -34,7 +34,7 @@
             <div [@animate]="{value:'*', params:{delay:'150ms',scale:'0.2'}}" class="ml-sm-32" fxFlex fxLayout="row"
                  fxLayoutAlign="center center">
 
-                <div class="search-wrapper mt-16 mt-sm-0" [@fadeInOut]="activetabindex !== 2">
+                <div [@fadeInOut]="activetabindex !== 2" class="search-wrapper mt-16 mt-sm-0">
 
                     <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
                         <mat-icon>search</mat-icon>
@@ -74,23 +74,30 @@
             <!--</nav>-->
             <mat-tab-group (selectedTabChange)="tabChanged($event)">
                 <mat-tab label="Main Queue">
-                    <div class="tab-content p-24" fusePerfectScrollbar>
-                        <queue-mine></queue-mine>
-                    </div>
+                    <ng-template matTabContent>
+                        <div class="tab-content p-24" fusePerfectScrollbar>
+                            <queue-mine></queue-mine>
+                        </div>
+                    </ng-template>
                 </mat-tab>
 
                 <mat-tab label="My Queue">
                     <a [routerLink]="['/mine']"></a>
-                    <div class="tab-content p-24" fusePerfectScrollbar>
-                        <queue-main></queue-main>
-                    </div>
+                    <ng-template matTabContent>
+                        <div class="tab-content p-24" fusePerfectScrollbar>
+                            <queue-main></queue-main>
+                        </div>
+                    </ng-template>
                 </mat-tab>
 
                 <mat-tab label="Current">
                     <a [routerLink]="['/current']"></a>
-                    <div class="tab-content p-24" fusePerfectScrollbar>
-                        <patient-current></patient-current>
-                    </div>
+                    <ng-template matTabContent>
+
+                        <div class="tab-content p-24" fusePerfectScrollbar>
+                            <patient-current></patient-current>
+                        </div>
+                    </ng-template>
                 </mat-tab>
             </mat-tab-group>
             <!-- / CONTENT -->

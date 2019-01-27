@@ -1,4 +1,4 @@
-import {Component, Inject, Input, OnInit, Optional} from '@angular/core';
+import {Component, Inject, OnInit, Optional} from '@angular/core';
 import {fuseAnimations} from '../../../../../../@fuse/animations';
 import {emptypatient, Patient} from '../../../../../models/Patient';
 import * as moment from 'moment';
@@ -14,7 +14,6 @@ import {HospitalService} from '../../../../services/hospital.service';
 import {InsuranceService} from '../../../../services/insurance.service';
 import {NotificationService} from '../../../../../shared/services/notifications.service';
 import {MAT_DIALOG_DATA} from '@angular/material';
-import {MatTooltipModule} from '@angular/material/tooltip';
 
 @Component({
     selector: 'general-details',
@@ -30,7 +29,6 @@ export class GeneralDetailsComponent implements OnInit {
     activehospital: Hospital = Object.assign({}, emptyhospital);
     allInsurance: InsuranceCompany[];
     patientsForm: FormGroup;
-
     filteredOptions: Observable<InsuranceCompany[]>;
 
     private personalinfo: FormGroup;

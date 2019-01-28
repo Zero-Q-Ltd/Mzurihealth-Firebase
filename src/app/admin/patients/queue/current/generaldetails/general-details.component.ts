@@ -1,19 +1,15 @@
 import {Component, Inject, OnInit, Optional} from '@angular/core';
 import {fuseAnimations} from '../../../../../../@fuse/animations';
-import {emptypatient, Patient} from '../../../../../models/Patient';
+import {Patient} from '../../../../../models/Patient';
 import * as moment from 'moment';
 import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {emptyfile, HospFile} from '../../../../../models/HospFile';
-import {emptypatientvisit, PatientVisit} from '../../../../../models/PatientVisit';
-import {emptyhospital, Hospital} from '../../../../../models/Hospital';
 import {InsuranceCompany} from '../../../../../models/InsuranceCompany';
-import {Observable} from 'rxjs';
 import {AdminService} from '../../../../services/admin.service';
 import {PatientService} from '../../../../services/patient.service';
-import {HospitalService} from '../../../../services/hospital.service';
 import {InsuranceService} from '../../../../services/insurance.service';
 import {NotificationService} from '../../../../../shared/services/notifications.service';
 import {MAT_DIALOG_DATA} from '@angular/material';
+import {QueueService} from '../../../../services/queue.service';
 
 @Component({
     selector: 'general-details',
@@ -23,14 +19,9 @@ import {MAT_DIALOG_DATA} from '@angular/material';
 
 })
 export class GeneralDetailsComponent implements OnInit {
-    patientfileno: HospFile = Object.assign({}, emptyfile);
-    temppatient: Patient = emptypatient;
-    temphistory: PatientVisit = emptypatientvisit;
-    activehospital: Hospital = Object.assign({}, emptyhospital);
     allInsurance: InsuranceCompany[];
     patientsForm: FormGroup;
-    filteredOptions: Observable<InsuranceCompany[]>;
-
+    currentpatient: Patient;
     private personalinfo: FormGroup;
     private nextofkin: FormGroup;
     private insurance: FormArray;
@@ -40,9 +31,9 @@ export class GeneralDetailsComponent implements OnInit {
     constructor(private adminservice: AdminService,
                 private patientservice: PatientService,
                 private formBuilder: FormBuilder,
-                private hospitalservice: HospitalService,
                 private insuranceservice: InsuranceService,
                 private notificationservice: NotificationService,
+                private queue: QueueService,
                 @Optional() @Inject(MAT_DIALOG_DATA) public data?: any) {
 
 
@@ -57,22 +48,16 @@ export class GeneralDetailsComponent implements OnInit {
         this.insuranceservice.allinsurance.subscribe(insurances => {
             this.allInsurance = insurances;
         });
+        this.queue.currentpatient.subscribe(value => {
+            this.currentpatient = value.patientdata;
+            this.patientsForm.controls['personalinfo']
+                .get('fileno').patchValue(value.patientdata.fileinfo.no);
 
+            this.patientsForm.controls['personalinfo']
+                .get('fileno').disable({onlySelf: true});
 
-        this.hospitalservice.activehospital.subscribe(hospital => {
-            if (hospital.id) {
-                this.activehospital = hospital;
-                this.patientfileno.no = (hospital.patientcount + 1).toString();
-
-                /**
-                 * set the form data and disable it
-                 * */
-                this.patientsForm.controls['personalinfo']
-                    .get('fileno').patchValue(this.patientfileno.no);
-
-                this.patientsForm.controls['personalinfo']
-                    .get('fileno').disable({onlySelf: true});
-            }
+            this.patientsForm.controls['personalinfo']
+                .get('firstname').patchValue(value.patientdata.personalinfo.name);
         });
 
 
@@ -172,7 +157,7 @@ export class GeneralDetailsComponent implements OnInit {
 
     submitPatientsForm(): void {
         if (this.patientsForm.valid) {
-            this.patientservice.savePatient(this.patientsForm.getRawValue()).then(() => {
+            this.patientservice.updatePatient(this.currentpatient.id, this.patientsForm.getRawValue()).then(() => {
                 console.log('patient added successfully');
             });
         } else {
@@ -219,34 +204,4 @@ export class GeneralDetailsComponent implements OnInit {
         this.insurancechanges();
     }
 
-    addpatient(saveandqueue: boolean): void {
-        if (saveandqueue) {
-            // this.temppatient.checkin[this.activehospital.id] = {
-            //     superadmin: null,
-            //     status: 0
-            // };
-        }
-        this.patientservice.validatefileno(this.patientfileno.no).get().then(data => {
-            if (data.empty) {
-                this.patientfileno.date = this.patientfileno.lastvisit = moment().toDate() as any;
-                this.patientservice.addpatient(this.temppatient, this.temphistory, saveandqueue, this.patientfileno).then(() => {
-                    this.notificationservice.notify({
-                        alert_type: 'success',
-                        body: 'Patient registration successful',
-                        title: 'Success',
-                        placement: 'center'
-                    });
-                    this.temppatient = emptypatient;
-                });
-            } else {
-                this.notificationservice.notify({
-                    alert_type: 'error',
-                    body: 'File number has been used',
-                    title: 'ERROR',
-                    placement: 'center'
-                });
-            }
-        });
-
-    }
 }

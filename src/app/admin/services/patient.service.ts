@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {emptypatient, Patient} from '../../models/Patient';
-import {PatientVisit, emptypatienthistory} from '../../models/PatientVisit';
+import {PatientVisit, emptypatientvisit} from '../../models/PatientVisit';
 import {Patientnote} from '../../models/Patientnote';
 import {Procedureperformed} from '../../models/Procedureperformed';
 import {RawProcedure} from '../../models/RawProcedure';
@@ -332,7 +332,7 @@ export class PatientService {
          * 2. filenumber last visit -- maybe when everything is done
          * 3.
          * */
-        const combineData = Object.assign(emptypatienthistory, tempVisit);
+        const combineData = Object.assign(emptypatientvisit, tempVisit);
         return this.db.collection('hospitalvisits').doc(patientID).set(combineData);
 
     }

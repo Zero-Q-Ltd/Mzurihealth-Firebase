@@ -80,7 +80,7 @@
                     </ng-template>
                     <ng-template matTabContent>
                         <div class="tab-content p-24" fusePerfectScrollbar>
-                            <queue-mine></queue-mine>
+                            <queue-main></queue-main>
                         </div>
                     </ng-template>
                 </mat-tab>
@@ -92,14 +92,14 @@
                     </ng-template>
                     <ng-template matTabContent>
                         <div class="tab-content p-24" fusePerfectScrollbar>
-                            <queue-main></queue-main>
+                            <queue-mine></queue-mine>
                         </div>
                     </ng-template>
                 </mat-tab>
 
                 <mat-tab>
                     <ng-template matTabLabel>
-                        <span matBadge=".." matBadgeColor="warn" [matBadgeHidden]="!!currentpatient"
+                        <span matBadge="..." matBadgeColor="warn" [matBadgeHidden]="!!currentpatient"
                               matBadgeOverlap="false" matBadgePosition="above after">Current Patient</span>
                     </ng-template>
                     <ng-template matTabContent>

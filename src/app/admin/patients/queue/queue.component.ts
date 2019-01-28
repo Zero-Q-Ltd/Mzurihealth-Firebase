@@ -34,7 +34,6 @@ export class QueueComponent implements OnInit {
             this.myQueue = mine.length;
         });
         this.queueservice.currentpatient.subscribe(current => {
-            console.log(current);
             this.currentpatient = !current.patientdata.id;
         });
     }

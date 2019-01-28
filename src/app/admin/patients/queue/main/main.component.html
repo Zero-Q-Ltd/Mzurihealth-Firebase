@@ -1,5 +1,6 @@
 <mat-table #table
-           [@animateStagger]="{value:'50'}" [dataSource]="patientsdatasource"
+           [@animateStagger]="{value:'50'}"
+           [dataSource]="patientsdatasource"
            class="patients-table"
            fusePerfectScrollbar
            matSort>
@@ -8,7 +9,7 @@
     <ng-container matColumnDef="FileNo">
         <mat-header-cell *matHeaderCellDef mat-sort-header>FileNo</mat-header-cell>
         <mat-cell *matCellDef="let patient">
-            <p class="text-truncate">{{patient.fileinfo.no}}</p>
+            <p class="text-truncate">{{patient.patientdata?.fileinfo?.no}}</p>
         </mat-cell>
     </ng-container>
 
@@ -16,12 +17,14 @@
     <ng-container matColumnDef="Photo">
         <mat-header-cell *matHeaderCellDef></mat-header-cell>
         <mat-cell *matCellDef="let patient">
-            <img *ngIf="patient.personalinfo.gender == 1" alt=""
-                 class="patients-img"
-                 src="{{patient.personalinfo.photoURL || 'assets/images/icons/male.png'}}">
-            <img *ngIf="patient.personalinfo.gender == 2" alt=""
-                 class="patients-img"
-                 src="{{patient.personalinfo.gender || 'assets/images/icons/female.png'}}">
+            <img *ngIf="patient.patientdata.personalinfo.gender == 1"
+                 [src]="patient.patientdata.personalinfo.photoURL || 'assets/images/avatars/male.png'"
+                 alt=""
+                 class="avatar">
+            <img *ngIf="patient.patientdata.personalinfo.gender == 2"
+                 [src]="patient.patientdata.personalinfo.gender || 'assets/images/avatars/female.png'"
+                 alt=""
+                 class="avatar">
         </mat-cell>
     </ng-container>
 
@@ -29,7 +32,7 @@
     <ng-container matColumnDef="Name">
         <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
         <mat-cell *matCellDef="let patient">
-            <p class="text-truncate">{{patient.personalinfo.name}}}</p>
+            <p class="text-truncate">{{patient.patientdata.personalinfo.name}}</p>
         </mat-cell>
     </ng-container>
 
@@ -40,7 +43,7 @@
         </mat-header-cell>
         <mat-cell *matCellDef="let patient">
             <p class="price text-truncate">
-                {{getage(patient.personalinfo.dob)}}
+                {{getAge(patient.patientdata.personalinfo.dob)}}
             </p>
         </mat-cell>
     </ng-container>
@@ -50,7 +53,7 @@
         </mat-header-cell>
         <mat-cell *matCellDef="let patient">
             <p class="price text-truncate">
-                {{patient.personalinfo.idno}}
+                {{patient.patientdata.personalinfo.idno}}
             </p>
         </mat-cell>
     </ng-container>
@@ -60,7 +63,7 @@
         </mat-header-cell>
         <mat-cell *matCellDef="let patient">
             <p class="price text-truncate">
-                {{patient.personalinfo.phone}}
+                {{patient.patientdata.personalinfo.phone}}
             </p>
         </mat-cell>
     </ng-container>
@@ -70,7 +73,7 @@
         </mat-header-cell>
         <mat-cell *matCellDef="let patient">
             <p class="price text-truncate">
-                {{patient.fileinfo.lastvisit.toDate()}}
+                {{patient.patientdata.fileinfo?.lastvisit.toDate().toDateString()}}
             </p>
         </mat-cell>
     </ng-container>
@@ -78,10 +81,13 @@
     <ng-container matColumnDef="Status">
         <mat-header-cell *matHeaderCellDef mat-sort-header>Status
         </mat-header-cell>
+        <mat-cell *matCellDef="let patient">
+
+        </mat-cell>
         <!--<span-->
         <!--*ngIf="((index === 0 || patientsdatasource.data[index-1].queuedata.status === 2) && userdata.config.occupied === '' ) ; else statusbuttons"-->
         <!--[ngSwitch]="userdata.config.occupied">-->
-        <!--<span *ngSwitchDefault [ngSwitch]='patient.Checkin[activehospital.id].status'>-->
+        <!--<span *ngSwitchDefault [ngSwitch]='patient.patientdata.Checkin[activehospital.id].status'>-->
         <!--<button (click)='acceptpatient(patient)' *ngSwitchCase="0"-->
         <!--class="btn btn-primary button-size">Accept </button>-->
         <!--&lt;!&ndash; <button *ngSwitchCase="0" class="btn btn-warning button-size">Waiting </button> &ndash;&gt;-->
@@ -94,11 +100,11 @@
         <!--</span>-->
         <!--<ng-template #statusbuttons>-->
         <!--<span>-->
-        <!--<button *ngIf='patient.Checkin[activehospital.id].status == 0'-->
+        <!--<button *ngIf='patient.patientdata.Checkin[activehospital.id].status == 0'-->
         <!--class="btn btn-warning button-size">Waiting </button>-->
-        <!--<button *ngIf='patient.Checkin[activehospital.id].status == 1'-->
+        <!--<button *ngIf='patient.patientdata.Checkin[activehospital.id].status == 1'-->
         <!--class="btn btn-success button-size">In Progress</button>-->
-        <!--<button *ngIf='patient.Checkin[activehospital.id].status == 2'-->
+        <!--<button *ngIf='patient.patientdata.Checkin[activehospital.id].status == 2'-->
         <!--class="btn btn-info button-size">Complete</button>-->
         <!--</span>-->
         <!--</ng-template>-->
@@ -107,8 +113,8 @@
     <mat-header-row *matHeaderRowDef="patientsheaders; sticky:true"></mat-header-row>
 
     <mat-row *matRowDef="let patient; columns: patientsheaders;"
-             [routerLink]="'profile/'+patient.id"
-             class="product"
+             [@animate]="{value:'*',params:{y:'100%'}}"
+             [routerLink]="'profile/'+patient.patientdata.id" class="product"
              matRipple>
     </mat-row>
 

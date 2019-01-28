@@ -4,7 +4,7 @@ import {HospitalAdmin} from '../../../../../models/HospitalAdmin';
 import {HospitalService} from '../../../../services/hospital.service';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {PatientService} from '../../../../services/patient.service';
-import {PatienthistoryService} from '../../../../services/patienthistory.service';
+import {PatientvisitService} from '../../../../services/patientvisit.service';
 import {RawProcedure, rawprocedurecategory} from '../../../../../models/RawProcedure';
 import {CustomProcedure} from '../../../../../models/CustomProcedure';
 import {ProceduresService} from '../../../../services/procedures.service';
@@ -45,7 +45,7 @@ export class TodayComponent implements OnInit {
                 private formBuilder: FormBuilder,
                 private patientservice: PatientService,
                 private procedureservice: ProceduresService,
-                private patienthistory: PatienthistoryService) {
+                private patienthistory: PatientvisitService) {
 
         procedureservice.procedurecategories.subscribe(categories => {
             this.procedurecategories = categories;

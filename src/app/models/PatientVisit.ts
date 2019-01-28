@@ -43,7 +43,7 @@ export interface Checkin {
     status: 0 | 1 | 2 | 3 | 4;
 }
 
-export const emptypatienthistory: PatientVisit = {
+export const emptypatientvisit: PatientVisit = {
     paymentmethod: {
         type: 0
     },

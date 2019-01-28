@@ -18,7 +18,9 @@ export class QueueService {
     activehospital: Hospital;
     allpatientqueue: BehaviorSubject<Array<MergedPatient_QueueModel>> = new BehaviorSubject([]);
     mypatientqueue: BehaviorSubject<Array<MergedPatient_QueueModel>> = new BehaviorSubject([]);
+
     currentpatient: BehaviorSubject<MergedPatient_QueueModel> = new BehaviorSubject({...mergedQueueModel});
+
     hospitaladmins: Array<HospitalAdmin> = [];
     userdata: HospitalAdmin;
 

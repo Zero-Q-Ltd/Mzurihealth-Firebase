@@ -5,7 +5,6 @@ import {Patient} from '../../../models/Patient';
 import * as moment from 'moment';
 import {firestore} from 'firebase';
 import {HospitalAdmin} from '../../../models/HospitalAdmin';
-import {QueueService} from '../../services/queue.service';
 import {emptyhospital, Hospital} from '../../../models/Hospital';
 import {AdminService} from '../../services/admin.service';
 import {InsuranceService} from '../../services/insurance.service';
@@ -30,13 +29,10 @@ export class AllComponent implements OnInit {
     allinsurance = [];
     hospitaladmins: Array<HospitalAdmin> = [];
     userdata: HospitalAdmin;
-    allpatientqueue: Array<Patient> = [];
-    currentuserqueue: Array<Patient> = [];
     dialogRef: any;
 
     constructor(private adminservice: AdminService,
                 private patientservice: PatientService,
-                private queueservice: QueueService,
                 private hospitalservice: HospitalService,
                 private insuranceservice: InsuranceService,
                 private notificationservice: NotificationService,
@@ -57,10 +53,6 @@ export class AllComponent implements OnInit {
         });
         this.patientservice.hospitalpatients.subscribe(patients => {
             this.patientsdatasource.data = patients;
-        });
-        this.queueservice.allpatientqueue.subscribe(allpatientsinqueue => {
-            this.allpatientqueue = allpatientsinqueue;
-            // this.currentuserqueue = allpatientsinqueue.filter(patient => patient.Checkin[this.activehospital.id].admin === this.userdata.id);
         });
     }
 
@@ -113,10 +105,6 @@ export class AllComponent implements OnInit {
                         break;
                 }
             });
-    }
-
-    chooseadmin(patientdata: Patient): any {
-        this.queueservice.assignadmin(patientdata);
     }
 
     showinvoice(patientid, adminid): any {

@@ -337,4 +337,126 @@ export class PatientService {
 
     }
 
+
+    /***
+     *
+     * update patient
+     * require
+     * - patientID
+     * - formData
+     *
+     *   return  Promise
+     * */
+    updateCurrentPatient(patientID: string, {personalinfo, insurance, nextofkin}: AddPatientFormModel): any {
+        // get current data
+        const patientDataRef = this.db.firestore.collection('patients').doc(patientID);
+
+        this.db.firestore.runTransaction(transaction => {
+            return transaction.get(patientDataRef).then(async sfDoc => {
+                if (!sfDoc.exists) {
+                    throw 'Document does not exist!';
+                }
+
+                /**
+                 * get patient data
+                 * */
+
+                /**
+                 * fetch patient file
+                 * */
+
+                const fileDataDoc = await this.db.firestore.collection('hospitals')
+                    .doc(this.activehospital.id)
+                    .collection('filenumbers')
+                    .doc(patientID).get();
+
+
+                const fileData = fileDataDoc.data() as HospFile;
+
+                /*
+                * current data of patient
+                * **/
+                const firstData = Object.assign(emptypatient, sfDoc.data(), {fileinfo: fileData});
+
+                /**
+                 * now write the update
+                 * */
+
+                    // todays date
+                const todayDate = moment().toDate();
+
+                const tempInsurance = insurance.map((value, index: number) => {
+                    return {index: value};
+                });
+
+                const modifiedData = {
+                    id: patientID,
+                    personalinfo: {
+                        name: personalinfo.firstname + ' ' + personalinfo.lastname,
+                        address: personalinfo.address,
+                        gender: personalinfo.gender,
+                        occupation: personalinfo.occupation,
+                        workplace: personalinfo.workplace,
+                        phone: personalinfo.phone,
+                        email: personalinfo.email,
+                        idno: personalinfo.idno,
+                        dob: moment(personalinfo.birth, 'MM/DD/YYYY').toDate(),
+                    },
+                    nextofkin,
+                    insurance: tempInsurance,
+                    metadata: {
+                        date: firstData.metadata.date,
+                        lastedit: todayDate
+                    }
+                };
+
+                const hospitalFileNumber = {
+                    id: patientID,
+                    date: firstData.fileinfo.date,
+                    lastvisit: todayDate,
+                    no: personalinfo.fileno,
+                    idno: personalinfo.idno
+                };
+
+                const secondData = Object.assign(emptypatient, modifiedData, {fileinfo: hospitalFileNumber});
+
+                /**
+                 * updated data set, this should be the updated data
+                 * */
+                const updatedPatientData = Object.assign(firstData, secondData);
+
+                /**
+                 * do the transactions
+                 * */
+
+                const batched = [];
+                batched.push(updatedPatientData);
+                batched.push(updatedPatientData);
+
+
+                const patientFileRef = this.db.firestore.collection('hospitals')
+                    .doc(this.activehospital.id).collection('filenumbers').doc(patientID);
+
+                // batch write the number of active patients
+                const patientRef = this.db.firestore
+                    .collection('patients').doc(patientID);
+
+
+                /**
+                 * return array
+                 * */
+                Promise.all(batched.map(async (item: Patient, index) => {
+                    if (index === 0) {
+                        await transaction.update(patientRef, modifiedData);
+                    } else if (index === 1) {
+                        await transaction.update(patientFileRef, hospitalFileNumber);
+                    }
+                }));
+
+            });
+        });
+
+    }
+
+
 }

@@ -220,6 +220,19 @@ export class AddComponent implements OnInit {
         this.insurancechanges();
     }
 
+    removeInsurance(index: number): void {
+        if (index === 0) {
+            // clear the insurance input
+            this.insurance.at(index).get('id').patchValue(undefined);
+            this.insurance.at(index).get('id').markAsUntouched();
+            this.insurance.at(index).get('insurancenumber').patchValue(undefined);
+            this.insurance.at(index).get('insurancenumber').disable();
+            return;
+        }
+
+        this.insurance.removeAt(index);
+    }
+
     addpatient(saveandqueue: boolean) {
         if (saveandqueue) {
             // this.temppatient.checkin[this.activehospital.id] = {

@@ -100,13 +100,16 @@
 
                             <mat-form-field appearance="outline" class="pl-4" fxFlex="33">
                                 <mat-label>Enter date of birth</mat-label>
-                                <input matInput [matDatepicker]="myDatepicker" formControlName="birth">
+                                <input matInput #bDate [matDatepicker]="myDatepicker" formControlName="birth"
+                                       (focus)="myDatepicker.open()" placeholder="Please choose a date">
+
                                 <mat-datepicker-toggle matSuffix [for]="myDatepicker"></mat-datepicker-toggle>
-                                <mat-datepicker #myDatepicker></mat-datepicker>
+                                <mat-datepicker #myDatepicker (closed)="bDate.blur()"></mat-datepicker>
 
                                 <mat-error>Date of birth is required</mat-error>
                                 <mat-error>Date of birth should be valid</mat-error>
                             </mat-form-field>
+
 
                         </div>
 
@@ -122,7 +125,7 @@
 
                         </div>
 
-                        <!--Email address-->
+                        <!--occupation-->
                         <div fxFlex="1 0 auto" fxLayout="row wrap" fxLayoutAlign="start center">
 
                             <mat-form-field appearance="outline" fxFlex="100">
@@ -183,7 +186,7 @@
                                 <mat-icon class="secondary-text" matSuffix>local_hospital</mat-icon>
                             </mat-form-field>
 
-                            <mat-form-field appearance="outline" class="pl-4" fxFlex="50">
+                            <mat-form-field appearance="outline" class="pl-4" fxFlex="45">
                                 <mat-label>Insurance Number</mat-label>
                                 <input formControlName="insurancenumber" matInput required>
                                 <mat-icon class="secondary-text" matSuffix>confirmation_number</mat-icon>
@@ -192,12 +195,22 @@
 
                             </mat-form-field>
 
+                            <div class="pl-8" fxFlex="5">
+                                <button type="button" color="warn" mat-mini-fab (click)="removeInsurance(i)">
+                                    <mat-icon *ngIf="i !== 0">clear</mat-icon>
+                                    <mat-icon *ngIf="i === 0">delete</mat-icon>
+                                </button>
+                            </div>
+
                         </div>
 
                     </section>
+
                     <div fxFlex="1 0 auto" fxLayout="column" fxLayoutAlign="start start">
-                        <button type="button" color="accent" mat-raised-button (click)="addInsurance()">Add Insurance
+                        <button type="button" color="basic" mat-mini-fab (click)="addInsurance()">
+                            <mat-icon>library_add</mat-icon>
                         </button>
+                        <br>
                     </div>
 
 

@@ -7,9 +7,10 @@ import {Hospital} from '../../models/Hospital';
 import {emptypatient, Patient} from '../../models/Patient';
 import {HospitalAdmin} from '../../models/HospitalAdmin';
 import {PatientService} from './patient.service';
-import {map, switchMap} from 'rxjs/operators';
+import {switchMap} from 'rxjs/operators';
 import {PatientVisit} from '../../models/PatientVisit';
 import {emptymergedQueueModel, MergedPatient_QueueModel} from '../../models/MergedPatient_Queue.model';
+import {emptyfile, HospFile} from '../../models/HospFile';
 
 @Injectable({
     providedIn: 'root'
@@ -51,7 +52,7 @@ export class QueueService {
     }
 
     /**
-     *
+     *fetches patientvisit and merges it with hospital file info and patient info
      */
     private getwholequeue(): void {
         this.db.collection('hospitalvisits', ref => ref
@@ -63,10 +64,19 @@ export class QueueService {
                     const visit = t.payload.doc.data() as PatientVisit;
                     visit.id = t.payload.doc.id;
                     return this.db.collection('patients').doc(visit.patientid).snapshotChanges().pipe(
-                        map(patientdata => {
+                        switchMap(patientdata => {
                             const patient: Patient = Object.assign({}, emptypatient, patientdata.payload.data());
                             patient.id = patientdata.payload.id;
-                            return {patientdata: Object.assign({}, emptypatient, patient), queuedata: visit};
+                            // return {patientdata: Object.assign({}, emptypatient, patient), queuedata: visit};
+                            return this.db.collection('hospitals').doc(this.activehospital.id)
+                                .collection('filenumbers')
+                                .doc(patient.id)
+                                .snapshotChanges().pipe().map(filedata => {
+                                    const file: HospFile = Object.assign({}, emptyfile, filedata.payload.data());
+                                    file.id = patient.id;
+                                    patient.fileinfo = file;
+                                    return {patientdata: Object.assign({}, emptypatient, patient), queuedata: visit};
+                                });
                         })
                     );
                 }));
@@ -91,6 +101,7 @@ export class QueueService {
         });
 
     }
+
     /**
      * From reception to rest of admins or admins to admins
      * @param visit

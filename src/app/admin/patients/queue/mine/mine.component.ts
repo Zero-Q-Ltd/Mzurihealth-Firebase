@@ -3,6 +3,8 @@ import {MatTableDataSource} from '@angular/material';
 import {fuseAnimations} from '../../../../../@fuse/animations';
 import {QueueService} from '../../../services/queue.service';
 import {MergedPatient_QueueModel} from '../../../../models/MergedPatient_Queue.model';
+import * as moment from 'moment';
+import {firestore} from 'firebase';
 
 @Component({
     selector: 'queue-mine',
@@ -16,12 +18,16 @@ export class MineComponent implements OnInit {
     patientsheaders = ['FileNo', 'Photo', 'Name', 'ID', 'Age', 'Phone', 'Last Visit', 'Status'];
 
     constructor(private queue: QueueService) {
-        queue.mainpatientqueue.subscribe(value => {
+        queue.mypatientqueue.subscribe(value => {
             this.patientsdatasource.data = value;
         });
     }
 
     ngOnInit(): void {
+    }
+
+    getAge(birtday: firestore.Timestamp): number {
+        return moment().diff(birtday.toDate().toLocaleDateString(), 'years');
     }
 
 }

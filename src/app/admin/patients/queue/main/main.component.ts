@@ -3,6 +3,8 @@ import {MatTableDataSource} from '@angular/material';
 import {fuseAnimations} from '../../../../../@fuse/animations';
 import {QueueService} from '../../../services/queue.service';
 import {MergedPatient_QueueModel} from '../../../../models/MergedPatient_Queue.model';
+import {firestore} from 'firebase';
+import * as moment from 'moment';
 
 @Component({
     selector: 'queue-main',
@@ -24,4 +26,7 @@ export class MainComponent implements OnInit {
     ngOnInit(): void {
     }
 
+    getAge(birtday: firestore.Timestamp): number {
+        return moment().diff(birtday.toDate().toLocaleDateString(), 'years');
+    }
 }

@@ -1,5 +1,6 @@
 <mat-table #table
-           [@animateStagger]="{value:'50'}" [dataSource]="patientsdatasource"
+           [@animateStagger]="{value:'50'}"
+           [dataSource]="patientsdatasource"
            class="patients-table"
            fusePerfectScrollbar
            matSort>
@@ -8,7 +9,7 @@
     <ng-container matColumnDef="FileNo">
         <mat-header-cell *matHeaderCellDef mat-sort-header>FileNo</mat-header-cell>
         <mat-cell *matCellDef="let patient">
-            <p class="text-truncate">{{patient.patientdata.fileinfo.no}}</p>
+            <p class="text-truncate">{{patient.patientdata?.fileinfo?.no}}</p>
         </mat-cell>
     </ng-container>
 
@@ -16,12 +17,14 @@
     <ng-container matColumnDef="Photo">
         <mat-header-cell *matHeaderCellDef></mat-header-cell>
         <mat-cell *matCellDef="let patient">
-            <img *ngIf="patient.patientdata.personalinfo.gender == 1" alt=""
-                 class="patients-img"
-                 src="{{patient.patientdata.personalinfo.photoURL || 'assets/images/icons/male.png'}}">
-            <img *ngIf="patient.patientdata.personalinfo.gender == 2" alt=""
-                 class="patients-img"
-                 src="{{patient.patientdata.personalinfo.gender || 'assets/images/icons/female.png'}}">
+            <img *ngIf="patient.patientdata.personalinfo.gender == 1"
+                 [src]="patient.patientdata.personalinfo.photoURL || 'assets/images/avatars/male.png'"
+                 alt=""
+                 class="avatar">
+            <img *ngIf="patient.patientdata.personalinfo.gender == 2"
+                 [src]="patient.patientdata.personalinfo.gender || 'assets/images/avatars/female.png'"
+                 alt=""
+                 class="avatar">
         </mat-cell>
     </ng-container>
 
@@ -29,7 +32,7 @@
     <ng-container matColumnDef="Name">
         <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
         <mat-cell *matCellDef="let patient">
-            <p class="text-truncate">{{patient.patientdata.personalinfo.name}}}</p>
+            <p class="text-truncate">{{patient.patientdata.personalinfo.name}}</p>
         </mat-cell>
     </ng-container>
 
@@ -40,7 +43,7 @@
         </mat-header-cell>
         <mat-cell *matCellDef="let patient">
             <p class="price text-truncate">
-                {{getage(patient.patientdata.personalinfo.dob)}}
+                {{getAge(patient.patientdata.personalinfo.dob)}}
             </p>
         </mat-cell>
     </ng-container>
@@ -70,7 +73,7 @@
         </mat-header-cell>
         <mat-cell *matCellDef="let patient">
             <p class="price text-truncate">
-                {{patient.patientdata.fileinfo.lastvisit.toDate()}}
+                {{patient.patientdata.fileinfo?.lastvisit.toDate().toDateString()}}
             </p>
         </mat-cell>
     </ng-container>
@@ -110,8 +113,8 @@
     <mat-header-row *matHeaderRowDef="patientsheaders; sticky:true"></mat-header-row>
 
     <mat-row *matRowDef="let patient; columns: patientsheaders;"
-             [routerLink]="'profile/'+patient.patientdata.id"
-             class="product"
+             [@animate]="{value:'*',params:{y:'100%'}}"
+             [routerLink]="'profile/'+patient.patientdata.id" class="product"
              matRipple>
     </mat-row>
 

@@ -12,18 +12,10 @@ import {PatientService} from '../../../services/patient.service';
 })
 export class CurrentComponent implements OnInit {
     activepage = 'generaldetails';
-    patient: Patient;
 
     constructor(private communication: LocalcommunicationService, private patientservice: PatientService) {
         communication.onactivechildpagechanged.subscribe(page => {
             this.activepage = page;
-        });
-        communication.selectedpatient.subscribe(patient => {
-            /**
-             * TODO : Collaborate with @Johnie
-             */
-            this.patientservice.getcurrentpatient(patient.id);
-            this.patient = patient;
         });
     }
 

@@ -9,16 +9,16 @@ import {HospitalAdmin} from '../../models/HospitalAdmin';
 import {PatientService} from './patient.service';
 import {map, switchMap} from 'rxjs/operators';
 import {PatientVisit} from '../../models/PatientVisit';
-import {MergedPatient_QueueModel, mergedQueueModel} from '../../models/MergedPatient_Queue.model';
+import {emptymergedQueueModel, MergedPatient_QueueModel} from '../../models/MergedPatient_Queue.model';
 
 @Injectable({
     providedIn: 'root'
 })
 export class QueueService {
     activehospital: Hospital;
-    allpatientqueue: BehaviorSubject<Array<MergedPatient_QueueModel>> = new BehaviorSubject([]);
+    mainpatientqueue: BehaviorSubject<Array<MergedPatient_QueueModel>> = new BehaviorSubject([]);
     mypatientqueue: BehaviorSubject<Array<MergedPatient_QueueModel>> = new BehaviorSubject([]);
-    currentpatient: BehaviorSubject<MergedPatient_QueueModel> = new BehaviorSubject({...mergedQueueModel});
+    currentpatient: BehaviorSubject<MergedPatient_QueueModel> = new BehaviorSubject({...emptymergedQueueModel});
     hospitaladmins: Array<HospitalAdmin> = [];
     userdata: HospitalAdmin;
 
@@ -37,9 +37,15 @@ export class QueueService {
             if (admin.data.uid) {
                 this.userdata = admin;
                 const patientid = this.userdata.config.occupied;
-                if (this.userdata.config.occupied) {
-                    this.filterqueue(patientid);
+                if (admin.config.occupied) {
+                    // const val = this.mypatientqueue.value.find(value => {
+                    //     return value.patientdata.id === admin.config.occupied;
+                    // });
+                    // this.currentpatient.next(val ? val : {...emptymergedQueueModel});
+                } else {
+                    this.currentpatient.next({...emptymergedQueueModel});
                 }
+                this.filterqueue();
             }
         });
     }
@@ -56,7 +62,7 @@ export class QueueService {
          */
         this.db.collection('hospitalvisits', ref => ref
             .where('hospitalid', '==', this.activehospital.id)
-            .where('status', '<', 4))
+            .where('checkin.status', '<', 4))
             .snapshotChanges().pipe(
             switchMap(f => {
                 return combineLatest(...f.map(t => {
@@ -64,7 +70,7 @@ export class QueueService {
                     visit.id = t.payload.doc.id;
                     return this.db.collection('patients').doc(visit.patientid).snapshotChanges().pipe(
                         map(patientdata => {
-                            const patient = patientdata.payload.data() as Patient;
+                            const patient: Patient = Object.assign({}, emptypatient, patientdata.payload.data());
                             patient.id = patientdata.payload.id;
                             return {patientdata: Object.assign({}, emptypatient, patient), queuedata: visit};
                         })
@@ -72,55 +78,46 @@ export class QueueService {
                 }));
             })
         ).subscribe(mergedData => {
-            this.allpatientqueue.next(mergedData);
+            this.mainpatientqueue.next(mergedData);
         });
     }
 
-    filterqueue(adminid?: string): void {
-        if (adminid) {
-            this.allpatientqueue.subscribe(queuedata => {
-                this.mypatientqueue.next(queuedata.filter(queue => {
-                    const equality = queue.queuedata.checkin.admin === this.userdata.id;
-                    if (equality && queue.queuedata.checkin.status === 3) {
-                        this.currentpatient.next(queue);
-                    }
-                    return equality;
+    manualfilterqueue(): void {
+        this.mypatientqueue.next(this.mainpatientqueue.value.filter(queue => {
+            const equality = queue.queuedata.checkin.admin === this.userdata.id;
+            if (equality && (queue.queuedata.patientid === this.userdata.config.occupied)) {
+                console.log('00');
+                this.currentpatient.next(queue);
+            }
+            return equality;
+        }));
+    }
 
-                }));
-            });
+    /**
+     * filters the queue to find the doc's queue as well as his current patient
+     */
+    filterqueue(): void {
+        this.mainpatientqueue.subscribe(queuedata => {
+            this.mypatientqueue.next(queuedata.filter(queue => {
+                const equality = queue.queuedata.checkin.admin === this.userdata.id;
+                console.log(equality, queue.queuedata.patientid === this.userdata.config.occupied);
+                if (queue.queuedata.patientid === this.userdata.config.occupied) {
+                    console.log('00');
+                    this.currentpatient.next(queue);
+                }
+                return queue.queuedata.checkin.admin === this.userdata.id;
+            }));
+        });
 
-        } else {
-            return null;
-        }
     }
 
     // From reception to rest of admins or admins to admins
-    assignadmin(patient: Patient, adminid ?: string,) {
-        // console.log(patientid)
-        // console.log(adminid)
-        // console.log(queuedata)
-        // queuedata['timestamp'] = Number(moment());
-        // queuedata['status'] = 0;
-        // let tempqueue = {};
-        // tempqueue[patientid] = queuedata;
-        // let empty = {};
-        // empty[patientid] = firestore.FieldValue.delete();
-        // let batch = this.db.firestore.batch();
-        //
-        // this.db.firestore.collection('hospitals').doc(this.activehospital.id).collection('queue').doc(origin).update({
-        //   [patientid]: firestore.FieldValue.delete()
-        // }).then(result => {
-        //   console.log(result);
-        // });
-        //
-        // batch.update(this.db.firestore.collection('hospitals').doc(this.activehospital.id).collection('queue').doc(origin), empty);
-        //
-        // if (this.allpatientqueue.get(adminid)) {
-        //   batch.update(this.db.firestore.collection('hospitals').doc(this.activehospital.id).collection('queue').doc(adminid), tempqueue);
-        // } else {
-        //   batch.set(this.db.firestore.collection('hospitals').doc(this.activehospital.id).collection('queue').doc(adminid), tempqueue);
-        // }
-        // return batch.commit();
+    assignadmin(visit: PatientVisit, adminid: string): Promise<void> {
+
+        const batch = this.db.firestore.batch();
+        batch.update(this.db.firestore.collection('hospitalvisits').doc(visit.id), visit);
+
+        return batch.commit();
     }
 
 }

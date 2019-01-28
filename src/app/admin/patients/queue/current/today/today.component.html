@@ -3,176 +3,190 @@
         <mat-expansion-panel-header>
             Update General Report
         </mat-expansion-panel-header>
-        <mat-horizontal-stepper #stepper>
-            <mat-step [stepControl]="vitalsform">
-                <ng-template matStepLabel>Vitals</ng-template>
-                <form (ngSubmit)="addprocedure()" [formGroup]="vitalsform" class="content" class=" p-8"
-                      fxFlex="1 1 auto"
-                      fxLayout="column" fxLayoutAlign="start">
-                    <div fxFlex="1 1 auto" fxLayout="row" fxLayoutAlign="start center">
-                        <mat-form-field appearance="outline" class="pr-4 " fxFlex="15">
-                            <mat-label>height</mat-label>
-                            <input formControlName="height" matInput required>
-                            <mat-icon class="secondary-text" matSuffix>title</mat-icon>
-                        </mat-form-field>
-                        <mat-form-field appearance="outline" class="pr-4 " fxFlex="15">
-                            <mat-label>Weight</mat-label>
-                            <input formControlName="weight" matInput required>
-                            <mat-icon class="secondary-text" matSuffix>title</mat-icon>
-                        </mat-form-field>
-                        <mat-form-field appearance="outline" class="pr-4 " fxFlex="15">
-                            <mat-label>Pressure</mat-label>
-                            <input formControlName="pressure" matInput required>
-                            <mat-icon class="secondary-text" matSuffix>title</mat-icon>
-                        </mat-form-field>
-                        <mat-form-field appearance="outline" class="pr-4 " fxFlex="15">
-                            <mat-label>Heart Rate</mat-label>
-                            <input formControlName="heartrate" matInput required>
-                            <mat-icon class="secondary-text" matSuffix>title</mat-icon>
-                        </mat-form-field>
-                        <mat-form-field appearance="outline" class="pr-4 " fxFlex="15">
-                            <mat-label>Sugar</mat-label>
-                            <input formControlName="sugar" matInput required>
-                            <mat-icon class="secondary-text" matSuffix>title</mat-icon>
-                        </mat-form-field>
-                        <mat-form-field appearance="outline" class="pr-4 " fxFlex="15">
-                            <mat-label>Respiration</mat-label>
-                            <input formControlName="respiration" matInput required>
-                            <mat-icon class="secondary-text" matSuffix>title</mat-icon>
-                        </mat-form-field>
-                    </div>
+        <ng-template matExpansionPanelContent>
 
-                    <div fxFlex="1 0 auto" fxLayout="row" fxLayoutAlign="start center">
-                        <button (click)="updatepatient()" class="px-4" color="primary" mat-raised-button>Save Only
-                        </button>
-                        <button (click)="updatepatient()" class="px-4" color="accent" mat-raised-button>Save and Next
-                        </button>
-                    </div>
-                </form>
-            </mat-step>
-            <mat-step>
-                <form [formGroup]="allergiesform" fxFlex="1 0 auto"
-                      fxLayout="column" fxLayoutAlign="start">
-                    <ng-template matStepLabel>Allergies</ng-template>
-                    <section *ngFor="let item of allergiesform.get('allergiesformArray').controls; let i = index;"
-                             [@animate]="{value:'*',params:{y:'100%'}}" formArrayName="allergiesformArray"
-                             fxFlex="1 0 auto" fxLayout="column">
-
-                        <!--Insurance company, Insurance Number-->
-                        <div [formGroupName]="i" fxFlex="1 0 auto" fxLayout="row" fxLayoutAlign="start center">
-                            <mat-form-field appearance="outline" class="pr-4" fxFlex="50">
-                                <mat-label>Allergy Type</mat-label>
-                                <mat-select formControlName="type" required>
-                                    <mat-option *ngFor="let option of allergytypes" [value]="option">
-                                        {{option}}
-                                    </mat-option>
-                                </mat-select>
-                                <mat-icon class="secondary-text" matSuffix>local_hospital</mat-icon>
+            <mat-horizontal-stepper #stepper>
+                <mat-step [stepControl]="vitalsform">
+                    <ng-template matStepLabel>Vitals</ng-template>
+                    <form (ngSubmit)="addprocedure()" [formGroup]="vitalsform" class="content" class=" p-8"
+                          fxFlex="1 1 auto"
+                          fxLayout="column" fxLayoutAlign="start">
+                        <div fxFlex="1 1 auto" fxLayout="row" fxLayoutAlign="start center">
+                            <mat-form-field appearance="outline" class="pr-4 " fxFlex="15">
+                                <mat-label>height</mat-label>
+                                <input formControlName="height" matInput required>
+                                <mat-icon class="secondary-text" matSuffix>title</mat-icon>
                             </mat-form-field>
-
-                            <mat-form-field appearance="outline" class="pl-4" fxFlex="45">
-                                <mat-label>Details</mat-label>
-                                <input formControlName="detail" matInput required>
-                                <mat-icon class="secondary-text" matSuffix>confirmation_number</mat-icon>
-                                <mat-error></mat-error>
-
+                            <mat-form-field appearance="outline" class="pr-4 " fxFlex="15">
+                                <mat-label>Weight</mat-label>
+                                <input formControlName="weight" matInput required>
+                                <mat-icon class="secondary-text" matSuffix>title</mat-icon>
                             </mat-form-field>
-                            <div class="pl-8" fxFlex="5">
-                                <button (click)="deleteallergy()" color="warn" mat-mini-fab>
-                                    <mat-icon>delete</mat-icon>
-                                </button>
-                            </div>
+                            <mat-form-field appearance="outline" class="pr-4 " fxFlex="15">
+                                <mat-label>Pressure</mat-label>
+                                <input formControlName="pressure" matInput required>
+                                <mat-icon class="secondary-text" matSuffix>title</mat-icon>
+                            </mat-form-field>
+                            <mat-form-field appearance="outline" class="pr-4 " fxFlex="15">
+                                <mat-label>Heart Rate</mat-label>
+                                <input formControlName="heartrate" matInput required>
+                                <mat-icon class="secondary-text" matSuffix>title</mat-icon>
+                            </mat-form-field>
+                            <mat-form-field appearance="outline" class="pr-4 " fxFlex="15">
+                                <mat-label>Sugar</mat-label>
+                                <input formControlName="sugar" matInput required>
+                                <mat-icon class="secondary-text" matSuffix>title</mat-icon>
+                            </mat-form-field>
+                            <mat-form-field appearance="outline" class="pr-4 " fxFlex="15">
+                                <mat-label>Respiration</mat-label>
+                                <input formControlName="respiration" matInput required>
+                                <mat-icon class="secondary-text" matSuffix>title</mat-icon>
+                            </mat-form-field>
                         </div>
-                    </section>
-                    <div fxFlex="1 0 auto" fxLayout="column" fxLayoutAlign="start start">
-                        <button (click)="addallergy()" color="primary" mat-mini-fab>
-                            <mat-icon aria-label="Example icon-button with a heart icon">add</mat-icon>
-                        </button>
-                        <br>
-                    </div>
-                    <div>
-                        <button class="px-4" color="primary" mat-raised-button matStepperPrevious>Back</button>
-                        <button (click)="updatepatient()" class="px-4" color="primary" mat-raised-button>Save Only
-                        </button>
-                        <button (click)="updatepatient()" class="px-4" color="accent" mat-raised-button matStepperNext>
-                            Save and Next
-                        </button>
-                    </div>
-                </form>
-            </mat-step>
-            <mat-step>
-                <form [formGroup]="medconditionsform" fxFlex="1 0 auto"
-                      fxLayout="column" fxLayoutAlign="start">
-                    <ng-template matStepLabel>Conditions</ng-template>
-                    <section *ngFor="let item of medconditionsform.get('conditionsformArray').controls; let i = index;"
-                             [@animate]="{value:'*',params:{y:'100%'}}" formArrayName="conditionsformArray"
-                             fxFlex="1 0 auto" fxLayout="column">
 
-                        <!--Insurance company, Insurance Number-->
-                        <div [formGroupName]="i" fxFlex="1 0 auto" fxLayout="row" fxLayoutAlign="start center">
-                            <mat-form-field appearance="outline" class="pr-4" fxFlex="50">
-                                <mat-label>Condition Type</mat-label>
-                                <mat-select formControlName="type" required>
-                                    <mat-option *ngFor="let option of medconditiontypes" [value]="option">
-                                        {{option}}
-                                    </mat-option>
-                                </mat-select>
-                                <mat-icon class="secondary-text" matSuffix>local_hospital</mat-icon>
-                            </mat-form-field>
-
-                            <mat-form-field appearance="outline" class="pl-4" fxFlex="45">
-                                <mat-label>Details</mat-label>
-                                <input formControlName="detail" matInput required>
-                                <mat-icon class="secondary-text" matSuffix>confirmation_number</mat-icon>
-                                <mat-error></mat-error>
-
-                            </mat-form-field>
-                            <div class="pl-8" fxFlex="5">
-                                <button (click)="deletecondition()" color="warn" mat-mini-fab>
-                                    <mat-icon>delete</mat-icon>
-                                </button>
-                            </div>
+                        <div fxFlex="1 0 auto" fxLayout="row" fxLayoutAlign="start center">
+                            <button (click)="updatepatient()" class="px-4" color="primary" mat-raised-button>Save Only
+                            </button>
+                            <button (click)="updatepatient()" class="px-4" color="accent" mat-raised-button>Save and
+                                Next
+                            </button>
                         </div>
-                    </section>
-                    <div fxFlex="1 0 auto" fxLayout="column" fxLayoutAlign="start start">
-                        <button (click)="addcondition()" color="primary" mat-mini-fab>
-                            <mat-icon aria-label="Example icon-button with a heart icon">add</mat-icon>
-                        </button>
-                        <br>
-                    </div>
-                    <div>
-                        <button class="px-4" color="primary" mat-raised-button matStepperPrevious>Back</button>
-                        <button (click)="updatepatient()" class="px-4" color="accent" mat-raised-button matStepperNext>
-                            Save
-                        </button>
-                    </div>
-                </form>
-            </mat-step>
+                    </form>
+                </mat-step>
+                <mat-step>
+                    <form [formGroup]="allergiesform" fxFlex="1 0 auto"
+                          fxLayout="column" fxLayoutAlign="start">
+                        <ng-template matStepLabel>Allergies</ng-template>
+                        <section *ngFor="let item of allergiesform.get('allergiesformArray').controls; let i = index;"
+                                 [@animate]="{value:'*',params:{y:'100%'}}" formArrayName="allergiesformArray"
+                                 fxFlex="1 0 auto" fxLayout="column">
 
-        </mat-horizontal-stepper>
+                            <!--Insurance company, Insurance Number-->
+                            <div [formGroupName]="i" fxFlex="1 0 auto" fxLayout="row" fxLayoutAlign="start center">
+                                <mat-form-field appearance="outline" class="pr-4" fxFlex="50">
+                                    <mat-label>Allergy Type</mat-label>
+                                    <mat-select formControlName="type" required>
+                                        <mat-option *ngFor="let option of allergytypes" [value]="option">
+                                            {{option}}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-icon class="secondary-text" matSuffix>local_hospital</mat-icon>
+                                </mat-form-field>
 
+                                <mat-form-field appearance="outline" class="pl-4" fxFlex="45">
+                                    <mat-label>Details</mat-label>
+                                    <input formControlName="detail" matInput required>
+                                    <mat-icon class="secondary-text" matSuffix>confirmation_number</mat-icon>
+                                    <mat-error></mat-error>
+
+                                </mat-form-field>
+                                <div class="pl-8" fxFlex="5">
+                                    <button (click)="deleteallergy()" color="warn" mat-mini-fab>
+                                        <mat-icon>delete</mat-icon>
+                                    </button>
+                                </div>
+                            </div>
+                        </section>
+                        <div fxFlex="1 0 auto" fxLayout="column" fxLayoutAlign="start start">
+                            <button (click)="addallergy()" color="primary" mat-mini-fab>
+                                <mat-icon aria-label="Example icon-button with a heart icon">add</mat-icon>
+                            </button>
+                            <br>
+                        </div>
+                        <div>
+                            <button class="px-4" color="primary" mat-raised-button matStepperPrevious>Back</button>
+                            <button (click)="updatepatient()" class="px-4" color="primary" mat-raised-button>Save Only
+                            </button>
+                            <button (click)="updatepatient()" class="px-4" color="accent" mat-raised-button
+                                    matStepperNext>
+                                Save and Next
+                            </button>
+                        </div>
+                    </form>
+                </mat-step>
+                <mat-step>
+                    <form [formGroup]="medconditionsform" fxFlex="1 0 auto"
+                          fxLayout="column" fxLayoutAlign="start">
+                        <ng-template matStepLabel>Conditions</ng-template>
+                        <section
+                            *ngFor="let item of medconditionsform.get('conditionsformArray').controls; let i = index;"
+                            [@animate]="{value:'*',params:{y:'100%'}}" formArrayName="conditionsformArray"
+                            fxFlex="1 0 auto" fxLayout="column">
+
+                            <!--Insurance company, Insurance Number-->
+                            <div [formGroupName]="i" fxFlex="1 0 auto" fxLayout="row" fxLayoutAlign="start center">
+                                <mat-form-field appearance="outline" class="pr-4" fxFlex="50">
+                                    <mat-label>Condition Type</mat-label>
+                                    <mat-select formControlName="type" required>
+                                        <mat-option *ngFor="let option of medconditiontypes" [value]="option">
+                                            {{option}}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-icon class="secondary-text" matSuffix>local_hospital</mat-icon>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" class="pl-4" fxFlex="45">
+                                    <mat-label>Details</mat-label>
+                                    <input formControlName="detail" matInput required>
+                                    <mat-icon class="secondary-text" matSuffix>confirmation_number</mat-icon>
+                                    <mat-error></mat-error>
+
+                                </mat-form-field>
+                                <div class="pl-8" fxFlex="5">
+                                    <button (click)="deletecondition()" color="warn" mat-mini-fab>
+                                        <mat-icon>delete</mat-icon>
+                                    </button>
+                                </div>
+                            </div>
+                        </section>
+                        <div fxFlex="1 0 auto" fxLayout="column" fxLayoutAlign="start start">
+                            <button (click)="addcondition()" color="primary" mat-mini-fab>
+                                <mat-icon aria-label="Example icon-button with a heart icon">add</mat-icon>
+                            </button>
+                            <br>
+                        </div>
+                        <div>
+                            <button class="px-4" color="primary" mat-raised-button matStepperPrevious>Back</button>
+                            <button (click)="updatepatient()" class="px-4" color="accent" mat-raised-button
+                                    matStepperNext>
+                                Save
+                            </button>
+                        </div>
+                    </form>
+                </mat-step>
+
+            </mat-horizontal-stepper>
+        </ng-template>
     </mat-expansion-panel>
     <mat-expansion-panel>
         <mat-expansion-panel-header>
-            Procedures Performed ({{procedurestoday.length}})
+            <mat-panel-title>
+                Procedures Performed
+            </mat-panel-title>
+            <mat-panel-description>
+                {{procedurestoday.length}}
+            </mat-panel-description>
         </mat-expansion-panel-header>
-        <div *ngFor="let procedure of procedurestoday">
-            <mat-card class="p-24">
-                <mat-card-header>
-                    <mat-card-title>{{procedure.name}}</mat-card-title>
-                    <mat-card-subtitle>{{getadmin(procedure.adminid)}}
-                        : {{procedure.metadata.lastedit?.toDate().toDateString()}}</mat-card-subtitle>
-                </mat-card-header>
-                <mat-card-content>
-                    <p>
-                        {{procedure.notes}}
-                    </p>
-                    <p>
-                        {{procedure.results}}
-                    </p>
-                </mat-card-content>
-            </mat-card>
-        </div>
+        <ng-template matExpansionPanelContent>
+
+            <div *ngFor="let procedure of procedurestoday">
+                <mat-card class="p-24">
+                    <mat-card-header>
+                        <mat-card-title>{{procedure.name}}</mat-card-title>
+                        <mat-card-subtitle>{{getadmin(procedure.adminid)}}
+                            : {{procedure.metadata.lastedit?.toDate().toDateString()}}</mat-card-subtitle>
+                    </mat-card-header>
+                    <mat-card-content>
+                        <p>
+                            {{procedure.notes}}
+                        </p>
+                        <p>
+                            {{procedure.results}}
+                        </p>
+                    </mat-card-content>
+                </mat-card>
+            </div>
+        </ng-template>
     </mat-expansion-panel>
 
     <mat-expansion-panel>
@@ -270,5 +284,7 @@
 <div>
     <button class="mx-4 py-4" color="primary" mat-raised-button>Internal Referral</button>
 
-    <button class="mx-4 py-4" color="accent" mat-raised-button>Exit Patient</button>
+    <button class="mx-4 py-4" color="primary" mat-raised-button>Exit Patient and Break</button>
+
+    <button class="mx-4 py-4" color="accent" mat-raised-button>Exit Patient and Accept Next</button>
 </div>

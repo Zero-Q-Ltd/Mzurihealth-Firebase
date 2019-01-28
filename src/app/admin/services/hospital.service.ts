@@ -27,8 +27,6 @@ export class HospitalService {
     }
 
     gethospitaladmins(): void {
-        // Clear the array before fetching
-        // console.log(this.activehospital.admins)
         this.db.firestore.collection('hospitaladmins')
             .where('config.hospitalid', '==', this.activehospital.value.id)
             .onSnapshot(hospitaladmindocs => {

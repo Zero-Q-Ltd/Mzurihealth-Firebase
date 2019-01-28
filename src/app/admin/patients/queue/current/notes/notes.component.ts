@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {emptynote, Patientnote} from '../../../../../models/Patientnote';
 import {PatientService} from '../../../../services/patient.service';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {PatientnotesService} from '../../../../services/patientnotes.service';
 
 @Component({
     selector: 'patient-notes',
@@ -12,8 +13,11 @@ export class NotesComponent implements OnInit {
     patientnotes: Array<Patientnote> = [];
     newnoteform: FormGroup;
 
-    constructor(private patientservice: PatientService) {
+    constructor(private patientservice: PatientService, private patientnotesService: PatientnotesService) {
         this.initformm();
+        patientnotesService.patientnotes.subscribe(notes => {
+            this.patientnotes = notes;
+        });
     }
 
     ngOnInit(): void {
@@ -35,7 +39,7 @@ export class NotesComponent implements OnInit {
     addnote(): void {
         if (this.newnoteform.valid) {
             const newnote: Patientnote = Object.assign({}, emptynote, this.newnoteform.getRawValue());
-            this.patientservice.addpatientnote(newnote);
+            this.patientnotesService.addnote(newnote);
         }
     }
 }

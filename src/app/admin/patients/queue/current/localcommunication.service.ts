@@ -6,7 +6,6 @@ import {emptypatient, Patient} from '../../../../models/Patient';
     providedIn: 'root'
 })
 export class LocalcommunicationService {
-    selectedpatient: BehaviorSubject<Patient> = new BehaviorSubject({...emptypatient});
     ontabchanged = new BehaviorSubject<number>(0);
     onactivechildpagechanged = new BehaviorSubject<string>('generaldetails');
 

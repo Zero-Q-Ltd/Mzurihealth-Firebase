@@ -73,7 +73,11 @@
             <!--</a>-->
             <!--</nav>-->
             <mat-tab-group (selectedTabChange)="tabChanged($event)">
-                <mat-tab label="Main Queue">
+                <mat-tab>
+                    <ng-template matTabLabel>
+                        <span [matBadge]="mainQueue" matBadgeColor="warn" matBadgeOverlap="false"
+                              matBadgePosition="above after">Main Queue</span>
+                    </ng-template>
                     <ng-template matTabContent>
                         <div class="tab-content p-24" fusePerfectScrollbar>
                             <queue-mine></queue-mine>
@@ -81,8 +85,11 @@
                     </ng-template>
                 </mat-tab>
 
-                <mat-tab label="My Queue">
-                    <a [routerLink]="['/mine']"></a>
+                <mat-tab>
+                    <ng-template matTabLabel>
+                        <span [matBadge]="myQueue" matBadgeColor="warn" matBadgeOverlap="false"
+                              matBadgePosition="above after">My Queue</span>
+                    </ng-template>
                     <ng-template matTabContent>
                         <div class="tab-content p-24" fusePerfectScrollbar>
                             <queue-main></queue-main>
@@ -90,8 +97,11 @@
                     </ng-template>
                 </mat-tab>
 
-                <mat-tab label="Current">
-                    <a [routerLink]="['/current']"></a>
+                <mat-tab>
+                    <ng-template matTabLabel>
+                        <span matBadge=".." matBadgeColor="warn" [matBadgeHidden]="!!currentpatient"
+                              matBadgeOverlap="false" matBadgePosition="above after">Current Patient</span>
+                    </ng-template>
                     <ng-template matTabContent>
 
                         <div class="tab-content p-24" fusePerfectScrollbar>

@@ -1,7 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {LocalcommunicationService} from '../localcommunication.service';
-import {emptypatient, Patient} from '../../../../../models/Patient';
 import * as moment from 'moment';
+import {QueueService} from '../../../../services/queue.service';
+import {emptymergedQueueModel, MergedPatient_QueueModel} from '../../../../../models/MergedPatient_Queue.model';
 
 @Component({
     selector: 'current-patients-sidebar',
@@ -9,11 +10,11 @@ import * as moment from 'moment';
     styleUrls: ['./sidebar.component.scss']
 })
 export class SidebarComponent implements OnInit {
-    patient: Patient = {...emptypatient};
+    patient: MergedPatient_QueueModel = {...emptymergedQueueModel};
     activepage: string = 'generaldetails';
 
-    constructor(private communication: LocalcommunicationService) {
-        communication.selectedpatient.subscribe(patient => {
+    constructor(private communication: LocalcommunicationService, private queueservice: QueueService) {
+        queueservice.currentpatient.subscribe(patient => {
             this.patient = patient;
         });
         communication.onactivechildpagechanged.subscribe(page => {

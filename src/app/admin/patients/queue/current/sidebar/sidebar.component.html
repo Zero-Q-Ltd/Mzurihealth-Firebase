@@ -4,9 +4,9 @@
         <!-- SIDEBAR HEADER -->
         <div class="header p-12" fxLayout="row" fxLayoutAlign="start center">
             <!-- USER -->
-            <img [alt]="patient.personalinfo.name"
-                 [src]="patient.personalinfo.photoURL || '/assets/images/avatars/patient.svg'" class="avatar mr-16"/>
-            <span class="h5">{{patient.personalinfo.name}}</span>
+            <img [alt]="patient.patientdata.personalinfo.name"
+                 [src]="patient.patientdata.personalinfo.photoURL || '/assets/images/avatars/patient.svg'" class="avatar mr-16"/>
+            <span class="h5">{{patient.patientdata.personalinfo.name}}</span>
             <!-- / USER -->
         </div>
         <!-- / SIDEBAR HEADER -->
@@ -68,7 +68,7 @@
         <mat-accordion fusePerfectScrollbar>
             <mat-expansion-panel>
                 <mat-expansion-panel-header>
-                    Vitals ({{patient.medicalinfo.metadata.lastedit?.toDate().toDateString() || 'Empty'}})
+                    Vitals ({{patient.patientdata.medicalinfo.metadata.lastedit?.toDate().toDateString() || 'Empty'}})
                 </mat-expansion-panel-header>
                 <div class=" py-8">
                     <span class="w-100"> Blood Pressure</span>
@@ -96,16 +96,16 @@
             </mat-expansion-panel>
             <mat-expansion-panel>
                 <mat-expansion-panel-header>
-                    Allergies ({{ patient.medicalinfo.allergies.length}})
+                    Allergies ({{ patient.patientdata.medicalinfo.allergies.length}})
                 </mat-expansion-panel-header>
-                <span *ngFor="let allergy of patient.medicalinfo.allergies">{{allergy}}</span>
+                <span *ngFor="let allergy of patient.patientdata.medicalinfo.allergies">{{allergy}}</span>
             </mat-expansion-panel>
 
             <mat-expansion-panel>
                 <mat-expansion-panel-header>
-                    Conditions ({{patient.medicalinfo.conditions.length}})
+                    Conditions ({{patient.patientdata.medicalinfo.conditions.length}})
                 </mat-expansion-panel-header>
-                <span *ngFor="let condition of patient.medicalinfo.conditions">{{condition}}</span>
+                <span *ngFor="let condition of patient.patientdata.medicalinfo.conditions">{{condition}}</span>
             </mat-expansion-panel>
 
         </mat-accordion>

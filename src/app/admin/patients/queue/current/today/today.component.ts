@@ -26,10 +26,11 @@ import {medicalconditionsarray} from '../../../../../models/MedicalConditions.mo
 })
 export class TodayComponent implements OnInit {
     procedurestoday: Array<Procedureperformed> = [];
+
+
     procedureperformed: FormGroup;
     vitalsform: FormGroup;
     hospitalprocedures: Array<MergedProcedureModel> = [];
-    procedureheaders = ['name', 'category'];
     selectedprocedure: { rawprocedure: RawProcedure, customprocedure: CustomProcedure };
     expand = true;
     procedurecategories: Array<ProcedureCategory>;
@@ -39,7 +40,6 @@ export class TodayComponent implements OnInit {
     medconditionsform: FormGroup;
     medconditiontypes = medicalconditionsarray;
     filteredprocedures: Observable<MergedProcedureModel[]>;
-
 
     constructor(private hospitalservice: HospitalService,
                 private formBuilder: FormBuilder,

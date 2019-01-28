@@ -6,7 +6,7 @@ export interface MergedPatient_QueueModel {
     queuedata: PatientVisit;
 }
 
-export const mergedQueueModel: MergedPatient_QueueModel = {
+export const emptymergedQueueModel: MergedPatient_QueueModel = {
     queuedata: {...emptypatienthistory},
     patientdata: {...emptypatient}
 };

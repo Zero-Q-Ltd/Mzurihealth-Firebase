@@ -34,6 +34,7 @@ import {FuseConfirmDialogModule, FuseProgressBarModule, FuseSidebarModule, FuseT
 import {RouterModule} from '@angular/router';
 import {AgmCoreModule} from '@agm/core';
 import {CommonModule} from '@angular/common';
+import { PaymentchannelPipe } from './paymentchannel.pipe';
 
 @NgModule({
     imports: [
@@ -131,7 +132,8 @@ import {CommonModule} from '@angular/common';
         FuseProgressBarModule,
         FuseSidebarModule,
         FuseThemeOptionsModule
-    ]
+    ],
+    declarations: [PaymentchannelPipe]
 })
 export class AdminSharedModule {
 }

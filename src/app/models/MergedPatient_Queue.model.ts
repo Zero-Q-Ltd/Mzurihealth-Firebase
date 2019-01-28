@@ -3,10 +3,10 @@ import {emptypatientvisit, PatientVisit} from './PatientVisit';
 
 export interface MergedPatient_QueueModel {
     patientdata: Patient;
-    queuedata: PatientVisit;
+    visitdata: PatientVisit;
 }
 
 export const emptymergedQueueModel: MergedPatient_QueueModel = {
-    queuedata: {...emptypatientvisit},
+    visitdata: {...emptypatientvisit},
     patientdata: {...emptypatient}
 };

@@ -8,7 +8,7 @@
             <mat-horizontal-stepper #stepper>
                 <mat-step [stepControl]="vitalsform">
                     <ng-template matStepLabel>Vitals</ng-template>
-                    <form (ngSubmit)="addprocedure()" [formGroup]="vitalsform" class="content" class=" p-8"
+                    <form (ngSubmit)="updategeneralreport()" [formGroup]="vitalsform" class="content" class=" p-8"
                           fxFlex="1 1 auto"
                           fxLayout="column" fxLayoutAlign="start">
                         <div fxFlex="1 1 auto" fxLayout="row" fxLayoutAlign="start center">
@@ -216,9 +216,9 @@
                             <mat-error>Procedure required!</mat-error>
                         </mat-form-field>
                         <mat-autocomplete #auto="matAutocomplete" fxFlex="1 0 auto" fxFlex="100"
-                                          fxLayout="column" fxLayoutAlign="start">
+                                          fxLayout="column" fxLayoutAlign="start"  [displayWith]="procedureselectiondisplayfn">
                             <mat-option *ngFor="let procedure of filteredprocedures | async"
-                                        [value]="procedure.rawprocedure.name">
+                                        [value]="procedure">
                                 <span fxFlex="100">{{procedure.rawprocedure.name }}</span> -->
                                 <span class="text-right text-italic"
                                       fxFlex="100">{{getcategory(procedure.rawprocedure.category) }}</span>
@@ -267,7 +267,7 @@
                                 <button class="mr-8" color="primary" mat-raised-button matStepperPrevious type="button">
                                     Previous
                                 </button>
-                                <button color="accent" mat-raised-button type="button">
+                                <button color="accent" mat-raised-button type="submit">
                                     Save Procedure
                                 </button>
                             </div>

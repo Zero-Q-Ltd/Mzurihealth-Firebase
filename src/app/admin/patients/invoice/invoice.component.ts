@@ -2,6 +2,9 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Subject} from 'rxjs';
 import {HospitalService} from '../../services/hospital.service';
 import {Hospital} from '../../../models/Hospital';
+import {Procedureperformed} from '../../../models/Procedureperformed';
+import {emptypatientvisit, PatientVisit} from '../../../models/PatientVisit';
+import {emptypatient, Patient} from '../../../models/Patient';
 
 @Component({
     selector: 'app-invoice',
@@ -9,11 +12,12 @@ import {Hospital} from '../../../models/Hospital';
     styleUrls: ['./invoice.component.scss']
 })
 export class InvoiceComponent implements OnInit, OnDestroy {
-  visit: { visitinfo: PatientVisit, patientinfo: Patient } = {
+    visit: { visitinfo: PatientVisit, procedures: Array<Procedureperformed>, patientinfo: Patient } = {
+        procedures: [],
         visitinfo: {...emptypatientvisit},
         patientinfo: {...emptypatient}
     };
-    procedures: Array<Procedureperformed>;   
+
     // Private
     private _unsubscribeAll: Subject<any>;
     activehospital: Hospital;
@@ -50,5 +54,9 @@ export class InvoiceComponent implements OnInit, OnDestroy {
         // Unsubscribe from all subscriptions
         this._unsubscribeAll.next();
         this._unsubscribeAll.complete();
+    }
+
+    print(): void {
+        window.print();
     }
 }

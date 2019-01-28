@@ -75,7 +75,7 @@ export class QueueService {
                                     const file: HospFile = Object.assign({}, emptyfile, filedata.payload.data());
                                     file.id = patient.id;
                                     patient.fileinfo = file;
-                                    return {patientdata: Object.assign({}, emptypatient, patient), visitdata: visit};
+                                    return {patientdata: Object.assign({}, emptypatient, patient), queuedata: visit};
                                 });
                         })
                     );

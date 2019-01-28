@@ -4,7 +4,7 @@ import {emptypatient, Patient} from '../../../../../models/Patient';
 import * as moment from 'moment';
 import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {emptyfile, HospFile} from '../../../../../models/HospFile';
-import {emptypatienthistory, PatientVisit} from '../../../../../models/PatientVisit';
+import {emptypatientvisit, PatientVisit} from '../../../../../models/PatientVisit';
 import {emptyhospital, Hospital} from '../../../../../models/Hospital';
 import {InsuranceCompany} from '../../../../../models/InsuranceCompany';
 import {Observable} from 'rxjs';
@@ -25,7 +25,7 @@ import {MAT_DIALOG_DATA} from '@angular/material';
 export class GeneralDetailsComponent implements OnInit {
     patientfileno: HospFile = Object.assign({}, emptyfile);
     temppatient: Patient = emptypatient;
-    temphistory: PatientVisit = emptypatienthistory;
+    temphistory: PatientVisit = emptypatientvisit;
     activehospital: Hospital = Object.assign({}, emptyhospital);
     allInsurance: InsuranceCompany[];
     patientsForm: FormGroup;

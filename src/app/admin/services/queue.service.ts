@@ -54,12 +54,6 @@ export class QueueService {
      *
      */
     private getwholequeue(): void {
-        /**
-         *  ref => {
-            ref.where('status', '<', 4);
-            ref.where('hospitalid', '==', this.activehospital.id);
-        }
-         */
         this.db.collection('hospitalvisits', ref => ref
             .where('hospitalid', '==', this.activehospital.id)
             .where('checkin.status', '<', 4))
@@ -82,17 +76,6 @@ export class QueueService {
         });
     }
 
-    manualfilterqueue(): void {
-        this.mypatientqueue.next(this.mainpatientqueue.value.filter(queue => {
-            const equality = queue.queuedata.checkin.admin === this.userdata.id;
-            if (equality && (queue.queuedata.patientid === this.userdata.config.occupied)) {
-                console.log('00');
-                this.currentpatient.next(queue);
-            }
-            return equality;
-        }));
-    }
-
     /**
      * filters the queue to find the doc's queue as well as his current patient
      */
@@ -100,24 +83,22 @@ export class QueueService {
         this.mainpatientqueue.subscribe(queuedata => {
             this.mypatientqueue.next(queuedata.filter(queue => {
                 const equality = queue.queuedata.checkin.admin === this.userdata.id;
-                console.log(equality, queue.queuedata.patientid === this.userdata.config.occupied);
                 if (queue.queuedata.patientid === this.userdata.config.occupied) {
-                    console.log('00');
                     this.currentpatient.next(queue);
                 }
-                return queue.queuedata.checkin.admin === this.userdata.id;
+                return equality;
             }));
         });
 
     }
-
-    // From reception to rest of admins or admins to admins
+    /**
+     * From reception to rest of admins or admins to admins
+     * @param visit
+     * @param adminid
+     */
     assignadmin(visit: PatientVisit, adminid: string): Promise<void> {
-
         const batch = this.db.firestore.batch();
         batch.update(this.db.firestore.collection('hospitalvisits').doc(visit.id), visit);
-
         return batch.commit();
     }
-
 }

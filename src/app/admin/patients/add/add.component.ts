@@ -7,7 +7,7 @@ import {AdminService} from '../../services/admin.service';
 import {PatientService} from '../../services/patient.service';
 import {HospitalService} from '../../services/hospital.service';
 import {emptyhospital, Hospital} from '../../../models/Hospital';
-import {emptypatienthistory, PatientVisit} from '../../../models/PatientVisit';
+import {emptypatientvisit, PatientVisit} from '../../../models/PatientVisit';
 import {emptypatient, Patient} from '../../../models/Patient';
 import {emptyfile, HospFile} from '../../../models/HospFile';
 import * as moment from 'moment';
@@ -26,7 +26,7 @@ import {Router} from '@angular/router';
 export class AddComponent implements OnInit {
     patientfileno: HospFile = Object.assign({}, emptyfile);
     temppatient: Patient = emptypatient;
-    temphistory: PatientVisit = emptypatienthistory;
+    temphistory: PatientVisit = emptypatientvisit;
     activehospital: Hospital = Object.assign({}, emptyhospital);
     allInsurance: InsuranceCompany[];
     patientsForm: FormGroup;

@@ -48,7 +48,7 @@ export class InvoiceService {
     //                         let temphisto = history.data();
     //                         temphisto['id'] = history.id;
     //                         if (!temphisto['paid']) {
-    //                             this.caurrentpatientinvoice.todayhistory = emptypatienthistory;
+    //                             this.caurrentpatientinvoice.todayhistory = emptypatientvisit;
     //                             _.extend(this.caurrentpatientinvoice.todayhistory, temphisto);
     //                             this.db.firestore.collection('History').doc(temphisto.id).collection('procedures').onSnapshot(unsettledprocedures => {
     //                                 if (!unsettledprocedures.empty) {
@@ -65,15 +65,15 @@ export class InvoiceService {
     //                                                 tempProcedures['paymentmethod'].push(this.caurrentpatientinvoice.todayhistory.paymentmethod);
     //                                             }
     //                                             console.log(tempProcedures);
-    //                                             // this.caurrentpatientinvoice.todayprocedures.push(this.objectassign(tempProcedures, emptypatienthistory))
+    //                                             // this.caurrentpatientinvoice.todayprocedures.push(this.objectassign(tempProcedures, emptypatientvisit))
     //                                             this.db.firestore.collection('procedures').doc(tempProcedures.id).collection('hospitalconfigs').doc(this.activehospital.id).get().then(procedureconfig => {
     //                                                 if (procedureconfig.exists) {
     //                                                     let tempconfig = procedureconfig.data();
     //                                                     tempconfig['id'] = procedureconfig.id;
     //                                                     console.log(tempconfig);
     //                                                     let tempconfig2 = emptyprawrocedure;
-    //                                                     let emptyhisto = emptypatienthistory;
-    //                                                     // this.caurrentpatientinvoice.todayprocedures.set(tempProcedures.id, { procedureconfig: this.objectassign(tempconfig), procedurehistory: this.objectassign(tempProcedures, emptypatienthistory) })
+    //                                                     let emptyhisto = emptypatientvisit;
+    //                                                     // this.caurrentpatientinvoice.todayprocedures.set(tempProcedures.id, { procedureconfig: this.objectassign(tempconfig), procedurehistory: this.objectassign(tempProcedures, emptypatientvisit) })
     //                                                     this.caurrentpatientinvoice.todayprocedures.set(tempProcedures.id,
     //                                                         {procedureconfig: _.extend(tempconfig2, tempconfig), procedurehistory: _.extend(emptyhisto, tempProcedures)});
     //                                                 } else {

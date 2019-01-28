@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {PatienthistoryService} from '../../../../services/patienthistory.service';
+import {PatientvisitService} from '../../../../services/patientvisit.service';
+import {PatientVisit} from '../../../../../models/PatientVisit';
 
 @Component({
     selector: 'patient-history',
@@ -7,11 +8,15 @@ import {PatienthistoryService} from '../../../../services/patienthistory.service
     styleUrls: ['./history.component.scss']
 })
 export class HistoryComponent implements OnInit {
+    patientvisits: Array<PatientVisit>;
 
-    constructor(private patienthistory: PatienthistoryService) {
+    constructor(private patientvisitService: PatientvisitService) {
+        patientvisitService.patientvisits.subscribe(visits => {
+            this.patientvisits = visits;
+        });
     }
 
-    ngOnInit() {
+    ngOnInit(): void {
     }
 
 }

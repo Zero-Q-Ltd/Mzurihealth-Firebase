@@ -1,4 +1,4 @@
-<mat-accordion [@animateStagger]="{value:'50'}">
+<mat-accordion >
     <mat-expansion-panel [expanded]="!expand">
         <mat-expansion-panel-header>
             Update General Report
@@ -58,7 +58,7 @@
                           fxLayout="column" fxLayoutAlign="start">
                         <ng-template matStepLabel>Allergies</ng-template>
                         <section *ngFor="let item of allergiesform.get('allergiesformArray').controls; let i = index;"
-                                 [@animate]="{value:'*',params:{y:'100%'}}" formArrayName="allergiesformArray"
+                                 formArrayName="allergiesformArray"
                                  fxFlex="1 0 auto" fxLayout="column">
 
                             <!--Insurance company, Insurance Number-->
@@ -110,7 +110,7 @@
                         <ng-template matStepLabel>Conditions</ng-template>
                         <section
                             *ngFor="let item of medconditionsform.get('conditionsformArray').controls; let i = index;"
-                            [@animate]="{value:'*',params:{y:'100%'}}" formArrayName="conditionsformArray"
+                            formArrayName="conditionsformArray"
                             fxFlex="1 0 auto" fxLayout="column">
 
                             <!--Insurance company, Insurance Number-->
@@ -164,12 +164,12 @@
                 Procedures Performed
             </mat-panel-title>
             <mat-panel-description>
-                {{procedurestoday.length}}
+                {{currentvisitprocedures.length}}
             </mat-panel-description>
         </mat-expansion-panel-header>
         <ng-template matExpansionPanelContent>
 
-            <div *ngFor="let procedure of procedurestoday">
+            <div *ngFor="let procedure of currentvisitprocedures">
                 <mat-card class="p-24">
                     <mat-card-header>
                         <mat-card-title>{{procedure.name}}</mat-card-title>
@@ -237,7 +237,7 @@
 
                     <ng-template matStepLabel>Procedure Results</ng-template>
 
-                    <div [@animate]="{value:'*', params:{delay:'400ms',scale:'0.2'}}">
+                    <div>
                         <form (ngSubmit)="addprocedure()" [formGroup]="procedureperformed"
                               class=" p-24"
                               fxFlex="1 0 auto"

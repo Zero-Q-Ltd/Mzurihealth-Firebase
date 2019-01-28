@@ -26,7 +26,7 @@ import {QueueService} from '../../../../services/queue.service';
 
 })
 export class TodayComponent implements OnInit {
-    procedurestoday: Array<Procedureperformed> = [];
+    currentvisitprocedures: Array<Procedureperformed> = [];
     procedureperformed: FormGroup;
     vitalsform: FormGroup;
     hospitalprocedures: Array<MergedProcedureModel> = [];
@@ -56,13 +56,16 @@ export class TodayComponent implements OnInit {
             this.hospitalprocedures = mergedprocedures;
             this.procedureselection.get('selection').setValidators([Validators.required, ProcedureValidator.available(this.hospitalprocedures)]);
         });
-
+        queue.currentvisitprocedures.subscribe(value => {
+            this.currentvisitprocedures = value;
+        });
         this.filteredprocedures = this.procedureselection.valueChanges
             .pipe(
                 startWith(''),
                 map(value => this._filter(value))
             );
         this.initvitalsformm();
+
     }
 
     private _filter(value: { selection: MergedProcedureModel }): MergedProcedureModel[] {
@@ -241,7 +244,7 @@ export class TodayComponent implements OnInit {
     }
 
     updategeneralreport(): void {
-        
+
     }
 
     addprocedure(): void {

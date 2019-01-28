@@ -347,7 +347,7 @@ export class PatientService {
      *
      *   return  Promise
      * */
-    updateCurrentPatient(patientID: string, {personalinfo, insurance, nextofkin}: AddPatientFormModel): any {
+    updatePatient(patientID: string, {personalinfo, insurance, nextofkin}: AddPatientFormModel): any {
         // get current data
         const patientDataRef = this.db.firestore.collection('patients').doc(patientID);
 

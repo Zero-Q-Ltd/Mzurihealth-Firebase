@@ -15,7 +15,7 @@ import {PushqueueComponent} from './pushqueue/pushqueue.component';
         PatientsRoutingModule,
         AdminSharedModule,
     ],
-    entryComponents: [AddComponent, PushqueueComponent],
+    entryComponents: [AddComponent, PushqueueComponent, InvoiceComponent],
 
 })
 export class PatientsModule {

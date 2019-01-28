@@ -9,8 +9,11 @@ import {Hospital} from '../../../models/Hospital';
     styleUrls: ['./invoice.component.scss']
 })
 export class InvoiceComponent implements OnInit, OnDestroy {
-    invoice: any;
-
+  visit: { visitinfo: PatientVisit, patientinfo: Patient } = {
+        visitinfo: {...emptypatientvisit},
+        patientinfo: {...emptypatient}
+    };
+    procedures: Array<Procedureperformed>;   
     // Private
     private _unsubscribeAll: Subject<any>;
     activehospital: Hospital;

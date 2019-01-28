@@ -241,7 +241,7 @@ export class TodayComponent implements OnInit {
     }
 
     updategeneralreport(): void {
-
+        
     }
 
     addprocedure(): void {

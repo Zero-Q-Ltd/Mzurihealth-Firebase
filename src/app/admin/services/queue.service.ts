@@ -24,7 +24,7 @@ export class QueueService {
     currentpatient: BehaviorSubject<MergedPatient_QueueModel> = new BehaviorSubject({...emptymergedQueueModel});
     hospitaladmins: Array<HospitalAdmin> = [];
     userdata: HospitalAdmin;
-    latestprocedures: BehaviorSubject<Array<Procedureperformed>> = new BehaviorSubject<Array<Procedureperformed>>([]);
+    currentvisitprocedures: BehaviorSubject<Array<Procedureperformed>> = new BehaviorSubject<Array<Procedureperformed>>([]);
     visithistory: BehaviorSubject<Array<PatientVisit>> = new BehaviorSubject<Array<PatientVisit>>([]);
 
     constructor(private db: AngularFirestore,
@@ -116,7 +116,7 @@ export class QueueService {
             .where('patientid', '==', this.currentpatient.value.patientdata.id)
             .where('visitid', '==', this.currentpatient.value.queuedata.id)
             .onSnapshot(snapshot => {
-                this.latestprocedures.next(snapshot.docs.map(value => {
+                this.currentvisitprocedures.next(snapshot.docs.map(value => {
                     const p: Procedureperformed = Object.assign({}, {...emptyprocedureperformed}, value.data());
                     p.id = value.id;
                     return p;

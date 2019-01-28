@@ -6,33 +6,60 @@
         <div class="card">
 
             <div class="header">
-                <div class="invoice-date">{{visit.visitinfo.metadata.date?.toDate().toDateString()}}</div>
+                <div class="invoice-date">{{invoice.date}}</div>
 
                 <div fxLayout="row" fxLayoutAlign="space-between stretch">
                     <div class="client">
                         <div class="invoice-number" fxLayout="row" fxLayoutAlign="start center">
                             <span class="title">INVOICE</span>
-                            <span class="number">{{visit.visitinfo.invoiceid}}</span>
+                            <span class="number">{{invoice.number}}</span>
                         </div>
 
+                        <!--<div class="due-date" fxLayout="row" fxLayoutAlign="start center">-->
+                        <!--<span class="title">DUE DATE</span>-->
+                        <!--<span class="date">{{invoice.dueDate}}</span>-->
+                        <!--</div>-->
+
                         <div class="info">
-                            <div class="title">{{visit.patientinfo.personalinfo.name}}</div>
-                            <div class="address">{{visit.patientinfo.personalinfo.address}}</div>
-                            <div class="phone">{{visit.patientinfo.personalinfo.phone}}</div>
-                            <div class="email">{{visit.patientinfo.personalinfo.email}}</div>
+                            <div class="title">
+                                {{activehospital.name}}
+                            </div>
+                            <div class="address">
+                                {{activehospital.contactdetails.address}}
+                            </div>
+                            <div class="phone">
+                                {{activehospital.contactdetails.phone}}
+                            </div>
+                            <div class="email">
+                                {{activehospital.contactdetails.email}}
+                            </div>
+                            <!--<div class="website">-->
+                            <!--{{invoice.client.website}}-->
+                            <!--</div>-->
                         </div>
                     </div>
 
-                    <div class="issuer accent" fxLayout="row" fxLayoutAlign="start center">
+                    <div class="issuer" fxLayout="row" fxLayoutAlign="start center">
                         <div class="logo">
                             <img src="assets/images/logos/fuse.svg">
                         </div>
 
                         <div class="info">
-                            <div class="title">{{activehospital.name}}</div>
-                            <div class="address">{{activehospital.contactdetails.address}}</div>
-                            <div class="phone">{{activehospital.contactdetails.phone}}</div>
-                            <div class="email">{{activehospital.contactdetails.email}}</div>
+                            <div class="title">
+                                {{invoice.from.title}}
+                            </div>
+                            <div class="address">
+
+                            </div>
+                            <div class="phone">
+
+                            </div>
+                            <div class="email">
+
+                            </div>
+                            <div class="website">
+
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -49,23 +76,23 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr *ngFor="let procedure of visit.procedures">
+                    <tr *ngFor="let service of invoice.services">
                         <td>
                             <div class="title">
-                                {{procedure.name}}
+                                {{service.title}}
                             </div>
                         </td>
+
                         <td class="text-right">
-                            {{procedure.price | currency:'KES':'symbol'}}
+                            {{service.unitPrice | currency:'USD':'symbol'}}
                         </td>
                         <td class="text-right">
-                            1
+                            {{service.quantity}}
                         </td>
                         <td class="text-right">
-                            {{procedure.price | currency:'KES':'symbol'}}
+                            {{service.total | currency:'USD':'symbol'}}
                         </td>
                     </tr>
-
                     </tbody>
                 </table>
 
@@ -73,19 +100,19 @@
                     <tbody>
                     <tr class="subtotal">
                         <td>SUBTOTAL</td>
-                        <td>{{0 | currency:'USD':'symbol'}}</td>
+                        <td>{{invoice.subtotal | currency:'USD':'symbol'}}</td>
                     </tr>
-                    <tr class="tax">
-                        <td>TAX</td>
-                        <td>{{0 | currency:'USD':'symbol'}}</td>
-                    </tr>
-                    <tr class="discount">
-                        <td>DISCOUNT</td>
-                        <td>-{{0 | currency:'USD':'symbol'}}</td>
-                    </tr>
+                    <!--<tr class="tax">-->
+                    <!--<td>TAX</td>-->
+                    <!--<td>{{invoice.tax | currency:'USD':'symbol'}}</td>-->
+                    <!--</tr>-->
+                    <!--<tr class="discount">-->
+                    <!--<td>DISCOUNT</td>-->
+                    <!--<td>-{{invoice.discount | currency:'USD':'symbol'}}</td>-->
+                    <!--</tr>-->
                     <tr class="total">
                         <td>TOTAL</td>
-                        <td>{{0 | currency:'USD':'symbol'}}</td>
+                        <td>{{invoice.total | currency:'USD':'symbol'}}</td>
                     </tr>
                     </tbody>
                 </table>
@@ -119,6 +146,7 @@
                     </div>
                 </div>
             </div>
+
             <!--
 
             Use the following elements to add breaks to your pages. This will make sure that the section in between

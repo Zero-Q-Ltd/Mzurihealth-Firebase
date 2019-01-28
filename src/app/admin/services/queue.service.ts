@@ -67,7 +67,7 @@ export class QueueService {
                         switchMap(patientdata => {
                             const patient: Patient = Object.assign({}, emptypatient, patientdata.payload.data());
                             patient.id = patientdata.payload.id;
-                            // return {patientdata: Object.assign({}, emptypatient, patient), visitdata: visit};
+                            // return {patientdata: Object.assign({}, emptypatient, patient), queuedata: visit};
                             return this.db.collection('hospitals').doc(this.activehospital.id)
                                 .collection('filenumbers')
                                 .doc(patient.id)
@@ -92,8 +92,8 @@ export class QueueService {
     filterqueue(): void {
         this.mainpatientqueue.subscribe(queuedata => {
             this.mypatientqueue.next(queuedata.filter(queue => {
-                const equality = queue.visitdata.checkin.admin === this.userdata.id;
-                if (queue.visitdata.patientid === this.userdata.config.occupied) {
+                const equality = queue.queuedata.checkin.admin === this.userdata.id;
+                if (queue.queuedata.patientid === this.userdata.config.occupied) {
                     this.currentpatient.next(queue);
                 }
                 return equality;

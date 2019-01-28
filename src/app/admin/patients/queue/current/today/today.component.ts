@@ -26,6 +26,8 @@ import {medicalconditionsarray} from '../../../../../models/MedicalConditions.mo
 })
 export class TodayComponent implements OnInit {
     procedurestoday: Array<Procedureperformed> = [];
+
+
     procedureperformed: FormGroup;
     vitalsform: FormGroup;
     hospitalprocedures: Array<MergedProcedureModel> = [];
@@ -43,7 +45,7 @@ export class TodayComponent implements OnInit {
                 private formBuilder: FormBuilder,
                 private patientservice: PatientService,
                 private procedureservice: ProceduresService,
-                private patientvisit: PatientvisitService) {
+                private patienthistory: PatientvisitService) {
 
         procedureservice.procedurecategories.subscribe(categories => {
             this.procedurecategories = categories;

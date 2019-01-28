@@ -67,7 +67,7 @@ export class QueueService {
                         switchMap(patientdata => {
                             const patient: Patient = Object.assign({}, emptypatient, patientdata.payload.data());
                             patient.id = patientdata.payload.id;
-                            // return {patientdata: Object.assign({}, emptypatient, patient), visitdata: visit};
+                            // return {patientdata: Object.assign({}, emptypatient, patient), queuedata: visit};
                             return this.db.collection('hospitals').doc(this.activehospital.id)
                                 .collection('filenumbers')
                                 .doc(patient.id)
@@ -75,7 +75,7 @@ export class QueueService {
                                     const file: HospFile = Object.assign({}, emptyfile, filedata.payload.data());
                                     file.id = patient.id;
                                     patient.fileinfo = file;
-                                    return {patientdata: Object.assign({}, emptypatient, patient), queuedata: visit};
+                                    return {patientdata: Object.assign({}, emptypatient, patient), visitdata: visit};
                                 });
                         })
                     );

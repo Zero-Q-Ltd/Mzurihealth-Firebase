@@ -12,11 +12,11 @@ import {emptypatient, Patient} from '../../../models/Patient';
     styleUrls: ['./invoice.component.scss']
 })
 export class InvoiceComponent implements OnInit, OnDestroy {
-    visit: { visitinfo: PatientVisit, procedures: Array<Procedureperformed>, patientinfo: Patient } = {
-        procedures: [],
+    visit: { visitinfo: PatientVisit, patientinfo: Patient } = {
         visitinfo: {...emptypatientvisit},
         patientinfo: {...emptypatient}
     };
+    procedures: Array<Procedureperformed>;
 
     // Private
     private _unsubscribeAll: Subject<any>;

@@ -96,8 +96,6 @@ export class HospconfigComponent implements OnInit {
     }
 
     savehospitalchanges(): void {
-        console.log(this.temphospital, this.originalhspital);
-        return;
         this.confirmDialogRef = this._matDialog.open(FuseConfirmDialogComponent, {
             disableClose: false
         });
@@ -128,7 +126,6 @@ export class HospconfigComponent implements OnInit {
         const paymentchannel = this.allpaymentchannels.find(channel => {
             return channel.id === id;
         });
-        // console.log(paymentchannel);
         return paymentchannel;
     }
 

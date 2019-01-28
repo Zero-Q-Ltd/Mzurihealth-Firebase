@@ -12,14 +12,7 @@ export class ProcedureValidator {
     }
 
 
-    private static valueAvailable(allInsurance: MergedProcedureModel[], input: string): boolean {
-        // const fData = allInsurance.filter(value => value.name.toLowerCase() === input.toLowerCase());
-        let found = false;
-        allInsurance.forEach(value => {
-            if (value !== undefined && (value.rawprocedure.name.toLowerCase() === input.toLowerCase())) {
-                found = true;
-            }
-        });
-        return found;
+    private static valueAvailable(allInsurance: MergedProcedureModel[], input: MergedProcedureModel): boolean {
+        return allInsurance.includes(input);
     }
 }

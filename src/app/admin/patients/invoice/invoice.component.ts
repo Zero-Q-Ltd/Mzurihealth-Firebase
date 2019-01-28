@@ -2,6 +2,9 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Subject} from 'rxjs';
 import {HospitalService} from '../../services/hospital.service';
 import {Hospital} from '../../../models/Hospital';
+import {QueueService} from '../../services/queue.service';
+import {emptymergedQueueModel, MergedPatient_QueueModel} from '../../../models/MergedPatient_Queue.model';
+import {Procedureperformed} from '../../../models/Procedureperformed';
 
 @Component({
     selector: 'app-invoice',
@@ -9,26 +12,26 @@ import {Hospital} from '../../../models/Hospital';
     styleUrls: ['./invoice.component.scss']
 })
 export class InvoiceComponent implements OnInit, OnDestroy {
-  visit: { visitinfo: PatientVisit, patientinfo: Patient } = {
-        visitinfo: {...emptypatientvisit},
-        patientinfo: {...emptypatient}
+    visit: { procedures: Array<Procedureperformed>, patientinfo: MergedPatient_QueueModel } = {
+        procedures: [],
+        patientinfo: {...emptymergedQueueModel}
     };
-    procedures: Array<Procedureperformed>;   
+
     // Private
     private _unsubscribeAll: Subject<any>;
     activehospital: Hospital;
 
-
-    /**
-     * Constructor
-     *
-     * @param {InvoiceService} _invoiceService
-     */
-    constructor(private hospitalservice: HospitalService) {
+    constructor(private hospitalservice: HospitalService, private queue: QueueService) {
         // Set the private defaults
         this._unsubscribeAll = new Subject();
         this.hospitalservice.activehospital.subscribe(hosp => {
             this.activehospital = hosp;
+        });
+        this.queue.currentvisitprocedures.subscribe(procedures => {
+            this.visit.procedures = procedures;
+        });
+        this.queue.currentpatient.subscribe(patient => {
+            this.visit.patientinfo = patient;
         });
     }
 
@@ -50,5 +53,9 @@ export class InvoiceComponent implements OnInit, OnDestroy {
         // Unsubscribe from all subscriptions
         this._unsubscribeAll.next();
         this._unsubscribeAll.complete();
+    }
+
+    print(): void {
+        window.print();
     }
 }

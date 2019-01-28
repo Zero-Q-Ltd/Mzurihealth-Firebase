@@ -1,10 +1,10 @@
 @import "src/@fuse/scss/fuse";
 
-invoice{
+app-invoice {
 
     #invoice {
 
-        &.modern {
+        &.compact {
             padding: 0;
 
             .invoice-container {
@@ -15,66 +15,67 @@ invoice{
                     width: 1020px;
                     min-width: 1020px;
                     max-width: 1020px;
-                    padding: 88px;
+                    padding: 64px 88px;
                     overflow: hidden;
                     background: #FFFFFF;
                     @include mat-elevation(7);
 
                     .header {
 
-                        .ids {
-                            line-height: 22px;
+                        .invoice-date {
+                            font-size: 14px;
                             color: rgba(0, 0, 0, 0.54);
+                            margin-bottom: 32px;
+                        }
 
-                            .detail {
-                                width: 160px;
-                            }
+                        .client {
 
-                            .seller {
-                                margin-bottom: 80px;
+                            .invoice-number {
+                                font-size: 18px;
+                                padding-bottom: 2px;
 
-                                .logo {
-                                    width: 250px;
+                                .title {
+                                    color: rgba(0, 0, 0, 0.54);
+                                }
+
+                                .number {
+                                    color: rgba(0, 0, 0, 0.87);
+                                    padding-left: 6px;
                                 }
                             }
 
-                            .client {
+                            .due-date {
+                                font-size: 18px;
+                                padding-bottom: 16px;
 
-                                .label {
-                                    width: 156px;
-                                    font-size: 24px;
-                                    font-weight: 300;
+                                .title {
+                                    color: rgba(0, 0, 0, 0.54);
+                                }
+
+                                .date {
+                                    color: rgba(0, 0, 0, 0.87);
+                                    padding-left: 6px;
                                 }
                             }
 
-                            .divider {
-                                width: 1px;
-                                margin: 0 48px;
-                                background-color: rgba(0, 0, 0, 0.12);
-                                height: 144px;
+                            .info {
+                                color: rgba(0, 0, 0, 0.54);
+                                line-height: 22px;
                             }
                         }
 
-                        .summary {
-                            font-size: 15px;
+                        .issuer {
+                            margin-right: -88px;
+                            padding-right: 66px;
 
-                            .label {
-                                color: rgba(0, 0, 0, 0.54);
-                                text-align: right;
-                                padding-right: 16px;
+                            .logo {
+                                width: 96px;
+                                padding: 0 8px;
+                                border-right: 1px solid rgba(255, 255, 255, 0.7);
                             }
 
-                            .value {
-                                color: rgba(0, 0, 0, 1);
-                            }
-
-                            .code {
-                                font-size: 35px;
-                                font-weight: 300;
-
-                                td {
-                                    padding-bottom: 32px;
-                                }
+                            .info {
+                                padding: 16px;
                             }
                         }
                     }
@@ -82,9 +83,8 @@ invoice{
                     .content {
 
                         .invoice-table {
-                            margin-top: 30px;
+                            margin-top: 64px;
                             font-size: 15px;
-                            color: rgba(0, 0, 0, 0.87);
 
                             thead {
 
@@ -93,6 +93,14 @@ invoice{
                                     th {
                                         color: rgba(0, 0, 0, 0.87);
                                         border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+
+                                        &:first-child {
+                                            padding-left: 8px;
+                                        }
+
+                                        &:last-child {
+                                            padding-right: 8px;
+                                        }
                                     }
                                 }
                             }
@@ -104,12 +112,20 @@ invoice{
                                     td {
                                         color: rgba(0, 0, 0, 0.87);
                                         border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+
+                                        &:first-child {
+                                            padding-left: 8px;
+                                        }
+
+                                        &:last-child {
+                                            padding-right: 8px;
+                                        }
                                     }
                                 }
                             }
 
                             .title {
-                                font-size: 17px;
+                                font-size: 16px;
                             }
 
                             .detail {
@@ -121,17 +137,17 @@ invoice{
                         }
 
                         .invoice-table-footer {
-                            margin: 20px 0 48px 0;
+                            margin: 32px 0 72px 0;
 
                             tr {
 
                                 td {
                                     text-align: right;
-                                    font-size: 17px;
+                                    font-size: 16px;
                                     font-weight: 600;
                                     color: rgba(0, 0, 0, 0.54);
                                     border-bottom: none;
-                                    padding: 8px 8px;
+                                    padding: 4px 8px;
 
                                     &:first-child {
                                         text-align: left;
@@ -148,7 +164,7 @@ invoice{
                                 &.total {
 
                                     td {
-                                        padding: 32px 8px;
+                                        padding: 24px 8px;
                                         border-top: 1px solid rgba(0, 0, 0, 0.12);
                                         font-size: 35px;
                                         font-weight: 300;
@@ -196,7 +212,7 @@ invoice{
         /* Invoice Specific Styles */
         #invoice {
 
-            &.modern {
+            &.compact {
                 background: white;
 
                 .invoice-container {
@@ -211,44 +227,13 @@ invoice{
 
                         .header {
 
-                            .ids {
-
-                                .detail {
-                                    width: 120pt;
-                                }
-
-                                .seller {
-                                    margin-bottom: 8pt;
-
-                                    .logo {
-                                        width: 100pt;
-                                    }
-                                }
-
-                                .client {
-
-                                    .label {
-                                        width: 60pt;
-                                        font-size: 16pt;
-                                    }
-                                }
-
-                                .divider {
-                                    margin: 0 12pt;
-                                    height: 100pt;
-                                }
+                            .invoice-date {
+                                margin-bottom: 16pt;
                             }
 
-                            .summary {
-                                font-size: 10pt;
-
-                                .code {
-                                    font-size: 18pt;
-
-                                    td {
-                                        padding-bottom: 10pt;
-                                    }
-                                }
+                            .issuer {
+                                padding-right: 0;
+                                margin-right: 0;
                             }
                         }
 
@@ -305,7 +290,7 @@ invoice{
                             }
 
                             .invoice-table-footer {
-                                margin: 5pt 0;
+                                margin: 16pt 0;
 
                                 tr {
 
@@ -357,7 +342,6 @@ invoice{
                             }
 
                             .logo {
-                                font-size: 14pt;
                                 margin-right: 8pt;
                             }
 

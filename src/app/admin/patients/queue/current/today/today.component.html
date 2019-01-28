@@ -1,4 +1,4 @@
-<mat-accordion [@animateStagger]="{value:'50'}">
+<mat-accordion >
     <mat-expansion-panel [expanded]="!expand">
         <mat-expansion-panel-header>
             Update General Report
@@ -8,7 +8,7 @@
             <mat-horizontal-stepper #stepper>
                 <mat-step [stepControl]="vitalsform">
                     <ng-template matStepLabel>Vitals</ng-template>
-                    <form (ngSubmit)="addprocedure()" [formGroup]="vitalsform" class="content" class=" p-8"
+                    <form (ngSubmit)="updategeneralreport()" [formGroup]="vitalsform" class="content" class=" p-8"
                           fxFlex="1 1 auto"
                           fxLayout="column" fxLayoutAlign="start">
                         <div fxFlex="1 1 auto" fxLayout="row" fxLayoutAlign="start center">
@@ -58,7 +58,7 @@
                           fxLayout="column" fxLayoutAlign="start">
                         <ng-template matStepLabel>Allergies</ng-template>
                         <section *ngFor="let item of allergiesform.get('allergiesformArray').controls; let i = index;"
-                                 [@animate]="{value:'*',params:{y:'100%'}}" formArrayName="allergiesformArray"
+                                 formArrayName="allergiesformArray"
                                  fxFlex="1 0 auto" fxLayout="column">
 
                             <!--Insurance company, Insurance Number-->
@@ -110,7 +110,7 @@
                         <ng-template matStepLabel>Conditions</ng-template>
                         <section
                             *ngFor="let item of medconditionsform.get('conditionsformArray').controls; let i = index;"
-                            [@animate]="{value:'*',params:{y:'100%'}}" formArrayName="conditionsformArray"
+                            formArrayName="conditionsformArray"
                             fxFlex="1 0 auto" fxLayout="column">
 
                             <!--Insurance company, Insurance Number-->
@@ -164,12 +164,12 @@
                 Procedures Performed
             </mat-panel-title>
             <mat-panel-description>
-                {{procedurestoday.length}}
+                {{currentvisitprocedures.length}}
             </mat-panel-description>
         </mat-expansion-panel-header>
         <ng-template matExpansionPanelContent>
 
-            <div *ngFor="let procedure of procedurestoday">
+            <div *ngFor="let procedure of currentvisitprocedures">
                 <mat-card class="p-24">
                     <mat-card-header>
                         <mat-card-title>{{procedure.name}}</mat-card-title>
@@ -216,9 +216,9 @@
                             <mat-error>Procedure required!</mat-error>
                         </mat-form-field>
                         <mat-autocomplete #auto="matAutocomplete" fxFlex="1 0 auto" fxFlex="100"
-                                          fxLayout="column" fxLayoutAlign="start">
+                                          fxLayout="column" fxLayoutAlign="start"  [displayWith]="procedureselectiondisplayfn">
                             <mat-option *ngFor="let procedure of filteredprocedures | async"
-                                        [value]="procedure.rawprocedure.name">
+                                        [value]="procedure">
                                 <span fxFlex="100">{{procedure.rawprocedure.name }}</span> -->
                                 <span class="text-right text-italic"
                                       fxFlex="100">{{getcategory(procedure.rawprocedure.category) }}</span>
@@ -237,7 +237,7 @@
 
                     <ng-template matStepLabel>Procedure Results</ng-template>
 
-                    <div [@animate]="{value:'*', params:{delay:'400ms',scale:'0.2'}}">
+                    <div>
                         <form (ngSubmit)="addprocedure()" [formGroup]="procedureperformed"
                               class=" p-24"
                               fxFlex="1 0 auto"
@@ -267,7 +267,7 @@
                                 <button class="mr-8" color="primary" mat-raised-button matStepperPrevious type="button">
                                     Previous
                                 </button>
-                                <button color="accent" mat-raised-button type="button">
+                                <button color="accent" mat-raised-button type="submit">
                                     Save Procedure
                                 </button>
                             </div>

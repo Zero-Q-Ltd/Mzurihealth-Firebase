@@ -16,6 +16,7 @@ import {MergedProcedureModel} from '../../../../../models/MergedProcedure.model'
 import {map, startWith} from 'rxjs/operators';
 import {allerytypearray} from '../../../../../models/Allergies.model';
 import {medicalconditionsarray} from '../../../../../models/MedicalConditions.model';
+import {QueueService} from '../../../../services/queue.service';
 
 @Component({
     selector: 'patient-today',
@@ -25,9 +26,7 @@ import {medicalconditionsarray} from '../../../../../models/MedicalConditions.mo
 
 })
 export class TodayComponent implements OnInit {
-    procedurestoday: Array<Procedureperformed> = [];
-
-
+    currentvisitprocedures: Array<Procedureperformed> = [];
     procedureperformed: FormGroup;
     vitalsform: FormGroup;
     hospitalprocedures: Array<MergedProcedureModel> = [];
@@ -45,7 +44,8 @@ export class TodayComponent implements OnInit {
                 private formBuilder: FormBuilder,
                 private patientservice: PatientService,
                 private procedureservice: ProceduresService,
-                private patienthistory: PatientvisitService) {
+                private queue: QueueService,
+                private patientvisit: PatientvisitService) {
 
         procedureservice.procedurecategories.subscribe(categories => {
             this.procedurecategories = categories;
@@ -56,20 +56,24 @@ export class TodayComponent implements OnInit {
             this.hospitalprocedures = mergedprocedures;
             this.procedureselection.get('selection').setValidators([Validators.required, ProcedureValidator.available(this.hospitalprocedures)]);
         });
-
+        queue.currentvisitprocedures.subscribe(value => {
+            this.currentvisitprocedures = value;
+        });
         this.filteredprocedures = this.procedureselection.valueChanges
             .pipe(
                 startWith(''),
                 map(value => this._filter(value))
             );
         this.initvitalsformm();
+
     }
 
-    private _filter(value): MergedProcedureModel[] {
-        if (!value) {
+    private _filter(value: { selection: MergedProcedureModel }): MergedProcedureModel[] {
+        if (!value || !value.selection.rawprocedure) {
             return this.hospitalprocedures;
         }
-        const filterValue = value.selection.toLowerCase();
+        console.log(value);
+        const filterValue = value.selection.rawprocedure.name.toLowerCase();
         return this.hospitalprocedures.filter(option => option.rawprocedure.name.toLowerCase().includes(filterValue));
     }
 
@@ -228,6 +232,10 @@ export class TodayComponent implements OnInit {
         });
     }
 
+    procedureselectiondisplayfn(data ?: MergedProcedureModel): string {
+        return data ? data.rawprocedure.name : '';
+    }
+
     createNotes(): FormGroup {
         const note = new FormControl('');
         return this.formBuilder.group({
@@ -235,11 +243,17 @@ export class TodayComponent implements OnInit {
         });
     }
 
+    updategeneralreport(): void {
+
+    }
+
     addprocedure(): void {
+        console.log(this.procedureselection.getRawValue());
         if (this.procedureperformed.valid) {
             this.expand = false;
             const procedure: Procedureperformed = Object.assign({}, {...emptyprocedureperformed}, this.procedureperformed.getRawValue());
-            // this.patientservice.
+            const originaldata: MergedProcedureModel = this.procedureselection.getRawValue().selection;
+            this.queue.addprocedure(originaldata, procedure);
         }
     }
 

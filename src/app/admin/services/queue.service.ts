@@ -92,8 +92,8 @@ export class QueueService {
     filterqueue(): void {
         this.mainpatientqueue.subscribe(queuedata => {
             this.mypatientqueue.next(queuedata.filter(queue => {
-                const equality = queue.visitdata.checkin.admin === this.userdata.id;
-                if (queue.visitdata.patientid === this.userdata.config.occupied) {
+                const equality = queue.queuedata.checkin.admin === this.userdata.id;
+                if (queue.queuedata.patientid === this.userdata.config.occupied) {
                     this.currentpatient.next(queue);
                 }
                 return equality;

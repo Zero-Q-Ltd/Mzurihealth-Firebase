@@ -11,7 +11,6 @@ export interface Procedureperformed {
             name: string
         };
     }>;
-    price: number;
     adminid: string;
     name: string;
     visitid: string;
@@ -38,7 +37,6 @@ export const emptyprocedureperformed: Procedureperformed = {
     visitid: null,
     procedureid: null,
     metadata: emptymetadata,
-    notes: [],
-    price: 0
+    notes: []
 };
 

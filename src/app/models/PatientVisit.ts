@@ -1,4 +1,4 @@
-import {emptymetadata, Metadata} from './universal';
+import {firestore} from 'firebase';
 
 export interface PatientVisit {
     paymentmethod: {
@@ -25,10 +25,9 @@ export interface PatientVisit {
     patientid: string;
     hospitalid: string;
     prescription: string;
-    metadata: Metadata;
+    timestamp: firestore.Timestamp;
     paid: boolean;
     id: string;
-    invoiceid: number;
     checkin: Checkin;
 }
 
@@ -57,7 +56,6 @@ export const emptypatientvisit: PatientVisit = {
         heartrate: null,
         respiration: null
     },
-    invoiceid: 0,
     generalnotes: [],
     checkin: {
         status: null,
@@ -67,7 +65,7 @@ export const emptypatientvisit: PatientVisit = {
     patientid: null,
     hospitalid: null,
     prescription: null,
-    metadata: emptymetadata,
+    timestamp: null,
     id: null
-};
 
+};

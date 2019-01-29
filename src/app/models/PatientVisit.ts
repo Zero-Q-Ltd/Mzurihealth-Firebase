@@ -2,12 +2,7 @@ import {emptymetadata, Metadata} from './universal';
 
 export interface PatientVisit {
     paymentmethod: {
-        /**
-         * 0 cash methods
-         * 1 insurance
-         * 2 both 0&1
-         */
-        type: number,
+        [key: string]: number
     };
     visitdescription: string;
     vitals: {

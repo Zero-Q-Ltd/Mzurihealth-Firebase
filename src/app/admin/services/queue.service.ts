@@ -136,7 +136,6 @@ export class QueueService {
                     return visit;
                 }));
             });
-
     }
 
     /**

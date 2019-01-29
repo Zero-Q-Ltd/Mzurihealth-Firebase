@@ -60,7 +60,7 @@ export class PatientService {
         });
     }
 
-    getcurrentpatient(patientid ?) {
+    getcurrentpatient(patientid ?): any {
         if (patientid) {
             this.db.firestore.collection('patients').doc(patientid).onSnapshot(patientdata => {
                 if (patientdata.exists) {
@@ -134,43 +134,24 @@ export class PatientService {
 
     }
 
-    validatefileno(fileno: string) {
+    validatefileno(fileno: string): any {
         return this.db.firestore.collection('hospitals').doc(this.activehospital.id).collection('filenumbers').where('no', '==', fileno);
     }
 
-    // Add a new patient to the database
-    addpatient(patientdata: Patient, newhistory: PatientVisit, saveandqueue: boolean, patientfile: HospFile) {
-        let patientid = this.db.createId();
-        let batch = this.db.firestore.batch();
-        let timestamp = moment().toDate() as any;
-        batch.set(this.db.firestore.collection('patients').doc(patientid), patientdata);
-        if (saveandqueue) {
-            {
-                newhistory.hospitalid = this.activehospital.id;
-                newhistory.patientid = patientid;
-                newhistory.timestamp = timestamp;
-                batch.set(this.db.firestore.collection('hospitalvisits').doc(this.db.createId()), newhistory);
-            }
-        }
-        batch.update(this.db.firestore.collection('hospitals').doc(this.activehospital.id), {patientcount: this.activehospital.patientcount + 1});
-        batch.set(this.db.firestore.collection('hospitals').doc(this.activehospital.id).collection('filenumbers').doc(patientid), patientfile);
-        return batch.commit();
-    }
-
-    acceptpatient(patient: Patient) {
+    acceptpatient(patient: Patient): any {
         this.db.firestore.collection('patients').doc(patient.id).update({});
     }
 
-    addpatientprocedure(procedurehistory: Procedureperformed) {
+    addpatientprocedure(procedurehistory: Procedureperformed): any {
         console.log(procedurehistory);
         return this.db.firestore.collection('History').doc(this.currentpatient.todayhistoryid).collection('procedures').add(procedurehistory);
     }
 
-    addpatientnote(note: Patientnote) {
+    addpatientnote(note: Patientnote): any {
         return this.db.firestore.collection('patients').doc(this.currentpatient.patientdata.id).collection('notes').add(note);
     }
 
-    addpatientprescription(prescrip) {
+    addpatientprescription(prescrip): any {
         console.log(prescrip);
         let batch = this.db.firestore.batch();
         batch.update(this.db.firestore.collection('History').doc(this.currentpatient.todayhistoryid), {prescription: prescrip, status: 2});

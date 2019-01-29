@@ -35,6 +35,7 @@ import {RouterModule} from '@angular/router';
 import {AgmCoreModule} from '@agm/core';
 import {CommonModule} from '@angular/common';
 import { PaymentchannelPipe } from './paymentchannel.pipe';
+import { AgePipe } from './age.pipe';
 
 @NgModule({
     imports: [
@@ -133,7 +134,7 @@ import { PaymentchannelPipe } from './paymentchannel.pipe';
         FuseSidebarModule,
         FuseThemeOptionsModule
     ],
-    declarations: [PaymentchannelPipe]
+    declarations: [PaymentchannelPipe, AgePipe]
 })
 export class AdminSharedModule {
 }

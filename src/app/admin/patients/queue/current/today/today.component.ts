@@ -68,12 +68,11 @@ export class TodayComponent implements OnInit {
 
     }
 
-    private _filter(value: { selection: MergedProcedureModel }): MergedProcedureModel[] {
-        if (!value || !value.selection.rawprocedure) {
+    private _filter(value: { selection: MergedProcedureModel | string }): MergedProcedureModel[] {
+        if (!value || typeof value.selection !== 'string') {
             return this.hospitalprocedures;
         }
-        console.log(value);
-        const filterValue = value.selection.rawprocedure.name.toLowerCase();
+        const filterValue = value.selection.toLowerCase();
         return this.hospitalprocedures.filter(option => option.rawprocedure.name.toLowerCase().includes(filterValue));
     }
 

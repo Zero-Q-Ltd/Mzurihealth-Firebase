@@ -233,30 +233,4 @@ export class AddComponent implements OnInit {
         this.insurance.removeAt(index);
     }
 
-    addpatient(saveandqueue: boolean) {
-        if (saveandqueue) {
-            // this.temppatient.checkin[this.activehospital.id] = {
-            //     superadmin: null,
-            //     status: 0
-            // };
-        }
-        this.patientservice.validatefileno(this.patientfileno.no).get().then(data => {
-            if (data.empty) {
-                this.patientfileno.date = this.patientfileno.lastvisit = moment().toDate() as any;
-                this.patientservice.addpatient(this.temppatient, this.temphistory, saveandqueue, this.patientfileno).then(() => {
-                    this.notificationservice.notify({
-                        alert_type: 'success',
-                        body: 'Patient registration successful',
-                        title: 'Success',
-                        placement: 'center'
-                    });
-                    this.temppatient = emptypatient;
-                });
-            } else {
-
-            }
-        });
-
-    }
-
 }

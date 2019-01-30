@@ -12,6 +12,7 @@ import {fuseAnimations} from '../../../../@fuse/animations';
 import {Router} from '@angular/router';
 import {Paymentmethods} from '../../../models/PaymentChannel';
 import {PaymentmethodService} from '../../services/paymentmethod.service';
+import {NumberValidator} from '../../validators/number.validator';
 
 @Component({
     selector: 'app-add',
@@ -69,7 +70,6 @@ export class AddComponent implements OnInit {
         });
 
 
-
         /**
          *
          * */
@@ -104,9 +104,13 @@ export class AddComponent implements OnInit {
             Validators.email
         ]));
         const userWorkplace = new FormControl('', Validators.required);
-        const userPhone = new FormControl('', Validators.required);
+        const userPhone = new FormControl('', Validators.compose([
+            Validators.required,
+            NumberValidator.validate()
+        ]));
         const address = new FormControl('', Validators.compose([
             Validators.required
+
         ]));
 
         const fileno = new FormControl('', Validators.required);
@@ -162,6 +166,8 @@ export class AddComponent implements OnInit {
 
 
     submitPatientsForm(): void {
+        console.log(this.personalinfo);
+
         if (this.patientsForm.valid) {
             this.patientservice.savePatient(this.patientsForm.getRawValue()).then(() => {
                 console.log('patient added successfully');
@@ -223,5 +229,6 @@ export class AddComponent implements OnInit {
 
         this.insurance.removeAt(index);
     }
+
 
 }

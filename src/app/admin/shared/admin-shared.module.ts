@@ -36,6 +36,7 @@ import {AgmCoreModule} from '@agm/core';
 import {CommonModule} from '@angular/common';
 import { PaymentchannelPipe } from './paymentchannel.pipe';
 import { AgePipe } from './age.pipe';
+import { RevealAdminPipe } from './reveal-admin.pipe';
 
 @NgModule({
     imports: [
@@ -136,7 +137,7 @@ import { AgePipe } from './age.pipe';
 
         AgePipe
     ],
-    declarations: [PaymentchannelPipe, AgePipe]
+    declarations: [PaymentchannelPipe, AgePipe, RevealAdminPipe]
 })
 export class AdminSharedModule {
 }

@@ -23,7 +23,7 @@ export class QueueService {
     mypatientqueue: BehaviorSubject<Array<MergedPatient_QueueModel>> = new BehaviorSubject([]);
     currentpatient: BehaviorSubject<MergedPatient_QueueModel> = new BehaviorSubject({...emptymergedQueueModel});
     hospitaladmins: Array<HospitalAdmin> = [];
-    userdata: HospitalAdmin;
+    adminid: string;
     currentvisitprocedures: BehaviorSubject<Array<Procedureperformed>> = new BehaviorSubject<Array<Procedureperformed>>([]);
     visithistory: BehaviorSubject<Array<PatientVisit>> = new BehaviorSubject<Array<PatientVisit>>([]);
 
@@ -40,16 +40,16 @@ export class QueueService {
         });
         adminservice.observableuserdata.subscribe((admin: HospitalAdmin) => {
             if (admin.data.uid) {
-                this.userdata = admin;
-                const patientid = this.userdata.config.occupied;
-                if (admin.config.occupied) {
-                    // const val = this.mypatientqueue.value.find(value => {
-                    //     return value.patientdata.id === admin.config.occupied;
-                    // });
-                    // this.currentpatient.next(val ? val : {...emptymergedQueueModel});
-                } else {
-                    this.currentpatient.next({...emptymergedQueueModel});
-                }
+                this.adminid = admin.id;
+                // const patientid = this.userdata.config.occupied;
+                // if (admin.config.occupied) {
+                //     // const val = this.mypatientqueue.value.find(value => {
+                //     //     return value.patientdata.id === admin.config.occupied;
+                //     // });
+                //     // this.currentpatient.next(val ? val : {...emptymergedQueueModel});
+                // } else {
+                //     this.currentpatient.next({...emptymergedQueueModel});
+                // }
                 this.filterqueue();
             }
         });
@@ -96,8 +96,8 @@ export class QueueService {
     filterqueue(): void {
         this.mainpatientqueue.subscribe(queuedata => {
             this.mypatientqueue.next(queuedata.filter(queue => {
-                const equality = queue.queuedata.checkin.admin === this.userdata.id;
-                if (queue.queuedata.patientid === this.userdata.config.occupied) {
+                const equality = queue.queuedata.checkin.admin === this.adminid;
+                if (queue.queuedata.checkin.status === 2) {
                     this.currentpatient.next(queue);
                     this.fetchlatestprocedures();
                     this.fetchvisithistory();
@@ -145,10 +145,29 @@ export class QueueService {
      */
     assignadmin(visit: PatientVisit, adminid: string): Promise<void> {
         const batch = this.db.firestore.batch();
+        visit.checkin = {
+            status: 1,
+            admin: adminid
+        };
         batch.update(this.db.firestore.collection('hospitalvisits').doc(visit.id), visit);
         return batch.commit();
     }
 
+    acceptpatient(visit: PatientVisit): Promise<void>  {
+        const batch = this.db.firestore.batch();
+        visit.checkin = {
+            status: 2,
+            admin: this.adminid
+        };
+        batch.update(this.db.firestore.collection('hospitalvisits').doc(visit.id), visit);
+        return batch.commit();
+    }
+
+    /**
+     * TODO : Finish on pricing
+     * @param procedure
+     * @param per
+     */
     addprocedure(procedure: MergedProcedureModel, per: Procedureperformed): void {
         per.price = this.getinsuanceprice(procedure);
         this.db.collection('visitprocedures').add(procedure);

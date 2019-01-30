@@ -17,10 +17,12 @@
     <ng-container matColumnDef="Photo">
         <mat-header-cell *matHeaderCellDef></mat-header-cell>
         <mat-cell *matCellDef="let patient">
-            <img *ngIf="patient.patientdata.personalinfo.gender == 1" [src]="patient.patientdata.personalinfo.photoURL || 'assets/images/avatars/male.png'"
+            <img *ngIf="patient.patientdata.personalinfo.gender == 1"
+                 [src]="patient.patientdata.personalinfo.photoURL || 'assets/images/avatars/male.png'"
                  alt=""
                  class="avatar">
-            <img *ngIf="patient.patientdata.personalinfo.gender == 2" [src]="patient.patientdata.personalinfo.gender || 'assets/images/avatars/female.png'"
+            <img *ngIf="patient.patientdata.personalinfo.gender == 2"
+                 [src]="patient.patientdata.personalinfo.gender || 'assets/images/avatars/female.png'"
                  alt=""
                  class="avatar">
         </mat-cell>
@@ -83,39 +85,43 @@
     <ng-container matColumnDef="Status">
         <mat-header-cell *matHeaderCellDef mat-sort-header>Status
         </mat-header-cell>
-        <mat-cell *matCellDef="let patient">
-
+        <mat-cell *matCellDef="let patient; let i = index">
+            <mat-chip-list [ngSwitch]='patient.queuedata.checkin.status'>
+                <mat-chip *ngSwitchCase="0" color="warn" mat-raised-button selected>NEW </mat-chip>
+                <mat-chip *ngSwitchCase="1" color="primary" mat-raised-button selected>Waiting </mat-chip>
+                <mat-chip *ngSwitchCase="2" color="accent" mat-raised-button selected>In Progress</mat-chip>
+                <mat-chip *ngSwitchCase="3" color="warn" mat-raised-button selected>Waiting Payment</mat-chip>
+            </mat-chip-list>
         </mat-cell>
-        <!--<span-->
-        <!--*ngIf="((index === 0 || patientsdatasource.data[index-1].queuedata.status === 2) && userdata.config.occupied === '' ) ; else statusbuttons"-->
-        <!--[ngSwitch]="userdata.config.occupied">-->
-        <!--<span *ngSwitchDefault [ngSwitch]='patient.patientdata.Checkin[activehospital.id].status'>-->
-        <!--<button (click)='acceptpatient(patient)' *ngSwitchCase="0"-->
-        <!--class="btn btn-primary button-size">Accept </button>-->
-        <!--&lt;!&ndash; <button *ngSwitchCase="0" class="btn btn-warning button-size">Waiting </button> &ndash;&gt;-->
-        <!--<button *ngSwitchCase="1" class="btn btn-success button-size">In Progress</button>-->
-        <!--<button *ngSwitchCase="2" class="btn btn-info button-size">Complete</button>-->
-        <!--</span>-->
-        <!--<button *ngSwitchCase='adminqueue.patientdata.id'-->
-        <!--class="btn btn-success button-size"-->
-        <!--disabled>In Progress </button>-->
-        <!--</span>-->
-        <!--<ng-template #statusbuttons>-->
-        <!--<span>-->
-        <!--<button *ngIf='patient.patientdata.Checkin[activehospital.id].status == 0'-->
-        <!--class="btn btn-warning button-size">Waiting </button>-->
-        <!--<button *ngIf='patient.patientdata.Checkin[activehospital.id].status == 1'-->
-        <!--class="btn btn-success button-size">In Progress</button>-->
-        <!--<button *ngIf='patient.patientdata.Checkin[activehospital.id].status == 2'-->
-        <!--class="btn btn-info button-size">Complete</button>-->
-        <!--</span>-->
-        <!--</ng-template>-->
+    </ng-container>
+
+    <ng-container matColumnDef="Action">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Action
+        </mat-header-cell>
+        <mat-cell *matCellDef="let patient; let i = index">
+            <span [ngSwitch]='i'>
+                <span *ngSwitchCase="0" [ngSwitch]="patient.queuedata.checkin.status">
+                    <button (click)="acceptpatient(patient)" *ngSwitchCase="1" color="warn" mat-raised-button matRipple>
+                        Accept
+                    </button>
+                    <button *ngSwitchCase="2" color="accent" mat-raised-button matRipple>
+
+                    </button>
+                </span>
+                <span *ngSwitchDefault>
+                    <button (click)="showadminchoice(patient)" color="primary" mat-raised-button matRipple>
+                        Redirect
+                    </button>
+                </span>
+            </span>
+        </mat-cell>
     </ng-container>
 
     <mat-header-row *matHeaderRowDef="patientsheaders; sticky:true"></mat-header-row>
 
     <mat-row *matRowDef="let patient; columns: patientsheaders;"
              [@animate]="{value:'*',params:{y:'100%'}}"
+             (click)="viewinvoice(patient)"
              [routerLink]="'profile/'+patient.patientdata.id" class="product"
              matRipple>
     </mat-row>

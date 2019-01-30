@@ -24,14 +24,6 @@
             </div>
             <!-- / APP TITLE -->
 
-            <!-- SEARCH -->
-            <div [@animate]="{value:'*', params:{delay:'150ms',scale:'0.2'}}" class="search-wrapper mx-32 mx-md-0">
-                <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
-                    <mat-icon>search</mat-icon>
-                    <input #filter placeholder="Search for a patient">
-                </div>
-            </div>
-            <!-- / SEARCH -->
             <button [@animate]="{value:'*', params:{delay:'300ms',scale:'0.2'}}"
                     [routerLink]="'/admin/patients/add'"
                     aria-label="Add patient"
@@ -44,6 +36,66 @@
         <!-- / HEADER -->
         <!-- CONTENT CARD -->
         <div class="content-card">
+
+            <mat-expansion-panel class="m-4 expansion-headers-align" fxFlex="0 0 100%">
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        Search
+                    </mat-panel-title>
+                    <mat-panel-description>
+                        Click to Search
+                        <mat-icon> search</mat-icon>
+                    </mat-panel-description>
+                </mat-expansion-panel-header>
+                <ng-template matExpansionPanelContent>
+
+                    <form class=" p-24 m-24" fxFlex="1 0 auto"
+                          fxLayout="column" fxLayoutAlign="start" name="form">
+                        <!--First name, second name-->
+                        <div fxFlex="1 0 auto" fxLayout="row" fxLayoutAlign="start center">
+
+                            <mat-form-field appearance="outline" class="pl-4" fxFlex="33">
+                                <mat-label>Select search field</mat-label>
+                                <mat-select required>
+
+                                    <mat-option [value]="'no'">
+                                        File Number
+                                    </mat-option>
+
+                                    <mat-option [value]="'idno'">
+                                        ID number
+                                    </mat-option>
+
+                                    <mat-option [value]="'phone'">
+                                        Mobile Number
+                                    </mat-option>
+
+                                    <mat-option [value]="'name'">
+                                        Full Name
+                                    </mat-option>
+
+                                </mat-select>
+
+                                <mat-icon class="secondary-text" matSuffix>insert_drive_file</mat-icon>
+                                <mat-error>Gender is required!</mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline" class="pl-4" fxFlex="40">
+                                <mat-label>Last name</mat-label>
+                                <input matInput required>
+                                <mat-icon class="secondary-text" matSuffix>account_circle</mat-icon>
+                                <mat-error>Last Name is required!</mat-error>
+                            </mat-form-field>
+
+                            <button mat-button color="accent" class="p-8 ml-4 mb-16" fxFlex="25" mat-raised-button>
+                                Search
+                            </button>
+                        </div>
+                    </form>
+
+                </ng-template>
+            </mat-expansion-panel>
+
             <mat-table #table
                        [@animateStagger]="{value:'50'}" [dataSource]="patientsdatasource"
                        class="patients-table"

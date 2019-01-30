@@ -13,9 +13,19 @@ import {SidebarComponent} from './current/sidebar/sidebar.component';
 import {GeneralDetailsComponent} from './current/generaldetails/general-details.component';
 import {FuseSharedModule} from '../../../../@fuse/shared.module';
 import {FuseWidgetModule} from '../../../../@fuse/components';
+import {AdminSelectionComponent} from './admin-selection/admin-selection.component';
 
 @NgModule({
-    declarations: [MainComponent, MineComponent, QueueComponent, GeneralDetailsComponent, NotesComponent, HistoryComponent, TodayComponent, CurrentComponent, SidebarComponent],
+    declarations: [MainComponent,
+        MineComponent,
+        QueueComponent,
+        GeneralDetailsComponent,
+        NotesComponent,
+        HistoryComponent,
+        TodayComponent,
+        CurrentComponent,
+        SidebarComponent,
+        AdminSelectionComponent],
     imports: [
         CommonModule,
         QueueRoutingModule,
@@ -23,6 +33,7 @@ import {FuseWidgetModule} from '../../../../@fuse/components';
         FuseSharedModule,
         FuseWidgetModule
     ],
+    entryComponents: [AdminSelectionComponent]
 })
 export class QueueModule {
 }

@@ -32,7 +32,6 @@ export class PaymentmethodService {
                 const paymentChannel = methodata.data() as PaymentChannel;
                 paymentChannel.id = methodata.id;
                 if (paymentChannel.name === 'insurance') {
-                    console.log('sjif')
                     insurancecompanies = paymentChannel.methods;
                 }
                 return paymentChannel;

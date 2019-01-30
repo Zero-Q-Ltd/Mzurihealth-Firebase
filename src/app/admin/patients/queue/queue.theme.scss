@@ -4,6 +4,10 @@
     $foreground: map-get($theme, foreground);
     $is-dark: map-get($theme, is-dark);
 
+    $palettes: (
+        waiting: $default-primary-palette,
+
+    );
     #patients {
 
         .header {

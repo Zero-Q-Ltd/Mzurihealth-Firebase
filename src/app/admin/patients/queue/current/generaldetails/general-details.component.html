@@ -133,8 +133,9 @@
             <mat-form-field appearance="outline" class="pr-4" fxFlex="50">
                 <mat-label>Insurance Company</mat-label>
                 <mat-select formControlName="id" required>
-                    <mat-option *ngFor="let option of allInsurance" [value]="option?.id">
-                        {{option.name}}
+                    <mat-option *ngFor="let option of allInsurance | keyvalue"
+                                [value]="option?.value.name ">
+                        {{option.value.name |titlecase}}
                     </mat-option>
                 </mat-select>
                 <mat-icon class="secondary-text" matSuffix>local_hospital</mat-icon>

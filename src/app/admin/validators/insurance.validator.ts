@@ -1,8 +1,8 @@
 import {AbstractControl, ValidatorFn} from '@angular/forms';
-import {InsuranceCompany} from '../../models/InsuranceCompany';
+import {Paymentmethods} from '../../models/PaymentChannel';
 
 export class InsuranceValidator {
-    static available(allInsurance: InsuranceCompany[]): ValidatorFn {
+    static available(allInsurance: { [key: string]: Paymentmethods }): ValidatorFn {
         return (c: AbstractControl): { [key: string]: boolean } | null => {
             if (c.value && !this.valueAvailable(allInsurance, c.value)) {
                 return {'insuranceError': true};
@@ -12,11 +12,11 @@ export class InsuranceValidator {
     }
 
 
-    private static valueAvailable(allInsurance: InsuranceCompany[], input: string): boolean {
+    private static valueAvailable(allInsurance: { [key: string]: Paymentmethods }, input: string): boolean {
         // const fData = allInsurance.filter(value => value.name.toLowerCase() === input.toLowerCase());
         let found = false;
-        allInsurance.forEach(value => {
-            if (value !== undefined && (value.name.toLowerCase() === input.toLowerCase())) {
+        Object.keys(allInsurance).forEach(key => {
+            if (allInsurance[key].name.toLowerCase() === input.toLowerCase()) {
                 found = true;
             }
         });

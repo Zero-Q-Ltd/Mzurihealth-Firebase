@@ -16,7 +16,8 @@
             </div>
         </div>
         <div>
-            <div class="h3 "><strong class="proceduretext w-100">{{selectecustomprocedure.rawprocedure.name | titlecase}}</strong></div>
+            <div class="h3 "><strong
+                class="proceduretext w-100">{{selectecustomprocedure.rawprocedure.name | titlecase}}</strong></div>
             <div class="h4 secondary-text">
                 <span>Creation Date</span>
                 <span>: {{selectecustomprocedure.customprocedure.metadata.date?.toDate().toDateString() || getdate()}}</span>
@@ -52,10 +53,10 @@
                 </mat-form-field>
             </div>
             <div *ngIf="selectecustomprocedure.customprocedure.custominsuranceprice " [@animateStagger]="{value:'50'}">
-                <span *ngFor='let insurance of filteredinsurance' [@animate]="{value:'*',params:{y:'100%'}}">
+                <span *ngFor='let insurance of filteredinsurance | keyvalue' [@animate]="{value:'*',params:{y:'100%'}}">
                     <mat-form-field appearance="outline" fxFlex="100">
-                        <mat-label>{{insurance.name}}</mat-label>
-                        <input [(ngModel)]='selectecustomprocedure.customprocedure.insuranceprices[insurance.id]'
+                        <mat-label>{{insurance.value.name}}</mat-label>
+                        <input [(ngModel)]='selectecustomprocedure.customprocedure.insuranceprices[insurance.key]'
                                matInput
                                type="number">
                         <mat-icon class="disabled-text" matSuffix>attach_money</mat-icon>

@@ -7,13 +7,14 @@ import {firestore} from 'firebase';
 import {HospitalAdmin} from '../../../models/HospitalAdmin';
 import {emptyhospital, Hospital} from '../../../models/Hospital';
 import {AdminService} from '../../services/admin.service';
-import {InsuranceService} from '../../services/insurance.service';
 import {PatientService} from '../../services/patient.service';
 import {HospitalService} from '../../services/hospital.service';
 import {PushqueueComponent} from '../pushqueue/pushqueue.component';
 import {FormGroup} from '@angular/forms';
 import {NotificationService} from '../../../shared/services/notifications.service';
 import {Router} from '@angular/router';
+import {PaymentmethodService} from '../../services/paymentmethod.service';
+import {Paymentmethods} from '../../../models/PaymentChannel';
 
 @Component({
     selector: 'all-patients',
@@ -26,15 +27,15 @@ export class AllComponent implements OnInit {
     patientsdatasource = new MatTableDataSource<Patient>();
     patientsheaders = ['FileNo', 'Photo', 'Name', 'ID', 'Age', 'Phone', 'Last Visit', 'Status'];
     activehospital: Hospital = Object.assign({}, emptyhospital);
-    allinsurance = [];
     hospitaladmins: Array<HospitalAdmin> = [];
     userdata: HospitalAdmin;
     dialogRef: any;
+    allInsurance: { [key: string]: Paymentmethods } = {};
 
     constructor(private adminservice: AdminService,
                 private patientservice: PatientService,
                 private hospitalservice: HospitalService,
-                private insuranceservice: InsuranceService,
+                private paymentethods: PaymentmethodService,
                 private notificationservice: NotificationService,
                 private dialog: MatDialog,
                 public _matDialog: MatDialog, private router: Router) {
@@ -43,8 +44,8 @@ export class AllComponent implements OnInit {
                 this.activehospital = hospital;
             }
         });
-        this.insuranceservice.allinsurance.subscribe(insurances => {
-            this.allinsurance = insurances;
+        this.paymentethods.allinsurance.subscribe(insurance => {
+            this.allInsurance = insurance;
         });
         adminservice.observableuserdata.subscribe((admin: HospitalAdmin) => {
             if (admin.data.uid) {

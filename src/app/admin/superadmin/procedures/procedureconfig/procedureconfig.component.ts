@@ -2,13 +2,13 @@ import {Component, OnInit} from '@angular/core';
 import {fuseAnimations} from '../../../../../@fuse/animations';
 import {LocalcommunicationService} from '../../localcommunication.service';
 import {emptyprawrocedure, RawProcedure} from '../../../../models/RawProcedure';
-import {InsuranceCompany} from '../../../../models/InsuranceCompany';
 import {CustomProcedure, emptycustomprocedure} from '../../../../models/CustomProcedure';
 import {ProceduresService} from '../../../services/procedures.service';
 import {NotificationService} from '../../../../shared/services/notifications.service';
 import * as moment from 'moment';
 import {FormControl, Validators} from '@angular/forms';
 import {PaymentmethodService} from '../../../services/paymentmethod.service';
+import {Paymentmethods} from '../../../../models/PaymentChannel';
 
 @Component({
     selector: 'app-procedureconfig',
@@ -21,8 +21,7 @@ export class ProcedureconfigComponent implements OnInit {
     selectecustomprocedure: { rawprocedure: RawProcedure, customprocedure: CustomProcedure } =
         {customprocedure: {...emptycustomprocedure}, rawprocedure: {...emptyprawrocedure}};
 
-    allinsurance: Array<InsuranceCompany> = [];
-    filteredinsurance: Array<InsuranceCompany> = [];
+    filteredinsurance: { [key: string]: Paymentmethods } = {};
     regularpricecontrol = new FormControl('', [
         Validators.required,
         Validators.min(0),
@@ -41,7 +40,6 @@ export class ProcedureconfigComponent implements OnInit {
         });
 
         this.paymentethods.allinsurance.subscribe(insurance => {
-            this.allinsurance = insurance;
             this.filteredinsurance = insurance;
         });
     }
@@ -51,17 +49,17 @@ export class ProcedureconfigComponent implements OnInit {
 
     filterinsurance(filterValue: string): void {
         if (filterValue) {
-            const temp = [];
+            const temp = {};
             filterValue = filterValue.trim();
             filterValue = filterValue.toLowerCase();
-            this.insuranceservice.allinsurance.value.filter(data => {
-                if (data['name'].toLowerCase().indexOf(filterValue) > -1) {
-                    temp.push(data);
+            Object.keys(this.paymentethods.allinsurance.value).forEach(key => {
+                if (this.paymentethods.allinsurance.value[key].name.toLowerCase().indexOf(filterValue) > -1) {
+                    temp[key] = this.paymentethods.allinsurance.value[key];
                 }
             });
             this.filteredinsurance = temp;
         } else {
-            this.filteredinsurance = this.allinsurance;
+            this.filteredinsurance = this.paymentethods.allinsurance.value;
         }
     }
 

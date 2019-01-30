@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {AngularFirestore} from '@angular/fire/firestore';
 import {HospitalService} from './hospital.service';
 import {Hospital} from '../../models/Hospital';
-import {PaymentChannel} from '../../models/PaymentChannel';
+import {PaymentChannel, Paymentmethods} from '../../models/PaymentChannel';
 import {BehaviorSubject} from 'rxjs';
 
 // import * as paymentchannels from 'assets/paymentchannels.json';
@@ -13,6 +13,7 @@ import {BehaviorSubject} from 'rxjs';
 export class PaymentmethodService {
     activehospital: Hospital;
     allpaymentchannels: BehaviorSubject<Array<PaymentChannel>> = new BehaviorSubject<Array<PaymentChannel>>([]);
+    allinsurance: BehaviorSubject<{ [key: string]: Paymentmethods }> = new BehaviorSubject({});
 
     constructor(private db: AngularFirestore,
                 private hospitalservice: HospitalService) {
@@ -26,11 +27,16 @@ export class PaymentmethodService {
 
     getallpaymentchannels(): void {
         this.db.firestore.collection('paymentchannels').onSnapshot(paymentmethodsdata => {
+            let insurancecompanies = {};
             this.allpaymentchannels.next(paymentmethodsdata.docs.map(methodata => {
                 const paymentChannel = methodata.data() as PaymentChannel;
                 paymentChannel.id = methodata.id;
+                if (paymentChannel.name === 'isnurance') {
+                    insurancecompanies = paymentChannel.methods;
+                }
                 return paymentChannel;
             }));
+            this.allinsurance.next(insurancecompanies);
         });
     }
 
@@ -43,9 +49,14 @@ export class PaymentmethodService {
         //
         // paymnetmethodkeys.forEach(async (methodname: string) => {
         //     console.log(methodname);
-        //     const channelmethods: Array<Paymentmethods> = paymentchannels.channels[methodname];
+        //     const channelmethods: Array<Paymentmethods> = paymentchannels.channels[methodname].map(channel => {
+        //         return {
+        //             imageurl: '',
+        //             name: channel.name.toLowerCase()
+        //         };
+        //     });
         //     const paymentchannel: PaymentChannel = {
-        //         name: methodname,
+        //         name: methodname.toLowerCase(),
         //         id: null,
         //         /**
         //          * Convert the array to object without giving a fuck

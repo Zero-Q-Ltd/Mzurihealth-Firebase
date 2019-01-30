@@ -4,7 +4,6 @@ import {fuseAnimations} from '../../../../../@fuse/animations';
 import {QueueService} from '../../../services/queue.service';
 import {MergedPatient_QueueModel} from '../../../../models/MergedPatient_Queue.model';
 import {firestore} from 'firebase';
-import * as moment from 'moment';
 import {InvoiceComponent} from '../../invoice/invoice.component';
 
 @Component({
@@ -29,9 +28,6 @@ export class MainComponent implements OnInit {
     ngOnInit(): void {
     }
 
-    getAge(birtday: firestore.Timestamp): number {
-        return moment().diff(birtday.toDate().toLocaleDateString(), 'years');
-    }
 
     viewinvoice(patient): void {
         this.dialogRef = this._matDialog.open(InvoiceComponent, {

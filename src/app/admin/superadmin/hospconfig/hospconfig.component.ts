@@ -95,6 +95,10 @@ export class HospconfigComponent implements OnInit {
         return JSON.stringify(this.temphospital) === JSON.stringify(this.originalhspital);
     }
 
+    sync(): void {
+        this.paymentmethodService.addallpaymnetmethods();
+    }
+
     savehospitalchanges(): void {
         this.confirmDialogRef = this._matDialog.open(FuseConfirmDialogComponent, {
             disableClose: false

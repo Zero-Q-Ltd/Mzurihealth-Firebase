@@ -2,13 +2,13 @@ import {Component, OnInit} from '@angular/core';
 import {fuseAnimations} from '../../../../../@fuse/animations';
 import {LocalcommunicationService} from '../../localcommunication.service';
 import {emptyprawrocedure, RawProcedure} from '../../../../models/RawProcedure';
-import {InsuranceService} from '../../../services/insurance.service';
 import {InsuranceCompany} from '../../../../models/InsuranceCompany';
 import {CustomProcedure, emptycustomprocedure} from '../../../../models/CustomProcedure';
 import {ProceduresService} from '../../../services/procedures.service';
 import {NotificationService} from '../../../../shared/services/notifications.service';
 import * as moment from 'moment';
 import {FormControl, Validators} from '@angular/forms';
+import {PaymentmethodService} from '../../../services/paymentmethod.service';
 
 @Component({
     selector: 'app-procedureconfig',
@@ -29,7 +29,7 @@ export class ProcedureconfigComponent implements OnInit {
     ]);
 
     constructor(private communicatioservice: LocalcommunicationService,
-                private insuranceservice: InsuranceService,
+                private paymentethods: PaymentmethodService,
                 private procedureservice: ProceduresService,
                 private notificationservice: NotificationService) {
         this.communicatioservice.onprocedureselected.subscribe(selection => {
@@ -40,7 +40,7 @@ export class ProcedureconfigComponent implements OnInit {
             this.regularpricecontrol.patchValue(this.selectecustomprocedure.customprocedure.regularprice);
         });
 
-        this.insuranceservice.allinsurance.subscribe(insurance => {
+        this.paymentethods.allinsurance.subscribe(insurance => {
             this.allinsurance = insurance;
             this.filteredinsurance = insurance;
         });

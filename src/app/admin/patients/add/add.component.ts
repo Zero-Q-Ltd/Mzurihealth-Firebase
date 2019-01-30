@@ -7,13 +7,10 @@ import {AdminService} from '../../services/admin.service';
 import {PatientService} from '../../services/patient.service';
 import {HospitalService} from '../../services/hospital.service';
 import {emptyhospital, Hospital} from '../../../models/Hospital';
-import {emptypatientvisit, PatientVisit} from '../../../models/PatientVisit';
-import {emptypatient, Patient} from '../../../models/Patient';
 import {emptyfile, HospFile} from '../../../models/HospFile';
 import * as moment from 'moment';
 import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {fuseAnimations} from '../../../../@fuse/animations';
-import {Observable} from 'rxjs';
 import {Router} from '@angular/router';
 
 @Component({
@@ -25,13 +22,9 @@ import {Router} from '@angular/router';
 })
 export class AddComponent implements OnInit {
     patientfileno: HospFile = Object.assign({}, emptyfile);
-    temppatient: Patient = emptypatient;
-    temphistory: PatientVisit = emptypatientvisit;
     activehospital: Hospital = Object.assign({}, emptyhospital);
     allInsurance: InsuranceCompany[];
     patientsForm: FormGroup;
-
-    filteredOptions: Observable<InsuranceCompany[]>;
 
     private personalinfo: FormGroup;
     private nextofkin: FormGroup;
@@ -77,6 +70,7 @@ export class AddComponent implements OnInit {
                     .get('fileno').disable({onlySelf: true});
             }
         });
+
 
 
         /**

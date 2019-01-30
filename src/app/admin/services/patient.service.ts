@@ -178,6 +178,12 @@ export class PatientService {
         /**
          * create data to insert to the patient collection
          * */
+        const transformedNextOfKin = {
+            name: nextofkin.name.toLowerCase(),
+            relationship: nextofkin.relationship.toLowerCase(),
+            phone: nextofkin.phone,
+            workplace: nextofkin.workplace.toLowerCase()
+        };
 
         const tempInsurance = insurance.map((value, index: number) => {
             return {index: value};
@@ -195,17 +201,17 @@ export class PatientService {
         const modifiedData = {
             id: patientID,
             personalinfo: {
-                name: personalinfo.firstname + ' ' + personalinfo.lastname,
-                address: personalinfo.address,
+                name: personalinfo.firstname.toLowerCase() + ' ' + personalinfo.lastname.toLowerCase(),
+                address: personalinfo.address.toLowerCase(),
                 gender: personalinfo.gender,
-                occupation: personalinfo.occupation,
-                workplace: personalinfo.workplace,
+                occupation: personalinfo.occupation.toLowerCase(),
+                workplace: personalinfo.workplace.toLowerCase(),
                 phone: personalinfo.phone,
-                email: personalinfo.email,
+                email: personalinfo.email.toLowerCase(),
                 idno: personalinfo.idno,
                 dob: moment(personalinfo.birth, 'MM/DD/YYYY').toDate(),
             },
-            nextofkin,
+            nextofkin: transformedNextOfKin,
             insurance: tempInsurance,
             metadata: {
                 date: todayDate,
@@ -315,7 +321,6 @@ export class PatientService {
          * */
         const combineData = Object.assign(emptypatientvisit, tempVisit);
         return this.db.collection('hospitalvisits').doc(patientID).set(combineData);
-
     }
 
 

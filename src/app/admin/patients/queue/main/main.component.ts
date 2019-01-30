@@ -45,6 +45,7 @@ export class MainComponent implements OnInit {
         this.confirmDialogRef.componentInstance.confirmMessage = 'Redirect Patient?';
         this.confirmDialogRef.afterClosed().subscribe(result => {
             if (result) {
+                this.showadminchoice(data);
             }
         });
     }

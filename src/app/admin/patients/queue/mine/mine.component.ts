@@ -65,7 +65,7 @@ export class MineComponent implements OnInit {
         this.dialogRef.afterClosed();
     }
 
-    showadminchoice(data: MergedPatient_QueueModel): void {
+    redirectpatient(data: MergedPatient_QueueModel): void {
         event.stopPropagation();
 
         this.confirmDialogRef = this._matDialog.open(FuseConfirmDialogComponent, {

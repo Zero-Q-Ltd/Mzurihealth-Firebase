@@ -50,13 +50,15 @@
                 <ng-template matExpansionPanelContent>
 
                     <form class=" p-24 m-24" fxFlex="1 0 auto"
-                          fxLayout="column" fxLayoutAlign="start" name="form">
+                          fxLayout="column" fxLayoutAlign="start" name="form" [formGroup]="searchForm"
+                          (ngSubmit)="submitSearchForm()">
+
                         <!--First name, second name-->
                         <div fxFlex="1 0 auto" fxLayout="row" fxLayoutAlign="start center">
 
                             <mat-form-field appearance="outline" class="pl-4" fxFlex="33">
                                 <mat-label>Select search field</mat-label>
-                                <mat-select required>
+                                <mat-select required formControlName="field">
 
                                     <mat-option [value]="'no'">
                                         File Number
@@ -77,17 +79,18 @@
                                 </mat-select>
 
                                 <mat-icon class="secondary-text" matSuffix>insert_drive_file</mat-icon>
-                                <mat-error>Gender is required!</mat-error>
+                                <mat-error>Field is required!</mat-error>
                             </mat-form-field>
 
                             <mat-form-field appearance="outline" class="pl-4" fxFlex="40">
-                                <mat-label>Last name</mat-label>
-                                <input matInput required>
+                                <mat-label>Field</mat-label>
+                                <input matInput required formControlName="fieldValue">
                                 <mat-icon class="secondary-text" matSuffix>account_circle</mat-icon>
-                                <mat-error>Last Name is required!</mat-error>
+                                <mat-error>This field is required!</mat-error>
                             </mat-form-field>
 
-                            <button mat-button color="accent" class="p-8 ml-4 mb-16" fxFlex="25" mat-raised-button>
+                            <button mat-button color="accent" class="p-8 ml-4 mb-16" fxFlex="25"
+                                    mat-raised-button>
                                 Search
                             </button>
                         </div>

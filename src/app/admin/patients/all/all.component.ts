@@ -10,7 +10,7 @@ import {AdminService} from '../../services/admin.service';
 import {PatientService} from '../../services/patient.service';
 import {HospitalService} from '../../services/hospital.service';
 import {PushqueueComponent} from '../pushqueue/pushqueue.component';
-import {FormGroup} from '@angular/forms';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {NotificationService} from '../../../shared/services/notifications.service';
 import {Router} from '@angular/router';
 import {PaymentmethodService} from '../../services/paymentmethod.service';
@@ -32,13 +32,17 @@ export class AllComponent implements OnInit {
     dialogRef: any;
     allInsurance: { [key: string]: Paymentmethods } = {};
 
+    searchForm: FormGroup;
+
     constructor(private adminservice: AdminService,
                 private patientservice: PatientService,
                 private hospitalservice: HospitalService,
                 private paymentethods: PaymentmethodService,
                 private notificationservice: NotificationService,
                 private dialog: MatDialog,
+                private formBuilder: FormBuilder,
                 public _matDialog: MatDialog, private router: Router) {
+
         this.hospitalservice.activehospital.subscribe(hospital => {
             if (hospital.id) {
                 this.activehospital = hospital;
@@ -108,21 +112,21 @@ export class AllComponent implements OnInit {
             });
     }
 
-    showinvoice(patientid, adminid): any {
-        // let dialogRef = this.dialog.open(InvoiceComponent, {
-        //     width: '95%',
-        //     data: {['patientid']: patientid, ['adminid']: adminid}
-        //     // disableClose: true,
-        // });
-        // dialogRef.afterClosed().subscribe(result => {
-        //
-        //     if (result) {
-        //         // this.chosenadmin = result
-        //         console.log(result);
-        //
-        //     }
-        //     // console.log(this.chooseadmin)
-        // });
+
+    private initialSearchForm(): void {
+        this.searchForm = this.formBuilder.group({
+            field: new FormControl('', [
+                Validators.required,
+            ]),
+            fieldValue: new FormControl('', [
+                Validators.required
+            ]),
+        });
+    }
+
+
+    submitSearchForm(): void {
+        console.log(this.searchForm);
     }
 
 }

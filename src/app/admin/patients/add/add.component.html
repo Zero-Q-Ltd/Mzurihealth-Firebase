@@ -52,21 +52,21 @@
 
                             <mat-form-field appearance="outline" class="pr-4" fxFlex="33">
                                 <mat-label>First name</mat-label>
-                                <input formControlName="firstname" matInput required>
+                                <input formControlName="firstname" matInput required autocomplete="off">
                                 <mat-icon class="secondary-text" matSuffix>account_circle</mat-icon>
                                 <mat-error>First Name is required!</mat-error>
                             </mat-form-field>
 
                             <mat-form-field appearance="outline" class="pl-4" fxFlex="33">
                                 <mat-label>Last name</mat-label>
-                                <input formControlName="lastname" matInput required>
+                                <input formControlName="lastname" matInput required autocomplete="off">
                                 <mat-icon class="secondary-text" matSuffix>account_circle</mat-icon>
                                 <mat-error>Last Name is required!</mat-error>
                             </mat-form-field>
 
                             <mat-form-field appearance="outline" class="pl-4" fxFlex="33">
                                 <mat-label>Patient file number</mat-label>
-                                <input formControlName="fileno" matInput required>
+                                <input formControlName="fileno" matInput required autocomplete="off">
                                 <mat-icon class="secondary-text" matSuffix>account_circle</mat-icon>
                                 <mat-error>File number is required!</mat-error>
                             </mat-form-field>
@@ -78,7 +78,7 @@
 
                             <mat-form-field appearance="outline" class="pr-4" fxFlex="33">
                                 <mat-label>ID number</mat-label>
-                                <input formControlName="idno" matInput required type="number">
+                                <input formControlName="idno" matInput required type="number" autocomplete="off">
                                 <mat-icon class="secondary-text" matSuffix>account_circle</mat-icon>
                                 <mat-error>ID number is required!</mat-error>
                             </mat-form-field>
@@ -100,8 +100,9 @@
 
                             <mat-form-field appearance="outline" class="pl-4" fxFlex="33">
                                 <mat-label>Enter date of birth</mat-label>
-                                <input #bDate (focus)="myDatepicker.open()" [matDatepicker]="myDatepicker" formControlName="birth"
-                                       matInput placeholder="Please choose a date">
+                                <input #bDate (focus)="myDatepicker.open()" [matDatepicker]="myDatepicker"
+                                       formControlName="birth"
+                                       matInput placeholder="Please choose a date" autocomplete="off">
 
                                 <mat-datepicker-toggle [for]="myDatepicker" matSuffix></mat-datepicker-toggle>
                                 <mat-datepicker #myDatepicker (closed)="bDate.blur()"></mat-datepicker>
@@ -119,7 +120,8 @@
 
                             <mat-form-field appearance="outline" fxFlex="100">
                                 <mat-label>Email Address</mat-label>
-                                <input formControlName="email" matInput placeholder="Enter your email" required>
+                                <input formControlName="email" matInput placeholder="Enter your email" required
+                                       autocomplete="off">
                                 <mat-error>Email address is required!</mat-error>
                             </mat-form-field>
 
@@ -130,7 +132,8 @@
 
                             <mat-form-field appearance="outline" fxFlex="100">
                                 <mat-label>Ocupation</mat-label>
-                                <input formControlName="occupation" matInput placeholder="Enter your occupation">
+                                <input formControlName="occupation" matInput placeholder="Enter your occupation"
+                                       autocomplete="off">
                                 <mat-error>Occupation is required!</mat-error>
                             </mat-form-field>
 
@@ -142,22 +145,33 @@
 
                             <mat-form-field appearance="outline" fxFlex="33">
                                 <mat-label>Place of work</mat-label>
-                                <input formControlName="workplace" matInput required>
+                                <input formControlName="workplace" matInput required autocomplete="off">
                                 <mat-icon class="secondary-text" matSuffix>location_city</mat-icon>
                                 <mat-error>Place of work is required</mat-error>
                             </mat-form-field>
 
                             <mat-form-field appearance="outline" class="px-8" fxFlex="34">
                                 <mat-label>Mobile Number</mat-label>
-                                <input formControlName="phone" matInput required type="number">
+                                <input formControlName="phone" matInput required autocomplete="off" maxlength="10"
+                                       minlength="10">
                                 <mat-icon class="secondary-text" matSuffix>local_phone</mat-icon>
-                                <mat-error>Phone number is required!</mat-error>
+                                <mat-error *ngIf="personalinfo.get('phone').errors?.required">Phone number is
+                                    required!
+                                </mat-error>
+                                <mat-error *ngIf="personalinfo.controls['phone'].errors?.numberError">Phone number
+                                    should be a number
+                                </mat-error>
+
+                                <mat-error *ngIf="personalinfo.controls['phone'].errors?.minlength">Phone number
+                                    Please write the 10 digit number (07..)
+                                </mat-error>
                             </mat-form-field>
 
-                            <mat-form-field appearance="outline" fxFlex="33">
+                            <mat-form-field appearance=" outline
+                                " fxFlex="33">
                                 <mat-label>Address</mat-label>
                                 <input #postalCode formControlName="address" matInput
-                                       maxlength="10" required>
+                                       maxlength="10" required autocomplete="off">
                                 <mat-icon class="secondary-text" matSuffix>markunread_mailbox</mat-icon>
                                 <mat-hint align="end">{{postalCode.value.length}} / 10</mat-hint>
                                 <mat-error>Postal Code is required!</mat-error>
@@ -169,7 +183,8 @@
 
                     <span class="pl-24" fxFlex="1 1 100%">Insurance Details</span>
                     <!--insurance group-->
-                    <section *ngFor="let item of patientsForm.get('insurance').controls; let i = index;" formArrayName="insurance" fxFlex="1 0 auto"
+                    <section *ngFor="let item of patientsForm.get('insurance').controls; let i = index;"
+                             formArrayName="insurance" fxFlex="1 0 auto"
                              fxLayout="column">
 
                         <!--Insurance company, Insurance Number-->
@@ -189,7 +204,7 @@
 
                             <mat-form-field appearance="outline" class="pl-4" fxFlex="45">
                                 <mat-label>Insurance Number</mat-label>
-                                <input formControlName="insurancenumber" matInput required>
+                                <input formControlName="insurancenumber" matInput required autocomplete="off">
                                 <mat-icon class="secondary-text" matSuffix>confirmation_number</mat-icon>
 
                                 <mat-error>Insurance number is required</mat-error>
@@ -226,7 +241,7 @@
 
                             <mat-form-field appearance="outline" fxFlex="100">
                                 <mat-label>Relationship Status</mat-label>
-                                <input formControlName="relationship" matInput required>
+                                <input formControlName="relationship" matInput required autocomplete="off">
                                 <mat-icon class="secondary-text" matSuffix>outlined_flag</mat-icon>
                                 <mat-error>Relationship is required!</mat-error>
                             </mat-form-field>
@@ -238,15 +253,26 @@
 
                             <mat-form-field appearance="outline" class="pr-4" fxFlex="50">
                                 <mat-label>Next of kin name</mat-label>
-                                <input formControlName="name" matInput required>
+                                <input formControlName="name" matInput required autocomplete="off">
                                 <mat-icon class="secondary-text" matSuffix>local_hospital</mat-icon>
                             </mat-form-field>
 
 
                             <mat-form-field appearance="outline" class="pl-4" fxFlex="50">
                                 <mat-label>Kin Phone</mat-label>
-                                <input formControlName="phone" matInput required type="number">
+                                <input formControlName="phone" matInput required autocomplete="off" minlength="10" maxlength="10">
                                 <mat-icon class="secondary-text" matSuffix>local_phone</mat-icon>
+
+                                <mat-error *ngIf="nextofkin.get('phone').errors?.required">Phone number is
+                                    required!
+                                </mat-error>
+                                <mat-error *ngIf="nextofkin.controls['phone'].errors?.numberError">Phone number
+                                    should be a number
+                                </mat-error>
+
+                                <mat-error *ngIf="nextofkin.controls['phone'].errors?.minlength">Phone number
+                                    Please write the 10 digit number (07..)
+                                </mat-error>
                             </mat-form-field>
                         </div>
 
@@ -257,7 +283,7 @@
                                 <mat-form-field appearance="outline" fxFlex="100">
                                     <mat-label>Kin workplace</mat-label>
                                     <input formControlName="workplace" matInput placeholder="Enter kin workplace"
-                                           required>
+                                           required autocomplete="off">
                                     <mat-error>Workplace is required!</mat-error>
                                 </mat-form-field>
 

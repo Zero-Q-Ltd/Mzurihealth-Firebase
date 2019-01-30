@@ -3,8 +3,8 @@ import {MatDialog, MatDialogRef, MatTableDataSource} from '@angular/material';
 import {fuseAnimations} from '../../../../../@fuse/animations';
 import {QueueService} from '../../../services/queue.service';
 import {MergedPatient_QueueModel} from '../../../../models/MergedPatient_Queue.model';
-import {firestore} from 'firebase';
 import {InvoiceComponent} from '../../invoice/invoice.component';
+import {AdminSelectionComponent} from '../admin-selection/admin-selection.component';
 
 @Component({
     selector: 'queue-main',
@@ -28,12 +28,24 @@ export class MainComponent implements OnInit {
     ngOnInit(): void {
     }
 
+    showdialog(data: MergedPatient_QueueModel): void {
+        if (data.queuedata.checkin.status === 0) {
+            this.showadminchoice();
+        } else {
+            this.viewinvoice(data);
+        }
+    }
 
-    viewinvoice(patient): void {
+    showadminchoice(): void {
+        this.dialogRef = this._matDialog.open(AdminSelectionComponent, {});
+
+        this.dialogRef.afterClosed();
+    }
+
+    viewinvoice(data: MergedPatient_QueueModel): void {
         this.dialogRef = this._matDialog.open(InvoiceComponent, {
-            panelClass: 'all-patients',
             data: {
-                patient: patient,
+                patient: data,
                 action: 'save'
             }
         });

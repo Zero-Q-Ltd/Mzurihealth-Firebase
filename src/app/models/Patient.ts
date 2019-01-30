@@ -46,7 +46,7 @@ export interface Patient {
             sugar: number,
             heartrate: number,
             respiration: number,
-            hb: string
+            hb: string,
         };
         metadata: Metadata;
     };

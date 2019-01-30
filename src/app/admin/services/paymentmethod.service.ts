@@ -31,7 +31,8 @@ export class PaymentmethodService {
             this.allpaymentchannels.next(paymentmethodsdata.docs.map(methodata => {
                 const paymentChannel = methodata.data() as PaymentChannel;
                 paymentChannel.id = methodata.id;
-                if (paymentChannel.name === 'isnurance') {
+                if (paymentChannel.name === 'insurance') {
+                    console.log('sjif')
                     insurancecompanies = paymentChannel.methods;
                 }
                 return paymentChannel;

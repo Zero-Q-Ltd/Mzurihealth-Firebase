@@ -39,8 +39,8 @@
             <!-- CONTENT -->
             <div class="content">
 
-                <form [formGroup]="patientsForm" class=" p-24 m-24" fxFlex="1 0 auto"
-                      fxLayout="column" fxLayoutAlign="start" name="form" (ngSubmit)="submitPatientsForm()">
+                <form (ngSubmit)="submitPatientsForm()" [formGroup]="patientsForm" class=" p-24 m-24"
+                      fxFlex="1 0 auto" fxLayout="column" fxLayoutAlign="start" name="form">
 
                     <!--<div class="h2 mb-24">New Patient</div>-->
 
@@ -52,7 +52,7 @@
 
                             <mat-form-field appearance="outline" class="pr-4" fxFlex="33">
                                 <mat-label>First name</mat-label>
-                                <input formControlName="firstname" matInput required >
+                                <input formControlName="firstname" matInput required>
                                 <mat-icon class="secondary-text" matSuffix>account_circle</mat-icon>
                                 <mat-error>First Name is required!</mat-error>
                             </mat-form-field>
@@ -78,7 +78,7 @@
 
                             <mat-form-field appearance="outline" class="pr-4" fxFlex="33">
                                 <mat-label>ID number</mat-label>
-                                <input type="number" formControlName="idno" matInput required>
+                                <input formControlName="idno" matInput required type="number">
                                 <mat-icon class="secondary-text" matSuffix>account_circle</mat-icon>
                                 <mat-error>ID number is required!</mat-error>
                             </mat-form-field>
@@ -100,10 +100,10 @@
 
                             <mat-form-field appearance="outline" class="pl-4" fxFlex="33">
                                 <mat-label>Enter date of birth</mat-label>
-                                <input matInput #bDate [matDatepicker]="myDatepicker" formControlName="birth"
-                                       (focus)="myDatepicker.open()" placeholder="Please choose a date">
+                                <input #bDate (focus)="myDatepicker.open()" [matDatepicker]="myDatepicker" formControlName="birth"
+                                       matInput placeholder="Please choose a date">
 
-                                <mat-datepicker-toggle matSuffix [for]="myDatepicker"></mat-datepicker-toggle>
+                                <mat-datepicker-toggle [for]="myDatepicker" matSuffix></mat-datepicker-toggle>
                                 <mat-datepicker #myDatepicker (closed)="bDate.blur()"></mat-datepicker>
 
                                 <mat-error>Date of birth is required</mat-error>
@@ -119,7 +119,7 @@
 
                             <mat-form-field appearance="outline" fxFlex="100">
                                 <mat-label>Email Address</mat-label>
-                                <input matInput placeholder="Enter your email" formControlName="email" required>
+                                <input formControlName="email" matInput placeholder="Enter your email" required>
                                 <mat-error>Email address is required!</mat-error>
                             </mat-form-field>
 
@@ -130,7 +130,7 @@
 
                             <mat-form-field appearance="outline" fxFlex="100">
                                 <mat-label>Ocupation</mat-label>
-                                <input matInput placeholder="Enter your occupation" formControlName="occupation">
+                                <input formControlName="occupation" matInput placeholder="Enter your occupation">
                                 <mat-error>Occupation is required!</mat-error>
                             </mat-form-field>
 
@@ -149,7 +149,7 @@
 
                             <mat-form-field appearance="outline" class="px-8" fxFlex="34">
                                 <mat-label>Mobile Number</mat-label>
-                                <input type="number" formControlName="phone" matInput required>
+                                <input formControlName="phone" matInput required type="number">
                                 <mat-icon class="secondary-text" matSuffix>local_phone</mat-icon>
                                 <mat-error>Phone number is required!</mat-error>
                             </mat-form-field>
@@ -169,18 +169,19 @@
 
                     <span class="pl-24" fxFlex="1 1 100%">Insurance Details</span>
                     <!--insurance group-->
-                    <section formArrayName="insurance" fxFlex="1 0 auto" fxLayout="column"
-                             *ngFor="let item of patientsForm.get('insurance').controls; let i = index;">
+                    <section *ngFor="let item of patientsForm.get('insurance').controls; let i = index;" formArrayName="insurance" fxFlex="1 0 auto"
+                             fxLayout="column">
 
                         <!--Insurance company, Insurance Number-->
-                        <div fxFlex="1 0 auto" fxLayout="row" fxLayoutAlign="start center" [formGroupName]="i">
+                        <div [formGroupName]="i" fxFlex="1 0 auto" fxLayout="row" fxLayoutAlign="start center">
 
                             <mat-form-field appearance="outline" class="pr-4" fxFlex="50">
                                 <mat-label>Insurance Company</mat-label>
 
                                 <mat-select formControlName="id" required>
-                                    <mat-option *ngFor="let option of allInsurance" [value]="option?.id">
-                                        {{option.name}}
+                                    <mat-option *ngFor="let option of allInsurance | keyvalue"
+                                                [value]="option?.value.name ">
+                                        {{option.value.name |titlecase}}
                                     </mat-option>
                                 </mat-select>
                                 <mat-icon class="secondary-text" matSuffix>local_hospital</mat-icon>
@@ -196,7 +197,7 @@
                             </mat-form-field>
 
                             <div class="pl-8" fxFlex="5">
-                                <button type="button" color="warn" mat-mini-fab (click)="removeInsurance(i)">
+                                <button (click)="removeInsurance(i)" color="warn" mat-mini-fab type="button">
                                     <mat-icon *ngIf="i !== 0">clear</mat-icon>
                                     <mat-icon *ngIf="i === 0">delete</mat-icon>
                                 </button>
@@ -207,7 +208,7 @@
                     </section>
 
                     <div fxFlex="1 0 auto" fxLayout="column" fxLayoutAlign="start start">
-                        <button type="button" color="basic" mat-mini-fab (click)="addInsurance()">
+                        <button (click)="addInsurance()" color="basic" mat-mini-fab type="button">
                             <mat-icon>library_add</mat-icon>
                         </button>
                         <br>
@@ -255,7 +256,7 @@
 
                                 <mat-form-field appearance="outline" fxFlex="100">
                                     <mat-label>Kin workplace</mat-label>
-                                    <input matInput placeholder="Enter kin workplace" formControlName="workplace"
+                                    <input formControlName="workplace" matInput placeholder="Enter kin workplace"
                                            required>
                                     <mat-error>Workplace is required!</mat-error>
                                 </mat-form-field>
@@ -268,7 +269,7 @@
 
 
                     <div fxFlex="1 0 auto" fxLayout="row" fxLayoutAlign="center center">
-                        <button mat-raised-button class="py-4" color="accent" fxFlex="50">Save Patient</button>
+                        <button class="py-4" color="accent" fxFlex="50" mat-raised-button>Save Patient</button>
                     </div>
 
                 </form>

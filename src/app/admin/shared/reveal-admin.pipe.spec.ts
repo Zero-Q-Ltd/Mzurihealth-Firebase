@@ -1,8 +1,8 @@
-import { RevealAdminPipe } from './reveal-admin.pipe';
+import { AdminNamePipe } from './reveal-admin.pipe';
 
-describe('RevealAdminPipe', () => {
+describe('AdminNamePipe', () => {
   it('create an instance', () => {
-    const pipe = new RevealAdminPipe();
+    const pipe = new AdminNamePipe();
     expect(pipe).toBeTruthy();
   });
 });

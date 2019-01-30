@@ -153,6 +153,7 @@ export class QueueService {
         return batch.commit();
     }
 
+    
     acceptpatient(visit: PatientVisit): Promise<void>  {
         const batch = this.db.firestore.batch();
         visit.checkin = {

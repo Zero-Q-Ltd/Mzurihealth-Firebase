@@ -36,7 +36,7 @@ import {AgmCoreModule} from '@agm/core';
 import {CommonModule} from '@angular/common';
 import { PaymentchannelPipe } from './paymentchannel.pipe';
 import { AgePipe } from './age.pipe';
-import { RevealAdminPipe } from './reveal-admin.pipe';
+import { AdminNamePipe } from './reveal-admin.pipe';
 
 @NgModule({
     imports: [
@@ -135,9 +135,12 @@ import { RevealAdminPipe } from './reveal-admin.pipe';
         FuseSidebarModule,
         FuseThemeOptionsModule,
 
-        AgePipe
+        // Custom pips
+        PaymentchannelPipe,
+        AgePipe,
+        AdminNamePipe
     ],
-    declarations: [PaymentchannelPipe, AgePipe, RevealAdminPipe]
+    declarations: [PaymentchannelPipe, AgePipe, AdminNamePipe]
 })
 export class AdminSharedModule {
 }

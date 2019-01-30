@@ -7,6 +7,7 @@ import {InvoiceComponent} from '../../invoice/invoice.component';
 import {AdminSelectionComponent} from '../admin-selection/admin-selection.component';
 import {HospitalAdmin} from '../../../../models/HospitalAdmin';
 import {FuseConfirmDialogComponent} from '../../../../../@fuse/components/confirm-dialog/confirm-dialog.component';
+import {HospitalService} from '../../../services/hospital.service';
 
 @Component({
     selector: 'queue-main',
@@ -20,11 +21,16 @@ export class MainComponent implements OnInit {
     patientsheaders = ['FileNo', 'Photo', 'Name', 'ID', 'Age', 'Phone', 'Last Visit', 'Status', 'Action'];
     dialogRef: MatDialogRef<any>;
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
+    hospitaladmins: Array<HospitalAdmin>;
 
     constructor(private queue: QueueService,
+                private  hospitalservice: HospitalService,
                 public _matDialog: MatDialog) {
         queue.mainpatientqueue.subscribe(value => {
             this.patientsdatasource.data = value;
+        });
+        hospitalservice.hospitaladmins.subscribe(admins => {
+            this.hospitaladmins = admins;
         });
     }
 
@@ -32,6 +38,7 @@ export class MainComponent implements OnInit {
     }
 
     redirectadmin(data: MergedPatient_QueueModel): void {
+        event.stopPropagation();
         this.confirmDialogRef = this._matDialog.open(FuseConfirmDialogComponent, {
             disableClose: false
         });
@@ -43,6 +50,7 @@ export class MainComponent implements OnInit {
     }
 
     showadminchoice(data: MergedPatient_QueueModel): void {
+        event.stopPropagation();
         this.dialogRef = this._matDialog.open(AdminSelectionComponent, {});
 
         this.dialogRef.afterClosed().subscribe((res: HospitalAdmin) => {
@@ -54,6 +62,7 @@ export class MainComponent implements OnInit {
     }
 
     viewinvoice(data: MergedPatient_QueueModel): void {
+        event.stopPropagation();
         this.dialogRef = this._matDialog.open(InvoiceComponent, {
             data: {
                 patient: data,
@@ -62,6 +71,10 @@ export class MainComponent implements OnInit {
         });
 
         this.dialogRef.afterClosed();
+    }
+
+    paynvoice(): void {
+
     }
 
     payinvoice(data: MergedPatient_QueueModel): void {

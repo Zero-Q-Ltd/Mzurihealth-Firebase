@@ -39,6 +39,8 @@ export class MineComponent implements OnInit {
 
 
     acceptpatient(data: MergedPatient_QueueModel): void {
+        event.stopPropagation();
+
         this.confirmDialogRef = this._matDialog.open(FuseConfirmDialogComponent, {
             disableClose: false
         });
@@ -51,6 +53,8 @@ export class MineComponent implements OnInit {
     }
 
     viewinvoice(data: MergedPatient_QueueModel): void {
+        event.stopPropagation();
+
         this.dialogRef = this._matDialog.open(InvoiceComponent, {
             data: {
                 patient: data,
@@ -62,6 +66,8 @@ export class MineComponent implements OnInit {
     }
 
     showadminchoice(data: MergedPatient_QueueModel): void {
+        event.stopPropagation();
+
         this.confirmDialogRef = this._matDialog.open(FuseConfirmDialogComponent, {
             disableClose: false
         });

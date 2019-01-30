@@ -1,12 +1,17 @@
-import { Pipe, PipeTransform } from '@angular/core';
+import {Pipe, PipeTransform} from '@angular/core';
+import {HospitalAdmin} from '../../models/HospitalAdmin';
 
 @Pipe({
-  name: 'revealAdmin'
+    name: 'adminName'
 })
-export class RevealAdminPipe implements PipeTransform {
+export class AdminNamePipe implements PipeTransform {
 
-  transform(value: any, args?: any): any {
-    return null;
-  }
+    transform(adminid: string, admins: Array<HospitalAdmin>): string {
+        let name = '';
+        admins.forEach(admin => {
+            name = admin.id === adminid ? admin.data.displayName : '';
+        });
+        return name;
+    }
 
 }

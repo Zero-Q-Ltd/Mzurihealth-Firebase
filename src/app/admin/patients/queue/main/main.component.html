@@ -79,15 +79,27 @@
     </ng-container>
 
     <ng-container matColumnDef="Status">
-        <mat-header-cell *matHeaderCellDef mat-sort-header>Status
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Destination
         </mat-header-cell>
         <mat-cell *matCellDef="let patient">
-        <mat-chip-list [ngSwitch]='patient.queuedata.checkin.status'>
-            <mat-chip *ngSwitchCase="0" color="warn" mat-raised-button selected>NEW </mat-chip>
-            <mat-chip *ngSwitchCase="1" color="primary" mat-raised-button selected>Waiting </mat-chip>
-            <mat-chip *ngSwitchCase="2" color="accent" mat-raised-button selected>In Progress</mat-chip>
-            <mat-chip *ngSwitchCase="3" color="warn" mat-raised-button selected>Waiting Payment</mat-chip>
-        </mat-chip-list>
+            <mat-chip-list [ngSwitch]='patient.queuedata.checkin.status'>
+                <mat-chip *ngSwitchCase="0" color="warn" mat-raised-button matTooltip="NEW" selected>
+                    <mat-icon>new_releases</mat-icon>
+                    NEW
+                </mat-chip>
+                <mat-chip *ngSwitchCase="1" class="text-truncate" matTooltip="Waiting" color="primary" mat-raised-button selected>
+                    <mat-icon>av_timer</mat-icon>
+                    {{patient.queuedata.checkin.admin | adminName : hospitaladmins}}
+                </mat-chip>
+                <mat-chip *ngSwitchCase="2" class="text-truncate" matTooltip="In Progress" color="accent" mat-raised-button selected>
+                    <mat-icon>done</mat-icon>
+                    {{patient.queuedata.checkin.admin | adminName : hospitaladmins}}
+                </mat-chip>
+                <mat-chip *ngSwitchCase="3" class="text-truncate" color="warn" matTooltip="Waiting For Payment" mat-raised-button selected>
+                    <mat-icon>done_all</mat-icon>
+                    {{patient.queuedata.checkin.admin | adminName : hospitaladmins}}
+                </mat-chip>
+            </mat-chip-list>
         </mat-cell>
 
     </ng-container>
@@ -111,10 +123,10 @@
     <mat-header-row *matHeaderRowDef="patientsheaders; sticky:true"></mat-header-row>
 
     <mat-row
+        (click)="viewinvoice(patient)"
         *matRowDef="let patient; columns: patientsheaders;"
         [@animate]="{value:'*',params:{y:'100%'}}"
-        (click)="viewinvoice(patient)"
-        matRipple >
+        matRipple>
     </mat-row>
 
 </mat-table>

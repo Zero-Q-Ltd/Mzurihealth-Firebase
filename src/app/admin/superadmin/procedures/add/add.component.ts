@@ -4,12 +4,12 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ProceduresService} from '../../../services/procedures.service';
 import {ProcedureCategory} from '../../../../models/ProcedureCategory';
 import {emptyprawrocedure, RawProcedure, rawprocedurecategory} from '../../../../models/RawProcedure';
-import {InsuranceCompany} from '../../../../models/InsuranceCompany';
 import {MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
 import {FuseSidebarService} from '../../../../../@fuse/components/sidebar/sidebar.service';
 import {LocalcommunicationService} from '../../localcommunication.service';
 import {NotificationService} from '../../../../shared/services/notifications.service';
 import {emptycustomprocedure} from '../../../../models/CustomProcedure';
+import {Paymentmethods} from '../../../../models/PaymentChannel';
 
 @Component({
     selector: 'procedure-add',
@@ -60,16 +60,16 @@ export class AddComponent implements OnInit, AfterViewInit {
         });
     }
 
-    applyFilter(filterValue: string) {
+    applyFilter(filterValue: string): void {
         this.categoryprocedures.filter = filterValue.trim().toLowerCase();
     }
 
-    ngAfterViewInit() {
+    ngAfterViewInit(): void {
         this.categoryprocedures.paginator = this.paginator;
         this.categoryprocedures.sort = this.sort;
     }
 
-    getcategory(category: rawprocedurecategory) {
+    getcategory(category: rawprocedurecategory): any {
         if (category.subcategoryid) {
             return this.procedurecategories.find(cat => {
                 return cat.id === category.id;
@@ -105,12 +105,12 @@ export class AddComponent implements OnInit, AfterViewInit {
         this._fuseSidebarService.getSidebar(name).toggleOpen();
     }
 
-    setexpanded(id: number) {
+    setexpanded(id: number): void {
         this.expandedlist = id;
     }
 
 
-    setunsuranceprice(insurance: InsuranceCompany, value) {
+    setunsuranceprice(insurance: { [key: string]: Paymentmethods }, value): void {
         console.log(value, insurance);
     }
 

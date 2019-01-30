@@ -132,7 +132,9 @@ import { AgePipe } from './age.pipe';
         FuseConfirmDialogModule,
         FuseProgressBarModule,
         FuseSidebarModule,
-        FuseThemeOptionsModule
+        FuseThemeOptionsModule,
+
+        AgePipe
     ],
     declarations: [PaymentchannelPipe, AgePipe]
 })

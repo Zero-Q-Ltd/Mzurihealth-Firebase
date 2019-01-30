@@ -1,12 +1,14 @@
-import { Pipe, PipeTransform } from '@angular/core';
+import {Pipe, PipeTransform} from '@angular/core';
+import * as moment from 'moment';
+import {firestore} from 'firebase';
 
 @Pipe({
-  name: 'age'
+    name: 'age'
 })
 export class AgePipe implements PipeTransform {
 
-  transform(value: any, args?: any): any {
-    return null;
-  }
+    transform(birtday: firestore.Timestamp, args?: any): number {
+        return moment().diff(birtday.toDate().toLocaleDateString(), 'years');
+    }
 
 }

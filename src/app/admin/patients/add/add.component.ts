@@ -1,8 +1,6 @@
 import {Component, Inject, OnInit, Optional, ViewEncapsulation} from '@angular/core';
-import {InsuranceCompany} from '../../../models/InsuranceCompany';
 import {MAT_DIALOG_DATA} from '@angular/material';
 import {NotificationService} from '../../../shared/services/notifications.service';
-import {InsuranceService} from '../../services/insurance.service';
 import {AdminService} from '../../services/admin.service';
 import {PatientService} from '../../services/patient.service';
 import {HospitalService} from '../../services/hospital.service';
@@ -12,6 +10,8 @@ import * as moment from 'moment';
 import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {fuseAnimations} from '../../../../@fuse/animations';
 import {Router} from '@angular/router';
+import {Paymentmethods} from '../../../models/PaymentChannel';
+import {PaymentmethodService} from '../../services/paymentmethod.service';
 
 @Component({
     selector: 'app-add',
@@ -23,7 +23,7 @@ import {Router} from '@angular/router';
 export class AddComponent implements OnInit {
     patientfileno: HospFile = Object.assign({}, emptyfile);
     activehospital: Hospital = Object.assign({}, emptyhospital);
-    allInsurance: InsuranceCompany[];
+    allInsurance: { [key: string]: Paymentmethods } = {};
     patientsForm: FormGroup;
 
     private personalinfo: FormGroup;
@@ -36,8 +36,8 @@ export class AddComponent implements OnInit {
                 private patientservice: PatientService,
                 private formBuilder: FormBuilder,
                 private hospitalservice: HospitalService,
-                private insuranceservice: InsuranceService,
                 private router: Router,
+                private paymentethods: PaymentmethodService,
                 private notificationservice: NotificationService,
                 @Optional() @Inject(MAT_DIALOG_DATA) public data?: any) {
 
@@ -47,11 +47,8 @@ export class AddComponent implements OnInit {
          * */
         this.initFormBuilder();
 
-        /*
-        * get list of insurance in kenya
-        * */
-        this.insuranceservice.allinsurance.subscribe(insurances => {
-            this.allInsurance = insurances;
+        this.paymentethods.allinsurance.subscribe(insurance => {
+            this.allInsurance = insurance;
         });
 
 

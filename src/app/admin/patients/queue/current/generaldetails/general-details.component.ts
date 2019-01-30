@@ -3,13 +3,13 @@ import {fuseAnimations} from '../../../../../../@fuse/animations';
 import {Patient} from '../../../../../models/Patient';
 import * as moment from 'moment';
 import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {InsuranceCompany} from '../../../../../models/InsuranceCompany';
 import {AdminService} from '../../../../services/admin.service';
 import {PatientService} from '../../../../services/patient.service';
-import {InsuranceService} from '../../../../services/insurance.service';
 import {NotificationService} from '../../../../../shared/services/notifications.service';
 import {MAT_DIALOG_DATA} from '@angular/material';
 import {QueueService} from '../../../../services/queue.service';
+import {Paymentmethods} from '../../../../../models/PaymentChannel';
+import {PaymentmethodService} from '../../../../services/paymentmethod.service';
 
 @Component({
     selector: 'general-details',
@@ -19,7 +19,7 @@ import {QueueService} from '../../../../services/queue.service';
 
 })
 export class GeneralDetailsComponent implements OnInit {
-    allInsurance: InsuranceCompany[];
+    allInsurance: { [key: string]: Paymentmethods } = {};
     patientsForm: FormGroup;
     currentpatient: Patient;
     private personalinfo: FormGroup;
@@ -31,8 +31,8 @@ export class GeneralDetailsComponent implements OnInit {
     constructor(private adminservice: AdminService,
                 private patientservice: PatientService,
                 private formBuilder: FormBuilder,
-                private insuranceservice: InsuranceService,
                 private notificationservice: NotificationService,
+                private paymentethods: PaymentmethodService,
                 private queue: QueueService,
                 @Optional() @Inject(MAT_DIALOG_DATA) public data?: any) {
 
@@ -42,11 +42,8 @@ export class GeneralDetailsComponent implements OnInit {
          * */
         this.initFormBuilder();
 
-        /*
-        * get list of insurance in kenya
-        * */
-        this.insuranceservice.allinsurance.subscribe(insurances => {
-            this.allInsurance = insurances;
+        this.paymentethods.allinsurance.subscribe(insurance => {
+            this.allInsurance = insurance;
         });
         this.queue.currentpatient.subscribe(value => {
             this.currentpatient = value.patientdata;

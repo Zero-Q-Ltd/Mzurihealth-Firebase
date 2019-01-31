@@ -59,6 +59,8 @@ export class AllComponent implements OnInit {
         this.patientservice.hospitalpatients.subscribe(patients => {
             this.patientsdatasource.data = patients;
         });
+
+        this.initialSearchForm();
     }
 
     ngOnInit(): void {
@@ -126,7 +128,11 @@ export class AllComponent implements OnInit {
 
 
     submitSearchForm(): void {
-        console.log(this.searchForm);
-    }
+        if (this.searchForm.invalid) {
+            return;
+        }
 
+        const {field, fieldValue} = this.searchForm.value;
+        this.patientservice.searchPatient(field, fieldValue);
+    }
 }

@@ -5,10 +5,10 @@
         </mat-expansion-panel-header>
         <ng-template matExpansionPanelContent>
 
-            <mat-horizontal-stepper #stepper>
+            <mat-horizontal-stepper #generalreportstepper>
                 <mat-step [stepControl]="vitalsform">
                     <ng-template matStepLabel>Vitals</ng-template>
-                    <form (ngSubmit)="updategeneralreport()" [formGroup]="vitalsform" class="content" class=" p-8"
+                    <form (ngSubmit)="updatepatient()" [formGroup]="vitalsform" class="content" class=" p-8"
                           fxFlex="1 1 auto"
                           fxLayout="column" fxLayoutAlign="start">
                         <div fxFlex="1 1 auto" fxLayout="row" fxLayoutAlign="start center">
@@ -45,10 +45,10 @@
                         </div>
 
                         <div fxFlex="1 0 auto" fxLayout="row" fxLayoutAlign="start center">
-                            <button (click)="updatepatient()" class="px-4" color="primary" mat-raised-button>Save Only
+                            <button  class="px-4" color="primary" mat-raised-button>Save Only
                             </button>
-                            <button (click)="updatepatient()" class="px-4" color="accent" mat-raised-button>Save and
-                                Next
+                            <button class="px-4" color="accent" mat-raised-button matStepperNext>
+                                Save and Next
                             </button>
                         </div>
                     </form>
@@ -62,7 +62,7 @@
                                  fxFlex="1 0 auto" fxLayout="column">
 
                             <!--Insurance company, Insurance Number-->
-                            <div [formGroupName]="i" fxFlex="1 0 auto" fxLayout="row" fxLayoutAlign="start center">
+                            <div [formGroupName]="i" fxFlex="1 0 auto" fxLayout="row" fxLayoutAlign="start center" (ngSubmit)="updatepatient()" >
                                 <mat-form-field appearance="outline" class="pr-4" fxFlex="50">
                                     <mat-label>Allergy Type</mat-label>
                                     <mat-select formControlName="type" required>
@@ -95,10 +95,9 @@
                         </div>
                         <div>
                             <button class="px-4" color="primary" mat-raised-button matStepperPrevious>Back</button>
-                            <button (click)="updatepatient()" class="px-4" color="primary" mat-raised-button>Save Only
+                            <button  class="px-4" color="primary" mat-raised-button>Save Only
                             </button>
-                            <button (click)="updatepatient()" class="px-4" color="accent" mat-raised-button
-                                    matStepperNext>
+                            <button  class="px-4" color="accent" mat-raised-button matStepperNext>
                                 Save and Next
                             </button>
                         </div>
@@ -114,7 +113,7 @@
                             fxFlex="1 0 auto" fxLayout="column">
 
                             <!--Insurance company, Insurance Number-->
-                            <div [formGroupName]="i" fxFlex="1 0 auto" fxLayout="row" fxLayoutAlign="start center">
+                            <div [formGroupName]="i" fxFlex="1 0 auto" fxLayout="row" fxLayoutAlign="start center" (ngSubmit)="updatepatient()" >
                                 <mat-form-field appearance="outline" class="pr-4" fxFlex="50">
                                     <mat-label>Condition Type</mat-label>
                                     <mat-select formControlName="type" required>
@@ -140,15 +139,14 @@
                             </div>
                         </section>
                         <div fxFlex="1 0 auto" fxLayout="column" fxLayoutAlign="start start">
-                            <button (click)="addcondition()" color="primary" mat-mini-fab>
+                            <button (click)="addcondition()" color="primary" mat-mini-fab type="button">
                                 <mat-icon aria-label="Example icon-button with a heart icon">add</mat-icon>
                             </button>
                             <br>
                         </div>
                         <div>
                             <button class="px-4" color="primary" mat-raised-button matStepperPrevious>Back</button>
-                            <button (click)="updatepatient()" class="px-4" color="accent" mat-raised-button
-                                    matStepperNext>
+                            <button  class="px-4" color="accent" mat-raised-button matStepperNext>
                                 Save
                             </button>
                         </div>
@@ -202,7 +200,7 @@
         <ng-template matExpansionPanelContent>
 
             <!-- HORIZONTAL STEPPER -->
-            <mat-horizontal-stepper #procedurestepper [linear]="true" class="mat-elevation-z4">
+            <mat-horizontal-stepper #procedurestepper [linear]="true">
 
                 <mat-step [stepControl]="procedureselection">
                     <ng-template matStepLabel>Select Procedure</ng-template>
@@ -227,7 +225,7 @@
                     </form>
 
                     <div fxLayout="row" fxLayoutAlign="center center">
-                        <button color="accent" mat-raised-button matStepperNext type="button">
+                        <button color="accent" mat-raised-button matStepperNext type="button" (click)="updatepatient()">
                             Next
                         </button>
                     </div>

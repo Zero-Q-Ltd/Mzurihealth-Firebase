@@ -20,6 +20,7 @@ import {QueueService} from '../../../../services/queue.service';
 import {MergedPatient_QueueModel} from '../../../../../models/MergedPatient_Queue.model';
 import {AdminSelectionComponent} from '../../admin-selection/admin-selection.component';
 import {MatDialog, MatDialogRef} from '@angular/material';
+import {NotificationService} from '../../../../../shared/services/notifications.service';
 
 @Component({
     selector: 'patient-today',
@@ -51,6 +52,7 @@ export class TodayComponent implements OnInit {
                 private procedureservice: ProceduresService,
                 private queue: QueueService,
                 public _matDialog: MatDialog,
+                private notification: NotificationService,
                 private patientvisit: PatientvisitService) {
 
         procedureservice.procedurecategories.subscribe(categories => {
@@ -115,6 +117,11 @@ export class TodayComponent implements OnInit {
         this.medconditionsform = this.formBuilder.group({
             conditionsformArray: this.formBuilder.array([this.createmedconditions()])
         });
+        /**
+         * neccessary the first time the form is created to allow enabling
+         */
+        this.allergychanges();
+        this.conditionschanges();
     }
 
     createallergies(): FormGroup {
@@ -146,8 +153,11 @@ export class TodayComponent implements OnInit {
     }
 
     updatepatient(): void {
+        console.log('snodnsdf');
+        console.log(this.vitalsform.getRawValue());
+        console.log(this.allergiesform.getRawValue());
+        console.log(this.medconditionsform.getRawValue());
         // this.patientservice.updatePatient(this.queue.currentpatient.value.patientdata.id, );
-
     }
 
     onSelect(selected: { rawprocedure: RawProcedure, customprocedure: CustomProcedure }): void {
@@ -171,13 +181,14 @@ export class TodayComponent implements OnInit {
         this.dialogRef.afterClosed().subscribe((res: HospitalAdmin) => {
             console.log(res);
             if (res) {
-                console.log(res)
+                console.log(res);
                 this.queue.assignadmin(this.currentpatient.queuedata, res.id);
             }
         });
     }
 
     exitpatientandacceptnext(): void {
+
 
     }
 
@@ -245,12 +256,12 @@ export class TodayComponent implements OnInit {
 
 
     initvitalsformm(): void {
-        const height = new FormControl(this.currentpatient.patientdata.medicalinfo.vitals.height,);
-        const weight = new FormControl('',);
-        const pressure = new FormControl('',);
-        const heartrate = new FormControl('',);
-        const sugar = new FormControl('',);
-        const respiration = new FormControl('',);
+        const height = new FormControl(this.currentpatient.patientdata.medicalinfo.vitals.height);
+        const weight = new FormControl(this.currentpatient.patientdata.medicalinfo.vitals.weight);
+        const pressure = new FormControl(this.currentpatient.patientdata.medicalinfo.vitals.pressure);
+        const heartrate = new FormControl(this.currentpatient.patientdata.medicalinfo.vitals.heartrate);
+        const sugar = new FormControl(this.currentpatient.patientdata.medicalinfo.vitals.sugar);
+        const respiration = new FormControl(this.currentpatient.patientdata.medicalinfo.vitals.respiration);
         this.vitalsform = new FormGroup({
             height: height,
             weight: weight,
@@ -273,7 +284,7 @@ export class TodayComponent implements OnInit {
     }
 
     updategeneralreport(): void {
-
+        console.log('aondklilands');
     }
 
     addprocedure(): void {

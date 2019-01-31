@@ -444,5 +444,81 @@ export class PatientService {
 
     }
 
+    searchPatient(field: string, value: string): any {
+
+        /*
+        * searchable items
+        * - file number
+        * - Id number
+        * - mobile number
+        * - name
+        * **/
+
+        if (field === 'no' || field === 'idno') {
+            this.searchFromHospitalFile(field, value);
+        } else if (field === 'phone' || field === 'name') {
+            this.searchFromPatients(field, value);
+        }
+    }
+
+    private searchFromHospitalFile(field: string, value: string): any {
+        /**
+         * search filenumber
+         * search id
+         * */
+        this.db.collection('hospitals')
+            .doc(this.activehospital.id)
+            .collection('filenumbers', ref => {
+                return ref.where(field, '==', value);
+            }).snapshotChanges().pipe(
+            switchMap(f => {
+                return combineLatest(...f.map(t => {
+                    const fileInfo = t.payload.doc.data() as HospFile;
+
+                    return this.db.collection('patients').doc(fileInfo.id).snapshotChanges().pipe(
+                        map(patientData => {
+                            return Object.assign(emptypatient, patientData.payload.data(), {fileinfo: fileInfo});
+                        })
+                    );
+                }));
+            })
+        ).subscribe(mergedData => {
+            console.log(mergedData);
+        });
+
+
+    }
+
+    private searchFromPatients(field: string, value: string): any {
+        /**
+         * search mobile number
+         * search name
+         * */
+        this.db.collection('patients', ref => {
+            return ref.where(`personalinfo.${field}`, '==', value);
+        }).snapshotChanges().pipe(
+            switchMap(f => {
+                return combineLatest(...f.map(t => {
+
+                    const patient = Object.assign(emptypatient, t.payload.doc.data());
+
+                    return this.db.collection('hospitals')
+                        .doc(this.activehospital.id)
+                        .collection('filenumbers').doc(patient.id).snapshotChanges()
+                        .pipe(
+                            map(fileData => {
+                                const patientFileData = fileData.payload.data() as HospFile;
+                                patient.fileinfo = patientFileData;
+
+                                return patient;
+                            })
+                        );
+                }));
+            })
+        ).subscribe(mergedData => {
+            console.log(mergedData);
+        });
+
+    }
 
 }

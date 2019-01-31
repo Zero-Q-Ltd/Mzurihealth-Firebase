@@ -282,9 +282,9 @@
     </mat-expansion-panel>
 </mat-accordion>
 <div>
-    <button class="mx-4 py-4" color="primary" mat-raised-button>Internal Referral</button>
+    <button class="mx-4 py-4" color="primary" mat-raised-button (click)="showadminchoice()">Internal Referral</button>
 
-    <button class="mx-4 py-4" color="primary" mat-raised-button>Exit Patient and Break</button>
+    <button class="mx-4 py-4" color="primary" mat-raised-button (click)="exitpatientandbreak()">Exit Patient and Break</button>
 
-    <button class="mx-4 py-4" color="accent" mat-raised-button>Exit Patient and Accept Next</button>
+    <button class="mx-4 py-4" color="accent" mat-raised-button (click)="exitpatientandacceptnext()">Exit Patient and Accept Next</button>
 </div>

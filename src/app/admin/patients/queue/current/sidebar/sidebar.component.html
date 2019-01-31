@@ -67,42 +67,45 @@
 
         <!-- SIDEBAR CONTENT -->
         <mat-accordion fusePerfectScrollbar>
-            <mat-expansion-panel>
+            <mat-expansion-panel [disabled]="!patient.patientdata.medicalinfo.metadata.lastedit">
                 <mat-expansion-panel-header>
                     Vitals ({{patient.patientdata.medicalinfo.metadata.lastedit?.toDate().toDateString() || 'Empty'}})
                 </mat-expansion-panel-header>
-                <div class=" py-8">
-                    <span class="w-100"> Blood Pressure</span>
-                    <h3>{{patient.patientdata.medicalinfo.vitals.pressure}}</h3>
-                    <!--<mat-progress-bar mode="determinate" value="40"></mat-progress-bar>-->
-                </div>
-                <div class=" py-8">
-                    <span class="w-100"> Heart Beat </span>
-                    <h3>{{patient.patientdata.medicalinfo.vitals.heartrate}}</h3>
-                    <!--<mat-progress-bar mode="determinate" value="50"></mat-progress-bar>-->
-                </div>
-                <div class=" py-8">
-                    <span class="w-100"> Haemoglobin </span>
-                    <h3>{{patient.patientdata.medicalinfo.vitals.hb}}</h3>
-                    <!--<mat-progress-bar mode="determinate" value="95"></mat-progress-bar>-->
-                </div>
-                <div class=" py-8">
-                    <span class="w-100"> Sugar </span>
-                    <h3>{{patient.patientdata.medicalinfo.vitals.sugar}}</h3>
-                    <!--<mat-progress-bar mode="determinate" value="12"></mat-progress-bar>-->
-                </div>
-                <div class="pt-8">
+                <ng-template matExpansionPanelContent>
+
+                    <div class=" py-8">
+                        <span class="w-100"> Blood Pressure</span>
+                        <h3>{{patient.patientdata.medicalinfo.vitals.pressure}}</h3>
+                        <!--<mat-progress-bar mode="determinate" value="40"></mat-progress-bar>-->
+                    </div>
+                    <div class=" py-8">
+                        <span class="w-100"> Heart Beat </span>
+                        <h3>{{patient.patientdata.medicalinfo.vitals.heartrate}}</h3>
+                        <!--<mat-progress-bar mode="determinate" value="50"></mat-progress-bar>-->
+                    </div>
+                    <div class=" py-8">
+                        <span class="w-100"> Haemoglobin </span>
+                        <h3>{{patient.patientdata.medicalinfo.vitals.hb}}</h3>
+                        <!--<mat-progress-bar mode="determinate" value="95"></mat-progress-bar>-->
+                    </div>
+                    <div class=" py-8">
+                        <span class="w-100"> Sugar </span>
+                        <h3>{{patient.patientdata.medicalinfo.vitals.sugar}}</h3>
+                        <!--<mat-progress-bar mode="determinate" value="12"></mat-progress-bar>-->
+                    </div>
+                    <div class="pt-8">
                     <span class="w-100">
                         Weight: {{patient.patientdata.medicalinfo.vitals.weight}} &nbsp;&nbsp;&nbsp;&nbsp;
                         Height: {{patient.patientdata.medicalinfo.vitals.height}} </span>
-                </div>
-                <div class=" pb-8">
-                    <span class="w-100"> BMI </span>
-                    <!--Calculated as kg/m squared -->
-                    <h3>{{patient.patientdata.medicalinfo.vitals.weight/
-                    (patient.patientdata.medicalinfo.vitals.height* patient.patientdata.medicalinfo.vitals.height)}}</h3>
-                    <!--<mat-progress-bar mode="determinate" value="40"></mat-progress-bar>-->
-                </div>
+                    </div>
+                    <div class=" pb-8">
+                        <span class="w-100"> BMI </span>
+                        <!--Calculated as kg/m squared -->
+                        <h3>{{patient.patientdata.medicalinfo.vitals.weight /
+                        (patient.patientdata.medicalinfo.vitals.height * patient.patientdata.medicalinfo.vitals.height)}}</h3>
+                        <!--<mat-progress-bar mode="determinate" value="40"></mat-progress-bar>-->
+                    </div>
+                </ng-template>
             </mat-expansion-panel>
             <mat-expansion-panel>
                 <mat-expansion-panel-header>

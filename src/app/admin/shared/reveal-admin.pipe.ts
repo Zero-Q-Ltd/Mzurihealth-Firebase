@@ -10,8 +10,7 @@ export class AdminNamePipe implements PipeTransform {
         let name = '';
         admins.forEach(admin => {
             name = admin.id === adminid ? admin.data.displayName : '';
-            console.log(name);
-
+            // console.log(name);
         });
 
         return name;

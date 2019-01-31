@@ -76,10 +76,10 @@ export class QueueService {
                                 .collection('filenumbers')
                                 .doc(patient.id)
                                 .snapshotChanges().pipe().map(filedata => {
-                                    const file: HospFile = Object.assign({}, emptyfile, filedata.payload.data());
+                                    const file: HospFile = Object.assign({}, {...emptyfile}, filedata.payload.data());
                                     file.id = patient.id;
                                     patient.fileinfo = file;
-                                    return {patientdata: Object.assign({}, emptypatient, patient), queuedata: visit};
+                                    return {patientdata: patient, queuedata: visit};
                                 });
                         })
                     );
@@ -95,12 +95,24 @@ export class QueueService {
      */
     filterqueue(): void {
         this.mainpatientqueue.subscribe(queuedata => {
+            /**
+             * reset the current patient every time patients data changes, because we are only filtering this data
+             */
+            let currentpatientfound = false;
             this.mypatientqueue.next(queuedata.filter(queue => {
                 const equality = queue.queuedata.checkin.admin === this.adminid;
                 if (queue.queuedata.checkin.status === 2) {
+                    console.log(queue);
                     this.currentpatient.next(queue);
                     this.fetchlatestprocedures();
                     this.fetchvisithistory();
+                    currentpatientfound = true;
+                }
+                /***
+                 * Only reset it when no value has been found, otherwise we know that the value has just changed and is already overwritten
+                 */
+                if (!currentpatientfound) {
+                    this.currentpatient.next({...emptymergedQueueModel});
                 }
                 return equality;
             }));
@@ -153,8 +165,8 @@ export class QueueService {
         return batch.commit();
     }
 
-    
-    acceptpatient(visit: PatientVisit): Promise<void>  {
+
+    acceptpatient(visit: PatientVisit): Promise<void> {
         const batch = this.db.firestore.batch();
         visit.checkin = {
             status: 2,

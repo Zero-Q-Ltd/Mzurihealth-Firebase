@@ -2,9 +2,8 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Subject} from 'rxjs';
 import {HospitalService} from '../../services/hospital.service';
 import {Hospital} from '../../../models/Hospital';
-import {QueueService} from '../../services/queue.service';
-import {emptymergedQueueModel, MergedPatient_QueueModel} from '../../../models/MergedPatient_Queue.model';
-import {Procedureperformed} from '../../../models/Procedureperformed';
+import {Proceduresperformed} from '../../../models/Procedureperformed';
+import {PatientvisitService} from '../../services/patientvisit.service';
 
 @Component({
     selector: 'app-invoice',
@@ -12,27 +11,19 @@ import {Procedureperformed} from '../../../models/Procedureperformed';
     styleUrls: ['./invoice.component.scss']
 })
 export class InvoiceComponent implements OnInit, OnDestroy {
-    visit: { procedures: Array<Procedureperformed>, patientinfo: MergedPatient_QueueModel } = {
-        procedures: [],
-        patientinfo: {...emptymergedQueueModel}
-    };
+    performedprocedures: Proceduresperformed;
 
-    // Private
     private _unsubscribeAll: Subject<any>;
     activehospital: Hospital;
 
-    constructor(private hospitalservice: HospitalService, private queue: QueueService) {
+    constructor(private hospitalservice: HospitalService,
+                private patientvisit: PatientvisitService) {
         // Set the private defaults
         this._unsubscribeAll = new Subject();
         this.hospitalservice.activehospital.subscribe(hosp => {
             this.activehospital = hosp;
         });
-        this.queue.currentvisitprocedures.subscribe(procedures => {
-            this.visit.procedures = procedures;
-        });
-        this.queue.currentpatient.subscribe(patient => {
-            this.visit.patientinfo = patient;
-        });
+
     }
 
     // -----------------------------------------------------------------------------------------------------

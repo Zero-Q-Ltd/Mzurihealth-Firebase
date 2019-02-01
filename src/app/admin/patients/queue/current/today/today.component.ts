@@ -19,6 +19,7 @@ import {QueueService} from '../../../../services/queue.service';
 import {MergedPatient_QueueModel} from '../../../../../models/MergedPatient_Queue.model';
 import {AdminSelectionComponent} from '../../admin-selection/admin-selection.component';
 import {MatDialog, MatDialogRef} from '@angular/material';
+import {LocalcommunicationService} from '../localcommunication.service';
 
 @Component({
     selector: 'patient-today',
@@ -53,7 +54,7 @@ export class TodayComponent implements OnInit {
                 private queue: QueueService,
                 public _matDialog: MatDialog,
                 private patientvisitService: PatientvisitService,
-                private patientvisit: PatientvisitService) {
+                private communication: LocalcommunicationService,) {
 
         procedureservice.procedurecategories.subscribe(categories => {
             this.procedurecategories = categories;
@@ -254,7 +255,11 @@ export class TodayComponent implements OnInit {
         } else {
 
         }
-        this.patientvisitService.terminatepatientvisit(this.currentpatient.queuedata.id);
+        this.patientvisitService.awaitpayment(this.currentpatient.queuedata.id);
+        /**
+         * important to change from the currently active tab as it will become inactive
+         */
+        this.communication.ontabchanged.next(1);
     }
 
     exitpatientandbreak(): void {

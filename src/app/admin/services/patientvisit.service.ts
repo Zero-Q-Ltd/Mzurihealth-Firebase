@@ -73,16 +73,9 @@ export class PatientvisitService {
         per.procedureid = procedure.rawprocedure.id;
         per.visitid = this.patientid;
         console.log(per);
-        if (this.currentvisitprocedures.value.procedures.length === 0) {
-            this.db.collection('visitprocedures').doc(this.currentvisit.value.id).set({
-                procedures: [per]
-            });
-        } else {
-            this.db.collection('visitprocedures').doc(this.currentvisit.value.id).update({
-                procedures: firestore.FieldValue.arrayUnion(per)
-            });
-        }
-
+        this.db.collection('visitprocedures').doc(this.currentvisit.value.id).update({
+            procedures: firestore.FieldValue.arrayUnion(per)
+        });
     }
 
     fetchvisithistory(): void {
@@ -128,9 +121,21 @@ export class PatientvisitService {
         return this.db.collection('hospitalvisits').doc(visit.id).update(visit);
     }
 
+    awaitpayment(visitid): any {
+        return this.db.collection('hospitalvisits').doc(visitid).update({
+            checkin: {
+                status: 3,
+                admin: null,
+            }
+        });
+    }
+
     terminatepatientvisit(visitid): any {
         return this.db.collection('hospitalvisits').doc(visitid).update({
-            ['checkin.status']: 4
+            checkin: {
+                status: 4,
+                admin: null,
+            }
         });
     }
 

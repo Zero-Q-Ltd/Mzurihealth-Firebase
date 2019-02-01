@@ -7,13 +7,11 @@ import {emptypatient, Patient} from '../../models/Patient';
 import {HospitalAdmin} from '../../models/HospitalAdmin';
 import {PatientService} from './patient.service';
 import {switchMap} from 'rxjs/operators';
-import {emptypatientvisit, PatientVisit} from '../../models/PatientVisit';
+import {PatientVisit} from '../../models/PatientVisit';
 import {emptymergedQueueModel, MergedPatient_QueueModel} from '../../models/MergedPatient_Queue.model';
 import {emptyfile, HospFile} from '../../models/HospFile';
-import {emptyproceduresperformed, Procedureperformed, Proceduresperformed} from '../../models/Procedureperformed';
 import {ProceduresService} from './procedures.service';
 import {MergedProcedureModel} from '../../models/MergedProcedure.model';
-import {firestore} from 'firebase';
 
 @Injectable({
     providedIn: 'root'
@@ -92,7 +90,7 @@ export class QueueService {
             let currentpatientfound = false;
             this.mypatientqueue.next(queuedata.filter(queue => {
                 const equality = queue.queuedata.checkin.admin === this.adminid;
-                if (queue.queuedata.checkin.status === 2) {
+                if (equality && queue.queuedata.checkin.status === 2) {
                     console.log(queue);
                     this.currentpatient.next(queue);
                     currentpatientfound = true;

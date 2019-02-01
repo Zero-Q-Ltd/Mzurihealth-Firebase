@@ -32,9 +32,7 @@ export interface Patient {
     /**
      * A patient can have several insurances at the same time
      */
-    insurance: {
-        [key: string]: Insurance
-    };
+    insurance: Array<Insurance>;
     medicalinfo: {
         bloodtype: string,
         conditions: Array<Condition>
@@ -85,7 +83,7 @@ export const emptypatient: Patient = {
         phone: null,
         workplace: null
     },
-    insurance: {},
+    insurance: [],
     medicalinfo: {
         bloodtype: null,
         conditions: [],

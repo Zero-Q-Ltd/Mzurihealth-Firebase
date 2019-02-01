@@ -138,8 +138,7 @@ export class AddComponent implements OnInit {
         const kinName = new FormControl('', Validators.required);
         const kinPhone = new FormControl('', Validators.required);
         const kinWorkplace = new FormControl('', Validators.compose([
-            Validators.required,
-            NumberValidator.validate()
+            Validators.required
         ]));
 
         this.nextofkin = new FormGroup({

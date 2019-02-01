@@ -195,7 +195,7 @@
 
                                 <mat-select formControlName="id" required>
                                     <mat-option *ngFor="let option of allInsurance | keyvalue"
-                                                [value]="option?.value.name ">
+                                                [value]="option?.key ">
                                         {{option.value.name |titlecase}}
                                     </mat-option>
                                 </mat-select>
@@ -240,7 +240,7 @@
                         <div fxFlex="1 0 auto" fxLayout="row" fxLayoutAlign="start center">
 
                             <mat-form-field appearance="outline" fxFlex="100">
-                                <mat-label>Relationship Status</mat-label>
+                                <mat-label>Relationship</mat-label>
                                 <input formControlName="relationship" matInput required autocomplete="off">
                                 <mat-icon class="secondary-text" matSuffix>outlined_flag</mat-icon>
                                 <mat-error>Relationship is required!</mat-error>
@@ -260,7 +260,8 @@
 
                             <mat-form-field appearance="outline" class="pl-4" fxFlex="50">
                                 <mat-label>Kin Phone</mat-label>
-                                <input formControlName="phone" matInput required autocomplete="off" minlength="10" maxlength="10">
+                                <input formControlName="phone" matInput required autocomplete="off" minlength="10"
+                                       maxlength="10">
                                 <mat-icon class="secondary-text" matSuffix>local_phone</mat-icon>
 
                                 <mat-error *ngIf="nextofkin.get('phone').errors?.required">Phone number is

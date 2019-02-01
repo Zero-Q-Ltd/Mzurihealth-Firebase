@@ -536,4 +536,46 @@ export class PatientService {
 
     }
 
+    /*
+    * update
+    * **/
+
+    updateVitalsAllegiesConditions(patientID: string, vitals, conditions: Array<any>, allegies: Array<any>): any {
+        // get current user
+        const patientsDocRef = this.db.firestore.collection('patients').doc(patientID);
+
+        return this.db.firestore.runTransaction(transaction => {
+            return transaction.get(patientsDocRef).then(patientDoc => {
+                if (!patientDoc.exists) {
+                    Promise.reject('No such document');
+                    return;
+                }
+
+                const patientData = Object.assign(emptypatient, patientDoc.data()) as Patient;
+
+                let tempMeta = null;
+                if (patientData.medicalinfo.metadata.date === null) {
+                    tempMeta = {
+                        date: moment().toDate(),
+                        lastedit: moment().toDate()
+                    };
+                } else {
+                    tempMeta = {
+                        date: patientData.medicalinfo.metadata.date,
+                        lastedit: moment().toDate()
+                    };
+                }
+
+                transaction.update(patientsDocRef, Object.assign(patientData, {
+                    medicalinfo: {
+                        vitals,
+                        conditions,
+                        allergies: allegies,
+                        metadata: tempMeta
+                    }
+                }));
+            });
+        });
+    }
+
 }

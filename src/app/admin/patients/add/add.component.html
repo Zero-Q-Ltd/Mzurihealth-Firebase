@@ -101,7 +101,7 @@
                             <mat-form-field appearance="outline" class="pl-4" fxFlex="33">
                                 <mat-label>Enter date of birth</mat-label>
                                 <input #bDate (focus)="myDatepicker.open()" [matDatepicker]="myDatepicker"
-                                       formControlName="birth"
+                                       formControlName="birth" [max]="maxDate"
                                        matInput placeholder="Please choose a date" autocomplete="off">
 
                                 <mat-datepicker-toggle [for]="myDatepicker" matSuffix></mat-datepicker-toggle>

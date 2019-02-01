@@ -16,12 +16,15 @@ export interface PatientVisit {
     generalnotes: Array<{
         adminid: string,
         notes: string
-    }>,
+    }>;
     patientid: string;
     hospitalid: string;
     prescription: string;
     metadata: Metadata;
-    paid: boolean;
+    payment: {
+        total: number,
+        status: boolean
+    };
     id: string;
     invoiceid: number;
     checkin: Checkin;
@@ -58,7 +61,10 @@ export const emptypatientvisit: PatientVisit = {
         status: null,
         admin: null
     },
-    paid: false,
+    payment: {
+        total: 0,
+        status: false
+    },
     patientid: null,
     hospitalid: null,
     prescription: null,

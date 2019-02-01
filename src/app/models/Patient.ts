@@ -45,7 +45,8 @@ export interface Patient {
             pressure: number,
             sugar: number,
             heartrate: number,
-            respiration: number
+            respiration: number,
+            hb: string,
         };
         metadata: Metadata;
     };
@@ -95,7 +96,8 @@ export const emptypatient: Patient = {
             pressure: null,
             sugar: null,
             heartrate: null,
-            respiration: null
+            respiration: null,
+            hb: null
         },
         metadata: emptymetadata
     },

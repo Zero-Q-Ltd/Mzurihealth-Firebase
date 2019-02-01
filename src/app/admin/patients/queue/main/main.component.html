@@ -87,17 +87,20 @@
                     <mat-icon>new_releases</mat-icon>
                     NEW
                 </mat-chip>
-                <mat-chip *ngSwitchCase="1" class="text-truncate" matTooltip="Waiting" color="primary" mat-raised-button selected>
+                <mat-chip *ngSwitchCase="1" class="text-truncate" color="primary" mat-raised-button matTooltip="Waiting"
+                          selected>
                     <mat-icon>av_timer</mat-icon>
-                    {{patient.queuedata.checkin.admin | adminName : hospitaladmins}}
+                    {{hospitaladmins| adminName : patient.queuedata.checkin.admin }}
                 </mat-chip>
-                <mat-chip *ngSwitchCase="2" class="text-truncate" matTooltip="In Progress" color="accent" mat-raised-button selected>
+                <mat-chip *ngSwitchCase="2" class="text-truncate" color="accent" mat-raised-button
+                          matTooltip="In Progress" selected>
                     <mat-icon>done</mat-icon>
-                    {{patient.queuedata.checkin.admin | adminName : hospitaladmins}}
+                    {{hospitaladmins| adminName : patient.queuedata.checkin.admin }}
                 </mat-chip>
-                <mat-chip *ngSwitchCase="3" class="text-truncate" color="warn" matTooltip="Waiting For Payment" mat-raised-button selected>
+                <mat-chip *ngSwitchCase="3" class="text-truncate" color="warn" mat-raised-button
+                          matTooltip="Waiting For Payment" selected>
                     <mat-icon>done_all</mat-icon>
-                    {{patient.queuedata.checkin.admin | adminName : hospitaladmins}}
+                    {{hospitaladmins| adminName : patient.queuedata.checkin.admin }}
                 </mat-chip>
             </mat-chip-list>
         </mat-cell>

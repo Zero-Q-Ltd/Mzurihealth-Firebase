@@ -27,6 +27,7 @@ export class GeneralDetailsComponent implements OnInit {
     private insurance: FormArray;
     // doctor will do this
     // private medicalinfo: FormGroup;
+    loading = true;
 
     constructor(private adminservice: AdminService,
                 private patientservice: PatientService,
@@ -36,32 +37,78 @@ export class GeneralDetailsComponent implements OnInit {
                 private queue: QueueService,
                 @Optional() @Inject(MAT_DIALOG_DATA) public data?: any) {
 
-
-        /**
-         * initialize forms
-         * */
-        this.initFormBuilder();
-
         this.paymentethods.allinsurance.subscribe(insurance => {
             this.allInsurance = insurance;
+            if (!insurance['0']) {
+                return;
+            }
+            /**
+             * make sure insurances are already initialized to avoid crazy form errors
+             */
+            this.queue.currentpatient.subscribe(value => {
+                /**
+                 * check if this is an empty patient before
+                 */
+                if (!value.patientdata.id) {
+                    return;
+                }
+                this.initFormBuilder();
+                this.loading = false;
+
+                this.currentpatient = value.patientdata;
+                this.patientsForm.controls['personalinfo']
+                    .get('fileno').patchValue(value.patientdata.fileinfo.no);
+
+                this.patientsForm.controls['personalinfo']
+                    .get('fileno').disable({onlySelf: true});
+
+                this.patientsForm.controls['personalinfo']
+                    .get('firstname').patchValue(value.patientdata.personalinfo.name.split(' ')[0]);
+
+                this.patientsForm.controls['personalinfo']
+                    .get('lastname').patchValue(value.patientdata.personalinfo.name.split(' ')[1]);
+
+                this.patientsForm.controls['personalinfo']
+                    .get('idno').patchValue(value.patientdata.personalinfo.idno);
+
+                this.patientsForm.controls['personalinfo']
+                    .get('gender').patchValue(value.patientdata.personalinfo.gender);
+
+                this.patientsForm.controls['personalinfo']
+                    .get('birth').patchValue(value.patientdata.personalinfo.dob.toDate());
+
+                this.patientsForm.controls['personalinfo']
+                    .get('email').patchValue(value.patientdata.personalinfo.email);
+
+                this.patientsForm.controls['personalinfo']
+                    .get('workplace').patchValue(value.patientdata.personalinfo.workplace);
+
+                this.patientsForm.controls['personalinfo']
+                    .get('phone').patchValue(value.patientdata.personalinfo.phone);
+
+                this.patientsForm.controls['personalinfo']
+                    .get('address').patchValue(value.patientdata.personalinfo.address);
+
+                this.patientsForm.controls['nextofkin']
+                    .get('relationship').patchValue(value.patientdata.nextofkin.relationship);
+
+                this.patientsForm.controls['nextofkin']
+                    .get('name').patchValue(value.patientdata.nextofkin.name);
+
+                this.patientsForm.controls['nextofkin']
+                    .get('phone').patchValue(value.patientdata.nextofkin.phone);
+
+                this.patientsForm.controls['nextofkin']
+                    .get('workplace').patchValue(value.patientdata.nextofkin.workplace);
+
+
+                Object.keys(value.patientdata.insurance).forEach(key => {
+                    this.insurance.push(this.replicateInsurance(value.patientdata.insurance[key]));
+                    this.insurancechanges();
+                });
+            });
         });
-        this.queue.currentpatient.subscribe(value => {
-            this.currentpatient = value.patientdata;
-            this.patientsForm.controls['personalinfo']
-                .get('fileno').patchValue(value.patientdata.fileinfo.no);
 
-            this.patientsForm.controls['personalinfo']
-                .get('fileno').disable({onlySelf: true});
-
-            this.patientsForm.controls['personalinfo']
-                .get('firstname').patchValue(value.patientdata.personalinfo.name);
-        });
-
-
-        /**
-         *
-         * */
-        this.insurancechanges();
 
     }
 
@@ -139,7 +186,7 @@ export class GeneralDetailsComponent implements OnInit {
         * **/
 
         this.patientsForm = this.formBuilder.group({
-            insurance: this.formBuilder.array([this.createInsurance()]),
+            insurance: this.formBuilder.array([]),
             nextofkin: this.nextofkin,
             personalinfo: this.personalinfo
         });
@@ -181,8 +228,25 @@ export class GeneralDetailsComponent implements OnInit {
         });
     }
 
-    insurancechanges(): void {
+    replicateInsurance(insurancedata: { id: string; insuranceno: string; }): FormGroup {
+        console.log(insurancedata);
+        const insurancex = new FormControl({
+            value: this.allInsurance[insurancedata.id].name,
+            disabled: false
+        });
 
+        const insurancenumber = new FormControl({
+            value: insurancedata.insuranceno,
+            disabled: false
+        });
+
+        return this.formBuilder.group({
+            id: insurancex,
+            insurancenumber: insurancenumber
+        });
+    }
+
+    insurancechanges(): void {
         this.insurance.controls.forEach(x => {
             x.get('id').valueChanges.subscribe(g => {
                 if (g) {

@@ -6,15 +6,17 @@ import {HospitalAdmin} from '../../models/HospitalAdmin';
 })
 export class AdminNamePipe implements PipeTransform {
 
-    transform(adminid: string, admins: Array<HospitalAdmin>): string {
-        let name = '';
-        admins.forEach(admin => {
-            name = admin.id === adminid ? admin.data.displayName : '';
-            console.log(name);
-
-        });
-
-        return name;
+    transform(admins: Array<HospitalAdmin>, adminid: string): string {
+        console.log(admins, adminid);
+        if (admins.filter(admin => {
+            return admin.id === adminid;
+        }).length !== 0) {
+            return admins.filter(admin => {
+                return admin.id === adminid;
+            })[0].data.displayName;
+        } else {
+            return '';
+        }
     }
 
 }

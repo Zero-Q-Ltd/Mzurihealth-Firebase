@@ -187,7 +187,7 @@ export class PatientService {
         };
 
         const tempInsurance = insurance.map((value, index: number) => {
-            return {index: value};
+            return {id: value.id, insuranceno: value.insurancenumber};
         });
 
         // todays date
@@ -372,8 +372,9 @@ export class PatientService {
                     // todays date
                 const todayDate = moment().toDate();
 
+                console.log(insurance);
                 const tempInsurance = insurance.map((value, index: number) => {
-                    return {index: value};
+                    return {id: value.id, insuranceno: value.insurancenumber};
                 });
 
                 const modifiedData = {

@@ -53,7 +53,7 @@ export class TodayComponent implements OnInit {
                 private procedureservice: ProceduresService,
                 private queue: QueueService,
                 public _matDialog: MatDialog,
-                private notification: NotificationService,
+                private patientvisitService: PatientvisitService,
                 private patientvisit: PatientvisitService) {
 
         procedureservice.procedurecategories.subscribe(categories => {
@@ -62,7 +62,7 @@ export class TodayComponent implements OnInit {
         hospitalservice.hospitaladmins.subscribe(admins => {
             this.hospitaladmins = admins;
         });
-        queue.currentvisitprocedures.subscribe(value => {
+        patientvisitService.currentvisitprocedures.subscribe(value => {
             this.currentvisitprocedures = value;
         });
         procedureservice.hospitalprocedures.subscribe(mergedprocedures => {
@@ -351,7 +351,7 @@ export class TodayComponent implements OnInit {
             this.expand = false;
             const procedure: Procedureperformed = Object.assign({}, {...emptyproceduresperformed}, this.procedureperformed.getRawValue());
             const originaldata: MergedProcedureModel = this.procedureselection.getRawValue().selection;
-            this.queue.addprocedure(originaldata, procedure);
+            this.patientvisitService.addprocedure(originaldata, procedure);
         }
     }
 

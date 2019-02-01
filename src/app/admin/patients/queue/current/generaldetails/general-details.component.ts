@@ -102,10 +102,11 @@ export class GeneralDetailsComponent implements OnInit {
                     .get('workplace').patchValue(value.patientdata.nextofkin.workplace);
 
 
-                Object.keys(value.patientdata.insurance).forEach(key => {
-                    this.insurance.push(this.replicateInsurance(value.patientdata.insurance[key]));
+                value.patientdata.insurance.forEach(i => {
+                    this.insurance.push(this.replicateInsurance(i));
                     this.insurancechanges();
                 });
+
             });
         });
 
@@ -229,22 +230,20 @@ export class GeneralDetailsComponent implements OnInit {
     }
 
     replicateInsurance(insurancedata: { id: string; insuranceno: string; }): FormGroup {
-        console.log(insurancedata);
         const insurancex = new FormControl({
-            value: this.allInsurance[insurancedata.id].name,
+            value: insurancedata.id,
             disabled: false
         });
-
         const insurancenumber = new FormControl({
             value: insurancedata.insuranceno,
             disabled: false
         });
-
         return this.formBuilder.group({
             id: insurancex,
             insurancenumber: insurancenumber
         });
     }
+
 
     insurancechanges(): void {
         this.insurance.controls.forEach(x => {

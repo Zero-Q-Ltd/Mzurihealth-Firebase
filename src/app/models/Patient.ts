@@ -2,6 +2,7 @@ import {Customfields, emptymetadata, Metadata} from './universal';
 import {firestore} from 'firebase';
 import {HospFile} from './HospFile';
 import {Condition} from './MedicalConditions.model';
+import {Allegy} from './Allergy.model';
 
 export interface Patient {
     personalinfo: {
@@ -36,7 +37,7 @@ export interface Patient {
     medicalinfo: {
         bloodtype: string,
         conditions: Array<Condition>
-        allergies: Array<string>;
+        allergies: Array<Allegy>;
         vitals: {
             height: number,
             weight: number,

@@ -10,9 +10,10 @@ import {switchMap} from 'rxjs/operators';
 import {emptypatientvisit, PatientVisit} from '../../models/PatientVisit';
 import {emptymergedQueueModel, MergedPatient_QueueModel} from '../../models/MergedPatient_Queue.model';
 import {emptyfile, HospFile} from '../../models/HospFile';
-import {emptyprocedureperformed, Procedureperformed} from '../../models/Procedureperformed';
+import {emptyproceduresperformed, Procedureperformed, Proceduresperformed} from '../../models/Procedureperformed';
 import {ProceduresService} from './procedures.service';
 import {MergedProcedureModel} from '../../models/MergedProcedure.model';
+import {firestore} from 'firebase';
 
 @Injectable({
     providedIn: 'root'
@@ -22,10 +23,10 @@ export class QueueService {
     mainpatientqueue: BehaviorSubject<Array<MergedPatient_QueueModel>> = new BehaviorSubject([]);
     mypatientqueue: BehaviorSubject<Array<MergedPatient_QueueModel>> = new BehaviorSubject([]);
     currentpatient: BehaviorSubject<MergedPatient_QueueModel> = new BehaviorSubject({...emptymergedQueueModel});
-    hospitaladmins: Array<HospitalAdmin> = [];
     adminid: string;
-    currentvisitprocedures: BehaviorSubject<Array<Procedureperformed>> = new BehaviorSubject<Array<Procedureperformed>>([]);
+    currentvisitprocedures: BehaviorSubject<Proceduresperformed> = new BehaviorSubject<Proceduresperformed>({procedures: []});
     visithistory: BehaviorSubject<Array<PatientVisit>> = new BehaviorSubject<Array<PatientVisit>>([]);
+    currentvisit: BehaviorSubject<PatientVisit> = new BehaviorSubject<PatientVisit>({...emptypatientvisit});
 
     constructor(private db: AngularFirestore,
                 private hospitalservice: HospitalService,
@@ -38,19 +39,19 @@ export class QueueService {
                 this.getwholequeue();
             }
         });
+
         adminservice.observableuserdata.subscribe((admin: HospitalAdmin) => {
             if (admin.data.uid) {
                 this.adminid = admin.id;
-                // const patientid = this.userdata.config.occupied;
-                // if (admin.config.occupied) {
-                //     // const val = this.mypatientqueue.value.find(value => {
-                //     //     return value.patientdata.id === admin.config.occupied;
-                //     // });
-                //     // this.currentpatient.next(val ? val : {...emptymergedQueueModel});
-                // } else {
-                //     this.currentpatient.next({...emptymergedQueueModel});
-                // }
                 this.filterqueue();
+            }
+        });
+        /**
+         * assigned a value after the relevant visit is fetched, hence we can use that data to fetch the procedures associated
+         */
+        this.currentvisit.subscribe(visit => {
+            if (visit.id) {
+                this.fetchvisitprocedures();
             }
         });
     }
@@ -104,7 +105,6 @@ export class QueueService {
                 if (queue.queuedata.checkin.status === 2) {
                     console.log(queue);
                     this.currentpatient.next(queue);
-                    this.fetchlatestprocedures();
                     this.fetchvisithistory();
                     currentpatientfound = true;
                 }
@@ -122,17 +122,12 @@ export class QueueService {
     /**
      * Fetches list of procedures belonging to the most recent history of the patient which have not been paid for
      */
-    fetchlatestprocedures(): void {
+    fetchvisitprocedures(): void {
         this.db.firestore.collection('visitprocedures')
-            .where('hospitalid', '==', this.activehospitalid)
-            .where('patientid', '==', this.currentpatient.value.patientdata.id)
-            .where('visitid', '==', this.currentpatient.value.queuedata.id)
+            .doc(this.currentvisit.value.id)
             .onSnapshot(snapshot => {
-                this.currentvisitprocedures.next(snapshot.docs.map(value => {
-                    const p: Procedureperformed = Object.assign({}, {...emptyprocedureperformed}, value.data());
-                    p.id = value.id;
-                    return p;
-                }));
+                const procedures: Proceduresperformed = Object.assign({}, {...emptyproceduresperformed}, snapshot.data());
+                this.currentvisitprocedures.next(procedures);
             });
     }
 
@@ -140,10 +135,14 @@ export class QueueService {
         this.db.firestore.collection('hospitalvisits')
             .where('hospitalid', '==', this.activehospitalid)
             .where('patientid', '==', this.currentpatient.value.patientdata.id)
+            .orderBy('metadata.date', 'asc')
             .limit(10)
             .onSnapshot(snapshot => {
                 this.visithistory.next(snapshot.docs.map(value => {
                     const visit = Object.assign({}, {...emptypatientvisit}, value.data());
+                    if (!visit.payment.status) {
+                        this.currentvisit.next(visit);
+                    }
                     visit.id = value.id;
                     return visit;
                 }));
@@ -182,11 +181,29 @@ export class QueueService {
      * @param per
      */
     addprocedure(procedure: MergedProcedureModel, per: Procedureperformed): void {
-        per.price = this.getinsuanceprice(procedure);
-        this.db.collection('visitprocedures').add(procedure);
+        per.name = procedure.rawprocedure.name;
+        per.metadata = {
+            lastedit: firestore.Timestamp.now(),
+            date: firestore.Timestamp.now()
+        };
+        per.adminid = this.adminid;
+        per.procedureid = procedure.rawprocedure.id;
+        per.visitid = this.currentpatient.value.queuedata.id;
+
+        console.log(procedure, per);
+        if (this.currentvisitprocedures.value.procedures.length === 0) {
+            this.db.collection('visitprocedures').doc(this.currentvisit.value.id).set({
+                procedures: [per]
+            });
+        } else {
+            this.db.collection('visitprocedures').doc(this.currentvisit.value.id).update({
+                procedures: firestore.FieldValue.arrayUnion(per)
+            });
+        }
+
     }
 
-    getinsuanceprice(procedure: MergedProcedureModel,): number {
+    getinsuanceprice(procedure: MergedProcedureModel): number {
         if (this.currentpatient.value.queuedata.paymentmethod.type) {
             if (procedure.customprocedure.insuranceprices[this.currentpatient.value.queuedata.paymentmethod.type]) {
 

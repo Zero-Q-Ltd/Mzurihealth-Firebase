@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {emptyprocedureperformed, Procedureperformed} from '../../../../../models/Procedureperformed';
+import {emptyproceduresperformed, Procedureperformed, Proceduresperformed} from '../../../../../models/Procedureperformed';
 import {HospitalAdmin} from '../../../../../models/HospitalAdmin';
 import {HospitalService} from '../../../../services/hospital.service';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
@@ -10,11 +10,10 @@ import {CustomProcedure} from '../../../../../models/CustomProcedure';
 import {ProceduresService} from '../../../../services/procedures.service';
 import {fuseAnimations} from '../../../../../../@fuse/animations';
 import {ProcedureCategory} from '../../../../../models/ProcedureCategory';
-import {ProcedureValidator} from '../../../../validators/procedure.validator';
-import {Observable} from 'rxjs';
+import {BehaviorSubject, Observable} from 'rxjs';
 import {MergedProcedureModel} from '../../../../../models/MergedProcedure.model';
 import {map, startWith} from 'rxjs/operators';
-import {allerytypearray} from '../../../../../models/Allergies.model';
+import {allerytypearray} from '../../../../../models/Allergy.model';
 import {medicalconditionsarray} from '../../../../../models/MedicalConditions.model';
 import {QueueService} from '../../../../services/queue.service';
 import {MergedPatient_QueueModel} from '../../../../../models/MergedPatient_Queue.model';
@@ -30,7 +29,7 @@ import {NotificationService} from '../../../../../shared/services/notifications.
 
 })
 export class TodayComponent implements OnInit {
-    currentvisitprocedures: Array<Procedureperformed> = [];
+    currentvisitprocedures: Proceduresperformed = {procedures: []};
     procedureperformed: FormGroup;
     vitalsform: FormGroup;
     hospitalprocedures: Array<MergedProcedureModel> = [];
@@ -45,6 +44,8 @@ export class TodayComponent implements OnInit {
     medconditiontypes = medicalconditionsarray;
     filteredprocedures: Observable<MergedProcedureModel[]>;
     dialogRef: MatDialogRef<any>;
+    imeanzilishwa: BehaviorSubject<boolean> = new BehaviorSubject(false);
+    hospitaladmins: Array<HospitalAdmin> = [];
 
     constructor(private hospitalservice: HospitalService,
                 private formBuilder: FormBuilder,
@@ -58,25 +59,49 @@ export class TodayComponent implements OnInit {
         procedureservice.procedurecategories.subscribe(categories => {
             this.procedurecategories = categories;
         });
-        this.initformms();
-
-        procedureservice.hospitalprocedures.subscribe(mergedprocedures => {
-            this.hospitalprocedures = mergedprocedures;
-            this.procedureselection.get('selection').setValidators([Validators.required, ProcedureValidator.available(this.hospitalprocedures)]);
+        hospitalservice.hospitaladmins.subscribe(admins => {
+            this.hospitaladmins = admins;
         });
         queue.currentvisitprocedures.subscribe(value => {
             this.currentvisitprocedures = value;
         });
+        procedureservice.hospitalprocedures.subscribe(mergedprocedures => {
+            this.hospitalprocedures = mergedprocedures;
+        });
         queue.currentpatient.subscribe(value => {
             this.currentpatient = value;
-            this.initvitalsformm();
+            this.anzisha();
+            this.imeanzilishwa.next(true);
         });
         this.filteredprocedures = this.procedureselection.valueChanges
             .pipe(
                 startWith(''),
                 map(value => this._filter(value))
             );
+    }
 
+    anzisha(): void {
+        this.initprocedureform();
+        this.initvitalsformm();
+        this.initconditionsallergiesforms();
+    }
+
+    private initconditionsallergiesforms(): void {
+        this.allergiesform = this.formBuilder.group({
+            allergiesformArray: this.formBuilder.array(this.currentpatient.patientdata.medicalinfo.allergies.map(mzio => {
+                return this.igamizio(mzio);
+            }))
+        });
+        this.medconditionsform = this.formBuilder.group({
+            conditionsformArray: this.formBuilder.array(this.currentpatient.patientdata.medicalinfo.conditions.map(tatizo => {
+                return this.igamatatizo(tatizo);
+            }))
+        });
+        /**
+         * neccessary the first time the form is created to allow enabling
+         */
+        this.allergychanges();
+        this.conditionschanges();
     }
 
     private _filter(value: { selection: MergedProcedureModel | string }): MergedProcedureModel[] {
@@ -100,29 +125,63 @@ export class TodayComponent implements OnInit {
     /**
      * initializes forms and from controls
      */
-    initformms(): void {
+    initprocedureform(): void {
         const results = new FormControl('', [Validators.required]);
+        const notes = new FormControl('', [Validators.required]);
         this.procedureperformed = new FormGroup({
             results: results,
-            notes: this.createNotes()
+            notes: notes
         });
-        const selection = new FormControl('',);
+        const selection = new FormControl('');
 
         this.procedureselection = new FormGroup({
             selection: selection,
         });
-        this.allergiesform = this.formBuilder.group({
-            allergiesformArray: this.formBuilder.array([this.createallergies()])
-        });
-        this.medconditionsform = this.formBuilder.group({
-            conditionsformArray: this.formBuilder.array([this.createmedconditions()])
-        });
-        /**
-         * neccessary the first time the form is created to allow enabling
-         */
-        this.allergychanges();
-        this.conditionschanges();
     }
+
+    /**
+     * mzio ni allergy. Iga ni copy
+     * Food for thought
+     * @param mzio
+     */
+    igamizio(mzio): FormGroup {
+        const allergy = new FormControl({
+            value: mzio.type,
+            disabled: false
+        });
+
+        const detail = new FormControl({
+            value: mzio.detail,
+            disabled: false
+        });
+
+        return this.formBuilder.group({
+            type: allergy,
+            detail: detail
+        });
+    }
+
+    /**
+     * iga ni copy, matatizo ni condition (I think?)
+     * @param tatizo
+     */
+    igamatatizo(tatizo): FormGroup {
+        const allergy = new FormControl({
+            value: tatizo.type,
+            disabled: false
+        });
+
+        const detail = new FormControl({
+            value: tatizo.detail,
+            disabled: false
+        });
+
+        return this.formBuilder.group({
+            type: allergy,
+            detail: detail
+        });
+    }
+
 
     createallergies(): FormGroup {
         const allergy = new FormControl('');
@@ -152,13 +211,13 @@ export class TodayComponent implements OnInit {
         });
     }
 
-    updatepatient(): void {
-        console.log('snodnsdf');
-        console.log(this.vitalsform.getRawValue());
-        console.log(this.allergiesform.getRawValue());
-        console.log(this.medconditionsform.getRawValue());
-        // this.patientservice.updatePatient(this.queue.currentpatient.value.patientdata.id, );
+    updateVitalsAllegiesConditions(): void {
+        this.patientservice.updateVitalsAllegiesConditions(this.currentpatient.patientdata.id,
+            this.vitalsform.getRawValue(),
+            this.medconditionsform.getRawValue().conditionsformArray,
+            this.allergiesform.getRawValue().allergiesformArray);
     }
+
 
     onSelect(selected: { rawprocedure: RawProcedure, customprocedure: CustomProcedure }): void {
         this.selectedprocedure = selected;
@@ -288,10 +347,9 @@ export class TodayComponent implements OnInit {
     }
 
     addprocedure(): void {
-        console.log(this.procedureselection.getRawValue());
         if (this.procedureperformed.valid) {
             this.expand = false;
-            const procedure: Procedureperformed = Object.assign({}, {...emptyprocedureperformed}, this.procedureperformed.getRawValue());
+            const procedure: Procedureperformed = Object.assign({}, {...emptyproceduresperformed}, this.procedureperformed.getRawValue());
             const originaldata: MergedProcedureModel = this.procedureselection.getRawValue().selection;
             this.queue.addprocedure(originaldata, procedure);
         }

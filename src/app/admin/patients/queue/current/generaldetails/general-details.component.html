@@ -139,7 +139,7 @@
                 <mat-label>Insurance Company</mat-label>
                 <mat-select formControlName="id" required>
                     <mat-option *ngFor="let option of allInsurance | keyvalue"
-                                [value]="option?.value.name ">
+                                [value]="option?.key ">
                         {{option.value.name |titlecase}}
                     </mat-option>
                 </mat-select>

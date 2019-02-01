@@ -10,10 +10,11 @@ import {HospitalService} from './hospital.service';
 import {AdminService} from './admin.service';
 import {AngularFirestore} from '@angular/fire/firestore';
 import * as moment from 'moment';
-import {HospFile} from '../../models/HospFile';
+import {emptyfile, HospFile} from '../../models/HospFile';
 import {AddPatientFormModel} from '../../models/AddPatientForm.model';
-import {map, switchMap} from 'rxjs/operators';
-import {BehaviorSubject, combineLatest} from 'rxjs';
+import {map, startWith, switchMap,} from 'rxjs/operators';
+import {BehaviorSubject, combineLatest, Observable, from, of} from 'rxjs';
+import 'rxjs/add/observable/empty';
 
 @Injectable({
     providedIn: 'root'
@@ -472,15 +473,23 @@ export class PatientService {
                 return ref.where(field, '==', value);
             }).snapshotChanges().pipe(
             switchMap(f => {
+                if (f.length === 0) {
+                    return of([]);
+                }
                 return combineLatest(...f.map(t => {
+                    console.log('inside patient t');
+                    console.log(t);
                     const fileInfo = t.payload.doc.data() as HospFile;
 
                     return this.db.collection('patients').doc(fileInfo.id).snapshotChanges().pipe(
                         map(patientData => {
+                            console.log('inside patient data');
+                            console.log(patientData);
                             return Object.assign(emptypatient, patientData.payload.data(), {fileinfo: fileInfo});
                         })
                     );
                 }));
+
             })
         ).subscribe(mergedData => {
             console.log(mergedData);
@@ -494,10 +503,15 @@ export class PatientService {
          * search mobile number
          * search name
          * */
+
+        // TODO: make sure something is done if the patient has no file number
         this.db.collection('patients', ref => {
             return ref.where(`personalinfo.${field}`, '==', value);
         }).snapshotChanges().pipe(
             switchMap(f => {
+                if (f.length === 0) {
+                    of([]);
+                }
                 return combineLatest(...f.map(t => {
 
                     const patient = Object.assign(emptypatient, t.payload.doc.data());
@@ -507,6 +521,7 @@ export class PatientService {
                         .collection('filenumbers').doc(patient.id).snapshotChanges()
                         .pipe(
                             map(fileData => {
+                                // TODO: return null if no patient
                                 const patientFileData = fileData.payload.data() as HospFile;
                                 patient.fileinfo = patientFileData;
 

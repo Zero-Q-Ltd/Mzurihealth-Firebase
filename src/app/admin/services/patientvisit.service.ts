@@ -7,6 +7,7 @@ import {BehaviorSubject} from 'rxjs';
 import {emptyproceduresperformed, Procedureperformed, Proceduresperformed} from '../../models/Procedureperformed';
 import {MergedProcedureModel} from '../../models/MergedProcedure.model';
 import {firestore} from 'firebase';
+import {AdminService} from './admin.service';
 
 @Injectable({
     providedIn: 'root'
@@ -14,15 +15,25 @@ import {firestore} from 'firebase';
 export class PatientvisitService {
     patientid: string;
     hospitalid: string;
-    currentpatientid: string;
     visithistory: BehaviorSubject<Array<PatientVisit>> = new BehaviorSubject<Array<PatientVisit>>([]);
     currentvisitprocedures: BehaviorSubject<Proceduresperformed> = new BehaviorSubject<Proceduresperformed>({procedures: []});
     currentvisit: BehaviorSubject<PatientVisit> = new BehaviorSubject<PatientVisit>({...emptypatientvisit});
     adminid: string;
 
     constructor(private queue: QueueService,
+                private adminservice: AdminService,
                 private hospitalService: HospitalService,
                 private db: AngularFirestore) {
+        /*** DANGEROUS TERRITORY ****
+         * the order of calling these functions is very important,
+         * because if hospitalid is missing some queries that execute later might fail
+         */
+        this.adminservice.observableuserdata.subscribe(admin => {
+            this.adminid = admin.id;
+        });
+        hospitalService.activehospital.subscribe(value => {
+            this.hospitalid = value.id;
+        });
         queue.currentpatient.subscribe(value => {
             if (value.patientdata.id) {
                 this.patientid = value.patientdata.id;
@@ -34,10 +45,6 @@ export class PatientvisitService {
                 this.fetchvisitprocedures(visit.id);
             }
         });
-        hospitalService.activehospital.subscribe(value => {
-            this.hospitalid = value.id;
-        });
-
     }
 
     /**
@@ -64,9 +71,8 @@ export class PatientvisitService {
         };
         per.adminid = this.adminid;
         per.procedureid = procedure.rawprocedure.id;
-        per.visitid = this.currentpatientid;
-
-        console.log(procedure, per);
+        per.visitid = this.patientid;
+        console.log(per);
         if (this.currentvisitprocedures.value.procedures.length === 0) {
             this.db.collection('visitprocedures').doc(this.currentvisit.value.id).set({
                 procedures: [per]
@@ -82,7 +88,7 @@ export class PatientvisitService {
     fetchvisithistory(): void {
         this.db.firestore.collection('hospitalvisits')
             .where('hospitalid', '==', this.hospitalid)
-            .where('patientid', '==', this.currentpatientid)
+            .where('patientid', '==', this.patientid)
             .orderBy('metadata.date', 'asc')
             .limit(10)
             .onSnapshot(snapshot => {
@@ -97,17 +103,35 @@ export class PatientvisitService {
             });
     }
 
-
-    createpatientvisit(): any {
-
+    /**
+     *
+     * @param newpatient determines the status so we can distinguish completely new patients and returning ones
+     * @param description
+     */
+    createpatientvisit(newpatient: boolean, description: string): any {
+        const visit: PatientVisit = {...emptypatientvisit};
+        visit.checkin = {
+            admin: this.adminid,
+            status: newpatient ? 0 : 1
+        };
+        visit.invoiceid = this.hospitalService.activehospital.value.invoicecount + 1;
+        visit.metadata = {
+            lastedit: firestore.Timestamp.now(),
+            date: firestore.Timestamp.now()
+        };
+        visit.hospitalid = this.hospitalid;
+        visit.visitdescription = description;
+        return this.db.collection('hospitalvisits').add(visit);
     }
 
-    editpatientvisit(): any {
-
+    editpatientvisit(visit: PatientVisit): any {
+        return this.db.collection('hospitalvisits').doc(visit.id).update(visit);
     }
 
-    terminatepatientvisit(): any {
-
+    terminatepatientvisit(visitid): any {
+        return this.db.collection('hospitalvisits').doc(visitid).update({
+            ['checkin.status']: 4
+        });
     }
 
 

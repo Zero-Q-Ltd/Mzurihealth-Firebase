@@ -185,11 +185,12 @@
                         </mat-card-header>
                         <mat-card-content>
                             <p>
-                                {{procedure.notes}}
-                            </p>
-                            <p>
                                 {{procedure.results}}
                             </p>
+                            <p>
+                                {{procedure.notes}}
+                            </p>
+
                         </mat-card-content>
                     </mat-card>
                 </div>
@@ -243,9 +244,7 @@
                     </mat-step>
 
                     <mat-step>
-
                         <ng-template matStepLabel>Procedure Results</ng-template>
-
                         <div>
                             <form (ngSubmit)="addprocedure()" [formGroup]="procedureperformed"
                                   class=" p-24"
@@ -254,7 +253,7 @@
                                   fxLayoutAlign="start">
                                 <div fxFlex="1 0 auto" fxLayout="row" fxLayoutAlign="start center">
                                     <mat-form-field appearance="outline" class="pr-4 " fxFlex="100">
-                                        <mat-label>Results</mat-label>
+                                        <mat-label>General Results</mat-label>
                                         <input formControlName="results" matInput required>
                                         <mat-icon class="secondary-text" matSuffix>title</mat-icon>
                                         <mat-error>Results required!</mat-error>

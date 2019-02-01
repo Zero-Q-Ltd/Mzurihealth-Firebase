@@ -19,7 +19,6 @@ import {QueueService} from '../../../../services/queue.service';
 import {MergedPatient_QueueModel} from '../../../../../models/MergedPatient_Queue.model';
 import {AdminSelectionComponent} from '../../admin-selection/admin-selection.component';
 import {MatDialog, MatDialogRef} from '@angular/material';
-import {NotificationService} from '../../../../../shared/services/notifications.service';
 
 @Component({
     selector: 'patient-today',
@@ -247,8 +246,15 @@ export class TodayComponent implements OnInit {
     }
 
     exitpatientandacceptnext(): void {
+        /**
+         * first check if there's a next patient
+         */
+        if (this.queue.mypatientqueue.value[1]) {
+            this.queue.acceptpatient(this.queue.mypatientqueue.value[1].queuedata);
+        } else {
 
-
+        }
+        this.patientvisitService.terminatepatientvisit(this.currentpatient.queuedata.id);
     }
 
     exitpatientandbreak(): void {
@@ -333,17 +339,6 @@ export class TodayComponent implements OnInit {
 
     procedureselectiondisplayfn(data ?: MergedProcedureModel): string {
         return data ? data.rawprocedure.name : '';
-    }
-
-    createNotes(): FormGroup {
-        const note = new FormControl('');
-        return this.formBuilder.group({
-            note: note,
-        });
-    }
-
-    updategeneralreport(): void {
-        console.log('aondklilands');
     }
 
     addprocedure(): void {

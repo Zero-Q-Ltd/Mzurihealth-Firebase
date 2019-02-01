@@ -72,7 +72,7 @@
             <!--Current-->
             <!--</a>-->
             <!--</nav>-->
-            <mat-tab-group (selectedTabChange)="tabChanged($event)">
+            <mat-tab-group (selectedTabChange)="tabChanged($event)" [selectedIndex]="activetabindex">
                 <mat-tab>
                     <ng-template matTabLabel>
                         <span [matBadge]="mainQueue" matBadgeColor="warn" matBadgeOverlap="false"
@@ -97,7 +97,7 @@
                     </ng-template>
                 </mat-tab>
 
-                <mat-tab>
+                <mat-tab [disabled]="!!currentpatient">
                     <ng-template matTabLabel>
                         <span matBadge="..." matBadgeColor="warn" [matBadgeHidden]="!!currentpatient"
                               matBadgeOverlap="false" matBadgePosition="above after">Current Patient</span>

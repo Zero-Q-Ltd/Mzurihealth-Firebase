@@ -8,6 +8,7 @@ import {AdminSelectionComponent} from '../admin-selection/admin-selection.compon
 import {HospitalAdmin} from '../../../../models/HospitalAdmin';
 import {FuseConfirmDialogComponent} from '../../../../../@fuse/components/confirm-dialog/confirm-dialog.component';
 import {HospitalService} from '../../../services/hospital.service';
+import {InvoicePaymentComponent} from '../../invoice-payment/invoice-payment.component';
 
 @Component({
     selector: 'queue-main',
@@ -74,8 +75,16 @@ export class MainComponent implements OnInit {
         this.dialogRef.afterClosed();
     }
 
-    paynvoice(): void {
+    paynvoice(data: MergedPatient_QueueModel): void {
+        event.stopPropagation();
+        this.dialogRef = this._matDialog.open(InvoicePaymentComponent, {
+            data: {
+                patient: data.patientdata.id,
+                action: 'save'
+            }
+        });
 
+        this.dialogRef.afterClosed();
     }
 
     payinvoice(data: MergedPatient_QueueModel): void {

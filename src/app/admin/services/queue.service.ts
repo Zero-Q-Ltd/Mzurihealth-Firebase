@@ -7,10 +7,9 @@ import {emptypatient, Patient} from '../../models/Patient';
 import {HospitalAdmin} from '../../models/HospitalAdmin';
 import {PatientService} from './patient.service';
 import {switchMap} from 'rxjs/operators';
-import {emptypatientvisit, PatientVisit} from '../../models/PatientVisit';
+import {PatientVisit} from '../../models/PatientVisit';
 import {emptymergedQueueModel, MergedPatient_QueueModel} from '../../models/MergedPatient_Queue.model';
 import {emptyfile, HospFile} from '../../models/HospFile';
-import {emptyprocedureperformed, Procedureperformed} from '../../models/Procedureperformed';
 import {ProceduresService} from './procedures.service';
 import {MergedProcedureModel} from '../../models/MergedProcedure.model';
 
@@ -22,10 +21,7 @@ export class QueueService {
     mainpatientqueue: BehaviorSubject<Array<MergedPatient_QueueModel>> = new BehaviorSubject([]);
     mypatientqueue: BehaviorSubject<Array<MergedPatient_QueueModel>> = new BehaviorSubject([]);
     currentpatient: BehaviorSubject<MergedPatient_QueueModel> = new BehaviorSubject({...emptymergedQueueModel});
-    hospitaladmins: Array<HospitalAdmin> = [];
     adminid: string;
-    currentvisitprocedures: BehaviorSubject<Array<Procedureperformed>> = new BehaviorSubject<Array<Procedureperformed>>([]);
-    visithistory: BehaviorSubject<Array<PatientVisit>> = new BehaviorSubject<Array<PatientVisit>>([]);
 
     constructor(private db: AngularFirestore,
                 private hospitalservice: HospitalService,
@@ -38,21 +34,14 @@ export class QueueService {
                 this.getwholequeue();
             }
         });
+
         adminservice.observableuserdata.subscribe((admin: HospitalAdmin) => {
             if (admin.data.uid) {
                 this.adminid = admin.id;
-                // const patientid = this.userdata.config.occupied;
-                // if (admin.config.occupied) {
-                //     // const val = this.mypatientqueue.value.find(value => {
-                //     //     return value.patientdata.id === admin.config.occupied;
-                //     // });
-                //     // this.currentpatient.next(val ? val : {...emptymergedQueueModel});
-                // } else {
-                //     this.currentpatient.next({...emptymergedQueueModel});
-                // }
                 this.filterqueue();
             }
         });
+
     }
 
     /**
@@ -101,11 +90,9 @@ export class QueueService {
             let currentpatientfound = false;
             this.mypatientqueue.next(queuedata.filter(queue => {
                 const equality = queue.queuedata.checkin.admin === this.adminid;
-                if (queue.queuedata.checkin.status === 2) {
+                if (equality && queue.queuedata.checkin.status === 2) {
                     console.log(queue);
                     this.currentpatient.next(queue);
-                    this.fetchlatestprocedures();
-                    this.fetchvisithistory();
                     currentpatientfound = true;
                 }
                 /***
@@ -119,36 +106,6 @@ export class QueueService {
         });
     }
 
-    /**
-     * Fetches list of procedures belonging to the most recent history of the patient which have not been paid for
-     */
-    fetchlatestprocedures(): void {
-        this.db.firestore.collection('visitprocedures')
-            .where('hospitalid', '==', this.activehospitalid)
-            .where('patientid', '==', this.currentpatient.value.patientdata.id)
-            .where('visitid', '==', this.currentpatient.value.queuedata.id)
-            .onSnapshot(snapshot => {
-                this.currentvisitprocedures.next(snapshot.docs.map(value => {
-                    const p: Procedureperformed = Object.assign({}, {...emptyprocedureperformed}, value.data());
-                    p.id = value.id;
-                    return p;
-                }));
-            });
-    }
-
-    fetchvisithistory(): void {
-        this.db.firestore.collection('hospitalvisits')
-            .where('hospitalid', '==', this.activehospitalid)
-            .where('patientid', '==', this.currentpatient.value.patientdata.id)
-            .limit(10)
-            .onSnapshot(snapshot => {
-                this.visithistory.next(snapshot.docs.map(value => {
-                    const visit = Object.assign({}, {...emptypatientvisit}, value.data());
-                    visit.id = value.id;
-                    return visit;
-                }));
-            });
-    }
 
     /**
      * From reception to rest of admins or admins to admins
@@ -176,17 +133,8 @@ export class QueueService {
         return batch.commit();
     }
 
-    /**
-     * TODO : Finish on pricing
-     * @param procedure
-     * @param per
-     */
-    addprocedure(procedure: MergedProcedureModel, per: Procedureperformed): void {
-        per.price = this.getinsuanceprice(procedure);
-        this.db.collection('visitprocedures').add(procedure);
-    }
 
-    getinsuanceprice(procedure: MergedProcedureModel,): number {
+    getinsuanceprice(procedure: MergedProcedureModel): number {
         if (this.currentpatient.value.queuedata.paymentmethod.type) {
             if (procedure.customprocedure.insuranceprices[this.currentpatient.value.queuedata.paymentmethod.type]) {
 

@@ -11,7 +11,7 @@ export class HistoryComponent implements OnInit {
     patientvisits: Array<PatientVisit>;
 
     constructor(private patientvisitService: PatientvisitService) {
-        patientvisitService.patientvisits.subscribe(visits => {
+        patientvisitService.visithistory.subscribe(visits => {
             this.patientvisits = visits;
         });
     }

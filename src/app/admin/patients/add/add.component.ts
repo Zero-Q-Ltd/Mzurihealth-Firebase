@@ -13,6 +13,7 @@ import {Router} from '@angular/router';
 import {Paymentmethods} from '../../../models/PaymentChannel';
 import {PaymentmethodService} from '../../services/paymentmethod.service';
 import {NumberValidator} from '../../validators/number.validator';
+import {firestore} from 'firebase';
 
 @Component({
     selector: 'app-add',
@@ -33,6 +34,9 @@ export class AddComponent implements OnInit {
     // doctor will do this
     // private medicalinfo: FormGroup;
 
+
+    maxDate: Date;
+
     constructor(private adminservice: AdminService,
                 private patientservice: PatientService,
                 private formBuilder: FormBuilder,
@@ -41,6 +45,8 @@ export class AddComponent implements OnInit {
                 private paymentethods: PaymentmethodService,
                 private notificationservice: NotificationService,
                 @Optional() @Inject(MAT_DIALOG_DATA) public data?: any) {
+
+        this.maxDate = firestore.Timestamp.now().toDate()
 
 
         /**

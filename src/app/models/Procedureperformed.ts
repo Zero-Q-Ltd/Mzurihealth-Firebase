@@ -25,13 +25,9 @@ export interface Procedureperformed {
     procedureid: string;
     metadata: Metadata;
     paymentmethod: Array<{
-        type: number,
-        data: {
-            // To keep the payment details
-            // Applies for insurance, cheque, MPESA
-            patientid: string,
-            transactionid: string,
-        }
+        channelid: string;
+        amount: number;
+        transactionid: string
     }>;
 
 }

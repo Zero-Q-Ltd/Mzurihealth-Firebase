@@ -8,7 +8,7 @@ import {firestore} from 'firebase';
 import {NotificationService} from '../../../shared/services/notifications.service';
 import {FuseConfirmDialogComponent} from '../../../../@fuse/components/confirm-dialog/confirm-dialog.component';
 import {MatDialog, MatDialogRef} from '@angular/material';
-import {emptypaymentmethod} from '../../../models/PaymentMethod';
+import {emptypaymentmethod} from '../../../models/CUstomPaymentMethod.model';
 import {LocalcommunicationService} from '../localcommunication.service';
 import {fuseAnimations} from '../../../../@fuse/animations';
 

@@ -8,7 +8,7 @@ import {AdminSelectionComponent} from '../admin-selection/admin-selection.compon
 import {HospitalAdmin} from '../../../../models/HospitalAdmin';
 import {FuseConfirmDialogComponent} from '../../../../../@fuse/components/confirm-dialog/confirm-dialog.component';
 import {HospitalService} from '../../../services/hospital.service';
-import {InvoicePaymentComponent} from '../../invoice-payment/invoice-payment.component';
+import {InvoiceCustomizationComponent} from '../../invoice-customization/invoice-customization.component';
 
 @Component({
     selector: 'queue-main',
@@ -77,7 +77,7 @@ export class MainComponent implements OnInit {
 
     paynvoice(data: MergedPatient_QueueModel): void {
         event.stopPropagation();
-        this.dialogRef = this._matDialog.open(InvoicePaymentComponent, {
+        this.dialogRef = this._matDialog.open(InvoiceCustomizationComponent, {
             data: {
                 patient: data.patientdata.id,
                 action: 'save'

@@ -7,16 +7,16 @@ import {AdminSharedModule} from '../shared/admin-shared.module';
 import {InvoiceComponent} from './invoice/invoice.component';
 import {ProfileComponent} from './profile/profile.component';
 import {PushqueueComponent} from './pushqueue/pushqueue.component';
-import {InvoicePaymentComponent} from './invoice-payment/invoice-payment.component';
+import {InvoiceCustomizationComponent} from './invoice-customization/invoice-customization.component';
 
 @NgModule({
-    declarations: [AllComponent, AddComponent, InvoiceComponent, ProfileComponent, PushqueueComponent, InvoicePaymentComponent],
+    declarations: [AllComponent, AddComponent, InvoiceComponent, ProfileComponent, PushqueueComponent, InvoiceCustomizationComponent],
     imports: [
         CommonModule,
         PatientsRoutingModule,
         AdminSharedModule,
     ],
-    entryComponents: [AddComponent, PushqueueComponent, InvoiceComponent, InvoicePaymentComponent],
+    entryComponents: [AddComponent, PushqueueComponent, InvoiceComponent, InvoiceCustomizationComponent],
 
 })
 export class PatientsModule {

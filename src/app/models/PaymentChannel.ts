@@ -1,6 +1,17 @@
 export interface PaymentChannel {
     id: string;
     name: string;
+    /**
+     * specifies whether this method can be merged with another for the same procedure
+     */
+    mergeability: {
+        self: boolean,
+        external: boolean
+    };
+    /**
+     * specifies whether transaction details are to be collected under the payment methods
+     */
+    transactiondetailcollection: boolean;
     methods: {
         [key: string]: Paymentmethods
     };
@@ -14,5 +25,10 @@ export interface Paymentmethods {
 export const emptypaymentChannel: PaymentChannel = {
     name: null,
     id: null,
-    methods: {}
+    methods: {},
+    mergeability: {
+        self: false,
+        external: false
+    },
+    transactiondetailcollection: false
 };

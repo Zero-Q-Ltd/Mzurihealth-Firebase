@@ -8,7 +8,7 @@ import {firestore} from 'firebase';
 import {NotificationService} from '../../../shared/services/notifications.service';
 import {FuseConfirmDialogComponent} from '../../../../@fuse/components/confirm-dialog/confirm-dialog.component';
 import {MatDialog, MatDialogRef} from '@angular/material';
-import {emptypaymentmethod} from '../../../models/PaymentMethod';
+import {emptypaymentmethod} from '../../../models/CustomPaymentMethod.model';
 import {LocalcommunicationService} from '../localcommunication.service';
 import {fuseAnimations} from '../../../../@fuse/animations';
 
@@ -22,7 +22,10 @@ declare let google: any;
     animations: fuseAnimations
 })
 export class HospconfigComponent implements OnInit {
-    allpaymentchannels: Array<PaymentChannel>;
+    /**
+     * the payment channels that require collection of transaction details
+     */
+    customizablepaymentchannels: Array<PaymentChannel>;
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     defaultlat = -1.2939519;
     defaultlng = 36.8311134;
@@ -37,7 +40,9 @@ export class HospconfigComponent implements OnInit {
                 private communicatioservice: LocalcommunicationService,
                 private _matDialog: MatDialog) {
         this.paymentmethodService.allpaymentchannels.subscribe(channels => {
-            this.allpaymentchannels = channels;
+            this.customizablepaymentchannels = channels.filter(channel => {
+                return channel.transactiondetailcollection;
+            });
         });
         /**
          * because this component is ot using reactive forms which is not neccessary, subscribe to tab changes and reset the values so
@@ -127,7 +132,7 @@ export class HospconfigComponent implements OnInit {
         if (!id) {
             return null;
         }
-        const paymentchannel = this.allpaymentchannels.find(channel => {
+        const paymentchannel = this.customizablepaymentchannels.find(channel => {
             return channel.id === id;
         });
         return paymentchannel;

@@ -99,7 +99,7 @@
         <mat-form-field appearance="outline" class="pl-4" fxFlex="24">
             <mat-label>Channel</mat-label>
             <mat-select [(ngModel)]="temphospital.paymentmethods[i].paymentchannelid" required>
-                <mat-option *ngFor="let channel of allpaymentchannels" [value]="channel.id">
+                <mat-option *ngFor="let channel of customizablepaymentchannels" [value]="channel.id">
                     {{channel.name |titlecase}}
                 </mat-option>
             </mat-select>

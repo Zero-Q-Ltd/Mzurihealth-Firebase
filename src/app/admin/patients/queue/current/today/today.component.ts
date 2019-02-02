@@ -29,7 +29,7 @@ import {LocalcommunicationService} from '../localcommunication.service';
 
 })
 export class TodayComponent implements OnInit {
-    currentvisitprocedures: Proceduresperformed = {procedures: []};
+    currentvisitprocedures: Proceduresperformed = {...emptyproceduresperformed};
     procedureperformed: FormGroup;
     vitalsform: FormGroup;
     hospitalprocedures: Array<MergedProcedureModel> = [];

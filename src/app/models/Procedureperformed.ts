@@ -1,6 +1,7 @@
 import {Metadata} from './universal';
 
 export interface Proceduresperformed {
+    id: string;
     procedures: Array<Procedureperformed>;
 }
 
@@ -33,6 +34,7 @@ export interface Procedureperformed {
 }
 
 export const emptyproceduresperformed: Proceduresperformed = {
+    id: null,
     procedures: []
 };
 

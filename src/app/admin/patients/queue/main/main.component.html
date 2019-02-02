@@ -115,9 +115,9 @@
                     mat-raised-button>Choose Admin </button>
             <button (click)="redirectadmin(patient)" *ngSwitchCase="1" color="accent"
                     mat-raised-button>Redirect</button>
-            <button (click)="viewinvoice(patient)" *ngSwitchCase="2" color="accent"
+            <button (click)="customizeInvoice(patient)" *ngSwitchCase="2" color="accent"
                     mat-raised-button>View Invoice</button>
-            <button (click)="paynvoice(patient)" *ngSwitchCase="3" color="accent" mat-raised-button>Pay Invoice</button>
+            <button (click)="customizeInvoice(patient)" *ngSwitchCase="3" color="accent" mat-raised-button>Pay Invoice</button>
         </span>
         </mat-cell>
 
@@ -126,7 +126,7 @@
     <mat-header-row *matHeaderRowDef="patientsheaders; sticky:true"></mat-header-row>
 
     <mat-row
-        (click)="viewinvoice(patient)"
+        (click)="customizeInvoice(patient)"
         *matRowDef="let patient; columns: patientsheaders;"
         [@animate]="{value:'*',params:{y:'100%'}}"
         matRipple>

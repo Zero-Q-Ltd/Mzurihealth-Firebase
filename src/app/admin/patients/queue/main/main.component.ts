@@ -63,25 +63,10 @@ export class MainComponent implements OnInit {
         });
     }
 
-    viewinvoice(data: MergedPatient_QueueModel): void {
-        event.stopPropagation();
-        this.dialogRef = this._matDialog.open(InvoiceComponent, {
-            data: {
-                patient: data,
-                action: 'save'
-            }
-        });
-
-        this.dialogRef.afterClosed();
-    }
-
-    paynvoice(data: MergedPatient_QueueModel): void {
+    customizeInvoice(data: MergedPatient_QueueModel): void {
         event.stopPropagation();
         this.dialogRef = this._matDialog.open(InvoiceCustomizationComponent, {
-            data: {
-                patient: data.patientdata.id,
-                action: 'save'
-            }
+            data: data.patientdata.id
         });
 
         this.dialogRef.afterClosed();

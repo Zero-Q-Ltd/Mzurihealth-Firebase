@@ -54,7 +54,7 @@ export class PatientvisitService {
      * Fetches list of procedures belonging to the id provided
      */
     fetchvisitprocedures(id: string): any {
-        return this.db.firestore.collection('visitprocedures').doc(id)
+        return this.db.firestore.collection('visitprocedures').doc(id);
     }
 
     /**
@@ -71,6 +71,7 @@ export class PatientvisitService {
         per.procedureid = procedure.rawprocedure.id;
         per.visitid = this.patientid;
         console.log(per);
+        console.log(this.currentvisit.value);
         this.db.collection('visitprocedures').doc(this.currentvisit.value.id).update({
             procedures: firestore.FieldValue.arrayUnion(per)
         });
@@ -86,6 +87,7 @@ export class PatientvisitService {
                 this.visithistory.next(snapshot.docs.map(value => {
                     const visit = Object.assign({}, {...emptypatientvisit}, value.data());
                     if (!visit.payment.status) {
+                        console.log(value);
                         this.currentvisit.next(visit);
                     }
                     visit.id = value.id;

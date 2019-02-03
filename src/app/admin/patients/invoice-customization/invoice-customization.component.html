@@ -1,32 +1,32 @@
 <div *ngIf="imeanzilisha" fxFlex="1 1 100%"
      fxLayout="row wrap"
      fxLayoutAlign="center">
-    <div fxFlex="50"> Procedures
+    <div fxFlex="50"><h1>Procedures</h1>
         <div *ngFor="let procedure of proceduredata.procedures" class="pb-8">
             <mat-card>
                 <mat-card-header>
                     <mat-card-title>{{procedure.name}}</mat-card-title>
-                    <mat-card-subtitle>                    {{hospitaladmins| adminName : procedure.adminid }}
-                        : {{procedure.metadata.lastedit?.toDate().toDateString()}}</mat-card-subtitle>
+                    <mat-card-subtitle>
+                        {{hospitaladmins| adminName : procedure.adminid }}
+                        : {{procedure.metadata.lastedit?.toDate()}}
+                    </mat-card-subtitle>
                 </mat-card-header>
-                <mat-card-content>
-                    <p>
-                        {{procedure.results}}
-                    </p>
-                    <p>
-                        {{procedure.notes}}
-                    </p>
-
-                </mat-card-content>
             </mat-card>
         </div>
     </div>
     <div fxFlex="50">
-        Payment methods
-        <mat-slide-toggle [(ngModel)]="patientdata.value.queuedata.paymentmethod"
+        <mat-slide-toggle [(ngModel)]="patientdata.value.queuedata.splitpayment"
                           labelPosition="before">Split Payment Per procedure
         </mat-slide-toggle>
-        <div>
+        <div *ngIf="patientdata.value.queuedata.splitpayment">
+            <div *ngIf="clickedprocedure.id">
+
+            </div>
+            <div *ngIf="!clickedprocedure.id">
+                <h1>Select procedure to customize</h1>
+            </div>
+        </div>
+        <div *ngIf="!patientdata.value.queuedata.splitpayment">
 
         </div>
     </div>

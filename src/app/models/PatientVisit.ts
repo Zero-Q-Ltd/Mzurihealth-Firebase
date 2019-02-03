@@ -6,6 +6,7 @@ export interface PatientVisit {
         amount: number;
         transactionid: string
     }>;
+    splitpayment: boolean;
     visitdescription: string;
     vitals: {
         height: number,
@@ -46,6 +47,7 @@ export interface Checkin {
 
 export const emptypatientvisit: PatientVisit = {
     paymentmethod: [],
+    splitpayment: false,
     visitdescription: null,
     vitals: {
         height: null,

@@ -111,7 +111,7 @@
                 <mat-expansion-panel-header>
                     Allergies ({{ patient.patientdata.medicalinfo.allergies.length}})
                 </mat-expansion-panel-header>
-                <span *ngFor="let allergy of patient.patientdata.medicalinfo.allergies" class="text-truncate">{{allergy.type}}=> {{allergy.type}}</span>
+                <span *ngFor="let allergy of patient.patientdata.medicalinfo.allergies" class="text-truncate">{{allergy.type}}=> {{allergy.detail}}</span>
             </mat-expansion-panel>
 
             <mat-expansion-panel>

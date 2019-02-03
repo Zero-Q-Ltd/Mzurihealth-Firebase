@@ -135,11 +135,11 @@ export class QueueService {
 
 
     getinsuanceprice(procedure: MergedProcedureModel): number {
-        if (this.currentpatient.value.queuedata.paymentmethod.type) {
-            if (procedure.customprocedure.insuranceprices[this.currentpatient.value.queuedata.paymentmethod.type]) {
-
-            }
-        }
+        // if (this.currentpatient.value.queuedata.paymentmethod) {
+        //     if (procedure.customprocedure.insuranceprices[this.currentpatient.value.queuedata.paymentmethod]) {
+        //
+        //     }
+        // }
 
         return 0;
     }

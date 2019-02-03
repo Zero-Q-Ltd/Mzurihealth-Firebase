@@ -2,7 +2,7 @@ import {Component, Inject, OnInit} from '@angular/core';
 import {QueueService} from '../../services/queue.service';
 import {PatientvisitService} from '../../services/patientvisit.service';
 import {emptymergedQueueModel, MergedPatient_QueueModel} from '../../../models/MergedPatient_Queue.model';
-import {emptyproceduresperformed, Proceduresperformed} from '../../../models/Procedureperformed';
+import {emptyprocedureperformed, emptyproceduresperformed, Procedureperformed, Proceduresperformed} from '../../../models/Procedureperformed';
 import {BehaviorSubject} from 'rxjs';
 import {PaymentmethodService} from '../../services/paymentmethod.service';
 import {PaymentChannel} from '../../../models/PaymentChannel';
@@ -10,6 +10,7 @@ import {HospitalService} from '../../services/hospital.service';
 import {CustomPaymentMethod} from '../../../models/CustomPaymentMethod.model';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material';
 import {InvoiceComponent} from '../invoice/invoice.component';
+import {HospitalAdmin} from '../../../models/HospitalAdmin';
 
 @Component({
     selector: 'app-invoice-payment',
@@ -23,12 +24,15 @@ export class InvoiceCustomizationComponent implements OnInit {
     hospitalmethods: Array<CustomPaymentMethod> = [];
     imeanzilisha = false;
     dialogRef: MatDialogRef<any>;
-    clickedprocedure
+    clickedprocedure: Procedureperformed = {...emptyprocedureperformed};
+    hospitaladmins: Array<HospitalAdmin> = [];
+
 
     constructor(private queue: QueueService,
                 private hospital: HospitalService,
                 private visitservice: PatientvisitService,
                 private paymentmethodService: PaymentmethodService,
+                private hospitalservice: HospitalService,
                 public _matDialog: MatDialog,
                 @Inject(MAT_DIALOG_DATA) public patientid: string) {
         /**
@@ -41,9 +45,11 @@ export class InvoiceCustomizationComponent implements OnInit {
                 }
             });
         });
-
+        hospitalservice.hospitaladmins.subscribe(admins => {
+            this.hospitaladmins = admins;
+        });
         /**
-         * Avoid making unneccessary subscriptions
+         * Avoid making unnecessary subscriptions
          */
         this.patientdata.subscribe(data => {
             if (data.patientdata.id) {
@@ -64,6 +70,10 @@ export class InvoiceCustomizationComponent implements OnInit {
         this.hospital.activehospital.subscribe(hosp => {
             this.hospitalmethods = hosp.paymentmethods;
         });
+    }
+
+    selectprocedure(procedure: Procedureperformed): void {
+        this.clickedprocedure = procedure;
     }
 
     preview(): void {

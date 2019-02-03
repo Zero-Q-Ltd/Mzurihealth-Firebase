@@ -1,4 +1,4 @@
-import {Metadata} from './universal';
+import {emptymetadata, Metadata} from './universal';
 
 export interface Proceduresperformed {
     id: string;
@@ -6,7 +6,6 @@ export interface Proceduresperformed {
 }
 
 export interface Procedureperformed {
-
     description: string;
     id: string;
     results: string;
@@ -25,13 +24,22 @@ export interface Procedureperformed {
     visitid: string;
     procedureid: string;
     metadata: Metadata;
-    paymentmethod: Array<{
-        channelid: string;
-        amount: number;
-        transactionid: string
-    }>;
-
 }
+
+export const emptyprocedureperformed: Procedureperformed = {
+    description: null,
+    id: null,
+    results: null,
+    notes: [],
+    price: 0,
+    adminid: null,
+    hospitalid: null,
+    patientid: null,
+    name: null,
+    visitid: null,
+    procedureid: null,
+    metadata: emptymetadata,
+};
 
 export const emptyproceduresperformed: Proceduresperformed = {
     id: null,

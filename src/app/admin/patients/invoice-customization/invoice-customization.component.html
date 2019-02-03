@@ -1,26 +1,89 @@
-<div *ngIf="imeanzilisha" fxFlex="1 1 100%"
+<div fxFlex="1 1 100%"
      fxLayout="row wrap"
      fxLayoutAlign="center">
-    <div fxFlex="50"><h1>Procedures</h1>
-        <div *ngFor="let procedure of patientdata.queuedata.procedures" class="pb-8">
-            <mat-card>
-                <mat-card-header>
-                    <mat-card-title>{{procedure.name}}</mat-card-title>
-                    <mat-card-subtitle>
-                        {{hospitaladmins| adminName : procedure.adminid }}
-                        : {{procedure.metadata.lastedit?.toDate()}}
-                    </mat-card-subtitle>
-                </mat-card-header>
-            </mat-card>
-        </div>
-    </div>
-    <div fxFlex="50">
+    <div  fxFlex="100">
         <mat-slide-toggle [(ngModel)]="patientdata.queuedata.splitpayment"
                           labelPosition="before">Split Payment Per procedure
         </mat-slide-toggle>
+    </div>
+    <div fxFlex="50">
+        <mat-table #table
+                   [@animateStagger]="{value:'50'}"
+                   [dataSource]="proceduresdatasouce"
+                   class="patients-table"
+                   fusePerfectScrollbar
+                   matSort>
+
+            <!-- fileNo Column -->
+            <ng-container matColumnDef="name">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
+                <mat-cell *matCellDef="let procedure">
+                    <p>
+                        {{procedure.name}}
+                    </p>
+                </mat-cell>
+            </ng-container>
+
+        
+
+            <!-- Price Column -->
+            <ng-container matColumnDef="admin-time">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Admin
+                </mat-header-cell>
+                <mat-cell *matCellDef="let procedure">
+                    <p>
+                        {{hospitaladmins| adminName : procedure.adminid }}
+                        {{procedure.metadata.lastedit?.toDate()}}
+                    </p>
+                </mat-cell>
+            </ng-container>
+
+
+            <!-- Price Column -->
+            <ng-container matColumnDef="payment-method">
+                <mat-header-cell *matHeaderCellDef>Channel
+                </mat-header-cell>
+                <mat-cell *matCellDef="let procedure">
+                    <p class="price text-truncate">
+
+                    </p>
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="cost">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Cost
+                </mat-header-cell>
+                <mat-cell *matCellDef="let procedure">
+                    <p>
+                        {{procedure.payment.amount}}
+                    </p>
+                </mat-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="procedureheaders; sticky:true"></mat-header-row>
+
+            <mat-row *matRowDef="let procedure; columns: procedureheaders;"
+                     [@animate]="{value:'*',params:{y:'100%'}}"
+                     (click)="clickedprocedure = procedure"
+                     class="product"
+                     matRipple>
+            </mat-row>
+
+        </mat-table>
+
+        <mat-paginator #paginator
+                       [length]="proceduresdatasouce.data.length"
+                       [pageIndex]="0"
+                       [pageSizeOptions]="[5, 10, 25, 100]"
+                       [pageSize]="10">
+        </mat-paginator>
+
+    </div>
+    <div fxFlex="50">
+     
         <div *ngIf="patientdata.queuedata.splitpayment">
             <div *ngIf="clickedprocedure.id">
-
+                
             </div>
             <div *ngIf="!clickedprocedure.id">
                 <h1>Select procedure to customize</h1>
@@ -32,7 +95,4 @@
     </div>
     <button (click)="preview()" color="accent" mat-raised-button>Print Preview</button>
     <button (click)="pay()" color="accent" mat-raised-button>Mark as Paid</button>
-</div>
-<div *ngIf="!imeanzilisha">
-    <mat-progress-spinner></mat-progress-spinner>
 </div>

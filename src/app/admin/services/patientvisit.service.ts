@@ -4,7 +4,7 @@ import {AngularFirestore} from '@angular/fire/firestore';
 import {HospitalService} from './hospital.service';
 import {emptypatientvisit, PatientVisit} from '../../models/PatientVisit';
 import {BehaviorSubject} from 'rxjs';
-import {emptyproceduresperformed, Procedureperformed, Proceduresperformed} from '../../models/Procedureperformed';
+import {Procedureperformed} from '../../models/Procedureperformed';
 import {MergedProcedureModel} from '../../models/MergedProcedure.model';
 import {firestore} from 'firebase';
 import {AdminService} from './admin.service';
@@ -44,10 +44,11 @@ export class PatientvisitService {
 
 
     /**
+     * @param visitid
      * @param procedure
      * @param per
      */
-    addprocedure(procedure: MergedProcedureModel, per: Procedureperformed): void {
+    addprocedure(visitid: string, procedure: MergedProcedureModel, per: Procedureperformed): void {
         per.name = procedure.rawprocedure.name;
         per.metadata = {
             lastedit: firestore.Timestamp.now(),
@@ -58,7 +59,7 @@ export class PatientvisitService {
         per.visitid = this.patientid;
         console.log(per);
         console.log(this.currentvisit.value);
-        this.db.collection('visitprocedures').doc(this.currentvisit.value.id).update({
+        this.db.collection('hospitalvisits').doc(visitid).update({
             procedures: firestore.FieldValue.arrayUnion(per)
         });
     }
@@ -85,8 +86,10 @@ export class PatientvisitService {
      *
      * @param newpatient determines the status so we can distinguish completely new patients and returning ones
      * @param description
+     * @param insuranceid
+     * @param splitpayment
      */
-    createpatientvisit(newpatient: boolean, description: string): any {
+    createpatientvisit(newpatient: boolean, description: string, insuranceid ?: string, splitpayment?: boolean): any {
         const visit: PatientVisit = {...emptypatientvisit};
         visit.checkin = {
             admin: this.adminid,
@@ -99,6 +102,12 @@ export class PatientvisitService {
         };
         visit.hospitalid = this.hospitalid;
         visit.visitdescription = description;
+        visit.payment = {
+            hasinsurance: !!insuranceid,
+            splitpayment: splitpayment,
+            status: false,
+            total: 0
+        };
         return this.db.collection('hospitalvisits').add(visit);
     }
 

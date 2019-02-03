@@ -23,6 +23,19 @@ export interface Procedureperformed {
     visitid: string;
     procedureid: string;
     metadata: Metadata;
+    payment: {
+        amount: number,
+        methods: Array<{
+            channelid: string;
+            amount: number;
+            methidid: string;
+            transactionid: string
+        }>
+        /**
+         * whether one of the payment methods is insurance
+         */
+        hasinsurance: boolean
+    };
 }
 
 export const emptyprocedureperformed: Procedureperformed = {
@@ -37,6 +50,11 @@ export const emptyprocedureperformed: Procedureperformed = {
     visitid: null,
     procedureid: null,
     metadata: emptymetadata,
+    payment: {
+        amount : 0,
+        hasinsurance : false,
+        methods : []
+    }
 };
 
 export const emptyproceduresperformed: Proceduresperformed = {

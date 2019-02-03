@@ -349,7 +349,7 @@ export class TodayComponent implements OnInit {
         return data ? data.rawprocedure.name : '';
     }
 
-    saveprescription(){
+    saveprescription(): void {
 
     }
 
@@ -358,7 +358,7 @@ export class TodayComponent implements OnInit {
             this.expand = false;
             const procedure: Procedureperformed = Object.assign({}, {...emptyproceduresperformed}, this.procedureperformed.getRawValue());
             const originaldata: MergedProcedureModel = this.procedureselection.getRawValue().selection;
-            this.patientvisitService.addprocedure(originaldata, procedure);
+            this.patientvisitService.addprocedure(this.currentvisit.id, originaldata, procedure);
         }
     }
 

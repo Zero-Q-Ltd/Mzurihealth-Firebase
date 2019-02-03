@@ -1,33 +1,9 @@
 import {emptymetadata, Metadata} from './universal';
+import {Procedureperformed} from './Procedureperformed';
 
 export interface PatientVisit {
-    procedures: Array<{
-        description: string;
-        id: string;
-        results: string;
-        notes: Array<{
-            note: string;
-            admin: {
-                id: string,
-                name: string
-            };
-        }>;
-        adminid: string;
-        hospitalid: string;
-        patientid: string;
-        name: string;
-        visitid: string;
-        procedureid: string;
-        metadata: Metadata;
-        cost: number,
-        paymentmethod: Array<{
-            channelid: string;
-            amount: number;
-            transactionid: string
-        }>;
-    }>;
+    procedures: Array<Procedureperformed>;
     totalcost: number;
-    splitpayment: boolean;
     visitdescription: string;
     vitals: {
         height: number,
@@ -46,8 +22,10 @@ export interface PatientVisit {
     prescription: string;
     metadata: Metadata;
     payment: {
+        splitpayment: boolean;
         total: number,
-        status: boolean
+        status: boolean,
+        hasinsurance: boolean
     };
     id: string;
     invoiceid: number;
@@ -69,7 +47,6 @@ export interface Checkin {
 export const emptypatientvisit: PatientVisit = {
     procedures: [],
     totalcost: 0,
-    splitpayment: false,
     visitdescription: null,
     vitals: {
         height: null,
@@ -86,8 +63,10 @@ export const emptypatientvisit: PatientVisit = {
         admin: null
     },
     payment: {
+        splitpayment: false,
         total: 0,
-        status: false
+        status: false,
+        hasinsurance: false,
     },
     patientid: null,
     hospitalid: null,

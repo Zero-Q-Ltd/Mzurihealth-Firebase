@@ -32,7 +32,12 @@ export class InvoiceCustomizationComponent implements OnInit {
     multipayment = false;
     procedureheaders = ['name', 'admin-time', 'payment-method', 'cost'];
     paymentmethodheaders = ['channel', 'amount', 'transactionid'];
-    selectedchannel : PaymentChannel
+    selectedchannel: PaymentChannel;
+    selectedinsurance: {
+        id: string;
+        insuranceno: string;
+    };
+
     constructor(private queue: QueueService,
                 private hospital: HospitalService,
                 private visitservice: PatientvisitService,
@@ -82,12 +87,12 @@ export class InvoiceCustomizationComponent implements OnInit {
             /**
              * check if the procedure contains a custom price for insurance
              */
-            if (this.procedureservice.hospitalprocedures.value.find(value => {
-                return value.customprocedure.id === customprocedureid && value.customprocedure.custominsuranceprice;
+            if (!!this.procedureservice.hospitalprocedures.value.find(value => {
+                return value.customprocedure.id === customprocedureid && value.customprocedure.custominsuranceprice && !!value.customprocedure.insuranceprices[insuranceid];
             })) {
                 return this.procedureservice.hospitalprocedures.value.find(value => {
                     return value.customprocedure.id === customprocedureid && !!value.customprocedure.insuranceprices[insuranceid];
-                }).customprocedure.insuranceprices[insuranceid].price;
+                }).customprocedure.insuranceprices[insuranceid];
 
             } else {
                 /**
@@ -139,7 +144,7 @@ export class InvoiceCustomizationComponent implements OnInit {
     }
 
     setchannel(channel: PaymentChannel): void {
-        this.selectedchannel = channel
+        this.selectedchannel = channel;
         const isinsurance = channel.name === 'insurance';
         let total = 0;
         this.patientdata.queuedata.procedures.map(value => {
@@ -159,16 +164,36 @@ export class InvoiceCustomizationComponent implements OnInit {
         this.patientdata.queuedata.payment.total = total;
     }
 
-    selectinsurance(insuranceid: string) : void {
+    getcativechannelmethods(channelid: string): Array<CustomPaymentMethod> {
+        return this.hospitalmethods.filter(value => {
+            return value.paymentchannelid === channelid;
+        });
+    }
+
+    getmethodname(channelid: string, methodid: string): string {
+        return this.allpaymentchannels.find(value => {
+            return value.id === channelid;
+        }).methods[methodid].name;
+    }
+
+    insurancename(insuranceid: string): string {
+        return this.allpaymentchannels.find(value => {
+            return value.name === 'insurance';
+        }).methods[insuranceid].name;
+    }
+
+
+    selectinsurance(insurance): void {
+        this.selectedinsurance = insurance;
         let total = 0;
         this.patientdata.queuedata.procedures.map(value => {
-            const amount = this.getpaymentamount(value.customprocedureid);
+            const amount = this.getpaymentamount(value.customprocedureid, insurance.id);
             value.payment = {
                 amount: amount,
                 methods: [{
                     amount: amount,
                     channelid: '',
-                    methidid: insuranceid,
+                    methidid: insurance.id,
                     transactionid: ''
                 }],
                 hasinsurance: true

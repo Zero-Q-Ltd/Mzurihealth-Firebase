@@ -7,9 +7,7 @@ export interface CustomProcedure {
     parentprocedureid: string;
     hospitalid: string;
     insuranceprices: {
-        [key: string]: {
-            price: number
-        }
+        [key: string]: number
     };
     status: boolean;
     custominsuranceprice: boolean;

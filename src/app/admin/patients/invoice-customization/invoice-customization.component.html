@@ -140,14 +140,38 @@
                     <td class="text-right">
                         {{patientdata.queuedata.payment.total}}
                     </td>
+                    <td *ngIf="channel.name === 'insurance'">
+                        <div *ngFor="let insurance of patientdata.patientdata.insurance">
+                            <mat-checkbox (change)="selectinsurance(insurance)"
+                                          [checked]="selectedinsurance === insurance"> {{insurancename(insurance.id)}}
+                            </mat-checkbox>
+                        </div>
+                    </td>
 
-                    <td class="text-right">
-                        <mat-form-field appearance="outline" class="pr-4 " fxFlex="100">
-                            <mat-label>Transaction code</mat-label>
-                            <input [disabled]="!channel.transactiondetailcollection" matInput required>
-                            <mat-icon class="secondary-text" matSuffix>beenhere</mat-icon>
-                            <mat-error></mat-error>
-                        </mat-form-field>
+                    <td *ngIf="channel.name!== 'insurance'" class="text-right">
+                        <div *ngFor="let method of getcativechannelmethods(channel.id)">
+                            <mat-form-field appearance="outline" class="pr-4 " fxFlex="100">
+                                <mat-label>Method</mat-label>
+                                <input [value]="getmethodname(method.paymentchannelid, method.paymentmethodid)" disabled
+                                       matInput>
+                                <mat-icon class="secondary-text" matSuffix>beenhere</mat-icon>
+                                <mat-error></mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline" class="pr-4 " fxFlex="100">
+                                <mat-label>Method</mat-label>
+                                <input [value]="method.accountnumber" disabled matInput required>
+                                <mat-icon class="secondary-text" matSuffix>beenhere</mat-icon>
+                                <mat-error></mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline" class="pr-4 " fxFlex="100">
+                                <mat-label>Transaction Code</mat-label>
+                                <input [disabled]="!channel.transactiondetailcollection" matInput required>
+                                <mat-icon class="secondary-text" matSuffix>beenhere</mat-icon>
+                                <mat-error></mat-error>
+                            </mat-form-field>
+                        </div>
                     </td>
                 </tr>
                 </tbody>

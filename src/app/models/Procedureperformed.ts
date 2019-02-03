@@ -7,7 +7,6 @@ export interface Proceduresperformed {
 
 export interface Procedureperformed {
     description: string;
-    id: string;
     results: string;
     notes: Array<{
         note: string;
@@ -21,7 +20,9 @@ export interface Procedureperformed {
     patientid: string;
     name: string;
     visitid: string;
-    procedureid: string;
+
+    originalprocedureid: string;
+    customprocedureid: string;
     metadata: Metadata;
     payment: {
         amount: number,
@@ -40,7 +41,6 @@ export interface Procedureperformed {
 
 export const emptyprocedureperformed: Procedureperformed = {
     description: null,
-    id: null,
     results: null,
     notes: [],
     adminid: null,
@@ -48,12 +48,13 @@ export const emptyprocedureperformed: Procedureperformed = {
     patientid: null,
     name: null,
     visitid: null,
-    procedureid: null,
+    originalprocedureid: null,
+    customprocedureid: null,
     metadata: emptymetadata,
     payment: {
-        amount : 0,
-        hasinsurance : false,
-        methods : []
+        amount: 0,
+        hasinsurance: false,
+        methods: []
     }
 };
 

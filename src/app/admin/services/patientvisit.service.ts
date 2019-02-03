@@ -55,7 +55,8 @@ export class PatientvisitService {
             date: firestore.Timestamp.now()
         };
         per.adminid = this.adminid;
-        per.procedureid = procedure.rawprocedure.id;
+        per.originalprocedureid = procedure.rawprocedure.id;
+        per.customprocedureid = procedure.customprocedure.id;
         per.visitid = this.patientid;
         console.log(per);
         console.log(this.currentvisit.value);

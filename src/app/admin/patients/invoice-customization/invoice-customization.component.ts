@@ -12,6 +12,7 @@ import {InvoiceComponent} from '../invoice/invoice.component';
 import {HospitalAdmin} from '../../../models/HospitalAdmin';
 import {fuseAnimations} from '../../../../@fuse/animations';
 import {ProceduresService} from '../../services/procedures.service';
+import {NotificationService} from '../../../shared/services/notifications.service';
 
 @Component({
     selector: 'app-invoice-payment',
@@ -39,6 +40,7 @@ export class InvoiceCustomizationComponent implements OnInit {
                 private hospitalservice: HospitalService,
                 public _matDialog: MatDialog,
                 private procedureservice: ProceduresService,
+                private notifications: NotificationService,
                 @Inject(MAT_DIALOG_DATA) public patientid: string) {
         /**
          * Subscribe so that other admin changes are immediately reflected
@@ -49,9 +51,10 @@ export class InvoiceCustomizationComponent implements OnInit {
                     /**
                      * Initialize the prices
                      */
+                    console.log(value.queuedata.procedures);
                     if (!value.queuedata.payment.hasinsurance) {
                         value.queuedata.procedures = value.queuedata.procedures.map(value1 => {
-                            value1.payment.amount = this.getpaymentamount(value1.procedureid);
+                            value1.payment.amount = this.getpaymentamount(value1.customprocedureid);
                             return value1;
                         });
                     }
@@ -74,16 +77,16 @@ export class InvoiceCustomizationComponent implements OnInit {
     }
 
 
-    getpaymentamount(procedureid: string, insuranceid ?: string): number {
+    getpaymentamount(customprocedureid: string, insuranceid ?: string): number {
         if (insuranceid) {
             /**
              * check if the procedure contains a custom price for insurance
              */
             if (this.procedureservice.hospitalprocedures.value.find(value => {
-                return value.customprocedure.id === procedureid && value.customprocedure.custominsuranceprice;
+                return value.customprocedure.id === customprocedureid && value.customprocedure.custominsuranceprice;
             })) {
                 return this.procedureservice.hospitalprocedures.value.find(value => {
-                    return value.customprocedure.id === procedureid && Object.keys(value.customprocedure.insuranceprices[insuranceid]).length > 0;
+                    return value.customprocedure.id === customprocedureid && Object.keys(value.customprocedure.insuranceprices[insuranceid]).length > 0;
                 }).customprocedure.insuranceprices[insuranceid].price;
 
             } else {
@@ -91,7 +94,7 @@ export class InvoiceCustomizationComponent implements OnInit {
                  * return the normal price
                  */
                 return this.procedureservice.hospitalprocedures.value.find(value => {
-                    return value.customprocedure.id === procedureid;
+                    return value.customprocedure.id === customprocedureid;
                 }).customprocedure.regularprice;
             }
         } else {
@@ -99,7 +102,7 @@ export class InvoiceCustomizationComponent implements OnInit {
              * return the normal price
              */
             return this.procedureservice.hospitalprocedures.value.find(value => {
-                return value.customprocedure.id === procedureid;
+                return value.customprocedure.id === customprocedureid;
             }).customprocedure.regularprice;
         }
     }
@@ -113,6 +116,26 @@ export class InvoiceCustomizationComponent implements OnInit {
         });
 
         this.dialogRef.afterClosed();
+    }
+
+    selectprocedure(procedure): void {
+        if (this.patientdata.queuedata.payment.splitpayment) {
+            this.clickedprocedure = procedure;
+        }
+    }
+
+    togglechange(): void {
+
+        setTimeout(() => {
+            this.notifications.notify({
+                placement: 'centre',
+                title: 'Info',
+                alert_type: 'info',
+                body: 'Coming soon...'
+            });
+            this.patientdata.queuedata.payment.splitpayment = false;
+        }, 800);
+
     }
 
     pay(): void {

@@ -1,12 +1,13 @@
 <div fxFlex="1 1 100%"
      fxLayout="row wrap"
      fxLayoutAlign="center">
-    <div  fxFlex="100">
-        <mat-slide-toggle [(ngModel)]="patientdata.queuedata.splitpayment"
-                          labelPosition="before">Split Payment Per procedure
+    <div fxFlex="100">
+        <mat-slide-toggle (toggleChange)="togglechange()" [(ngModel)]="patientdata.queuedata.payment.splitpayment"
+                          labelPosition="before"
+                          mattooltip="Coming soon...">Split Payment Per procedure
         </mat-slide-toggle>
     </div>
-    <div fxFlex="50">
+    <div class="mat-elevation-z8" fxFlex="50">
         <mat-table #table
                    [@animateStagger]="{value:'50'}"
                    [dataSource]="proceduresdatasouce"
@@ -24,7 +25,6 @@
                 </mat-cell>
             </ng-container>
 
-        
 
             <!-- Price Column -->
             <ng-container matColumnDef="admin-time">
@@ -62,9 +62,9 @@
 
             <mat-header-row *matHeaderRowDef="procedureheaders; sticky:true"></mat-header-row>
 
-            <mat-row *matRowDef="let procedure; columns: procedureheaders;"
+            <mat-row (click)="selectprocedure(procedure)"
+                     *matRowDef="let procedure; columns: procedureheaders;"
                      [@animate]="{value:'*',params:{y:'100%'}}"
-                     (click)="clickedprocedure = procedure"
                      class="product"
                      matRipple>
             </mat-row>
@@ -79,18 +79,67 @@
         </mat-paginator>
 
     </div>
-    <div fxFlex="50">
-     
-        <div *ngIf="patientdata.queuedata.splitpayment">
-            <div *ngIf="clickedprocedure.id">
-                
+    <div class="mat-elevation-z8" fxFlex="50">
+        <div *ngIf="patientdata.queuedata.payment.splitpayment">
+            <div *ngIf="clickedprocedure.customprocedureid">
+                <table class="simple invoice-table">
+                    <thead>
+                    <tr>
+                        <th class="text-right">Payment Channel</th>
+                        <th class="text-right">Amount</th>
+                        <th class="text-right">Transaction Code</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let channel of allpaymentchannels">
+                        <td>
+                            <div class="title">
+                                {{channel.name}}
+                            </div>
+                        </td>
+                        <td class="text-right">
+
+                        </td>
+                        <td class="text-right">
+
+                        </td>
+                    </tr>
+
+                    </tbody>
+                </table>
             </div>
-            <div *ngIf="!clickedprocedure.id">
+            <div *ngIf="!clickedprocedure.customprocedureid">
                 <h1>Select procedure to customize</h1>
             </div>
         </div>
-        <div *ngIf="!patientdata.queuedata.splitpayment">
+        <div *ngIf="!patientdata.queuedata.payment.splitpayment">
+            <table class="simple invoice-table">
+                <thead>
+                <tr>
+                    <th class="text-right">Payment Channel</th>
+                    <th class="text-right">Amount</th>
+                    <th class="text-right">Transaction Code</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let channel of allpaymentchannels">
+                    <td>
+                        <div class="title">
+                            <mat-checkbox> {{channel.name}}</mat-checkbox>
+                        </div>
+                    </td>
+                    <td class="text-right">
 
+                    </td>
+                    <td class="text-right">
+
+                    </td>
+                    <td class="text-right">
+                        {{channel.name}}
+                    </td>
+                </tr>
+                </tbody>
+            </table>
         </div>
     </div>
     <button (click)="preview()" color="accent" mat-raised-button>Print Preview</button>

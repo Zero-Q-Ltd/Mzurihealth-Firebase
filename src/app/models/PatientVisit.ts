@@ -1,11 +1,32 @@
 import {emptymetadata, Metadata} from './universal';
 
 export interface PatientVisit {
-    paymentmethod: Array<{
-        channelid: string;
-        amount: number;
-        transactionid: string
+    procedures: Array<{
+        description: string;
+        id: string;
+        results: string;
+        notes: Array<{
+            note: string;
+            admin: {
+                id: string,
+                name: string
+            };
+        }>;
+        adminid: string;
+        hospitalid: string;
+        patientid: string;
+        name: string;
+        visitid: string;
+        procedureid: string;
+        metadata: Metadata;
+        cost: number,
+        paymentmethod: Array<{
+            channelid: string;
+            amount: number;
+            transactionid: string
+        }>;
     }>;
+    totalcost: number;
     splitpayment: boolean;
     visitdescription: string;
     vitals: {
@@ -46,7 +67,8 @@ export interface Checkin {
 }
 
 export const emptypatientvisit: PatientVisit = {
-    paymentmethod: [],
+    procedures: [],
+    totalcost: 0,
     splitpayment: false,
     visitdescription: null,
     vitals: {

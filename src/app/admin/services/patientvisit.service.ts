@@ -16,7 +16,6 @@ export class PatientvisitService {
     patientid: string;
     hospitalid: string;
     visithistory: BehaviorSubject<Array<PatientVisit>> = new BehaviorSubject<Array<PatientVisit>>([]);
-    currentvisitprocedures: BehaviorSubject<Proceduresperformed> = new BehaviorSubject<Proceduresperformed>(emptyproceduresperformed);
     currentvisit: BehaviorSubject<PatientVisit> = new BehaviorSubject<PatientVisit>({...emptypatientvisit});
     adminid: string;
 
@@ -40,22 +39,9 @@ export class PatientvisitService {
                 this.fetchvisithistory();
             }
         });
-        this.currentvisit.subscribe(visit => {
-            if (visit.id) {
-                this.fetchvisitprocedures(visit.id).onSnapshot(snapshot => {
-                    const procedures: Proceduresperformed = Object.assign({}, {...emptyproceduresperformed}, snapshot.data());
-                    this.currentvisitprocedures.next(procedures);
-                });
-            }
-        });
+
     }
 
-    /**
-     * Fetches list of procedures belonging to the id provided
-     */
-    fetchvisitprocedures(id: string): any {
-        return this.db.firestore.collection('visitprocedures').doc(id);
-    }
 
     /**
      * @param procedure
@@ -87,7 +73,6 @@ export class PatientvisitService {
                 this.visithistory.next(snapshot.docs.map(value => {
                     const visit = Object.assign({}, {...emptypatientvisit}, value.data());
                     if (!visit.payment.status) {
-                        console.log(value);
                         this.currentvisit.next(visit);
                     }
                     visit.id = value.id;

@@ -2,7 +2,7 @@
      fxLayout="row wrap"
      fxLayoutAlign="center">
     <div fxFlex="50"><h1>Procedures</h1>
-        <div *ngFor="let procedure of proceduredata.procedures" class="pb-8">
+        <div *ngFor="let procedure of patientdata.queuedata.procedures" class="pb-8">
             <mat-card>
                 <mat-card-header>
                     <mat-card-title>{{procedure.name}}</mat-card-title>
@@ -15,10 +15,10 @@
         </div>
     </div>
     <div fxFlex="50">
-        <mat-slide-toggle [(ngModel)]="patientdata.value.queuedata.splitpayment"
+        <mat-slide-toggle [(ngModel)]="patientdata.queuedata.splitpayment"
                           labelPosition="before">Split Payment Per procedure
         </mat-slide-toggle>
-        <div *ngIf="patientdata.value.queuedata.splitpayment">
+        <div *ngIf="patientdata.queuedata.splitpayment">
             <div *ngIf="clickedprocedure.id">
 
             </div>
@@ -26,7 +26,7 @@
                 <h1>Select procedure to customize</h1>
             </div>
         </div>
-        <div *ngIf="!patientdata.value.queuedata.splitpayment">
+        <div *ngIf="!patientdata.queuedata.splitpayment">
 
         </div>
     </div>

@@ -2,8 +2,7 @@ import {Component, Inject, OnInit} from '@angular/core';
 import {QueueService} from '../../services/queue.service';
 import {PatientvisitService} from '../../services/patientvisit.service';
 import {emptymergedQueueModel, MergedPatient_QueueModel} from '../../../models/MergedPatient_Queue.model';
-import {emptyprocedureperformed, emptyproceduresperformed, Procedureperformed, Proceduresperformed} from '../../../models/Procedureperformed';
-import {BehaviorSubject} from 'rxjs';
+import {emptyprocedureperformed, Procedureperformed} from '../../../models/Procedureperformed';
 import {PaymentmethodService} from '../../services/paymentmethod.service';
 import {PaymentChannel} from '../../../models/PaymentChannel';
 import {HospitalService} from '../../services/hospital.service';
@@ -18,8 +17,7 @@ import {HospitalAdmin} from '../../../models/HospitalAdmin';
     styleUrls: ['./invoice-customization.component.scss']
 })
 export class InvoiceCustomizationComponent implements OnInit {
-    patientdata: BehaviorSubject<MergedPatient_QueueModel> = new BehaviorSubject<MergedPatient_QueueModel>({...emptymergedQueueModel});
-    proceduredata: Proceduresperformed = emptyproceduresperformed;
+    patientdata: MergedPatient_QueueModel = {...emptymergedQueueModel};
     allpaymentchannels: Array<PaymentChannel> = [];
     hospitalmethods: Array<CustomPaymentMethod> = [];
     imeanzilisha = false;
@@ -41,29 +39,15 @@ export class InvoiceCustomizationComponent implements OnInit {
         queue.mainpatientqueue.subscribe(queuedata => {
             queuedata.filter(value => {
                 if (value.patientdata.id === this.patientid) {
-                    this.patientdata.next(value);
+                    this.patientdata = value;
                 }
             });
         });
+
         hospitalservice.hospitaladmins.subscribe(admins => {
             this.hospitaladmins = admins;
         });
-        /**
-         * Avoid making unnecessary subscriptions
-         */
-        this.patientdata.subscribe(data => {
-            if (data.patientdata.id) {
-                if (data.queuedata.id !== this.proceduredata.id) {
-                    this.imeanzilisha = false;
-                    this.visitservice.fetchvisitprocedures(data.queuedata.id).onSnapshot(snapshot => {
-                        const procedures: Proceduresperformed = Object.assign({}, {...emptyproceduresperformed}, snapshot.data());
-                        procedures.id = snapshot.id;
-                        this.proceduredata = procedures;
-                        this.imeanzilisha = true;
-                    });
-                }
-            }
-        });
+
         this.paymentmethodService.allpaymentchannels.subscribe(channels => {
             this.allpaymentchannels = channels;
         });

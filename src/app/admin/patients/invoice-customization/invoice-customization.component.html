@@ -23,9 +23,16 @@
     </div>
     <div fxFlex="50">
         Payment methods
+        <mat-slide-toggle [(ngModel)]="patientdata.value.queuedata.paymentmethod"
+                          labelPosition="before">Split Payment Per procedure
+        </mat-slide-toggle>
         <div>
 
         </div>
     </div>
+    <button (click)="preview()" color="accent" mat-raised-button>Print Preview</button>
+    <button (click)="pay()" color="accent" mat-raised-button>Mark as Paid</button>
 </div>
-<mat-progress-spinner *ngIf="!imeanzilisha"></mat-progress-spinner>
+<div *ngIf="!imeanzilisha">
+    <mat-progress-spinner></mat-progress-spinner>
+</div>

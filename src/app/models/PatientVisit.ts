@@ -1,9 +1,11 @@
 import {emptymetadata, Metadata} from './universal';
 
 export interface PatientVisit {
-    paymentmethod: {
-        [key: string]: number
-    };
+    paymentmethod: Array<{
+        channelid: string;
+        amount: number;
+        transactionid: string
+    }>;
     visitdescription: string;
     vitals: {
         height: number,
@@ -43,9 +45,7 @@ export interface Checkin {
 }
 
 export const emptypatientvisit: PatientVisit = {
-    paymentmethod: {
-        type: 0
-    },
+    paymentmethod: [],
     visitdescription: null,
     vitals: {
         height: null,

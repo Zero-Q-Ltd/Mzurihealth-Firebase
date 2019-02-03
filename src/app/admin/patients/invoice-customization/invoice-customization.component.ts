@@ -23,6 +23,7 @@ export class InvoiceCustomizationComponent implements OnInit {
     hospitalmethods: Array<CustomPaymentMethod> = [];
     imeanzilisha = false;
     dialogRef: MatDialogRef<any>;
+    clickedprocedure
 
     constructor(private queue: QueueService,
                 private hospital: HospitalService,
@@ -68,12 +69,16 @@ export class InvoiceCustomizationComponent implements OnInit {
     preview(): void {
         this.dialogRef = this._matDialog.open(InvoiceComponent, {
             data: {
-                patient: data,
+                patient: 'data',
                 action: 'save'
             }
         });
 
         this.dialogRef.afterClosed();
+    }
+
+    pay(): void {
+
     }
 
     ngOnInit(): void {

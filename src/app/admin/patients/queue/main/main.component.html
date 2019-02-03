@@ -113,11 +113,8 @@
         <span [ngSwitch]='patient.queuedata.checkin.status'>
             <button (click)="showadminchoice(patient)" *ngSwitchCase="0" color="accent"
                     mat-raised-button>Choose Admin </button>
-            <button (click)="redirectadmin(patient)" *ngSwitchCase="1" color="accent"
+            <button (click)="redirectadmin(patient)" *ngSwitchDefault color="accent"
                     mat-raised-button>Redirect</button>
-            <button (click)="customizeInvoice(patient)" *ngSwitchCase="2" color="accent"
-                    mat-raised-button>View Invoice</button>
-            <button (click)="customizeInvoice(patient)" *ngSwitchCase="3" color="accent" mat-raised-button>Pay Invoice</button>
         </span>
         </mat-cell>
 

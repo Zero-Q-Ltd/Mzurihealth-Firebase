@@ -29,10 +29,10 @@ export class InvoiceCustomizationComponent implements OnInit {
     clickedprocedure: Procedureperformed = {...emptyprocedureperformed};
     hospitaladmins: Array<HospitalAdmin> = [];
     proceduresdatasouce: MatTableDataSource<Procedureperformed> = new MatTableDataSource<Procedureperformed>();
-
+    multipayment = false;
     procedureheaders = ['name', 'admin-time', 'payment-method', 'cost'];
     paymentmethodheaders = ['channel', 'amount', 'transactionid'];
-
+    selectedchannel : PaymentChannel
     constructor(private queue: QueueService,
                 private hospital: HospitalService,
                 private visitservice: PatientvisitService,
@@ -86,7 +86,7 @@ export class InvoiceCustomizationComponent implements OnInit {
                 return value.customprocedure.id === customprocedureid && value.customprocedure.custominsuranceprice;
             })) {
                 return this.procedureservice.hospitalprocedures.value.find(value => {
-                    return value.customprocedure.id === customprocedureid && Object.keys(value.customprocedure.insuranceprices[insuranceid]).length > 0;
+                    return value.customprocedure.id === customprocedureid && !!value.customprocedure.insuranceprices[insuranceid];
                 }).customprocedure.insuranceprices[insuranceid].price;
 
             } else {
@@ -134,6 +134,67 @@ export class InvoiceCustomizationComponent implements OnInit {
                 body: 'Coming soon...'
             });
             this.patientdata.queuedata.payment.splitpayment = false;
+        }, 800);
+
+    }
+
+    setchannel(channel: PaymentChannel): void {
+        this.selectedchannel = channel
+        const isinsurance = channel.name === 'insurance';
+        let total = 0;
+        this.patientdata.queuedata.procedures.map(value => {
+            const amount = this.getpaymentamount(value.customprocedureid);
+            value.payment = {
+                amount: amount,
+                methods: [{
+                    amount: amount,
+                    channelid: channel.id,
+                    methidid: '',
+                    transactionid: ''
+                }],
+                hasinsurance: isinsurance
+            };
+            total *= amount;
+        });
+        this.patientdata.queuedata.payment.total = total;
+    }
+
+    selectinsurance(insuranceid: string) : void {
+        let total = 0;
+        this.patientdata.queuedata.procedures.map(value => {
+            const amount = this.getpaymentamount(value.customprocedureid);
+            value.payment = {
+                amount: amount,
+                methods: [{
+                    amount: amount,
+                    channelid: '',
+                    methidid: insuranceid,
+                    transactionid: ''
+                }],
+                hasinsurance: true
+            };
+            total *= amount;
+        });
+        this.patientdata.queuedata.payment.total = total;
+    }
+
+
+    channelconfigured(channelid: string): boolean {
+        return !!this.hospitalmethods.filter(value => {
+            return value.paymentchannelid === channelid;
+        });
+    }
+
+    togglemultipayment(): void {
+
+        setTimeout(() => {
+            this.notifications.notify({
+                placement: 'centre',
+                title: 'Info',
+                alert_type: 'info',
+                body: 'Coming soon...'
+            });
+            this.multipayment = false;
         }, 800);
 
     }

@@ -1,10 +1,16 @@
 <div fxFlex="1 1 100%"
      fxLayout="row wrap"
      fxLayoutAlign="center">
-    <div fxFlex="100">
+    <div fxFlex="50">
         <mat-slide-toggle (toggleChange)="togglechange()" [(ngModel)]="patientdata.queuedata.payment.splitpayment"
                           labelPosition="before"
                           mattooltip="Coming soon...">Split Payment Per procedure
+        </mat-slide-toggle>
+    </div>
+    <div fxFlex="50">
+        <mat-slide-toggle (toggleChange)="togglemultipayment()" [(ngModel)]="multipayment"
+                          labelPosition="before"
+                          mattooltip="Coming soon...">Multiple Payments
         </mat-slide-toggle>
     </div>
     <div class="mat-elevation-z8" fxFlex="50">
@@ -80,6 +86,7 @@
 
     </div>
     <div class="mat-elevation-z8" fxFlex="50">
+
         <div *ngIf="patientdata.queuedata.payment.splitpayment">
             <div *ngIf="clickedprocedure.customprocedureid">
                 <table class="simple invoice-table">
@@ -125,17 +132,22 @@
                 <tr *ngFor="let channel of allpaymentchannels">
                     <td>
                         <div class="title">
-                            <mat-checkbox> {{channel.name}}</mat-checkbox>
+                            <mat-checkbox (change)="setchannel(channel)"
+                                          [checked]="multipayment? false : selectedchannel === channel"> {{channel.name}}
+                            </mat-checkbox>
                         </div>
                     </td>
                     <td class="text-right">
-
+                        {{patientdata.queuedata.payment.total}}
                     </td>
-                    <td class="text-right">
 
-                    </td>
                     <td class="text-right">
-                        {{channel.name}}
+                        <mat-form-field appearance="outline" class="pr-4 " fxFlex="100">
+                            <mat-label>Transaction code</mat-label>
+                            <input [disabled]="!channel.transactiondetailcollection" matInput required>
+                            <mat-icon class="secondary-text" matSuffix>beenhere</mat-icon>
+                            <mat-error></mat-error>
+                        </mat-form-field>
                     </td>
                 </tr>
                 </tbody>

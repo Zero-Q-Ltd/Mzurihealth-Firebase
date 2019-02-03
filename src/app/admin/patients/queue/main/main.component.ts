@@ -3,7 +3,6 @@ import {MatDialog, MatDialogRef, MatTableDataSource} from '@angular/material';
 import {fuseAnimations} from '../../../../../@fuse/animations';
 import {QueueService} from '../../../services/queue.service';
 import {MergedPatient_QueueModel} from '../../../../models/MergedPatient_Queue.model';
-import {InvoiceComponent} from '../../invoice/invoice.component';
 import {AdminSelectionComponent} from '../admin-selection/admin-selection.component';
 import {HospitalAdmin} from '../../../../models/HospitalAdmin';
 import {FuseConfirmDialogComponent} from '../../../../../@fuse/components/confirm-dialog/confirm-dialog.component';
@@ -66,7 +65,8 @@ export class MainComponent implements OnInit {
     customizeInvoice(data: MergedPatient_QueueModel): void {
         event.stopPropagation();
         this.dialogRef = this._matDialog.open(InvoiceCustomizationComponent, {
-            data: data.patientdata.id
+            data: data.patientdata.id,
+            width: '90%'
         });
 
         this.dialogRef.afterClosed();

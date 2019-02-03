@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {emptyproceduresperformed, Procedureperformed, Proceduresperformed} from '../../../../../models/Procedureperformed';
+import {emptyproceduresperformed, Procedureperformed} from '../../../../../models/Procedureperformed';
 import {HospitalAdmin} from '../../../../../models/HospitalAdmin';
 import {HospitalService} from '../../../../services/hospital.service';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
@@ -20,6 +20,7 @@ import {MergedPatient_QueueModel} from '../../../../../models/MergedPatient_Queu
 import {AdminSelectionComponent} from '../../admin-selection/admin-selection.component';
 import {MatDialog, MatDialogRef} from '@angular/material';
 import {LocalcommunicationService} from '../localcommunication.service';
+import {emptypatientvisit, PatientVisit} from '../../../../../models/PatientVisit';
 
 @Component({
     selector: 'patient-today',
@@ -29,7 +30,6 @@ import {LocalcommunicationService} from '../localcommunication.service';
 
 })
 export class TodayComponent implements OnInit {
-    currentvisitprocedures: Proceduresperformed = {...emptyproceduresperformed};
     procedureperformed: FormGroup;
     vitalsform: FormGroup;
     hospitalprocedures: Array<MergedProcedureModel> = [];
@@ -46,6 +46,7 @@ export class TodayComponent implements OnInit {
     dialogRef: MatDialogRef<any>;
     imeanzilishwa: BehaviorSubject<boolean> = new BehaviorSubject(false);
     hospitaladmins: Array<HospitalAdmin> = [];
+    currentvisit: PatientVisit = {...emptypatientvisit};
 
     constructor(private hospitalservice: HospitalService,
                 private formBuilder: FormBuilder,
@@ -53,6 +54,7 @@ export class TodayComponent implements OnInit {
                 private procedureservice: ProceduresService,
                 private queue: QueueService,
                 public _matDialog: MatDialog,
+                private patientvisitservice: PatientvisitService,
                 private patientvisitService: PatientvisitService,
                 private communication: LocalcommunicationService,) {
 
@@ -62,9 +64,7 @@ export class TodayComponent implements OnInit {
         hospitalservice.hospitaladmins.subscribe(admins => {
             this.hospitaladmins = admins;
         });
-        patientvisitService.currentvisitprocedures.subscribe(value => {
-            this.currentvisitprocedures = value;
-        });
+
         procedureservice.hospitalprocedures.subscribe(mergedprocedures => {
             this.hospitalprocedures = mergedprocedures;
         });
@@ -72,6 +72,9 @@ export class TodayComponent implements OnInit {
             this.currentpatient = value;
             this.anzisha();
             this.imeanzilishwa.next(true);
+        });
+        patientvisitservice.currentvisit.subscribe(visit => {
+            this.currentvisit = visit;
         });
         this.filteredprocedures = this.procedureselection.valueChanges
             .pipe(
@@ -346,12 +349,16 @@ export class TodayComponent implements OnInit {
         return data ? data.rawprocedure.name : '';
     }
 
+    saveprescription(): void {
+
+    }
+
     addprocedure(): void {
         if (this.procedureperformed.valid) {
             this.expand = false;
             const procedure: Procedureperformed = Object.assign({}, {...emptyproceduresperformed}, this.procedureperformed.getRawValue());
             const originaldata: MergedProcedureModel = this.procedureselection.getRawValue().selection;
-            this.patientvisitService.addprocedure(originaldata, procedure);
+            this.patientvisitService.addprocedure(this.currentvisit.id, originaldata, procedure);
         }
     }
 

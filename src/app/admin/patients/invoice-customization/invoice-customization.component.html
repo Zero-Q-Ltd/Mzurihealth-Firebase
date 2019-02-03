@@ -1,31 +1,147 @@
-<div *ngIf="imeanzilisha" fxFlex="1 1 100%"
+<div fxFlex="1 1 100%"
      fxLayout="row wrap"
      fxLayoutAlign="center">
-    <div fxFlex="50"> Procedures
-        <div *ngFor="let procedure of proceduredata.procedures" class="pb-8">
-            <mat-card>
-                <mat-card-header>
-                    <mat-card-title>{{procedure.name}}</mat-card-title>
-                    <mat-card-subtitle>                    {{hospitaladmins| adminName : procedure.adminid }}
-                        : {{procedure.metadata.lastedit?.toDate().toDateString()}}</mat-card-subtitle>
-                </mat-card-header>
-                <mat-card-content>
-                    <p>
-                        {{procedure.results}}
-                    </p>
-                    <p>
-                        {{procedure.notes}}
-                    </p>
+    <div fxFlex="100">
+        <mat-slide-toggle (toggleChange)="togglechange()" [(ngModel)]="patientdata.queuedata.payment.splitpayment"
+                          labelPosition="before"
+                          mattooltip="Coming soon...">Split Payment Per procedure
+        </mat-slide-toggle>
+    </div>
+    <div class="mat-elevation-z8" fxFlex="50">
+        <mat-table #table
+                   [@animateStagger]="{value:'50'}"
+                   [dataSource]="proceduresdatasouce"
+                   class="patients-table"
+                   fusePerfectScrollbar
+                   matSort>
 
-                </mat-card-content>
-            </mat-card>
+            <!-- fileNo Column -->
+            <ng-container matColumnDef="name">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
+                <mat-cell *matCellDef="let procedure">
+                    <p>
+                        {{procedure.name}}
+                    </p>
+                </mat-cell>
+            </ng-container>
+
+
+            <!-- Price Column -->
+            <ng-container matColumnDef="admin-time">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Admin
+                </mat-header-cell>
+                <mat-cell *matCellDef="let procedure">
+                    <p>
+                        {{hospitaladmins| adminName : procedure.adminid }}
+                        {{procedure.metadata.lastedit?.toDate()}}
+                    </p>
+                </mat-cell>
+            </ng-container>
+
+
+            <!-- Price Column -->
+            <ng-container matColumnDef="payment-method">
+                <mat-header-cell *matHeaderCellDef>Channel
+                </mat-header-cell>
+                <mat-cell *matCellDef="let procedure">
+                    <p class="price text-truncate">
+
+                    </p>
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="cost">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Cost
+                </mat-header-cell>
+                <mat-cell *matCellDef="let procedure">
+                    <p>
+                        {{procedure.payment.amount}}
+                    </p>
+                </mat-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="procedureheaders; sticky:true"></mat-header-row>
+
+            <mat-row (click)="selectprocedure(procedure)"
+                     *matRowDef="let procedure; columns: procedureheaders;"
+                     [@animate]="{value:'*',params:{y:'100%'}}"
+                     class="product"
+                     matRipple>
+            </mat-row>
+
+        </mat-table>
+
+        <mat-paginator #paginator
+                       [length]="proceduresdatasouce.data.length"
+                       [pageIndex]="0"
+                       [pageSizeOptions]="[5, 10, 25, 100]"
+                       [pageSize]="10">
+        </mat-paginator>
+
+    </div>
+    <div class="mat-elevation-z8" fxFlex="50">
+        <div *ngIf="patientdata.queuedata.payment.splitpayment">
+            <div *ngIf="clickedprocedure.customprocedureid">
+                <table class="simple invoice-table">
+                    <thead>
+                    <tr>
+                        <th class="text-right">Payment Channel</th>
+                        <th class="text-right">Amount</th>
+                        <th class="text-right">Transaction Code</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let channel of allpaymentchannels">
+                        <td>
+                            <div class="title">
+                                {{channel.name}}
+                            </div>
+                        </td>
+                        <td class="text-right">
+
+                        </td>
+                        <td class="text-right">
+
+                        </td>
+                    </tr>
+
+                    </tbody>
+                </table>
+            </div>
+            <div *ngIf="!clickedprocedure.customprocedureid">
+                <h1>Select procedure to customize</h1>
+            </div>
+        </div>
+        <div *ngIf="!patientdata.queuedata.payment.splitpayment">
+            <table class="simple invoice-table">
+                <thead>
+                <tr>
+                    <th class="text-right">Payment Channel</th>
+                    <th class="text-right">Amount</th>
+                    <th class="text-right">Transaction Code</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let channel of allpaymentchannels">
+                    <td>
+                        <div class="title">
+                            <mat-checkbox> {{channel.name}}</mat-checkbox>
+                        </div>
+                    </td>
+                    <td class="text-right">
+
+                    </td>
+                    <td class="text-right">
+
+                    </td>
+                    <td class="text-right">
+                        {{channel.name}}
+                    </td>
+                </tr>
+                </tbody>
+            </table>
         </div>
     </div>
-    <div fxFlex="50">
-        Payment methods
-        <div>
-
-        </div>
-    </div>
+    <button (click)="preview()" color="accent" mat-raised-button>Print Preview</button>
+    <button (click)="pay()" color="accent" mat-raised-button>Mark as Paid</button>
 </div>
-<mat-progress-spinner *ngIf="!imeanzilisha"></mat-progress-spinner>

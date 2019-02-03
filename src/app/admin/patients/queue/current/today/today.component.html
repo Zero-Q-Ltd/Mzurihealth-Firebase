@@ -171,12 +171,12 @@
                     Procedures Performed
                 </mat-panel-title>
                 <mat-panel-description>
-                    {{currentvisitprocedures.procedures.length}}
+                    {{currentvisit.procedures.length}}
                 </mat-panel-description>
             </mat-expansion-panel-header>
             <ng-template matExpansionPanelContent>
 
-                <div *ngFor="let procedure of currentvisitprocedures.procedures" class="pb-8">
+                <div *ngFor="let procedure of currentvisit.procedures" class="pb-8">
                     <mat-card>
                         <mat-card-header>
                             <mat-card-title>{{procedure.name}}</mat-card-title>
@@ -287,6 +287,34 @@
 
                 </mat-horizontal-stepper>
                 <!-- / HORIZONTAL STEPPER -->
+            </ng-template>
+        </mat-expansion-panel>
+        <mat-expansion-panel>
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    Describe Prescription
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <ng-template matExpansionPanelContent>
+                <div >
+                    <div >
+                        <mat-form-field appearance="outline">
+                            <mat-label>Prescription</mat-label>
+                            <textarea [(ngModel)]="currentpatient.queuedata.prescription"
+                                      cdkAutosizeMaxRows="25"
+                                      cdkAutosizeMinRows="2"
+                                      cdkTextareaAutosize
+                                      matInput
+                                      required>
+                        </textarea>
+                        </mat-form-field>
+                    </div>
+                    <div >
+                        <button class="mr-8" color="accent" mat-raised-button type="button" (click)="saveprescription()">
+                            Save
+                        </button>
+                    </div>
+                </div>
             </ng-template>
         </mat-expansion-panel>
     </mat-accordion>

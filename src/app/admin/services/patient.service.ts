@@ -164,8 +164,14 @@ export class PatientService {
                 }));
             })
         ).subscribe(mergedData => {
-            this.hospitalpatients.next(mergedData);
+            this.hospitalpatients.next(mergedData.sort((a: Patient, b: Patient) => {
+                return this.getTime(a.metadata.date.toDate()) - this.getTime(b.metadata.date.toDate());
+            }));
         });
+    }
+
+    private getTime(date?: Date): any {
+        return date != null ? date.getTime() : 0;
     }
 
     addPatientToQueue({type, description}: { type: string, description: string }, patient: Patient): Promise<void> {

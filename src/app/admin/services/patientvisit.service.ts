@@ -55,6 +55,11 @@ export class PatientvisitService {
             date: firestore.Timestamp.now()
         };
         per.adminid = this.adminid;
+        per.payment = {
+            amount: 0,
+            hasinsurance: false,
+            methods: []
+        };
         per.originalprocedureid = procedure.rawprocedure.id;
         per.customprocedureid = procedure.customprocedure.id;
         this.db.collection('hospitalvisits').doc(visitid).update({
@@ -106,7 +111,13 @@ export class PatientvisitService {
             status: false,
             total: 0
         };
-        return this.db.collection('hospitalvisits').add(visit);
+        visit.procedures = [];
+        return this.db.collection('hospitalvisits').add(visit).then(() => {
+                return this.db.collection('hospitals').doc(this.hospitalid).update({
+                    invoicecount: this.hospitalService.activehospital.value.invoicecount + 1
+                });
+            }
+        );
     }
 
     editpatientvisit(visit: PatientVisit): any {
@@ -127,8 +138,8 @@ export class PatientvisitService {
             status: 4,
             admin: null,
         };
-        visit.payment.status = true
-        return this.db.collection('hospitalvisits').doc(visit.id).update(visit).then();
+        visit.payment.status = true;
+        return this.db.collection('hospitalvisits').doc(visit.id).update(visit);
     }
 
     terminatepatientvisit(visitid): any {

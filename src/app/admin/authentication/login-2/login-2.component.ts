@@ -58,7 +58,7 @@ export class Login2Component implements OnInit {
             }
         };
         this.adminservice.observableuserdata.subscribe((admin: HospitalAdmin) => {
-            if (admin.id) {
+            if (admin && admin.id) {
                 this.router.navigate(['/admin']);
             }
         });

@@ -14,7 +14,6 @@ export interface HospitalAdmin {
         categoryid: string
         level: number
         availability: number // Whether on break , away or available
-        occupied: string // iud of patient
     };
     profiledata?: {
         bio: string,
@@ -33,7 +32,6 @@ export const emptyadmin: HospitalAdmin = {
         level: null,
         hospitalid: null,
         availability: 0,
-        occupied: null,
         categoryid: null
     },
     status: null,

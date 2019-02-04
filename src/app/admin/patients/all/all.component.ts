@@ -92,22 +92,22 @@ export class AllComponent implements OnInit {
                      * Save
                      */
                     case 'save':
-                        this.patientservice.addPatientToQueue(formData.getRawValue(), patient)
-                            .then(() => {
-                                // navigate to queues
-                                this.router.navigate(['admin/patients/queue']);
-                            }).catch(error => {
-                            console.log('form error');
-                            console.log(error);
-
-
-                            this.notificationservice.notify({
-                                alert_type: 'error',
-                                body: 'An error occurred',
-                                title: 'ERROR',
-                                placement: 'center'
-                            });
-                        });
+                        // this.patientservice.addPatientToQueue(formData.getRawValue(), patient)
+                        //     .then(() => {
+                        //         // navigate to queues
+                        //         this.router.navigate(['admin/patients/queue']);
+                        //     }).catch(error => {
+                        //     console.log('form error');
+                        //     console.log(error);
+                        //
+                        //
+                        //     this.notificationservice.notify({
+                        //         alert_type: 'error',
+                        //         body: 'An error occurred',
+                        //         title: 'ERROR',
+                        //         placement: 'center'
+                        //     });
+                        // });
 
                         break;
                 }

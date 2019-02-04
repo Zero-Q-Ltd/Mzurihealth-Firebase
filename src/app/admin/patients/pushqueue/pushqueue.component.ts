@@ -2,6 +2,9 @@ import {Component, Inject, OnInit, ViewEncapsulation} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {Patient} from '../../../models/Patient';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
+import {PaymentmethodService} from '../../services/paymentmethod.service';
+import {PaymentChannel, Paymentmethods} from '../../../models/PaymentChannel';
+import {PatientService} from '../../services/patient.service';
 
 @Component({
     selector: 'app-pushqueue',
@@ -14,14 +17,30 @@ export class PushqueueComponent implements OnInit {
     queueForm: FormGroup;
     patient: Patient;
     dialogTitle: string;
+    paymentMethods: Array<PaymentChannel>;
+    allInsurance: any;
 
 
     constructor(private _formBuilder: FormBuilder, @Inject(MAT_DIALOG_DATA) private _data: any,
-                public matDialogRef: MatDialogRef<PushqueueComponent>) {
+                public matDialogRef: MatDialogRef<PushqueueComponent>,
+                private paymentmethodService: PaymentmethodService, private patientService: PatientService) {
+
         this.patient = _data.patient;
         this.dialogTitle = 'Queue Patient';
+        this.paymentmethodService.allpaymentchannels.subscribe(payments => {
+            this.paymentMethods = payments;
+        });
+
+        this.paymentmethodService.allinsurance.subscribe(insurance => {
+            this.allInsurance = insurance;
+        });
 
         this.queueForm = this.createQueueForm();
+
+        /**
+         * listen for insurance selection.
+         * */
+        this.listenForInsurance();
     }
 
     ngOnInit(): void {
@@ -33,5 +52,23 @@ export class PushqueueComponent implements OnInit {
             description: ['', Validators.required]
         });
     }
+
+    private listenForInsurance(): void {
+        this.queueForm.get('type').valueChanges.subscribe(value => {
+            if (value === 'G3IouO1Z93KA52mJBqnW') {
+                // this.patientService.
+                this.patientService.getSinglePatient(this.patient.id).subscribe(pData => {
+                    pData.insurance.map((insurance: { id: string, insuranceno: string }) => {
+
+                        const data = Object.assign({}, insurance, {name: this.allInsurance[insurance.id].name});
+
+                        console.log(data);
+                    });
+                });
+
+            }
+        });
+    }
+
 
 }

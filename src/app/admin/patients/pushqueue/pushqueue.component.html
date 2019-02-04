@@ -39,14 +39,8 @@
                 <mat-form-field appearance="outline" fxFlex>
                     <mat-label>Payment type</mat-label>
                     <mat-select formControlName="type" required>
-                        <mat-option value="0">
-                            Cash Payment
-                        </mat-option>
-                        <mat-option value="1">
-                            Insurance Payment
-                        </mat-option>
-                        <mat-option value="2">
-                            Insurance/Cash Payment
+                        <mat-option *ngFor="let option of paymentMethods" [value]="option.id">
+                            {{option.name}}
                         </mat-option>
                     </mat-select>
                     <mat-icon matSuffix class="secondary-text">account_circle</mat-icon>

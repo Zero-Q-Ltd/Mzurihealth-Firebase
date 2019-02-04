@@ -133,14 +133,15 @@
                     <td>
                         <div class="title">
                             <mat-checkbox (change)="setchannel(channel)"
-                                          [checked]="multipayment? false : selectedchannel === channel"> {{channel.name}}
+                                          [checked]="multipayment? false : patientdata.queuedata.payment?.singlepayment?.channelid === channel.id">
+                                {{channel.name}}
                             </mat-checkbox>
                         </div>
                     </td>
                     <td class="text-right">
                         {{patientdata.queuedata.payment.total}}
                     </td>
-                    <td *ngIf="channel.name === 'insurance' && selectedchannel==channel">
+                    <td *ngIf="channel.name === 'insurance' &&  patientdata.queuedata.payment?.singlepayment?.channelid === channel.id">
                         <div *ngFor="let insurance of patientdata.patientdata.insurance">
                             <mat-checkbox (change)="selectinsurance(insurance)"
                                           [checked]="selectedinsurance === insurance"> {{insurancename(insurance.id)}}
@@ -148,7 +149,8 @@
                         </div>
                     </td>
 
-                    <td *ngIf="channel.name!== 'insurance'  && selectedchannel==channel" class="text-right">
+                    <td *ngIf="channel.name!== 'insurance'  &&  patientdata.queuedata.payment?.singlepayment?.channelid === channel.id"
+                        class="text-right">
                         <div *ngFor="let method of getcativechannelmethods(channel.id)">
                             <mat-form-field appearance="outline" class="pr-4 " fxFlex="100">
                                 <mat-label>Method</mat-label>
@@ -167,7 +169,8 @@
 
                             <mat-form-field appearance="outline" class="pr-4 " fxFlex="100">
                                 <mat-label>Transaction Code</mat-label>
-                                <input [disabled]="!channel.transactiondetailcollection" matInput required>
+                                <input [disabled]="!channel.transactiondetailcollection"
+                                       [(ngModel)]="patientdata.queuedata.payment.singlepayment.transactionid" matInput required>
                                 <mat-icon class="secondary-text" matSuffix>beenhere</mat-icon>
                                 <mat-error></mat-error>
                             </mat-form-field>

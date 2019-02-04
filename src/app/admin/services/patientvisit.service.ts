@@ -124,6 +124,15 @@ export class PatientvisitService {
         });
     }
 
+    payandexit(visit: PatientVisit): any {
+        visit.checkin = {
+            status: 4,
+            admin: null,
+        };
+        visit.payment.status = true
+        return this.db.collection('hospitalvisits').doc(visit.id).update(visit).then();
+    }
+
     terminatepatientvisit(visitid): any {
         return this.db.collection('hospitalvisits').doc(visitid).update({
             checkin: {

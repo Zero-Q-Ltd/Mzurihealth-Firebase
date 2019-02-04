@@ -13,6 +13,7 @@ import {HospitalAdmin} from '../../../models/HospitalAdmin';
 import {fuseAnimations} from '../../../../@fuse/animations';
 import {ProceduresService} from '../../services/procedures.service';
 import {NotificationService} from '../../../shared/services/notifications.service';
+import {FuseConfirmDialogComponent} from '../../../../@fuse/components/confirm-dialog/confirm-dialog.component';
 
 @Component({
     selector: 'app-invoice-payment',
@@ -29,14 +30,12 @@ export class InvoiceCustomizationComponent implements OnInit {
     clickedprocedure: Procedureperformed = {...emptyprocedureperformed};
     hospitaladmins: Array<HospitalAdmin> = [];
     proceduresdatasouce: MatTableDataSource<Procedureperformed> = new MatTableDataSource<Procedureperformed>();
-    multipayment = false;
     procedureheaders = ['name', 'admin-time', 'payment-method', 'cost'];
     paymentmethodheaders = ['channel', 'amount', 'transactionid'];
-    selectedchannel: PaymentChannel;
-    selectedinsurance: {
-        id: string;
-        insuranceno: string;
-    };
+    multipayment = false;
+
+    confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
+
 
     constructor(private queue: QueueService,
                 private hospital: HospitalService,
@@ -46,6 +45,7 @@ export class InvoiceCustomizationComponent implements OnInit {
                 public _matDialog: MatDialog,
                 private procedureservice: ProceduresService,
                 private notifications: NotificationService,
+                public thisdialogRef: MatDialogRef<InvoiceCustomizationComponent>,
                 @Inject(MAT_DIALOG_DATA) public patientid: string) {
         /**
          * Subscribe so that other admin changes are immediately reflected
@@ -141,10 +141,15 @@ export class InvoiceCustomizationComponent implements OnInit {
     }
 
     setchannel(channel: PaymentChannel): void {
-        this.selectedchannel = channel;
+        this.patientdata.queuedata.payment.singlepayment = {
+            amount: 0,
+            channelid: channel.id,
+            methidid: '',
+            transactionid: ''
+        };
         const isinsurance = channel.name === 'insurance';
         if (!isinsurance) {
-            this.selectedinsurance = null;
+            this.patientdata.queuedata.payment.hasinsurance = null;
         }
         let total = 0;
         this.patientdata.queuedata.procedures.map(value => {
@@ -184,7 +189,7 @@ export class InvoiceCustomizationComponent implements OnInit {
 
 
     selectinsurance(insurance): void {
-        this.selectedinsurance = insurance;
+        this.patientdata.queuedata.payment.hasinsurance = true;
         let total = 0;
         this.patientdata.queuedata.procedures.map(value => {
             const amount = this.getpaymentamount(value.customprocedureid, insurance.id);
@@ -201,6 +206,7 @@ export class InvoiceCustomizationComponent implements OnInit {
             total += amount;
         });
         this.patientdata.queuedata.payment.total = total;
+        this.patientdata.queuedata.payment.singlepayment.amount = total;
     }
 
 
@@ -225,7 +231,16 @@ export class InvoiceCustomizationComponent implements OnInit {
     }
 
     pay(): void {
-
+        this.confirmDialogRef = this._matDialog.open(FuseConfirmDialogComponent, {
+            disableClose: false
+        });
+        this.confirmDialogRef.componentInstance.confirmMessage = 'Are you sure you want to pay for the Invoice and exit the patient??';
+        this.confirmDialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                this.visitservice.payandexit(this.patientdata.queuedata);
+                this.thisdialogRef.close();
+            }
+        });
     }
 
     ngOnInit(): void {

@@ -20,25 +20,6 @@ import 'rxjs/add/observable/empty';
     providedIn: 'root'
 })
 export class PatientService {
-    currentpatient: {
-        patientdata: Patient, patienthistory: PatientVisit[], todayhistoryid: string,
-        patientnotes: Patientnote[], todayprocedures: Procedureperformed[]
-    } = {
-        patientdata: null,
-        patienthistory: [],
-        patientnotes: [],
-        todayprocedures: [],
-        todayhistoryid: null
-    };
-    caurrentpatientinvoice: {
-        patientdata: Patient,
-        todayprocedures: Map<string, { procedurehistory: Procedureperformed, procedureconfig: RawProcedure }>,
-        todayhistory: PatientVisit,
-    } = {
-        patientdata: null,
-        todayprocedures: new Map(),
-        todayhistory: null,
-    };
 
     activehospital: Hospital;
     userdata: HospitalAdmin;
@@ -61,114 +42,13 @@ export class PatientService {
         });
     }
 
-    getcurrentpatient(patientid ?): any {
-        if (patientid) {
-            this.db.firestore.collection('patients').doc(patientid).onSnapshot(patientdata => {
-                if (patientdata.exists) {
-                    let temppatientdata = patientdata.data();
-                    temppatientdata['id'] = patientdata.id;
-                    // console.log(temppatientdata)
-                    Object.assign(this.currentpatient.patientdata, temppatientdata);
-                    this.db.firestore.collection('patients').doc(patientid).collection('notes')
-                        .limit(10)
-                        .onSnapshot(patientnotes => {
-                            this.currentpatient.patientnotes = [];
-                            if (!patientnotes.empty) {
-                                patientnotes.forEach(note => {
-                                    let patientnote = note.data() as Patientnote;
-                                    this.currentpatient.patientnotes.push(Object.assign({}, patientnote));
-                                });
-                            }
 
-                        });
-                } else {
-                    // console.log('empty patient !!!')
-                    this.currentpatient = {
-                        patientdata: null,
-                        patienthistory: [],
-                        patientnotes: [],
-                        todayprocedures: [],
-                        todayhistoryid: null
-                    };
-                }
-            });
-            this.db.firestore.collection('History')
-                .where('patientid', '==', patientid)
-                .orderBy('timestamp')
-                .limit(10).onSnapshot(patienthistory => {
-                // console.log(patientid ,patienthistory)
-                // if(!patienthistory.empty){
-                this.currentpatient.patienthistory = [];
-                patienthistory.forEach(histo => {
-                    const patienthistory = histo.data() as PatientVisit;
-                    if (!patienthistory) {
-                        this.currentpatient.todayhistoryid = histo.id;
-                        this.db.firestore.collection('History').doc(histo.id).collection('procedures').onSnapshot(unsettledprocedures => {
-                            if (!unsettledprocedures.empty) {
-                                // unsettledprocedures.
-                                this.currentpatient.todayprocedures = [];
-                                unsettledprocedures.forEach(proceduredata => {
-                                    // console.log(procedure.data())
-                                    let procedure = proceduredata.data() as Procedureperformed;
-                                    this.currentpatient.todayprocedures.push(Object.assign({}, procedure));
-                                });
-                            }
-                        });
-                    }
-                    this.currentpatient.patienthistory.push(Object.assign({}, patienthistory));
-                    // console.log(history.data())
-                });
-                // this.currentpatient.patientdata = this.objectassign(patientdata.data())
-                // }
-                // console.log('emptyhistory')
-            });
-        } else {
-            //Reset the object
-            this.currentpatient = {
-                patientdata: null,
-                patienthistory: [],
-                patientnotes: [],
-                todayprocedures: [],
-                todayhistoryid: null
-            };
-        }
-
-    }
-
-    validatefileno(fileno: string): any {
-        return this.db.firestore.collection('hospitals').doc(this.activehospital.id).collection('filenumbers').where('no', '==', fileno);
-    }
-
-    acceptpatient(patient: Patient): any {
-        this.db.firestore.collection('patients').doc(patient.id).update({});
-    }
-
-    addpatientprocedure(procedurehistory: Procedureperformed): any {
-        console.log(procedurehistory);
-        return this.db.firestore.collection('History').doc(this.currentpatient.todayhistoryid).collection('procedures').add(procedurehistory);
-    }
-
-    addpatientnote(note: Patientnote): any {
-        return this.db.firestore.collection('patients').doc(this.currentpatient.patientdata.id).collection('notes').add(note);
-    }
-
-    addpatientprescription(prescrip): any {
-        console.log(prescrip);
-        let batch = this.db.firestore.batch();
-        batch.update(this.db.firestore.collection('History').doc(this.currentpatient.todayhistoryid), {prescription: prescrip, status: 2});
-        let temp = {};
-
-        batch.update(this.db.firestore.collection('hospitals').doc(this.activehospital.id).collection('queue').doc(this.userdata.data.uid),
-            {
-                [this.currentpatient.patientdata.id]: {
-                    timestamp: Number(moment()),
-                    status: 2
-                }
-            });
-        let config = this.userdata.config;
-        config.occupied = '';
-        batch.update(this.db.firestore.collection('hospitaladmins').doc(this.userdata.data.uid), {config: config});
-        return batch.commit();
+    getSinglePatient(patientID: string): Observable<Patient> {
+        return this.db.collection('patients').doc(patientID).snapshotChanges().pipe(
+            map(action => {
+                return Object.assign(emptypatient, action.payload.data()) as Patient;
+            })
+        );
     }
 
 
@@ -267,7 +147,8 @@ export class PatientService {
      * get all patients
      * */
     getHospitalPatients(): void {
-        this.db.collection('hospitals').doc(this.activehospital.id).collection('filenumbers', ref => ref.limit(100)).snapshotChanges().pipe(
+        this.db.collection('hospitals').doc(this.activehospital.id)
+            .collection('filenumbers', ref => ref.limit(100)).snapshotChanges().pipe(
             switchMap(f => {
                 return combineLatest(...f.map(t => {
                     const hospitalfile = t.payload.doc.data() as HospFile;
@@ -341,7 +222,8 @@ export class PatientService {
         this.db.firestore.runTransaction(transaction => {
             return transaction.get(patientDataRef).then(async sfDoc => {
                 if (!sfDoc.exists) {
-                    throw 'Document does not exist!';
+                    Promise.reject('Document does not exist!');
+                    return;
                 }
 
                 /**
@@ -578,5 +460,10 @@ export class PatientService {
             });
         });
     }
+
+    /*
+    *
+    * **/
+
 
 }

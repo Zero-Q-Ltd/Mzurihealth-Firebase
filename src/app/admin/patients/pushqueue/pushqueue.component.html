@@ -34,15 +34,14 @@
                 </mat-form-field>
             </div>
 
-            <div fxLayout="row" fxLayoutAlign="start start"
-                 *ngFor="let types of queueForm.get('type').controls; let i = index;" formArrayName="type">
+            <div fxLayout="row" fxLayoutAlign="start start">
 
-                <div fxLayout="row" fxLayoutAlign="start start" [formGroupName]="i" fxFlex="100">
+                <div fxLayout="row" fxLayoutAlign="start start" fxFlex="100">
 
                     <mat-form-field appearance="outline" fxFlex>
                         <mat-label>Payment type</mat-label>
-                        <mat-select required formControlName="typeCtr">
-                            <mat-option *ngFor="let option of paymentMethods" [value]="option.id">
+                        <mat-select required formControlName="type">
+                            <mat-option *ngFor="let option of paymentMethods" [value]="option">
                                 {{option.name}}
                             </mat-option>
                         </mat-select>
@@ -51,40 +50,6 @@
                 </div>
 
             </div>
-
-
-            <!--<section formArrayName="insurance" fxLayout="row"-->
-            <!--*ngFor="let item of queueForm.get('insurance').controls; let i = index;">-->
-
-            <!--<div fxLayout="row" fxLayoutAlign="start start" [formGroupName]="i" fxFlex="70">-->
-            <!--<mat-form-field appearance="outline" fxFlex>-->
-            <!--<mat-label>Insurance Name</mat-label>-->
-            <!--<mat-icon matSuffix class="secondary-text">payment</mat-icon>-->
-
-            <!--<mat-select formControlName="insuranceControl" required>-->
-            <!--<mat-option *ngFor="let option of allInsurance | keyvalue"-->
-            <!--[value]="option?.key ">-->
-            <!--{{option.value.name |titlecase}}-->
-            <!--</mat-option>-->
-            <!--</mat-select>-->
-            <!--</mat-form-field>-->
-
-
-            <!--</div>-->
-
-            <!--<div fxLayout="row" fxLayoutAlign="start start" [formGroupName]="i" fxFlex="30">-->
-            <!--<button (click)="removeInsurance(i)" color="warn" mat-mini-fab type="button">-->
-            <!--<mat-icon>delete</mat-icon>-->
-            <!--</button>-->
-            <!--</div>-->
-            <!--</section>-->
-
-            <div fxLayout="row" fxLayoutAlign="start start">
-                <button (click)="addPayment()" color="accent" mat-mini-fab type="button">
-                    <mat-icon>add</mat-icon>
-                </button>
-            </div>
-
 
         </form>
 

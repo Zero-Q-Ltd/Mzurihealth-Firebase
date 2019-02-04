@@ -38,13 +38,6 @@ export class PushqueueComponent implements OnInit {
         });
 
         this.queueForm = this.createQueueForm();
-
-        /*
-       * init the insurance list
-       * **/
-        // this.insurance = this.queueForm.get('insurance') as FormArray;
-        this.payments = this.queueForm.get('type') as FormArray;
-
         /**
          * listen for insurance selection.
          * */
@@ -57,7 +50,7 @@ export class PushqueueComponent implements OnInit {
     createQueueForm(): FormGroup {
         return this._formBuilder.group({
             description: ['', Validators.required],
-            type: this._formBuilder.array([this.createPayment()])
+            type: ['', Validators.required]
         });
     }
 
@@ -87,19 +80,6 @@ export class PushqueueComponent implements OnInit {
         return this._formBuilder.group({
             typeCtr: ['', Validators.required]
         });
-    }
-
-    //
-    // addInsurance(): void {
-    //     this.insurance.push(this.createInsurance());
-    // }
-    //
-    // removeInsurance(index: number): void {
-    //     this.insurance.removeAt(index);
-    // }
-
-    addPayment(): void {
-        this.payments.push(this.createPayment());
     }
 
 }

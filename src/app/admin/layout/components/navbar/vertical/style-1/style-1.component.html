@@ -1,6 +1,6 @@
 <div [ngClass]="fuseConfig.layout.navbar.secondaryBackground" class="navbar-top">
     <div class="logo">
-        <img class="logo-icon" src="assets/images/logos/fuse.svg">
+        <img class="logo-icon" [src]="activehospital.logourl || 'assets/images/logos/fuse.svg'">
         <span class="logo-text secondary-text">{{activehospital.name | uppercase}}</span>
     </div>
     <div class="buttons">

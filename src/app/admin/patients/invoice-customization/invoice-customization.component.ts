@@ -56,7 +56,6 @@ export class InvoiceCustomizationComponent implements OnInit {
                     /**
                      * Initialize the prices
                      */
-                    console.log(value.queuedata.procedures);
                     if (!value.queuedata.payment.hasinsurance) {
                         value.queuedata.procedures = value.queuedata.procedures.map(value1 => {
                             value1.payment.amount = this.getpaymentamount(value1.customprocedureid);

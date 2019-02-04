@@ -7,6 +7,7 @@ import {emptyadmin, HospitalAdmin} from '../../models/HospitalAdmin';
 import {NotificationService} from '../../shared/services/notifications.service';
 import {AdminCategory} from '../../models/AdminCategory';
 import {AdminInvite} from '../../models/AdminInvite';
+import {firestore} from 'firebase';
 
 @Injectable({
     providedIn: 'root'
@@ -106,6 +107,10 @@ export class AdminService {
         return this.db.firestore.collection('admininvites').doc(inviteid).delete();
     }
 
+    signout(): void {
+        this.afAuth.auth.signOut();
+    }
+
     initusertypes(): void {
         // admincategorydata.admincategories.forEach(async (category: AdminCategory) => {
         //     const batch = this.db.firestore.batch();
@@ -121,35 +126,48 @@ export class AdminService {
         // });
     }
 
+    logout(): void {
+        this.afAuth.auth.signOut();
+    }
+
     checkinvite(user: firebase.User): void {
         const invitequery = this.db.firestore.collection('admininvites')
             .where('email', '==', user.email)
             .limit(1)
             .get().then(snapshot => {
                 if (!snapshot.empty) {
-                    snapshot.forEach(docdata => {
-                        this.firstlogin = true;
-                        this.notificationservice.notify({
-                            alert_type: 'success',
-                            body: 'Welcome ${user.displayName}',
-                            title: 'Welcome', duration: 1000,
-                            icon: '',
-                            placement: 'center'
-                        });
-                        // Update the details for the first time the user logs in
-                        let dataobject = {};
-                        dataobject = {};
-                        dataobject['email'] = user.email;
-                        dataobject['uid'] = user.uid;
-                        dataobject['photoURL'] = user.photoURL;
-                        dataobject['displayName'] = user.displayName;
-                        const copy = docdata.data();
-                        copy.data = dataobject;
-                        this.db.firestore.collection(`hospitaladmins`).doc(user.uid).set(copy).then(result => {
-                            if (this.activeurl === '/authentication/signin') {
-                                this.router.navigate(['/dashboard']);
-                            }
-                        });
+                    const invite = snapshot.docs[0].data() as AdminInvite;
+                    const newadmin: HospitalAdmin = {
+                        id: user.uid,
+                        data: {
+                            displayName: user.displayName,
+                            email: user.email,
+                            photoURL: user.photoURL,
+                            uid: user.uid
+                        },
+                        profiledata: {
+                            phone: '',
+                            address: '',
+                            age: '',
+                            bio: '',
+                            status: null
+                        },
+                        config: {
+                            level: invite.level,
+                            categoryid: invite.categoyid,
+                            availability: 0,
+                            hospitalid: invite.hospitalid
+                        },
+                        status: true,
+                        metadata: {
+                            date: firestore.Timestamp.now(),
+                            lastedit: firestore.Timestamp.now()
+                        }
+                    };
+                    this.db.firestore.collection(`hospitaladmins`).doc(user.uid).set(newadmin).then(result => {
+                        if (this.activeurl === '/authentication/signin') {
+                            this.router.navigate(['/dashboard']);
+                        }
                     });
                 } else {
                     // console.log('User does not exist!!')

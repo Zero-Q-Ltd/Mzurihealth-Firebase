@@ -74,6 +74,7 @@ export class TodayComponent implements OnInit {
             this.imeanzilishwa.next(true);
         });
         patientvisitservice.currentvisit.subscribe(visit => {
+            console.log(visit)
             this.currentvisit = visit;
         });
         this.filteredprocedures = this.procedureselection.valueChanges

@@ -1,13 +1,13 @@
-import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
-import { TranslateService } from '@ngx-translate/core';
+import {Component, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
+import {Subject} from 'rxjs';
+import {takeUntil} from 'rxjs/operators';
+import {TranslateService} from '@ngx-translate/core';
 import * as _ from 'lodash';
 
-import { FuseConfigService } from '@fuse/services/config.service';
-import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
+import {FuseConfigService} from '@fuse/services/config.service';
+import {FuseSidebarService} from '@fuse/components/sidebar/sidebar.service';
 
-import { navigation } from 'app/navigation/navigation';
+import {navigation} from 'app/navigation/navigation';
 import {emptyhospital, Hospital} from '../../../../models/Hospital';
 import {emptyadmin, HospitalAdmin} from '../../../../models/HospitalAdmin';
 import {AdminService} from '../../../services/admin.service';
@@ -190,6 +190,9 @@ export class ToolbarComponent implements OnInit, OnDestroy
     {
         // Do your search here...
         console.log(value);
+    }
+    logout() : void{
+        this.adminservice.logout();
     }
 
     /**

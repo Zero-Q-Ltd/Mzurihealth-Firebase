@@ -30,7 +30,7 @@
 
                     <div class="issuer accent" fxLayout="row" fxLayoutAlign="start center">
                         <div class="logo">
-                            <img src="../../../../assets/images/logos/fuse.svg">
+                            <img [src]="activehospital.logourl || '../../../../assets/images/logos/fuse.svg'">
                         </div>
 
                         <div class="info">
@@ -80,7 +80,8 @@
 
             <div class="footer">
                 <div>Please make your payment within 1 day of the date of issue of the date of our invoice
-                    or otherwise in accordance with any credit terms agreed between us via the following official channels
+                    or otherwise in accordance with any credit terms agreed between us via the following official
+                    channels
                     <table>
                         <tr *ngFor="let paymentchannel of activehospital.paymentmethods">
                             <td>{{allpaymentchannels | paymentmethod : paymentchannel.paymentchannelid :paymentchannel.paymentmethodid |titlecase}}</td>

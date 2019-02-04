@@ -21,6 +21,7 @@ export interface Hospital {
         email: string,
         address: string
     };
+    logourl: string;
     patientcount: number;
     invoicecount: number;
     metadata: Metadata;
@@ -35,6 +36,7 @@ export const emptyhospital: Hospital = {
         position: null,
         address: null
     },
+    logourl: null,
     status: null,
     contactdetails: {
         email: null,

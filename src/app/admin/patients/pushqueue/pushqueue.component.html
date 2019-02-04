@@ -34,19 +34,57 @@
                 </mat-form-field>
             </div>
 
-            <div fxLayout="row" fxLayoutAlign="start start">
+            <div fxLayout="row" fxLayoutAlign="start start"
+                 *ngFor="let types of queueForm.get('type').controls; let i = index;" formArrayName="type">
 
-                <mat-form-field appearance="outline" fxFlex>
-                    <mat-label>Payment type</mat-label>
-                    <mat-select formControlName="type" required>
-                        <mat-option *ngFor="let option of paymentMethods" [value]="option.id">
-                            {{option.name}}
-                        </mat-option>
-                    </mat-select>
-                    <mat-icon matSuffix class="secondary-text">account_circle</mat-icon>
-                </mat-form-field>
+                <div fxLayout="row" fxLayoutAlign="start start" [formGroupName]="i" fxFlex="100">
+
+                    <mat-form-field appearance="outline" fxFlex>
+                        <mat-label>Payment type</mat-label>
+                        <mat-select required formControlName="typeCtr">
+                            <mat-option *ngFor="let option of paymentMethods" [value]="option.id">
+                                {{option.name}}
+                            </mat-option>
+                        </mat-select>
+                        <mat-icon matSuffix class="secondary-text">account_circle</mat-icon>
+                    </mat-form-field>
+                </div>
 
             </div>
+
+
+            <!--<section formArrayName="insurance" fxLayout="row"-->
+            <!--*ngFor="let item of queueForm.get('insurance').controls; let i = index;">-->
+
+            <!--<div fxLayout="row" fxLayoutAlign="start start" [formGroupName]="i" fxFlex="70">-->
+            <!--<mat-form-field appearance="outline" fxFlex>-->
+            <!--<mat-label>Insurance Name</mat-label>-->
+            <!--<mat-icon matSuffix class="secondary-text">payment</mat-icon>-->
+
+            <!--<mat-select formControlName="insuranceControl" required>-->
+            <!--<mat-option *ngFor="let option of allInsurance | keyvalue"-->
+            <!--[value]="option?.key ">-->
+            <!--{{option.value.name |titlecase}}-->
+            <!--</mat-option>-->
+            <!--</mat-select>-->
+            <!--</mat-form-field>-->
+
+
+            <!--</div>-->
+
+            <!--<div fxLayout="row" fxLayoutAlign="start start" [formGroupName]="i" fxFlex="30">-->
+            <!--<button (click)="removeInsurance(i)" color="warn" mat-mini-fab type="button">-->
+            <!--<mat-icon>delete</mat-icon>-->
+            <!--</button>-->
+            <!--</div>-->
+            <!--</section>-->
+
+            <div fxLayout="row" fxLayoutAlign="start start">
+                <button (click)="addPayment()" color="accent" mat-mini-fab type="button">
+                    <mat-icon>add</mat-icon>
+                </button>
+            </div>
+
 
         </form>
 
@@ -57,11 +95,12 @@
 
         <button mat-button
                 class="save-button"
-                (click)="matDialogRef.close(['save', queueForm])"
                 [disabled]="queueForm.invalid"
+                (click)="matDialogRef.close(['save', queueForm])"
                 aria-label="SAVE">
             SAVE
         </button>
+
 
     </div>
 </div>

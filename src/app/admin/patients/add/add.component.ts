@@ -174,7 +174,7 @@ export class AddComponent implements OnInit {
 
 
     submitPatientsForm(): void {
-        console.log(this.personalinfo);
+
 
         if (this.patientsForm.valid) {
             this.patientservice.savePatient(this.patientsForm.getRawValue()).then(() => {

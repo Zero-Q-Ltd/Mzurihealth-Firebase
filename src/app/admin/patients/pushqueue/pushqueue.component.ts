@@ -1,5 +1,5 @@
 import {Component, Inject, OnInit, ViewEncapsulation} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {Patient} from '../../../models/Patient';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import {PaymentmethodService} from '../../services/paymentmethod.service';
@@ -19,6 +19,8 @@ export class PushqueueComponent implements OnInit {
     dialogTitle: string;
     paymentMethods: Array<PaymentChannel>;
     allInsurance: any;
+    private insurance: FormArray;
+    private payments: FormArray;
 
 
     constructor(private _formBuilder: FormBuilder, @Inject(MAT_DIALOG_DATA) private _data: any,
@@ -37,10 +39,16 @@ export class PushqueueComponent implements OnInit {
 
         this.queueForm = this.createQueueForm();
 
+        /*
+       * init the insurance list
+       * **/
+        // this.insurance = this.queueForm.get('insurance') as FormArray;
+        this.payments = this.queueForm.get('type') as FormArray;
+
         /**
          * listen for insurance selection.
          * */
-        this.listenForInsurance();
+        // this.listenForInsurance();
     }
 
     ngOnInit(): void {
@@ -48,27 +56,50 @@ export class PushqueueComponent implements OnInit {
 
     createQueueForm(): FormGroup {
         return this._formBuilder.group({
-            type: ['', Validators.required],
-            description: ['', Validators.required]
+            description: ['', Validators.required],
+            type: this._formBuilder.array([this.createPayment()])
         });
     }
 
-    private listenForInsurance(): void {
-        this.queueForm.get('type').valueChanges.subscribe(value => {
-            if (value === 'G3IouO1Z93KA52mJBqnW') {
-                // this.patientService.
-                this.patientService.getSinglePatient(this.patient.id).subscribe(pData => {
-                    pData.insurance.map((insurance: { id: string, insuranceno: string }) => {
+    // private listenForInsurance(): void {
+    //     this.queueForm.get('type').valueChanges.subscribe(value => {
+    //         if (value === 'G3IouO1Z93KA52mJBqnW') {
+    //             // this.patientService.
+    //             this.patientService.getSinglePatient(this.patient.id).subscribe(pData => {
+    //                 pData.insurance.map((insurance: { id: string, insuranceno: string }) => {
+    //
+    //                     const data = Object.assign({}, insurance, {name: this.allInsurance[insurance.id].name});
+    //                 });
+    //             });
+    //
+    //         }
+    //     });
+    // }
 
-                        const data = Object.assign({}, insurance, {name: this.allInsurance[insurance.id].name});
 
-                        console.log(data);
-                    });
-                });
-
-            }
+    private createInsurance(): FormGroup {
+        return this._formBuilder.group({
+            insuranceControl: new FormControl('', Validators.required)
         });
     }
 
+    private createPayment(): FormGroup {
+        return this._formBuilder.group({
+            typeCtr: ['', Validators.required]
+        });
+    }
+
+    //
+    // addInsurance(): void {
+    //     this.insurance.push(this.createInsurance());
+    // }
+    //
+    // removeInsurance(index: number): void {
+    //     this.insurance.removeAt(index);
+    // }
+
+    addPayment(): void {
+        this.payments.push(this.createPayment());
+    }
 
 }

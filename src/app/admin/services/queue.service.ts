@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {AngularFirestore} from '@angular/fire/firestore';
 import {HospitalService} from './hospital.service';
 import {AdminService} from './admin.service';
-import {BehaviorSubject, combineLatest} from 'rxjs';
+import {BehaviorSubject, combineLatest, of} from 'rxjs';
 import {emptypatient, Patient} from '../../models/Patient';
 import {HospitalAdmin} from '../../models/HospitalAdmin';
 import {PatientService} from './patient.service';
@@ -54,10 +54,16 @@ export class QueueService {
             .snapshotChanges().pipe(
             switchMap(f => {
                 return combineLatest(...f.map(t => {
+                    if (f.length === 0) {
+                        return of([]);
+                    }
                     const visit = t.payload.doc.data() as PatientVisit;
                     visit.id = t.payload.doc.id;
                     return this.db.collection('patients').doc(visit.patientid).snapshotChanges().pipe(
                         switchMap(patientdata => {
+                            if (!patientdata.payload.exists) {
+                                return of({... emptymergedQueueModel});
+                            }
                             const patient: Patient = Object.assign({}, {...emptypatient}, patientdata.payload.data());
                             patient.id = patientdata.payload.id;
                             // return {patientdata: Object.assign({}, emptypatient, patient), queuedata: visit};

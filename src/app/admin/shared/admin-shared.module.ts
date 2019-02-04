@@ -37,7 +37,6 @@ import {CommonModule} from '@angular/common';
 import { PaymentmethodPipe } from './paymentmethod.pipe';
 import { AgePipe } from './age.pipe';
 import { AdminNamePipe } from './reveal-admin.pipe';
-import printJS from 'print-js'
 
 @NgModule({
     imports: [

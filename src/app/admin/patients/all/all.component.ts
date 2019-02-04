@@ -87,10 +87,13 @@ export class AllComponent implements OnInit {
                 }
                 const actionType: string = response[0];
                 const formData: FormGroup = response[1];
+
+                console.log(formData.getRawValue());
                 switch (actionType) {
                     /**
                      * Save
                      */
+
                     case 'save':
                         // this.patientservice.addPatientToQueue(formData.getRawValue(), patient)
                         //     .then(() => {

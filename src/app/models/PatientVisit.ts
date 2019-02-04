@@ -25,7 +25,13 @@ export interface PatientVisit {
         splitpayment: boolean;
         total: number,
         status: boolean,
-        hasinsurance: boolean
+        hasinsurance: boolean,
+        singlepayment?: {
+            channelid: string;
+            amount: number;
+            methidid: string;
+            transactionid: string
+        }
     };
     id: string;
     invoiceid: number;

@@ -1,10 +1,16 @@
 <div fxFlex="1 1 100%"
      fxLayout="row wrap"
      fxLayoutAlign="center">
-    <div fxFlex="100">
+    <div fxFlex="50">
         <mat-slide-toggle (toggleChange)="togglechange()" [(ngModel)]="patientdata.queuedata.payment.splitpayment"
                           labelPosition="before"
                           mattooltip="Coming soon...">Split Payment Per procedure
+        </mat-slide-toggle>
+    </div>
+    <div fxFlex="50">
+        <mat-slide-toggle (toggleChange)="togglemultipayment()" [(ngModel)]="multipayment"
+                          labelPosition="before"
+                          mattooltip="Coming soon...">Multiple Payments
         </mat-slide-toggle>
     </div>
     <div class="mat-elevation-z8" fxFlex="50">
@@ -80,6 +86,7 @@
 
     </div>
     <div class="mat-elevation-z8" fxFlex="50">
+
         <div *ngIf="patientdata.queuedata.payment.splitpayment">
             <div *ngIf="clickedprocedure.customprocedureid">
                 <table class="simple invoice-table">
@@ -125,17 +132,49 @@
                 <tr *ngFor="let channel of allpaymentchannels">
                     <td>
                         <div class="title">
-                            <mat-checkbox> {{channel.name}}</mat-checkbox>
+                            <mat-checkbox (change)="setchannel(channel)"
+                                          [checked]="multipayment? false : patientdata.queuedata.payment?.singlepayment?.channelid === channel.id">
+                                {{channel.name}}
+                            </mat-checkbox>
                         </div>
                     </td>
                     <td class="text-right">
-
+                        {{patientdata.queuedata.payment.total}}
                     </td>
-                    <td class="text-right">
-
+                    <td *ngIf="channel.name === 'insurance' &&  patientdata.queuedata.payment?.singlepayment?.channelid === channel.id">
+                        <div *ngFor="let insurance of patientdata.patientdata.insurance">
+                            <mat-checkbox (change)="selectinsurance(insurance)"
+                                          [checked]="selectedinsurance === insurance"> {{insurancename(insurance.id)}}
+                            </mat-checkbox>
+                        </div>
                     </td>
-                    <td class="text-right">
-                        {{channel.name}}
+
+                    <td *ngIf="channel.name!== 'insurance'  &&  patientdata.queuedata.payment?.singlepayment?.channelid === channel.id"
+                        class="text-right">
+                        <div *ngFor="let method of getcativechannelmethods(channel.id)">
+                            <mat-form-field appearance="outline" class="pr-4 " fxFlex="100">
+                                <mat-label>Method</mat-label>
+                                <input [value]="getmethodname(method.paymentchannelid, method.paymentmethodid)" disabled
+                                       matInput>
+                                <mat-icon class="secondary-text" matSuffix>beenhere</mat-icon>
+                                <mat-error></mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline" class="pr-4 " fxFlex="100">
+                                <mat-label>Method</mat-label>
+                                <input [value]="method.accountnumber" disabled matInput required>
+                                <mat-icon class="secondary-text" matSuffix>beenhere</mat-icon>
+                                <mat-error></mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline" class="pr-4 " fxFlex="100">
+                                <mat-label>Transaction Code</mat-label>
+                                <input [disabled]="!channel.transactiondetailcollection"
+                                       [(ngModel)]="patientdata.queuedata.payment.singlepayment.transactionid" matInput required>
+                                <mat-icon class="secondary-text" matSuffix>beenhere</mat-icon>
+                                <mat-error></mat-error>
+                            </mat-form-field>
+                        </div>
                     </td>
                 </tr>
                 </tbody>

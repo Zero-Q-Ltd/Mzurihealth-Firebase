@@ -13,6 +13,7 @@ import {HospitalAdmin} from '../../../models/HospitalAdmin';
 import {fuseAnimations} from '../../../../@fuse/animations';
 import {ProceduresService} from '../../services/procedures.service';
 import {NotificationService} from '../../../shared/services/notifications.service';
+import {FuseConfirmDialogComponent} from '../../../../@fuse/components/confirm-dialog/confirm-dialog.component';
 
 @Component({
     selector: 'app-invoice-payment',
@@ -29,9 +30,12 @@ export class InvoiceCustomizationComponent implements OnInit {
     clickedprocedure: Procedureperformed = {...emptyprocedureperformed};
     hospitaladmins: Array<HospitalAdmin> = [];
     proceduresdatasouce: MatTableDataSource<Procedureperformed> = new MatTableDataSource<Procedureperformed>();
-
     procedureheaders = ['name', 'admin-time', 'payment-method', 'cost'];
     paymentmethodheaders = ['channel', 'amount', 'transactionid'];
+    multipayment = false;
+
+    confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
+
 
     constructor(private queue: QueueService,
                 private hospital: HospitalService,
@@ -41,6 +45,7 @@ export class InvoiceCustomizationComponent implements OnInit {
                 public _matDialog: MatDialog,
                 private procedureservice: ProceduresService,
                 private notifications: NotificationService,
+                public thisdialogRef: MatDialogRef<InvoiceCustomizationComponent>,
                 @Inject(MAT_DIALOG_DATA) public patientid: string) {
         /**
          * Subscribe so that other admin changes are immediately reflected
@@ -82,12 +87,12 @@ export class InvoiceCustomizationComponent implements OnInit {
             /**
              * check if the procedure contains a custom price for insurance
              */
-            if (this.procedureservice.hospitalprocedures.value.find(value => {
-                return value.customprocedure.id === customprocedureid && value.customprocedure.custominsuranceprice;
+            if (!!this.procedureservice.hospitalprocedures.value.find(value => {
+                return value.customprocedure.id === customprocedureid && value.customprocedure.custominsuranceprice && !!value.customprocedure.insuranceprices[insuranceid];
             })) {
                 return this.procedureservice.hospitalprocedures.value.find(value => {
-                    return value.customprocedure.id === customprocedureid && Object.keys(value.customprocedure.insuranceprices[insuranceid]).length > 0;
-                }).customprocedure.insuranceprices[insuranceid].price;
+                    return value.customprocedure.id === customprocedureid && !!value.customprocedure.insuranceprices[insuranceid];
+                }).customprocedure.insuranceprices[insuranceid];
 
             } else {
                 /**
@@ -109,10 +114,7 @@ export class InvoiceCustomizationComponent implements OnInit {
 
     preview(): void {
         this.dialogRef = this._matDialog.open(InvoiceComponent, {
-            data: {
-                patient: 'data',
-                action: 'save'
-            }
+            data: this.patientid
         });
 
         this.dialogRef.afterClosed();
@@ -138,7 +140,107 @@ export class InvoiceCustomizationComponent implements OnInit {
 
     }
 
+    setchannel(channel: PaymentChannel): void {
+        this.patientdata.queuedata.payment.singlepayment = {
+            amount: 0,
+            channelid: channel.id,
+            methidid: '',
+            transactionid: ''
+        };
+        const isinsurance = channel.name === 'insurance';
+        if (!isinsurance) {
+            this.patientdata.queuedata.payment.hasinsurance = null;
+        }
+        let total = 0;
+        this.patientdata.queuedata.procedures.map(value => {
+            const amount = this.getpaymentamount(value.customprocedureid);
+            value.payment = {
+                amount: amount,
+                methods: [{
+                    amount: amount,
+                    channelid: channel.id,
+                    methidid: '',
+                    transactionid: ''
+                }],
+                hasinsurance: isinsurance
+            };
+            total += amount;
+        });
+        this.patientdata.queuedata.payment.total = total;
+    }
+
+    getcativechannelmethods(channelid: string): Array<CustomPaymentMethod> {
+        return this.hospitalmethods.filter(value => {
+            return value.paymentchannelid === channelid;
+        });
+    }
+
+    getmethodname(channelid: string, methodid: string): string {
+        return this.allpaymentchannels.find(value => {
+            return value.id === channelid;
+        }).methods[methodid].name;
+    }
+
+    insurancename(insuranceid: string): string {
+        return this.allpaymentchannels.find(value => {
+            return value.name === 'insurance';
+        }).methods[insuranceid].name;
+    }
+
+
+    selectinsurance(insurance): void {
+        this.patientdata.queuedata.payment.hasinsurance = true;
+        let total = 0;
+        this.patientdata.queuedata.procedures.map(value => {
+            const amount = this.getpaymentamount(value.customprocedureid, insurance.id);
+            value.payment = {
+                amount: amount,
+                methods: [{
+                    amount: amount,
+                    channelid: '',
+                    methidid: insurance.id,
+                    transactionid: ''
+                }],
+                hasinsurance: true
+            };
+            total += amount;
+        });
+        this.patientdata.queuedata.payment.total = total;
+        this.patientdata.queuedata.payment.singlepayment.amount = total;
+    }
+
+
+    channelconfigured(channelid: string): boolean {
+        return !!this.hospitalmethods.filter(value => {
+            return value.paymentchannelid === channelid;
+        });
+    }
+
+    togglemultipayment(): void {
+
+        setTimeout(() => {
+            this.notifications.notify({
+                placement: 'centre',
+                title: 'Info',
+                alert_type: 'info',
+                body: 'Coming soon...'
+            });
+            this.multipayment = false;
+        }, 800);
+
+    }
+
     pay(): void {
+        this.confirmDialogRef = this._matDialog.open(FuseConfirmDialogComponent, {
+            disableClose: false
+        });
+        this.confirmDialogRef.componentInstance.confirmMessage = 'Are you sure you want to pay for the Invoice and exit the patient??';
+        this.confirmDialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                this.visitservice.payandexit(this.patientdata.queuedata);
+                this.thisdialogRef.close();
+            }
+        });
     }
 
     ngOnInit(): void {

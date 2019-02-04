@@ -57,7 +57,6 @@ export class PatientvisitService {
         per.adminid = this.adminid;
         per.originalprocedureid = procedure.rawprocedure.id;
         per.customprocedureid = procedure.customprocedure.id;
-        per.visitid = this.patientid;
         console.log(per);
         console.log(this.currentvisit.value);
         this.db.collection('hospitalvisits').doc(visitid).update({
@@ -123,6 +122,15 @@ export class PatientvisitService {
                 admin: null,
             }
         });
+    }
+
+    payandexit(visit: PatientVisit): any {
+        visit.checkin = {
+            status: 4,
+            admin: null,
+        };
+        visit.payment.status = true
+        return this.db.collection('hospitalvisits').doc(visit.id).update(visit).then();
     }
 
     terminatepatientvisit(visitid): any {

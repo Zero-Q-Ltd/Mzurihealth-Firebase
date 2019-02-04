@@ -172,7 +172,7 @@ export class ProceduresService {
          * remove insurance prices set to 0
          */
         Object.keys(customprocedure.insuranceprices).forEach(key => {
-            if (customprocedure.insuranceprices[key].price === 0 || customprocedure.insuranceprices[key].price === null) {
+            if (customprocedure.insuranceprices[key] === 0 || customprocedure.insuranceprices[key] === null) {
                 delete customprocedure.insuranceprices[key];
             }
         });
@@ -189,7 +189,7 @@ export class ProceduresService {
          * remove insurance prices set to 0
          */
         Object.keys(customprocedure.insuranceprices).forEach(key => {
-            if (!customprocedure.insuranceprices[key] || customprocedure.insuranceprices[key].price === 0 || customprocedure.insuranceprices[key].price === null) {
+            if (!customprocedure.insuranceprices[key] || customprocedure.insuranceprices[key] === 0 || customprocedure.insuranceprices[key] === null) {
                 delete customprocedure.insuranceprices[key];
             }
         });

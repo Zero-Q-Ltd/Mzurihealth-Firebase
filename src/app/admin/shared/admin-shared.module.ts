@@ -34,7 +34,7 @@ import {FuseConfirmDialogModule, FuseProgressBarModule, FuseSidebarModule, FuseT
 import {RouterModule} from '@angular/router';
 import {AgmCoreModule} from '@agm/core';
 import {CommonModule} from '@angular/common';
-import { PaymentchannelPipe } from './paymentchannel.pipe';
+import { PaymentmethodPipe } from './paymentmethod.pipe';
 import { AgePipe } from './age.pipe';
 import { AdminNamePipe } from './reveal-admin.pipe';
 
@@ -136,11 +136,11 @@ import { AdminNamePipe } from './reveal-admin.pipe';
         FuseThemeOptionsModule,
 
         // Custom pips
-        PaymentchannelPipe,
+        PaymentmethodPipe,
         AgePipe,
         AdminNamePipe
     ],
-    declarations: [PaymentchannelPipe, AgePipe, AdminNamePipe]
+    declarations: [PaymentmethodPipe, AgePipe, AdminNamePipe]
 })
 export class AdminSharedModule {
 }

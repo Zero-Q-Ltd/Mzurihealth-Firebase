@@ -74,11 +74,14 @@ export class InvoiceComponent implements OnInit, OnDestroy {
 
 
     showPrint(): void {
-        window.print();
         this.hidden = true;
         setTimeout(() => {
-            this.hidden = false;
-        }, 2000);
+            window.print();
+
+            setTimeout(() => {
+                this.hidden = false;
+            }, 2000);
+            }, 200);
 
     }
 }

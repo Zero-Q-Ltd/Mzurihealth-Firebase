@@ -57,7 +57,6 @@ export class PatientvisitService {
         per.adminid = this.adminid;
         per.originalprocedureid = procedure.rawprocedure.id;
         per.customprocedureid = procedure.customprocedure.id;
-        per.visitid = this.patientid;
         console.log(per);
         console.log(this.currentvisit.value);
         this.db.collection('hospitalvisits').doc(visitid).update({

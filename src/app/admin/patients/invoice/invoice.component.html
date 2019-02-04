@@ -1,4 +1,4 @@
-<div id="invoice" class="compact page-layout blank" fxLayout="row">
+<div class="compact page-layout blank" fxLayout="row" id="invoice">
 
     <div class="invoice-container">
 
@@ -6,26 +6,25 @@
         <div class="card">
 
             <div class="header">
-                <div class="invoice-date">{{invoice.date}}</div>
+                <div class="invoice-date">{{patientdata.queuedata.metadata.date.toDate().toDateString()}}</div>
 
                 <div fxLayout="row" fxLayoutAlign="space-between stretch">
                     <div class="client">
                         <div class="invoice-number" fxLayout="row" fxLayoutAlign="start center">
                             <span class="title">INVOICE</span>
-                            <span class="number">{{invoice.number}}</span>
+                            <span class="number">{{patientdata.queuedata.invoiceid}}</span>
                         </div>
 
-                        <div class="due-date" fxLayout="row" fxLayoutAlign="start center">
-                            <span class="title">DUE DATE</span>
-                            <span class="date">{{invoice.dueDate}}</span>
-                        </div>
+                        <!--<div class="due-date" fxLayout="row" fxLayoutAlign="start center">-->
+                        <!--<span class="title">DUE DATE</span>-->
+                        <!--<span class="date">{{invoice.dueDate}}</span>-->
+                        <!--</div>-->
 
                         <div class="info">
-                            <div class="title">John Doe</div>
-                            <div class="address">9301 Wood Street Philadelphia, PA 19111</div>
-                            <div class="phone">+254 552 455 87</div>
-                            <div class="email">johndoe@mail.com</div>
-                            <div class="website">www.johndoe.com</div>
+                            <div class="title">{{patientdata.patientdata.personalinfo.name}}</div>
+                            <div class="address">{{patientdata.patientdata.personalinfo.address}}</div>
+                            <div class="phone">{{patientdata.patientdata.personalinfo.phone}}</div>
+                            <div class="email">{{patientdata.patientdata.personalinfo.email}}</div>
                         </div>
                     </div>
 
@@ -35,11 +34,10 @@
                         </div>
 
                         <div class="info">
-                            <div class="title">Hospital Name</div>
-                            <div class="address">Hospital Address</div>
-                            <div class="phone">Hospital Phone</div>
-                            <div class="email">hospital@mail.com</div>
-                            <div class="website">www.hospital.com</div>
+                            <div class="title">{{activehospital.name}}</div>
+                            <div class="address">{{activehospital.contactdetails.address}}</div>
+                            <div class="phone">{{activehospital.contactdetails.phone}}</div>
+                            <div class="email">{{activehospital.contactdetails.email}}</div>
                         </div>
                     </div>
                 </div>
@@ -50,107 +48,62 @@
                     <thead>
                     <tr>
                         <th>SERVICE</th>
-                        <th>UNIT</th>
                         <th class="text-right">UNIT PRICE</th>
                         <th class="text-right">QUANTITY</th>
                         <th class="text-right">TOTAL</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <td>
-                            <div class="title">
-                                Cardio Bla Bla 123
-                            </div>
-                        </td>
-                        <td>
-                            Hour
-                        </td>
-                        <td class="text-right">
-                            12 {{service.unitPrice | currency:'USD':'symbol'}}
-                        </td>
-                        <td class="text-right">
-                            2
-                        </td>
-                        <td class="text-right">
-                            40{{service.total | currency:'USD':'symbol'}}
-                        </td>
-                    </tr><tr>
-                        <td>
-                            <div class="title">
-                                Vascular Bla Bla 123
-                            </div>
-                        </td>
-                        <td>
-                            Hour
-                        </td>
-                        <td class="text-right">
-                            12 {{service.unitPrice | currency:'USD':'symbol'}}
-                        </td>
-                        <td class="text-right">
-                            2
-                        </td>
-                        <td class="text-right">
-                            40{{service.total | currency:'USD':'symbol'}}
-                        </td>
-                    </tr>
+
                     <!-- Double the invoice data for demo purposes -->
-                    <tr *ngFor="let service of invoice.services">
+                    <tr *ngFor="let procedure of patientdata.queuedata.procedures">
                         <td>
                             <div class="title">
-                                {{service.title}}
+                                {{procedure.name}}
                             </div>
                         </td>
-                        <td>
-                            {{service.unit}}
+
+                        <td class="text-right">
+                            {{procedure.payment.amount}}
                         </td>
                         <td class="text-right">
-                            {{service.unitPrice | currency:'USD':'symbol'}}
+                            1
                         </td>
                         <td class="text-right">
-                            {{service.quantity}}
-                        </td>
-                        <td class="text-right">
-                            {{service.total | currency:'USD':'symbol'}}
+                            {{procedure.payment.amount}}
                         </td>
                     </tr>
                     </tbody>
                 </table>
 
-                <table class="simple invoice-table-footer">
-                    <tbody>
-                    <tr class="subtotal">
-                        <td>SUBTOTAL</td>
-                        <td>33{{invoice.subtotal | currency:'USD':'symbol'}}</td>
-                    </tr>
-                    <tr class="tax">
-                        <td>TAX</td>
-                        <td>3{{invoice.tax | currency:'USD':'symbol'}}</td>
-                    </tr>
-                    <tr class="discount">
-                        <td>DISCOUNT</td>
-                        <td>-0{{invoice.discount | currency:'USD':'symbol'}}</td>
-                    </tr>
-                    <tr class="total">
-                        <td>TOTAL</td>
-                        <td>295{{invoice.total | currency:'USD':'symbol'}}</td>
-                    </tr>
-                    </tbody>
-                </table>
             </div>
 
             <div class="footer">
-                <div class="note">Please pay within 15 days. Thank you for your business.</div>
+                <div>Please make your payment within 1 day of the date of issue of the date of our invoice
+                    or otherwise in accordance with any credit terms agreed between us via the following official channels
+                    <table>
+                        <tr *ngFor="let paymentchannel of activehospital.paymentmethods">
+                            <td>{{allpaymentchannels | paymentmethod : paymentchannel.paymentchannelid :paymentchannel.paymentmethodid |titlecase}}</td>
+                            :
+                            <td>{{paymentchannel.accountnumber}}</td>
+                            <td>{{paymentchannel.extrainfo}}</td>
+                        </tr>
+                    </table>
+                </div>
                 <div fxLayout="row" fxLayoutAlign="start start">
                     <div class="logo">
-                        <img src="../../../../assets/images/logos/fuse.svg">
+                        <img src="assets/images/logos/fuse.svg">
                     </div>
                     <div class="small-note">
-                        In condimentum malesuada efficitur. Mauris volutpat placerat auctor. Ut ac congue dolor. Quisque
-                        scelerisque lacus sed feugiat fermentum. Cras aliquet facilisis pellentesque. Nunc hendrerit
-                        quam at leo commodo, a suscipit tellus dapibus. Etiam at felis volutpat est mollis lacinia.
-                        Mauris placerat sem sit amet velit mollis, in porttitor ex finibus. Proin eu nibh id libero
-                        tincidunt lacinia et eget eros.
+                        We warrant that we will use reasonable care and skill in our performance of the Services which
+                        will comply with the quotation, including any specification in all material respects. We can
+                        make any changes to the Services which are necessary to comply with any applicable law or safety
+                        requirement, and we will notify you if this is necessary.
+                    </div>
+                    <div class="small-note">
+                        If you do not pay within the period set out above, we can suspend any further provision of the
+                        Services and cancel any future services which have been ordered by, or otherwise arranged with,
+                        you.
                     </div>
                 </div>
             </div>

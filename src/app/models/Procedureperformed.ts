@@ -19,8 +19,6 @@ export interface Procedureperformed {
     hospitalid: string;
     patientid: string;
     name: string;
-    visitid: string;
-
     originalprocedureid: string;
     customprocedureid: string;
     metadata: Metadata;
@@ -47,7 +45,6 @@ export const emptyprocedureperformed: Procedureperformed = {
     hospitalid: null,
     patientid: null,
     name: null,
-    visitid: null,
     originalprocedureid: null,
     customprocedureid: null,
     metadata: emptymetadata,

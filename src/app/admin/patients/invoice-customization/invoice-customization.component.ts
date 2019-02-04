@@ -114,10 +114,7 @@ export class InvoiceCustomizationComponent implements OnInit {
 
     preview(): void {
         this.dialogRef = this._matDialog.open(InvoiceComponent, {
-            data: {
-                patient: 'data',
-                action: 'save'
-            }
+            data: this.patientid
         });
 
         this.dialogRef.afterClosed();
@@ -146,6 +143,9 @@ export class InvoiceCustomizationComponent implements OnInit {
     setchannel(channel: PaymentChannel): void {
         this.selectedchannel = channel;
         const isinsurance = channel.name === 'insurance';
+        if (!isinsurance) {
+            this.selectedinsurance = null;
+        }
         let total = 0;
         this.patientdata.queuedata.procedures.map(value => {
             const amount = this.getpaymentamount(value.customprocedureid);
@@ -159,7 +159,7 @@ export class InvoiceCustomizationComponent implements OnInit {
                 }],
                 hasinsurance: isinsurance
             };
-            total *= amount;
+            total += amount;
         });
         this.patientdata.queuedata.payment.total = total;
     }
@@ -198,7 +198,7 @@ export class InvoiceCustomizationComponent implements OnInit {
                 }],
                 hasinsurance: true
             };
-            total *= amount;
+            total += amount;
         });
         this.patientdata.queuedata.payment.total = total;
     }
@@ -225,6 +225,7 @@ export class InvoiceCustomizationComponent implements OnInit {
     }
 
     pay(): void {
+
     }
 
     ngOnInit(): void {

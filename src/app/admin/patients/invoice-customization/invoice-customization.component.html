@@ -140,7 +140,7 @@
                     <td class="text-right">
                         {{patientdata.queuedata.payment.total}}
                     </td>
-                    <td *ngIf="channel.name === 'insurance'">
+                    <td *ngIf="channel.name === 'insurance' && selectedchannel==channel">
                         <div *ngFor="let insurance of patientdata.patientdata.insurance">
                             <mat-checkbox (change)="selectinsurance(insurance)"
                                           [checked]="selectedinsurance === insurance"> {{insurancename(insurance.id)}}
@@ -148,7 +148,7 @@
                         </div>
                     </td>
 
-                    <td *ngIf="channel.name!== 'insurance'" class="text-right">
+                    <td *ngIf="channel.name!== 'insurance'  && selectedchannel==channel" class="text-right">
                         <div *ngFor="let method of getcativechannelmethods(channel.id)">
                             <mat-form-field appearance="outline" class="pr-4 " fxFlex="100">
                                 <mat-label>Method</mat-label>

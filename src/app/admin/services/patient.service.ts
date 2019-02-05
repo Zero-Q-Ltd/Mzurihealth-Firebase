@@ -16,6 +16,7 @@ import {map, startWith, switchMap,} from 'rxjs/operators';
 import {BehaviorSubject, combineLatest, Observable, from, of} from 'rxjs';
 import 'rxjs/add/observable/empty';
 import {PaymentChannel} from '../../models/PaymentChannel';
+import {firestore} from 'firebase';
 
 @Injectable({
     providedIn: 'root'
@@ -180,7 +181,7 @@ export class PatientService {
          * add patient to queue
          * */
             // todays date
-        const todayDate = moment().toDate();
+        const todayDate = firestore.Timestamp.now();
 
         /**
          * patient document ID
@@ -206,6 +207,9 @@ export class PatientService {
             },
             payment: {
                 hasinsurance: type.name === 'insurance',
+                splitpayment: false,
+                status: false,
+                total: 0
 
             },
             id: queueID,
@@ -475,10 +479,5 @@ export class PatientService {
             });
         });
     }
-
-    /*
-    *
-    * **/
-
 
 }

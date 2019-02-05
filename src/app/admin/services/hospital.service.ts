@@ -4,14 +4,14 @@ import {AdminService} from './admin.service';
 import {BehaviorSubject} from 'rxjs';
 import {HospitalAdmin} from '../../models/HospitalAdmin';
 import {emptyhospital, Hospital} from '../../models/Hospital';
-import {AdminInvite} from '../../models/AdminInvite';
+import {AdminInvite, emptyadmininvite} from '../../models/AdminInvite';
 
 @Injectable({
     providedIn: 'root'
 })
 export class HospitalService {
     hospitaladmins: BehaviorSubject<HospitalAdmin[]> = new BehaviorSubject([]);
-    activehospital: BehaviorSubject<Hospital> = new BehaviorSubject<Hospital>({... emptyhospital});
+    activehospital: BehaviorSubject<Hospital> = new BehaviorSubject<Hospital>({...emptyhospital});
     userdata: HospitalAdmin;
     hospitalerror: boolean;
     invitedadmins: BehaviorSubject<Array<AdminInvite>> = new BehaviorSubject<Array<AdminInvite>>([]);
@@ -31,9 +31,7 @@ export class HospitalService {
             .where('config.hospitalid', '==', this.activehospital.value.id)
             .onSnapshot(hospitaladmindocs => {
                 this.hospitaladmins.next(hospitaladmindocs.docs.map(hospitaladmin => {
-                    const admin = Object.assign({}, hospitaladmin.data() as HospitalAdmin);
-                    admin.id = hospitaladmin.id;
-                    return admin;
+                    return Object.assign(hospitaladmin.data() as HospitalAdmin, {id: hospitaladmin.id});
                 }));
             });
     }
@@ -41,9 +39,7 @@ export class HospitalService {
     getinvitedadmins(): void {
         this.db.firestore.collection('admininvites').where('hospitalid', '==', this.activehospital.value.id).onSnapshot(invitesdata => {
             this.invitedadmins.next(invitesdata.docs.map(inviteedata => {
-                const invitee = inviteedata.data() as AdminInvite;
-                invitee.id = inviteedata.id;
-                return invitee;
+                return Object.assign(emptyadmininvite, inviteedata.data() as AdminInvite, {id: inviteedata.id});
             }));
         });
     }
@@ -64,8 +60,7 @@ export class HospitalService {
         this.db.firestore.collection('hospitals').doc(this.userdata.config.hospitalid)
             .onSnapshot(hospitaldata => {
                 if (hospitaldata.exists) {
-                    const temp: Hospital = Object.assign({}, emptyhospital, hospitaldata.data() as HospitalAdmin);
-                    temp.id = hospitaldata.id;
+                    const temp: Hospital = Object.assign( emptyhospital, hospitaldata.data() as HospitalAdmin, {id : hospitaldata.id});
                     this.activehospital.next(temp);
                     // Update Admins if data changes when the user is in the admins page
                     // this.db.firestore.collection('hospitals').doc(this.userdata.config.hospitalid).collection('admins').doc(this.userdata.data.uid).set({status : true})

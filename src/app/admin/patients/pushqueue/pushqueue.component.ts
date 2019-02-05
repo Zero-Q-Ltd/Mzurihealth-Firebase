@@ -105,7 +105,7 @@ export class PushqueueComponent implements OnInit {
         }
     }
 
-    private submitForm(): void {
+    submitForm(): void {
         if (this.insuranceEnabled()) {
             this.matDialogRef.close(['save', this.queueForm]);
         } else {

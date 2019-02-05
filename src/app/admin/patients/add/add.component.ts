@@ -28,9 +28,9 @@ export class AddComponent implements OnInit {
     allInsurance: { [key: string]: Paymentmethods } = {};
     patientsForm: FormGroup;
 
-    private personalinfo: FormGroup;
-    private nextofkin: FormGroup;
-    private insurance: FormArray;
+    personalinfo: FormGroup;
+    nextofkin: FormGroup;
+    insurance: FormArray;
     // doctor will do this
     // private medicalinfo: FormGroup;
 

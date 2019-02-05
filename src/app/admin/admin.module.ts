@@ -27,7 +27,6 @@ import {AgmCoreModule, AgmMap} from '@agm/core';
         SampleModule,
 
         RouterModule,
-        CommonModule,
         FormsModule,
         ReactiveFormsModule,
 

@@ -6,7 +6,7 @@ import {Hospital} from '../../models/Hospital';
 import {CustomProcedure} from '../../models/CustomProcedure';
 import {ProcedureCategory} from '../../models/ProcedureCategory';
 import {NotificationService} from '../../shared/services/notifications.service';
-import {firestore} from 'firebase';
+import {firestore} from 'firebase/app';
 import {RawProcedure} from '../../models/RawProcedure';
 import {HospitalAdmin} from '../../models/HospitalAdmin';
 import {AdminService} from './admin.service';

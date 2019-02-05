@@ -7,7 +7,7 @@ import {emptyadmin, HospitalAdmin} from '../../models/HospitalAdmin';
 import {NotificationService} from '../../shared/services/notifications.service';
 import {AdminCategory} from '../../models/AdminCategory';
 import {AdminInvite} from '../../models/AdminInvite';
-import {firestore} from 'firebase';
+import {firestore} from 'firebase/app';
 
 @Injectable({
     providedIn: 'root'

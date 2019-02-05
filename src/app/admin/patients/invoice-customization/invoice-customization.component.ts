@@ -4,7 +4,7 @@ import {PatientvisitService} from '../../services/patientvisit.service';
 import {emptymergedQueueModel, MergedPatient_QueueModel} from '../../../models/MergedPatient_Queue.model';
 import {emptyprocedureperformed, Procedureperformed} from '../../../models/Procedureperformed';
 import {PaymentmethodService} from '../../services/paymentmethod.service';
-import {PaymentChannel} from '../../../models/PaymentChannel';
+import {PaymentChannel, Paymentmethods} from '../../../models/PaymentChannel';
 import {HospitalService} from '../../services/hospital.service';
 import {CustomPaymentMethod} from '../../../models/CustomPaymentMethod.model';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef, MatTableDataSource} from '@angular/material';
@@ -33,7 +33,7 @@ export class InvoiceCustomizationComponent implements OnInit {
     procedureheaders = ['name', 'admin-time', 'payment-method', 'cost'];
     paymentmethodheaders = ['channel', 'amount', 'transactionid'];
     multipayment = false;
-
+    selectedinsurance : Paymentmethods;
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
 
 
@@ -188,6 +188,7 @@ export class InvoiceCustomizationComponent implements OnInit {
 
 
     selectinsurance(insurance): void {
+        this.selectedinsurance = insurance
         this.patientdata.queuedata.payment.hasinsurance = true;
         let total = 0;
         this.patientdata.queuedata.procedures.map(value => {

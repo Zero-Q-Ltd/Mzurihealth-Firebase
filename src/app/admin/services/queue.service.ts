@@ -7,7 +7,7 @@ import {emptypatient, Patient} from '../../models/Patient';
 import {HospitalAdmin} from '../../models/HospitalAdmin';
 import {PatientService} from './patient.service';
 import {switchMap} from 'rxjs/operators';
-import {PatientVisit} from '../../models/PatientVisit';
+import {emptypatientvisit, PatientVisit} from '../../models/PatientVisit';
 import {emptymergedQueueModel, MergedPatient_QueueModel} from '../../models/MergedPatient_Queue.model';
 import {emptyfile, HospFile} from '../../models/HospFile';
 import {ProceduresService} from './procedures.service';
@@ -57,22 +57,20 @@ export class QueueService {
                     if (f.length === 0) {
                         return of([]);
                     }
-                    const visit = t.payload.doc.data() as PatientVisit;
-                    visit.id = t.payload.doc.id;
+                    const visit: PatientVisit = Object.assign(emptypatientvisit, t.payload.doc.data(), {id: t.payload.doc.id});
                     return this.db.collection('patients').doc(visit.patientid).snapshotChanges().pipe(
                         switchMap(patientdata => {
                             if (!patientdata.payload.exists) {
-                                return of({... emptymergedQueueModel});
+                                return of({...emptymergedQueueModel});
                             }
-                            const patient: Patient = Object.assign({}, {...emptypatient}, patientdata.payload.data());
-                            patient.id = patientdata.payload.id;
+                            const patient: Patient = Object.assign(emptypatient, patientdata.payload.data(), {id: patientdata.payload.id});
                             // return {patientdata: Object.assign({}, emptypatient, patient), queuedata: visit};
                             return this.db.collection('hospitals').doc(this.activehospitalid)
                                 .collection('filenumbers')
                                 .doc(patient.id)
-                                .snapshotChanges().pipe().map(filedata => {
-                                    const file: HospFile = Object.assign({}, {...emptyfile}, filedata.payload.data());
-                                    file.id = patient.id;
+                                .snapshotChanges()
+                                .pipe().map(filedata => {
+                                    const file: HospFile = Object.assign(emptyfile, filedata.payload.data() , {id : patient.id});
                                     patient.fileinfo = file;
                                     return {patientdata: patient, queuedata: visit};
                                 });

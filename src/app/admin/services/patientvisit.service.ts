@@ -75,11 +75,10 @@ export class PatientvisitService {
             .limit(10)
             .onSnapshot(snapshot => {
                 this.visithistory.next(snapshot.docs.map(value => {
-                    const visit = Object.assign({}, {...emptypatientvisit}, value.data());
+                    const visit = Object.assign(emptypatientvisit, value.data(), {id : value.id});
                     if (!visit.payment.status) {
                         this.currentvisit.next(visit);
                     }
-                    visit.id = value.id;
                     return visit;
                 }));
             });

@@ -6,6 +6,7 @@ export interface HospFile {
     lastvisit: firestore.Timestamp;
     no: string;
     idno: number;
+    visitcount: number;
 }
 
 export const emptyfile: HospFile = {
@@ -13,5 +14,6 @@ export const emptyfile: HospFile = {
     date: new firestore.Timestamp(0, 0),
     lastvisit: new firestore.Timestamp(0, 0),
     no: '0',
-    idno: null
+    idno: null,
+    visitcount : 0
 };

@@ -72,7 +72,7 @@ export class AdminService {
 
                     // this.showNotification('success', `Welcome ${user.displayName}`, 'bottom', 5000)
 
-                    this.observableuserdata.next(this.userdata);
+                    this.observableuserdata.next(temp.status ? this.userdata : null);
                     this.getadmincategories();
 
                 } else {

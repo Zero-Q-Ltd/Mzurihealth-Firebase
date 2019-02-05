@@ -32,9 +32,7 @@ export class PatientnotesService {
             .orderBy('metadata.date', 'desc')
             .onSnapshot(rawdata => {
                 this.patientnotes.next(rawdata.docs.map(value => {
-                    const note: Patientnote = Object.assign({}, emptynote, value.data());
-                    note.id = value.id;
-                    return note;
+                    return Object.assign(emptynote, value.data(), {id: value.id});
                 }));
             });
     }

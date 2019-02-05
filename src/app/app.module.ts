@@ -2,7 +2,7 @@ import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {HttpClientModule} from '@angular/common/http';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {MatIconModule} from '@angular/material';
+import {MatIconModule, MatSnackBarModule} from '@angular/material';
 import {TranslateModule} from '@ngx-translate/core';
 import 'hammerjs';
 import {FuseModule} from '@fuse/fuse.module';
@@ -22,6 +22,7 @@ import {Error500Module} from './errorpages/500/error-500.module';
 import {FrontendModule} from './frontend/frontend.module';
 import {AgmCoreModule} from '@agm/core';
 import {CommonModule} from '@angular/common';
+import {NotificationComponent} from './shared/components/notification/notification.component';
 
 export const firebaseConfig = {
     apiKey: 'AIzaSyDaiEsgWOaeopaYQTgTWPIatMeKLZjZc-A',
@@ -35,6 +36,7 @@ export const firebaseConfig = {
 @NgModule({
     declarations: [
         AppComponent,
+        NotificationComponent,
     ],
     imports: [
         BrowserModule,
@@ -56,10 +58,12 @@ export const firebaseConfig = {
         AngularFirestoreModule.enablePersistence({
             experimentalTabSynchronization: true
         }),
+        MatSnackBarModule,
         Error404Module,
         Error500Module,
         FrontendModule,
     ],
+    entryComponents: [NotificationComponent],
     providers: [AngularFireAuth],
     bootstrap: [
         AppComponent,

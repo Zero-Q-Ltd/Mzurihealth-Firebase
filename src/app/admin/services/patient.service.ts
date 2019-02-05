@@ -13,7 +13,7 @@ import {map, switchMap,} from 'rxjs/operators';
 import {BehaviorSubject, combineLatest, Observable, of} from 'rxjs';
 import 'rxjs/add/observable/empty';
 import {PaymentChannel} from '../../models/PaymentChannel';
-import {firestore} from 'firebase';
+import {firestore} from 'firebase/app';
 
 @Injectable({
     providedIn: 'root'

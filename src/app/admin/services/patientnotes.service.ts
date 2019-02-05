@@ -4,7 +4,7 @@ import {BehaviorSubject} from 'rxjs';
 import {emptynote, Patientnote} from '../../models/Patientnote';
 import {AngularFirestore} from '@angular/fire/firestore';
 import {AdminService} from './admin.service';
-import {firestore} from 'firebase';
+import {firestore} from 'firebase/app';
 import Timestamp = firestore.Timestamp;
 
 @Injectable({

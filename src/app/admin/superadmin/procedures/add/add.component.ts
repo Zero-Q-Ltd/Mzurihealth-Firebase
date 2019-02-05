@@ -90,7 +90,10 @@ export class AddComponent implements OnInit, AfterViewInit {
             return merged.rawprocedure.id === selected.id;
         })) {
             this.notificationservice.notify({
-                placement: 'centre',
+                placement: {
+                    vertical: 'bottom',
+                    horizontal: 'center'
+                },
                 title: 'Warning',
                 alert_type: 'info',
                 body: 'this procedure is already configured'

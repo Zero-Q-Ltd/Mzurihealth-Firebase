@@ -33,7 +33,7 @@ export class InvoiceCustomizationComponent implements OnInit {
     procedureheaders = ['name', 'admin-time', 'payment-method', 'cost'];
     paymentmethodheaders = ['channel', 'amount', 'transactionid'];
     multipayment = false;
-    selectedinsurance : Paymentmethods;
+    selectedinsurance: Paymentmethods;
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
 
 
@@ -129,7 +129,10 @@ export class InvoiceCustomizationComponent implements OnInit {
 
         setTimeout(() => {
             this.notifications.notify({
-                placement: 'centre',
+                placement: {
+                    vertical: 'bottom',
+                    horizontal: 'right'
+                },
                 title: 'Info',
                 alert_type: 'info',
                 body: 'Coming soon...'
@@ -188,7 +191,7 @@ export class InvoiceCustomizationComponent implements OnInit {
 
 
     selectinsurance(insurance): void {
-        this.selectedinsurance = insurance
+        this.selectedinsurance = insurance;
         this.patientdata.queuedata.payment.hasinsurance = true;
         let total = 0;
         this.patientdata.queuedata.procedures.map(value => {
@@ -220,7 +223,10 @@ export class InvoiceCustomizationComponent implements OnInit {
 
         setTimeout(() => {
             this.notifications.notify({
-                placement: 'centre',
+                placement: {
+                    vertical: 'bottom',
+                    horizontal: 'right'
+                },
                 title: 'Info',
                 alert_type: 'info',
                 body: 'Coming soon...'

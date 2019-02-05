@@ -57,7 +57,10 @@ export class AdminconfigComponent implements OnInit {
 
         } else {
             this.notificationservice.notify({
-                placement: 'centre',
+                placement: {
+                    vertical: 'bottom',
+                    horizontal: 'center'
+                },
                 title: 'Error',
                 alert_type: 'error',
                 body: 'Regular price is required'

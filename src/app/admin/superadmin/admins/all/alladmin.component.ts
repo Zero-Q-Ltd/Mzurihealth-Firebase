@@ -79,10 +79,13 @@ export class AlladminComponent implements OnInit {
                     this.communicationService.resetall();
 
                     this.notificationservice.notify({
-                        placement: 'centre',
-                        title: 'Success',
-                        alert_type: 'success',
-                        body: 'Cancelled'
+                        placement: {
+                            vertical: 'top',
+                            horizontal: 'right'
+                        },
+                        title: 'Cancelled',
+                        alert_type: 'error',
+                        body: ''
                     });
                 });
             }
@@ -103,7 +106,10 @@ export class AlladminComponent implements OnInit {
                     this.communicationService.resetall();
 
                     this.notificationservice.notify({
-                        placement: 'centre',
+                        placement: {
+                            vertical: 'top',
+                            horizontal: 'right'
+                        },
                         title: 'Success',
                         alert_type: 'success',
                         body: 'Disabled'
@@ -126,7 +132,10 @@ export class AlladminComponent implements OnInit {
                     this.communicationService.resetall();
 
                     this.notificationservice.notify({
-                        placement: 'centre',
+                        placement: {
+                            vertical: 'top',
+                            horizontal: 'right'
+                        },
                         title: 'Success',
                         alert_type: 'success',
                         body: 'Enabled'

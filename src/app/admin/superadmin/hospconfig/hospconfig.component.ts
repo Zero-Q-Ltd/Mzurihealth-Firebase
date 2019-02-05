@@ -114,10 +114,13 @@ export class HospconfigComponent implements OnInit {
                 this.hospitalservice.savehospitalchanges(this.temphospital).then(() => {
 
                     this.notificationservice.notify({
-                        placement: 'centre',
-                        title: 'Success',
+                        placement: {
+                            vertical: 'top',
+                            horizontal: 'right'
+                        },
+                        title: 'Cancelled',
                         alert_type: 'success',
-                        body: 'Cancelled'
+                        body: ''
                     });
                 });
             }

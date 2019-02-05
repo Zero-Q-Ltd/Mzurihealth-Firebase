@@ -78,7 +78,10 @@ export class ProcedureconfigComponent implements OnInit {
                 this.selectecustomprocedure.customprocedure.parentprocedureid = this.selectecustomprocedure.rawprocedure.id;
                 this.procedureservice.addcustomprocedure(this.selectecustomprocedure.customprocedure).then(() => {
                     this.notificationservice.notify({
-                        placement: 'centre',
+                        placement: {
+                            vertical: 'top',
+                            horizontal: 'right'
+                        },
                         title: 'Success',
                         alert_type: 'success',
                         body: 'Successfully saved'
@@ -92,7 +95,10 @@ export class ProcedureconfigComponent implements OnInit {
             }
         } else {
             this.notificationservice.notify({
-                placement: 'centre',
+                placement: {
+                    vertical: 'bottom',
+                    horizontal: 'center'
+                },
                 title: 'Error',
                 alert_type: 'error',
                 body: 'Regular price is required'

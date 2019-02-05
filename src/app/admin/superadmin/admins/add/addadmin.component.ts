@@ -78,7 +78,10 @@ export class AddadminComponent implements OnInit {
                     this.notificationservice.notify({
                         alert_type: 'success',
                         body: 'Successfully sent invite',
-                        placement: 'center',
+                        placement: {
+                            vertical: 'bottom',
+                            horizontal: 'center'
+                        },
                         duration: 3000,
                         title: 'Success',
                     });
@@ -89,7 +92,10 @@ export class AddadminComponent implements OnInit {
                     this.notificationservice.notify({
                         alert_type: 'error',
                         body: 'A user with this email already exists',
-                        placement: 'center',
+                        placement: {
+                            vertical: 'bottom',
+                            horizontal: 'center'
+                        },
                         duration: 3000,
                         title: 'Error!',
                     });
@@ -100,7 +106,10 @@ export class AddadminComponent implements OnInit {
             this.notificationservice.notify({
                 alert_type: 'warning',
                 body: 'Please fill all the fields',
-                placement: 'center',
+                placement: {
+                    vertical: 'bottom',
+                    horizontal: 'center'
+                },
                 duration: 3000,
                 title: 'Error',
             });

@@ -24,6 +24,8 @@ export class NotificationService {
             this.snackBar.openFromComponent(NotificationComponent, {
               duration: alert.duration ? alert.duration : 2000,
               data: alert,
+                horizontalPosition: alert.placement.horizontal,
+                verticalPosition: alert.placement.vertical,
               panelClass: ['blue-snackbar']
             });
         });

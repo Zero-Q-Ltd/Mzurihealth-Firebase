@@ -12,6 +12,8 @@ import {AddPatientFormModel} from '../../models/AddPatientForm.model';
 import {map, switchMap,} from 'rxjs/operators';
 import {BehaviorSubject, combineLatest, Observable, of} from 'rxjs';
 import 'rxjs/add/observable/empty';
+import {PaymentChannel} from '../../models/PaymentChannel';
+import {firestore} from 'firebase';
 
 @Injectable({
     providedIn: 'root'
@@ -174,32 +176,18 @@ export class PatientService {
         return date != null ? date.getTime() : 0;
     }
 
-    addPatientToQueue({type, description}: { type: string, description: string }, patient: Patient): Promise<void> {
+    addPatientToQueue({type, description}: { type: PaymentChannel, description: string }, patient: Patient): Promise<void> {
         /**
          * add patient to queue
          * */
             // todays date
-        const todayDate = moment().toDate();
+        const todayDate = firestore.Timestamp.now();
 
         /**
          * patient document ID
          * **/
-        const patientID = this.db.createId();
+        const queueID = this.db.createId();
 
-        const tempVisit = {
-            paymentmethod: {
-                type: type
-            },
-            visitdescription: description,
-            patientid: patient.id,
-            hospitalid: this.activehospital.id,
-            timestamp: todayDate,
-            id: patientID,
-            checkin: {
-                status: 0,
-                admin: null
-            }
-        };
 
         /**
          * steps
@@ -207,8 +195,33 @@ export class PatientService {
          * 2. filenumber last visit -- maybe when everything is done
          * 3.
          * */
-        const combineData = Object.assign(emptypatientvisit, tempVisit);
-        return this.db.collection('hospitalvisits').doc(patientID).set(combineData);
+
+
+        const visitTemp = {
+            visitdescription: description,
+            patientid: patient.id,
+            hospitalid: this.activehospital.id,
+            metadata: {
+                date: todayDate,
+                lastedit: todayDate
+            },
+            payment: {
+                hasinsurance: type.name === 'insurance',
+                splitpayment: false,
+                status: false,
+                total: 0
+
+            },
+            id: queueID,
+            checkin: {
+                status: 0,
+                admin: null
+            }
+        };
+
+        const combineData = Object.assign(emptypatientvisit, visitTemp);
+
+        return this.db.collection('hospitalvisits').doc(queueID).set(combineData);
     }
 
 
@@ -381,7 +394,7 @@ export class PatientService {
 
             })
         ).subscribe(mergedData => {
-            console.log(mergedData);
+            this.hospitalpatients.next(mergedData);
         });
 
 
@@ -466,10 +479,5 @@ export class PatientService {
             });
         });
     }
-
-    /*
-    *
-    * **/
-
 
 }

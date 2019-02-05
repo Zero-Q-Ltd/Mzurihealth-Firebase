@@ -8,9 +8,9 @@ import {FuseSplashScreenService} from '../../@fuse/services/splash-screen.servic
 import {FuseTranslationLoaderService} from '../../@fuse/services/translation-loader.service';
 import {TranslateService} from '@ngx-translate/core';
 import {Platform} from '@angular/cdk/platform';
-import {navigation} from '../navigation/navigation';
-import {locale as navigationEnglish} from '../navigation/i18n/en';
-import {locale as navigationSwahili} from '../navigation/i18n/sw';
+import {navigation} from './navigation/navigation';
+import {locale as navigationEnglish} from './navigation/i18n/en';
+import {locale as navigationSwahili} from './navigation/i18n/sw';
 import {takeUntil} from 'rxjs/operators';
 import {emptyhospital, Hospital} from '../models/Hospital';
 import {emptyadmin, HospitalAdmin} from '../models/HospitalAdmin';

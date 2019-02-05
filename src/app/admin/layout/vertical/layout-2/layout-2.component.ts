@@ -3,7 +3,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { FuseConfigService } from '@fuse/services/config.service';
-import { navigation } from 'app/navigation/navigation';
+import { navigation } from 'app/admin/navigation/navigation';
 
 @Component({
     selector     : 'vertical-layout-2',

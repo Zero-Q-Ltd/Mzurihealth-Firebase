@@ -7,7 +7,7 @@ import * as _ from 'lodash';
 import {FuseConfigService} from '@fuse/services/config.service';
 import {FuseSidebarService} from '@fuse/components/sidebar/sidebar.service';
 
-import {navigation} from 'app/navigation/navigation';
+import {navigation} from 'app/admin/navigation/navigation';
 import {emptyhospital, Hospital} from '../../../../models/Hospital';
 import {emptyadmin, HospitalAdmin} from '../../../../models/HospitalAdmin';
 import {AdminService} from '../../../services/admin.service';

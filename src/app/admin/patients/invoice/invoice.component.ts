@@ -19,6 +19,7 @@ export class InvoiceComponent implements OnInit, OnDestroy {
     allpaymentchannels: Array<PaymentChannel> = [];
     private _unsubscribeAll: Subject<any>;
     activehospital: Hospital;
+    hidden = false;
 
     constructor(private hospitalservice: HospitalService,
                 private queue: QueueService,
@@ -55,6 +56,7 @@ export class InvoiceComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
 
     }
+
     getmethodname(channelid: string, methodid: string): string {
         return this.allpaymentchannels.find(value => {
             return value.id === channelid;
@@ -70,7 +72,16 @@ export class InvoiceComponent implements OnInit, OnDestroy {
         this._unsubscribeAll.complete();
     }
 
-    print(): void {
-        window.print();
+
+    showPrint(): void {
+        this.hidden = true;
+        setTimeout(() => {
+            window.print();
+
+            setTimeout(() => {
+                this.hidden = false;
+            }, 2000);
+            }, 200);
+
     }
 }

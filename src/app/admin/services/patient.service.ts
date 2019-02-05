@@ -433,7 +433,7 @@ export class PatientService {
                 }));
             })
         ).subscribe(mergedData => {
-            console.log(mergedData);
+            this.hospitalpatients.next(mergedData);
         });
 
     }

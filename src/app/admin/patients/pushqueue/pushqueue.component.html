@@ -61,7 +61,7 @@
         <button mat-button
                 class="save-button"
                 [disabled]="queueForm.invalid"
-                (click)="matDialogRef.close(['save', queueForm])"
+                (click)="submitForm()"
                 aria-label="SAVE">
             SAVE
         </button>

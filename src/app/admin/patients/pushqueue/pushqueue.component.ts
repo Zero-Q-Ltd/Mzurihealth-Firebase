@@ -5,6 +5,7 @@ import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import {PaymentmethodService} from '../../services/paymentmethod.service';
 import {PaymentChannel, Paymentmethods} from '../../../models/PaymentChannel';
 import {PatientService} from '../../services/patient.service';
+import {NotificationService} from '../../../shared/services/notifications.service';
 
 @Component({
     selector: 'app-pushqueue',
@@ -19,13 +20,17 @@ export class PushqueueComponent implements OnInit {
     dialogTitle: string;
     paymentMethods: Array<PaymentChannel>;
     allInsurance: any;
-    private insurance: FormArray;
-    private payments: FormArray;
+
+    private insuranceSet: boolean;
+    private insuranceAvailable: boolean;
 
 
     constructor(private _formBuilder: FormBuilder, @Inject(MAT_DIALOG_DATA) private _data: any,
-                public matDialogRef: MatDialogRef<PushqueueComponent>,
+                public matDialogRef: MatDialogRef<PushqueueComponent>, private notificationService: NotificationService,
                 private paymentmethodService: PaymentmethodService, private patientService: PatientService) {
+
+        this.insuranceAvailable = false;
+        this.insuranceSet = false;
 
         this.patient = _data.patient;
         this.dialogTitle = 'Queue Patient';
@@ -41,7 +46,7 @@ export class PushqueueComponent implements OnInit {
         /**
          * listen for insurance selection.
          * */
-        // this.listenForInsurance();
+        this.listenForInsurance();
     }
 
     ngOnInit(): void {
@@ -54,20 +59,30 @@ export class PushqueueComponent implements OnInit {
         });
     }
 
-    // private listenForInsurance(): void {
-    //     this.queueForm.get('type').valueChanges.subscribe(value => {
-    //         if (value === 'G3IouO1Z93KA52mJBqnW') {
-    //             // this.patientService.
-    //             this.patientService.getSinglePatient(this.patient.id).subscribe(pData => {
-    //                 pData.insurance.map((insurance: { id: string, insuranceno: string }) => {
-    //
-    //                     const data = Object.assign({}, insurance, {name: this.allInsurance[insurance.id].name});
-    //                 });
-    //             });
-    //
-    //         }
-    //     });
-    // }
+    private listenForInsurance(): void {
+        this.queueForm.get('type').valueChanges.subscribe((value: PaymentChannel) => {
+            if (value.name === 'insurance') {
+                this.insuranceSet = true;
+
+                // this.patientService.
+                this.patientService.getSinglePatient(this.patient.id).subscribe(pData => {
+
+                    if (pData.insurance.length === 0) {
+                        this.insuranceAvailable = false;
+                    }
+                    pData.insurance.map((insurance: { id: string, insuranceno: string }) => {
+                        // this.insuranceAvailable = true;
+                        this.insuranceAvailable = false;
+                    });
+                });
+
+            } else {
+                console.log('No insurance');
+                this.insuranceSet = false;
+                this.insuranceAvailable = false;
+            }
+        });
+    }
 
 
     private createInsurance(): FormGroup {
@@ -82,4 +97,24 @@ export class PushqueueComponent implements OnInit {
         });
     }
 
+    private insuranceEnabled(): boolean {
+        if (this.insuranceSet) {
+            return this.insuranceAvailable;
+        } else {
+            return true;
+        }
+    }
+
+    private submitForm(): void {
+        if (this.insuranceEnabled()) {
+            this.matDialogRef.close(['save', this.queueForm]);
+        } else {
+            this.notificationService.notify({
+                alert_type: 'error',
+                body: 'The user does not have any insurance',
+                title: 'ERROR',
+                placement: 'center'
+            });
+        }
+    }
 }

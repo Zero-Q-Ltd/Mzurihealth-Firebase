@@ -210,7 +210,10 @@ export class GeneralDetailsComponent implements OnInit {
                 alert_type: 'error',
                 body: 'Please fill all the required inputs',
                 title: 'ERROR',
-                placement: 'center'
+                placement: {
+                    horizontal : 'center',
+                    vertical : 'bottom'
+                }
             });
         }
     }

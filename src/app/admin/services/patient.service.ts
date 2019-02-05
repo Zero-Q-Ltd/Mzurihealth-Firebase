@@ -1,19 +1,16 @@
 import {Injectable} from '@angular/core';
 import {emptypatient, Patient} from '../../models/Patient';
-import {PatientVisit, emptypatientvisit} from '../../models/PatientVisit';
-import {Patientnote} from '../../models/Patientnote';
-import {Procedureperformed} from '../../models/Procedureperformed';
-import {RawProcedure} from '../../models/RawProcedure';
+import {emptypatientvisit} from '../../models/PatientVisit';
 import {Hospital} from '../../models/Hospital';
 import {HospitalAdmin} from '../../models/HospitalAdmin';
 import {HospitalService} from './hospital.service';
 import {AdminService} from './admin.service';
 import {AngularFirestore} from '@angular/fire/firestore';
 import * as moment from 'moment';
-import {emptyfile, HospFile} from '../../models/HospFile';
+import {HospFile} from '../../models/HospFile';
 import {AddPatientFormModel} from '../../models/AddPatientForm.model';
-import {map, startWith, switchMap,} from 'rxjs/operators';
-import {BehaviorSubject, combineLatest, Observable, from, of} from 'rxjs';
+import {map, switchMap,} from 'rxjs/operators';
+import {BehaviorSubject, combineLatest, Observable, of} from 'rxjs';
 import 'rxjs/add/observable/empty';
 import {PaymentChannel} from '../../models/PaymentChannel';
 import {firestore} from 'firebase';
@@ -157,6 +154,9 @@ export class PatientService {
                     hospitalfile.id = t.payload.doc.id;
                     return this.db.collection('patients').doc(hospitalfile.id).snapshotChanges().pipe(
                         map(patientdata => {
+                            if (!patientdata.payload.exists) {
+                                return {...emptypatient};
+                            }
                             const patient = patientdata.payload.data() as Patient;
                             patient.id = patientdata.payload.id;
                             patient.fileinfo = hospitalfile;

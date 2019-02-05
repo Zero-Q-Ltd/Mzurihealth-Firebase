@@ -128,6 +128,7 @@ export class AdminService {
 
     logout(): void {
         this.afAuth.auth.signOut();
+        this.router.navigate(['/admin/authentication/login']);
     }
 
     checkinvite(user: firebase.User): void {
@@ -155,7 +156,7 @@ export class AdminService {
                         config: {
                             level: invite.level,
                             categoryid: invite.categoyid,
-                            availability: 0,
+                            availability: 1,
                             hospitalid: invite.hospitalid
                         },
                         status: true,
@@ -165,6 +166,7 @@ export class AdminService {
                         }
                     };
                     this.db.firestore.collection(`hospitaladmins`).doc(user.uid).set(newadmin).then(result => {
+                        this.db.firestore.collection(`admininvites`).doc(snapshot.docs[0].id).delete();
                         if (this.activeurl === '/authentication/signin') {
                             this.router.navigate(['/dashboard']);
                         }

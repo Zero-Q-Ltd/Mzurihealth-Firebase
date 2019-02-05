@@ -71,7 +71,10 @@ export class AllComponent implements OnInit, AfterViewInit {
                     this.communicationservice.resetall();
 
                     this.notificationservice.notify({
-                        placement: 'centre',
+                        placement: {
+                            vertical: 'top',
+                            horizontal: 'right'
+                        },
                         title: 'Success',
                         alert_type: 'success',
                         body: 'Deleted'

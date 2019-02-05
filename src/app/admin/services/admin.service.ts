@@ -57,7 +57,10 @@ export class AdminService {
                             title: 'Error!',
                             duration: 10000,
                             icon: '',
-                            placement: 'center'
+                            placement: {
+                                vertical: 'top',
+                                horizontal: 'center'
+                            }
                         });
                     }
 
@@ -178,7 +181,10 @@ export class AdminService {
                         body: 'You have not registered with any Hospital. Please contactperson us for instrustions',
                         title: 'ERROR', duration: 10000,
                         icon: '',
-                        placement: 'center'
+                        placement: {
+                            vertical: 'top',
+                            horizontal: 'center'
+                        }
                     });
                 }
             }, error => {

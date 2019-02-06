@@ -108,7 +108,7 @@ export class AllComponent implements OnInit {
                                 alert_type: 'error',
                                 body: 'An error occurred',
                                 title: 'ERROR',
-                                placement: 'center'
+                                placement: {horizontal: 'right', vertical: 'top'}
                             });
                         });
 

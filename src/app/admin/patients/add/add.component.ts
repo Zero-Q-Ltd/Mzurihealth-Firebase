@@ -46,7 +46,7 @@ export class AddComponent implements OnInit {
                 private notificationservice: NotificationService,
                 @Optional() @Inject(MAT_DIALOG_DATA) public data?: any) {
 
-        this.maxDate = firestore.Timestamp.now().toDate()
+        this.maxDate = firestore.Timestamp.now().toDate();
 
 
         /**
@@ -186,7 +186,7 @@ export class AddComponent implements OnInit {
                 alert_type: 'error',
                 body: 'Please fill all the required inputs',
                 title: 'ERROR',
-                placement: 'center'
+                placement: {horizontal: 'right', vertical: 'top'}
             });
         }
     }

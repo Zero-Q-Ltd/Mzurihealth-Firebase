@@ -20,10 +20,10 @@ export class PushqueueComponent implements OnInit {
     dialogTitle: string;
     paymentMethods: Array<PaymentChannel>;
     allInsurance: any;
+    insurance: FormArray;
 
     private insuranceSet: boolean;
     private insuranceAvailable: boolean;
-
 
     constructor(private _formBuilder: FormBuilder, @Inject(MAT_DIALOG_DATA) private _data: any,
                 public matDialogRef: MatDialogRef<PushqueueComponent>, private notificationService: NotificationService,
@@ -55,7 +55,8 @@ export class PushqueueComponent implements OnInit {
     createQueueForm(): FormGroup {
         return this._formBuilder.group({
             description: ['', Validators.required],
-            type: ['', Validators.required]
+            type: ['', Validators.required],
+            insurance: this._formBuilder.array([this.createInsurance()])
         });
     }
 
@@ -113,7 +114,7 @@ export class PushqueueComponent implements OnInit {
                 alert_type: 'error',
                 body: 'The user does not have any insurance',
                 title: 'ERROR',
-                placement: 'center'
+                placement: {horizontal: 'right', vertical: 'top'}
             });
         }
     }

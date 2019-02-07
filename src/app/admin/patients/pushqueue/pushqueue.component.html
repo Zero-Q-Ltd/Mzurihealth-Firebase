@@ -21,7 +21,7 @@
         </mat-toolbar-row>
     </mat-toolbar>
 
-    <div mat-dialog-content class="p-24 pb-0 m-0" fusePerfectScrollbar>
+    <div mat-dialog-content class="pt-24 pb-4 m-0" fusePerfectScrollbar>
 
         <form [formGroup]="queueForm">
 
@@ -55,8 +55,22 @@
                  *ngFor="let item of queueForm.get('insurance').controls; let i = index;" formArrayName="insurance">
 
                 <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto" [formGroupName]="i">
+                    <div fxFlex="5">
+                        <mat-checkbox (change)="setchannel(channel)">
 
-                    <mat-form-field appearance="outline" fxFlex="85">
+                        </mat-checkbox>
+                    </div>
+                    <mat-form-field appearance="outline" fxFlex="40" class="mr-12">
+                        <mat-label>Insurance name</mat-label>
+                        <mat-select required formControlName="insuranceControl">
+                            <mat-option *ngFor="let option of allInsurance | keyvalue"
+                                        [value]="option?.key ">
+                                {{option.value.name |titlecase}}
+                            </mat-option>
+                        </mat-select>
+                        <mat-icon matSuffix class="secondary-text">account_circle</mat-icon>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" fxFlex="40">
                         <mat-label>Insurance name</mat-label>
                         <mat-select required formControlName="insuranceControl">
                             <mat-option *ngFor="let option of allInsurance | keyvalue"

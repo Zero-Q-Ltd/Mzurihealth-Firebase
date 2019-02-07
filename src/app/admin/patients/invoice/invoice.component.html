@@ -1,6 +1,6 @@
 <div class="compact page-layout blank" fxLayout="row" id="invoice">
 
-    <div class="invoice-container">
+    <div class="invoice-container" id = 'ivoice-card'>
 
         <!-- INVOICE -->
         <div class="card">
@@ -167,7 +167,7 @@
         </div>
         <!-- / INVOICE -->
         <div>
-            <button *ngIf="!hidden" mat-raised-button color="accent" (click)="showPrint($event)">
+            <button mat-raised-button color="accent" (click)="showPrint('ivoice-card')">
                 Print Invoice
             </button>
         </div>

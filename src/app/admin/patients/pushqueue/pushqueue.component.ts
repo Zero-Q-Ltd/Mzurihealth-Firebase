@@ -16,10 +16,10 @@ import {NotificationService} from '../../../shared/services/notifications.servic
 export class PushqueueComponent implements OnInit {
 
     queueForm: FormGroup;
+    allInsurance: { [key: string]: Paymentmethods } = {};
     patient: Patient;
     dialogTitle: string;
     paymentMethods: Array<PaymentChannel>;
-    allInsurance: any;
     insurance: FormArray;
 
     private insuranceSet: boolean;
@@ -42,7 +42,7 @@ export class PushqueueComponent implements OnInit {
             this.allInsurance = insurance;
         });
 
-        this.queueForm = this.createQueueForm();
+        this.createQueueForm();
         /**
          * listen for insurance selection.
          * */
@@ -52,12 +52,14 @@ export class PushqueueComponent implements OnInit {
     ngOnInit(): void {
     }
 
-    createQueueForm(): FormGroup {
-        return this._formBuilder.group({
+    createQueueForm(): void {
+        this.queueForm = this._formBuilder.group({
             description: ['', Validators.required],
             type: ['', Validators.required],
             insurance: this._formBuilder.array([this.createInsurance()])
         });
+
+        this.insurance = this.queueForm.get('insurance') as FormArray;
     }
 
     private listenForInsurance(): void {
@@ -88,7 +90,8 @@ export class PushqueueComponent implements OnInit {
 
     private createInsurance(): FormGroup {
         return this._formBuilder.group({
-            insuranceControl: new FormControl('', Validators.required)
+            insuranceControl: new FormControl('', Validators.required),
+            insurancenumber: new FormControl('', Validators.required)
         });
     }
 
@@ -104,6 +107,14 @@ export class PushqueueComponent implements OnInit {
         } else {
             return true;
         }
+    }
+
+    removeInsurance(index: number): void {
+        this.insurance.removeAt(index);
+    }
+
+    addInsurance(): void {
+        this.insurance.push(this.createInsurance());
     }
 
     submitForm(): void {

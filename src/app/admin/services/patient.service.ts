@@ -176,7 +176,11 @@ export class PatientService {
         return date != null ? date.getTime() : 0;
     }
 
-    addPatientToQueue({type, description}: { type: PaymentChannel, description: string }, patient: Patient): Promise<void> {
+    addPatientToQueue({type, description, insurance}: {
+                          type: PaymentChannel,
+                          description: string, insurance: Array<{ insuranceControl: string; insurancenumber: string; }>
+                      }, patient: Patient,
+                      selected: { insuranceControl: string, insurancenumber: string }): Promise<void> {
         /**
          * add patient to queue
          * */
@@ -197,6 +201,7 @@ export class PatientService {
          * */
 
 
+
         const visitTemp = {
             visitdescription: description,
             patientid: patient.id,
@@ -209,7 +214,13 @@ export class PatientService {
                 hasinsurance: type.name === 'insurance',
                 splitpayment: false,
                 status: false,
-                total: 0
+                total: 0,
+                singlepayment: {
+                    channelid: type.id,
+                    amount: 0,
+                    methidid: type.name === 'insurance' ? selected.insuranceControl : null,
+                    transactionid: null
+                }
 
             },
             id: queueID,
@@ -221,7 +232,46 @@ export class PatientService {
 
         const combineData = Object.assign(emptypatientvisit, visitTemp);
 
-        return this.db.collection('hospitalvisits').doc(queueID).set(combineData);
+        // Get a new write batch
+        const batch = this.db.firestore.batch();
+
+        const hospitalVisitRef = this.db.firestore.collection('hospitalvisits').doc(queueID);
+        batch.set(hospitalVisitRef, combineData);
+
+
+        console.log('..............................................................');
+
+        console.log('type');
+        console.log(type);
+        console.log('description');
+        console.log(description);
+        console.log('insurance');
+        console.log(insurance);
+        console.log('patient');
+        console.log(patient);
+        console.log('selected');
+        console.log(selected);
+
+        // const
+        // store insurance
+        const tempInsurance = insurance.map((value, index: number) => {
+            return {id: value.insuranceControl, insuranceno: value.insurancenumber};
+        });
+
+        const patientRef = this.db.firestore
+            .collection('patients').doc(patient.id);
+
+        batch.update(patientRef, {patient, insurance: tempInsurance});
+
+        // TODO: use transactions with promise.all
+        // increment the visit count
+        const hospitalFileRef = this.db.firestore.collection('hospitals')
+            .doc(this.activehospital.id).collection('filenumbers').doc(patient.id);
+
+
+        batch.update(hospitalFileRef, Object.assign(patient.fileinfo, {visitcount: patient.fileinfo.visitcount + 1}));
+
+        return batch.commit();
     }
 
 

@@ -15,6 +15,7 @@ import {NotificationService} from '../../../shared/services/notifications.servic
 import {Router} from '@angular/router';
 import {PaymentmethodService} from '../../services/paymentmethod.service';
 import {Paymentmethods} from '../../../models/PaymentChannel';
+import {QueueService} from '../../services/queue.service';
 
 @Component({
     selector: 'all-patients',
@@ -39,7 +40,7 @@ export class AllComponent implements OnInit {
                 private hospitalservice: HospitalService,
                 private paymentethods: PaymentmethodService,
                 private notificationservice: NotificationService,
-                private dialog: MatDialog,
+                private dialog: MatDialog, private queueService: QueueService,
                 private formBuilder: FormBuilder,
                 public _matDialog: MatDialog, private router: Router) {
 
@@ -48,6 +49,8 @@ export class AllComponent implements OnInit {
                 this.activehospital = hospital;
             }
         });
+        this.queueService.mainpatientqueue.subscribe();
+
         this.paymentethods.allinsurance.subscribe(insurance => {
             this.allInsurance = insurance;
         });
@@ -72,6 +75,21 @@ export class AllComponent implements OnInit {
     }
 
     addToQueue(patient: Patient): void {
+
+
+        const fil = this.queueService.mainpatientqueue.value.filter(value => {
+            return value.patientdata.id === patient.id;
+        });
+
+        if (fil.length !== 0) {
+            this.notificationservice.notify({
+                alert_type: 'error',
+                body: 'The user in the main queue',
+                title: 'ERROR',
+                placement: {horizontal: 'center', vertical: 'top'}
+            });
+            return;
+        }
         this.dialogRef = this._matDialog.open(PushqueueComponent, {
             panelClass: 'all-patients',
             data: {
@@ -86,16 +104,17 @@ export class AllComponent implements OnInit {
                     return;
                 }
                 const actionType: string = response[0];
-                const formData: FormGroup = response[1];
+                const formData: { data: FormGroup, selected: { insuranceControl: string, insurancenumber: string } } = response[1];
 
-                console.log(formData.getRawValue());
+                console.log(formData.data.getRawValue());
+
                 switch (actionType) {
                     /**
                      * Save
                      */
 
                     case 'save':
-                        this.patientservice.addPatientToQueue(formData.getRawValue(), patient)
+                        this.patientservice.addPatientToQueue(formData.data.getRawValue(), patient, formData.selected)
                             .then(() => {
                                 // navigate to queues
                                 this.router.navigate(['admin/patients/queue']);

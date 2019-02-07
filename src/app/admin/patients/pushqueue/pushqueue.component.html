@@ -56,30 +56,28 @@
 
                 <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto" [formGroupName]="i">
                     <div fxFlex="5">
-                        <mat-checkbox (change)="setchannel(channel)">
-
-                        </mat-checkbox>
+                        <mat-checkbox (change)="setSelectedInsurance($event.checked, item, i)"
+                                      [checked]="selected === i"></mat-checkbox>
                     </div>
                     <mat-form-field appearance="outline" fxFlex="40" class="mr-12">
                         <mat-label>Insurance name</mat-label>
                         <mat-select required formControlName="insuranceControl">
-                            <mat-option *ngFor="let option of allInsurance | keyvalue"
+                            <mat-option class="text-truncate" *ngFor="let option of allInsurance | keyvalue"
                                         [value]="option?.key ">
                                 {{option.value.name |titlecase}}
                             </mat-option>
                         </mat-select>
                         <mat-icon matSuffix class="secondary-text">account_circle</mat-icon>
                     </mat-form-field>
+
                     <mat-form-field appearance="outline" fxFlex="40">
                         <mat-label>Insurance name</mat-label>
-                        <mat-select required formControlName="insuranceControl">
-                            <mat-option *ngFor="let option of allInsurance | keyvalue"
-                                        [value]="option?.key ">
-                                {{option.value.name |titlecase}}
-                            </mat-option>
-                        </mat-select>
-                        <mat-icon matSuffix class="secondary-text">account_circle</mat-icon>
+                        <input formControlName="insurancenumber" matInput required autocomplete="off">
+                        <mat-icon class="secondary-text" matSuffix>confirmation_number</mat-icon>
+
+                        <mat-error>Insurance number is required</mat-error>
                     </mat-form-field>
+
                     <span fxFlex="10">
                          <button (click)="removeInsurance(i)" color="warn" mat-mini-fab type="button"
                                  class="mb-20 ml-8">
@@ -91,7 +89,7 @@
             </div>
 
 
-            <div fxLayout="row" fxLayoutAlign="start start">
+            <div fxLayout="row" fxLayoutAlign="start start" *ngIf="insuranceSet">
 
                 <div fxLayout="row" fxLayoutAlign="start start" fxFlex="100">
                     <button (click)="addInsurance()" color="basic" mat-mini-fab type="button">

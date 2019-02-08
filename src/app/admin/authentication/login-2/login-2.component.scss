@@ -1,12 +1,13 @@
-@import "src/@fuse/scss/fuse";
-
-login-2 {
+@import "../../../../@fuse/scss/fuse";
+*{
+    background: url('../../../../assets/images/backgrounds/dark-material-bg.jpg') orange;
 
     #login {
-        width: 100%;
+        width: auto;
+        height: 100%;
         overflow: hidden;
-        background: url('/assets/images/backgrounds/dark-material-bg.jpg') no-repeat;
-        background-size: cover;
+        background-size: contain;
+
 
         #login-intro {
             padding: 128px;
@@ -24,12 +25,14 @@ login-2 {
                 font-size: 42px;
                 font-weight: 300;
                 line-height: 1;
+                color: #fff;
             }
 
             .description {
                 padding-top: 16px;
                 font-size: 14px;
                 max-width: 600px;
+                color: wheat;
             }
         }
 
@@ -69,6 +72,8 @@ login-2 {
 
                 .title {
                     font-size: 21px;
+                    color: #fff;
+
                 }
 
                 .description {
@@ -153,7 +158,6 @@ login-2 {
                 }
 
                 button {
-
                     &.google,
                     &.facebook {
                         width: 70%;
@@ -196,5 +200,21 @@ login-2 {
                 }
             }
         }
+    }
+}
+
+
+.my-btn {
+    background-color: #D73D32 !important;
+    border: #D73D32;
+    color: wheat;
+    padding: 15px 32px;
+    text-align: center;
+    //display: inline-block;
+    //font-size: 16px;
+    &:hover {
+        background-color: #D73D32 !important;
+        border: #fff;
+        color: #D73D32;
     }
 }

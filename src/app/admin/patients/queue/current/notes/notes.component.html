@@ -1,26 +1,19 @@
-<form (ngSubmit)="addnote()" [formGroup]="newnoteform" class=" p-24" fxFlex="1 0 auto"
-      fxLayout="column" fxLayoutAlign="start">
-    <div fxFlex="1 0 auto" fxLayout="row" fxLayoutAlign="start center">
-        <mat-form-field appearance="outline" class="pr-4 " fxFlex="100">
+<form (ngSubmit)="addnote()" [formGroup]="newnoteform" class="p-24" fxLayout="column">
+        <mat-form-field appearance="outline">
             <mat-label>Title</mat-label>
             <input formControlName="title" matInput required>
             <mat-icon class="secondary-text" matSuffix>title</mat-icon>
             <mat-error>Title required!</mat-error>
         </mat-form-field>
-    </div>
-    <div fxFlex="1 0 auto" fxLayout="row" fxLayoutAlign="start center">
-        <mat-form-field appearance="outline" fxFlex="100">
+        <mat-form-field appearance="outline">
             <mat-label>Note</mat-label>
             <textarea formControlName="note" matInput required></textarea>
         </mat-form-field>
-    </div>
-    <div fxFlex="1 0 auto" fxLayout="row" fxLayoutAlign="start center">
         <button class="py-4" color="accent" mat-raised-button>Save Note</button>
-    </div>
 </form>
 
-<div *ngFor="let note of patientnotes">
-    <mat-card class="p-24">
+<div class="p-24" fxLayout="column" *ngFor="let note of patientnotes" >
+    <mat-card class="p-24" fxFlex="100%">
         <mat-card-header>
             <div class="example-header-image" mat-card-avatar></div>
             <mat-card-title>{{note.title}}</mat-card-title>

@@ -1,7 +1,7 @@
 import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {fuseAnimations} from '../../../../@fuse/animations';
 import {MatDialog, MatTableDataSource} from '@angular/material';
-import {Patient} from '../../../models/Patient';
+import {emptypatient, Patient} from '../../../models/Patient';
 import * as moment from 'moment';
 import {firestore} from 'firebase';
 import {HospitalAdmin} from '../../../models/HospitalAdmin';
@@ -75,6 +75,9 @@ export class AllComponent implements OnInit {
     }
 
     addToQueue(patient: Patient): void {
+
+        console.log(Object.assign(emptypatient, patient));
+        return;
 
 
         const fil = this.queueService.mainpatientqueue.value.filter(value => {

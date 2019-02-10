@@ -1,6 +1,6 @@
 import {Customfields, emptymetadata, Metadata} from './universal';
 import {firestore} from 'firebase/app';
-import {HospFile} from './HospFile';
+import {emptyfile, HospFile} from './HospFile';
 import {Condition} from './MedicalConditions.model';
 import {Allegy} from './Allergy.model';
 
@@ -104,7 +104,8 @@ export const emptypatient: Patient = {
     exrainfo: null,
     primaryhosp: null,
     customfuelds: [],
-    metadata: emptymetadata
+    metadata: emptymetadata,
+    fileinfo: {...emptyfile}
 
 };
 

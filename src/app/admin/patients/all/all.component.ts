@@ -76,10 +76,6 @@ export class AllComponent implements OnInit {
 
     addToQueue(patient: Patient): void {
 
-        console.log(Object.assign(emptypatient, patient));
-        return;
-
-
         const fil = this.queueService.mainpatientqueue.value.filter(value => {
             return value.patientdata.id === patient.id;
         });

@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {AngularFirestore} from '@angular/fire/firestore';
 import {HospitalService} from './hospital.service';
 import {AdminService} from './admin.service';
-import {BehaviorSubject, combineLatest, merge, of} from 'rxjs';
+import {BehaviorSubject, combineLatest, of} from 'rxjs';
 import {emptypatient, Patient} from '../../models/Patient';
 import {HospitalAdmin} from '../../models/HospitalAdmin';
 import {PatientService} from './patient.service';
@@ -92,7 +92,7 @@ export class QueueService {
                     if (f.length === 0) {
                         return of([]);
                     }
-                    const visit: PatientVisit = Object.assign(emptypatientvisit, t.payload.doc.data(), {id: t.payload.doc.id});
+                    const visit: PatientVisit = Object.assign({...emptypatientvisit}, t.payload.doc.data(), {id: t.payload.doc.id});
                     return this.db.collection('patients').doc(visit.patientid).snapshotChanges().pipe(
                         switchMap(patientdata => {
                             if (!patientdata.payload.exists) {
@@ -164,14 +164,12 @@ export class QueueService {
      * @param adminid
      */
     assignadmin(visit: PatientVisit, adminid: string): Promise<void> {
-        const batch = this.db.firestore.batch();
         visit.checkin = {
             status: 1,
             admin: adminid
         };
-        console.log(visit)
-        batch.update(this.db.firestore.collection('hospitalvisits').doc(visit.id), visit);
-        return batch.commit();
+        console.log(visit);
+        return this.db.firestore.collection('hospitalvisits').doc(visit.id).update(visit);
     }
 
 

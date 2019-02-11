@@ -24,9 +24,11 @@ export class MineComponent implements OnInit {
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
 
     constructor(private queue: QueueService,
-                public _matDialog: MatDialog,) {
+                public _matDialog: MatDialog) {
         queue.mypatientqueue.subscribe(value => {
-            this.patientsdatasource.data = value;
+            this.patientsdatasource.data = value.sort((a, b) => {
+                return a.queuedata.metadata.lastedit.toMillis() - b.queuedata.metadata.lastedit.toMillis();
+            });
         });
     }
 

@@ -12,6 +12,7 @@ import {emptymergedQueueModel, MergedPatient_QueueModel} from '../../models/Merg
 import {ProceduresService} from './procedures.service';
 import {MergedProcedureModel} from '../../models/MergedProcedure.model';
 import {emptyfile, HospFile} from '../../models/HospFile';
+import {firestore} from 'firebase';
 
 @Injectable({
     providedIn: 'root'
@@ -168,6 +169,7 @@ export class QueueService {
             status: 1,
             admin: adminid
         };
+        visit.metadata.lastedit = firestore.Timestamp.now();
         console.log(visit);
         return this.db.firestore.collection('hospitalvisits').doc(visit.id).update(visit);
     }

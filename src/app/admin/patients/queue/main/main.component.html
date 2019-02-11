@@ -21,8 +21,8 @@
                  [src]="patient.patientdata.personalinfo.photoURL || 'assets/images/avatars/male.png'"
                  alt=""
                  class="avatar">
-            <img *ngIf="patient.patientdata.personalinfo.gender == 2"
-                 [src]="patient.patientdata.personalinfo.gender || 'assets/images/avatars/female.png'"
+            <img *ngIf="patient.patientdata.personalinfo.gender == 0"
+                 [src]="patient.patientdata.personalinfo.photoURL || 'assets/images/avatars/female.png'"
                  alt=""
                  class="avatar">
         </mat-cell>

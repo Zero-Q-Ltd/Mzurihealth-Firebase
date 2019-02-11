@@ -70,8 +70,8 @@ export class AddComponent implements OnInit {
                 this.patientsForm.controls['personalinfo']
                     .get('fileno').patchValue(this.patientfileno.no);
 
-                this.patientsForm.controls['personalinfo']
-                    .get('fileno').disable({onlySelf: true});
+                // this.patientsForm.controls['personalinfo']
+                //     .get('fileno').disable({onlySelf: true});
             }
         });
 

@@ -8,7 +8,7 @@ import {firestore} from 'firebase';
 export class AgePipe implements PipeTransform {
 
     transform(birtday: firestore.Timestamp, args?: any): number {
-        return moment().diff(birtday.toDate().toLocaleDateString(), 'years');
+        return moment().diff(birtday ? birtday.toDate().toLocaleDateString() : '', 'years');
     }
 
 }

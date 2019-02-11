@@ -2,16 +2,16 @@ import {Injectable} from '@angular/core';
 import {AngularFirestore} from '@angular/fire/firestore';
 import {HospitalService} from './hospital.service';
 import {AdminService} from './admin.service';
-import {BehaviorSubject, combineLatest, of} from 'rxjs';
+import {BehaviorSubject, combineLatest, merge, of} from 'rxjs';
 import {emptypatient, Patient} from '../../models/Patient';
 import {HospitalAdmin} from '../../models/HospitalAdmin';
 import {PatientService} from './patient.service';
 import {switchMap} from 'rxjs/operators';
 import {emptypatientvisit, PatientVisit} from '../../models/PatientVisit';
 import {emptymergedQueueModel, MergedPatient_QueueModel} from '../../models/MergedPatient_Queue.model';
-import {emptyfile, HospFile} from '../../models/HospFile';
 import {ProceduresService} from './procedures.service';
 import {MergedProcedureModel} from '../../models/MergedProcedure.model';
+import {emptyfile, HospFile} from '../../models/HospFile';
 
 @Injectable({
     providedIn: 'root'
@@ -48,6 +48,41 @@ export class QueueService {
      *fetches patientvisit and merges it with hospital file info and patient info
      */
     private getwholequeue(): void {
+
+        // this.db.collection('hospitalvisits', ref => ref
+        //     .where('hospitalid', '==', this.activehospitalid)
+        //     .where('checkin.status', '<', 4))
+        //     .snapshotChanges().pipe(
+        //     switchMap(f => {
+        //         return combineLatest(...f.map(t => {
+        //             if (f.length === 0) {
+        //                 return of([]);
+        //             }
+        //             const visit: PatientVisit = Object.assign(emptypatientvisit, t.payload.doc.data(), {id: t.payload.doc.id});
+        //             return this.db.collection('patients').doc(visit.patientid).snapshotChanges().pipe(
+        //                 switchMap(patientdata => {
+        //                     if (!patientdata.payload.exists) {
+        //                         return of({...emptymergedQueueModel});
+        //                     }
+        //                     const patient: Patient = Object.assign(emptypatient, patientdata.payload.data(), {id: patientdata.payload.id});
+        //                     return of({patientdata: Object.assign({}, emptypatient, patient), queuedata: visit});
+        //                     return this.db.collection('hospitals').doc(this.activehospitalid)
+        //                         .collection('filenumbers')
+        //                         .doc(patient.id)
+        //                         .snapshotChanges()
+        //                         .pipe().map(filedata => {
+        //                             const file: HospFile = Object.assign(emptyfile, filedata.payload.data(), {id: patient.id});
+        //                             patient.fileinfo = file;
+        //                             return {patientdata: patient, queuedata: visit};
+        //                         });
+        //                 })
+        //             );
+        //         }));
+        //     })
+        // ).subscribe(mergedData => {
+        //     this.mainpatientqueue.next(mergedData);
+        // });
+
         this.db.collection('hospitalvisits', ref => ref
             .where('hospitalid', '==', this.activehospitalid)
             .where('checkin.status', '<', 4))
@@ -64,21 +99,33 @@ export class QueueService {
                                 return of({...emptymergedQueueModel});
                             }
                             const patient: Patient = Object.assign(emptypatient, patientdata.payload.data(), {id: patientdata.payload.id});
-                            return of({patientdata: Object.assign({}, emptypatient, patient), queuedata: visit});
-                            return this.db.collection('hospitals').doc(this.activehospitalid)
-                                .collection('filenumbers')
-                                .doc(patient.id)
-                                .snapshotChanges()
-                                .pipe().map(filedata => {
-                                    const file: HospFile = Object.assign(emptyfile, filedata.payload.data(), {id: patient.id});
-                                    patient.fileinfo = file;
-                                    return {patientdata: patient, queuedata: visit};
-                                });
+                            return of({patientdata: Object.assign({}, {...emptypatient}, patient), queuedata: visit});
                         })
                     );
                 }));
+            }),
+            switchMap((val1: Array<MergedPatient_QueueModel>) => {
+                console.log(val1);
+
+                return combineLatest(...val1.map(t => {
+                    if (val1.length === 0) {
+                        return of([]);
+                    }
+                    return this.db.collection('hospitals').doc(this.activehospitalid)
+                        .collection('filenumbers')
+                        .doc(t.patientdata.id)
+                        .snapshotChanges()
+                        .pipe().map(filedata => {
+                            const file: HospFile = Object.assign({...emptyfile}, filedata.payload.data(), {id: t.patientdata.id});
+                            t.patientdata.fileinfo = file;
+                            return t;
+                        });
+
+                }));
+
             })
         ).subscribe(mergedData => {
+            console.log(mergedData);
             this.mainpatientqueue.next(mergedData);
         });
     }
@@ -122,6 +169,7 @@ export class QueueService {
             status: 1,
             admin: adminid
         };
+        console.log(visit)
         batch.update(this.db.firestore.collection('hospitalvisits').doc(visit.id), visit);
         return batch.commit();
     }

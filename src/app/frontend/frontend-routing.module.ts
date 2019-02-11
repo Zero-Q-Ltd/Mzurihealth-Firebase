@@ -6,8 +6,9 @@ import {HomeComponent} from './home/home.component';
 const routes: Routes = [
     {
         path: '',
-        component: HomeComponent,
-        children: []
+        redirectTo: '/admin',
+        pathMatch: 'full'
+        // component: HomeComponent,
     },
 ];
 

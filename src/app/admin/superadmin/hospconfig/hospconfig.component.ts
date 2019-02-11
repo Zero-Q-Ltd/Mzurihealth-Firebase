@@ -118,7 +118,7 @@ export class HospconfigComponent implements OnInit {
                             vertical: 'top',
                             horizontal: 'right'
                         },
-                        title: 'Cancelled',
+                        title: 'SAVED',
                         alert_type: 'success',
                         body: ''
                     });

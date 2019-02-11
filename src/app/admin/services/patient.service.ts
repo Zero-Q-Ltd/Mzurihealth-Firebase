@@ -7,9 +7,9 @@ import {HospitalService} from './hospital.service';
 import {AdminService} from './admin.service';
 import {AngularFirestore} from '@angular/fire/firestore';
 import * as moment from 'moment';
-import {HospFile} from '../../models/HospFile';
+import {emptyfile, HospFile} from '../../models/HospFile';
 import {AddPatientFormModel} from '../../models/AddPatientForm.model';
-import {map, switchMap,} from 'rxjs/operators';
+import {map, switchMap} from 'rxjs/operators';
 import {BehaviorSubject, combineLatest, Observable, of} from 'rxjs';
 import 'rxjs/add/observable/empty';
 import {PaymentChannel} from '../../models/PaymentChannel';
@@ -102,18 +102,21 @@ export class PatientService {
         /**
          * join objects to create a full document
          * */
-        const patientDoc = Object.assign(emptypatient, modifiedData) as Patient;
+        const patientDoc = Object.assign({...emptypatient}, modifiedData) as Patient;
 
         /**
          * hospital file number
          * */
-        const hospitalFileNumber = {
+        const hospitalFileNumberTemp = {
             id: patientID,
             date: todayDate,
             lastvisit: todayDate,
             no: personalinfo.fileno,
             idno: personalinfo.idno
         };
+
+        const hospitalFileNumber = Object.assign({...emptyfile}, hospitalFileNumberTemp);
+
 
         /**
          * start batch write
@@ -231,8 +234,6 @@ export class PatientService {
         };
 
         const combineData = Object.assign(emptypatientvisit, visitTemp);
-
-
 
 
         console.log('..............................................................');

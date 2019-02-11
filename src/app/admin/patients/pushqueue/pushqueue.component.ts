@@ -25,7 +25,7 @@ export class PushqueueComponent implements OnInit {
     selected: number;
     selectedInsurance: { insuranceControl: string, insurancenumber: string } = null;
 
-    private insuranceSet: boolean;
+    insuranceSet: boolean;
     private insuranceAvailable: boolean;
 
     constructor(private _formBuilder: FormBuilder, @Inject(MAT_DIALOG_DATA) private _data: any,

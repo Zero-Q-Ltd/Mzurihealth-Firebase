@@ -52,7 +52,7 @@
             </div>
 
             <div fxLayout="row" fxLayoutAlign="start start"
-                 *ngFor="let item of queueForm.get('insurance').controls; let i = index;" formArrayName="insurance">
+                 *ngFor="let item of queueForm.get('insurance')['controls']; let i = index;" formArrayName="insurance">
 
                 <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto" [formGroupName]="i">
                     <div fxFlex="5">

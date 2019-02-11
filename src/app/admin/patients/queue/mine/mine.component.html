@@ -121,8 +121,7 @@
 
     <mat-row *matRowDef="let patient; columns: patientsheaders;"
              [@animate]="{value:'*',params:{y:'100%'}}"
-             (click)="viewinvoice(patient)"
-             [routerLink]="'profile/'+patient.patientdata.id" class="product"
+             (click)="viewinvoice(patient)" class="product"
              matRipple>
     </mat-row>
 

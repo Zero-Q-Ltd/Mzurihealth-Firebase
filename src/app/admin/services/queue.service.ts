@@ -64,13 +64,13 @@ export class QueueService {
                                 return of({...emptymergedQueueModel});
                             }
                             const patient: Patient = Object.assign(emptypatient, patientdata.payload.data(), {id: patientdata.payload.id});
-                            // return {patientdata: Object.assign({}, emptypatient, patient), queuedata: visit};
+                            return of({patientdata: Object.assign({}, emptypatient, patient), queuedata: visit});
                             return this.db.collection('hospitals').doc(this.activehospitalid)
                                 .collection('filenumbers')
                                 .doc(patient.id)
                                 .snapshotChanges()
                                 .pipe().map(filedata => {
-                                    const file: HospFile = Object.assign(emptyfile, filedata.payload.data() , {id : patient.id});
+                                    const file: HospFile = Object.assign(emptyfile, filedata.payload.data(), {id: patient.id});
                                     patient.fileinfo = file;
                                     return {patientdata: patient, queuedata: visit};
                                 });

@@ -237,16 +237,29 @@ export class InvoiceCustomizationComponent implements OnInit {
     }
 
     pay(): void {
-        this.confirmDialogRef = this._matDialog.open(FuseConfirmDialogComponent, {
-            disableClose: false
-        });
-        this.confirmDialogRef.componentInstance.confirmMessage = 'Are you sure you want to pay for the Invoice and exit the patient??';
-        this.confirmDialogRef.afterClosed().subscribe(result => {
-            if (result) {
-                this.visitservice.payandexit(this.patientdata.queuedata);
-                this.thisdialogRef.close();
-            }
-        });
+        if (!this.patientdata.queuedata.checkin.admin) {
+            this.confirmDialogRef = this._matDialog.open(FuseConfirmDialogComponent, {
+                disableClose: false
+            });
+
+            this.confirmDialogRef.componentInstance.confirmMessage = 'Are you sure you want to pay for the Invoice and exit the patient??';
+            this.confirmDialogRef.afterClosed().subscribe(result => {
+                if (result) {
+                    this.visitservice.payandexit(this.patientdata.queuedata);
+                    this.thisdialogRef.close();
+                }
+            });
+        } else {
+            this.notifications.notify({
+                placement: {
+                    vertical: 'bottom',
+                    horizontal: 'center'
+                },
+                title: 'Error',
+                alert_type: 'error',
+                body: 'Patient visit is in progress'
+            });
+        }
     }
 
     ngOnInit(): void {

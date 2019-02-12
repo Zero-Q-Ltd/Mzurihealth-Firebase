@@ -106,7 +106,6 @@ export class AddComponent implements OnInit {
         const gender = new FormControl('', Validators.required);
         const birth = new FormControl('', Validators.required);
         const email = new FormControl('', Validators.compose([
-            Validators.required,
             Validators.email
         ]));
         const userWorkplace = new FormControl('', Validators.required);

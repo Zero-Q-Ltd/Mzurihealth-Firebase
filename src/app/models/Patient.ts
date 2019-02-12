@@ -105,7 +105,5 @@ export const emptypatient: Patient = {
     primaryhosp: null,
     customfuelds: [],
     metadata: emptymetadata,
-    fileinfo: {...emptyfile}
-
 };
 

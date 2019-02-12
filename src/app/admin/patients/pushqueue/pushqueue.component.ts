@@ -22,7 +22,7 @@ export class PushqueueComponent implements OnInit {
     paymentMethods: Array<PaymentChannel>;
     insurance: FormArray;
 
-    selected: number;
+    selected: number = null;
     selectedInsurance: { insuranceControl: string, insurancenumber: string } = null;
 
     insuranceSet: boolean;
@@ -151,9 +151,9 @@ export class PushqueueComponent implements OnInit {
         if (this.insuranceEnabled()) {
             if (this.insuranceSet && this.selected === null) {
                 this.notificationService.notify({
-                    alert_type: 'error',
-                    body: 'The please select Insurance',
-                    title: 'ERROR',
+                    alert_type: 'info',
+                    body: 'Please select Insurance',
+                    title: 'Select insurance',
                     placement: {horizontal: 'right', vertical: 'top'}
                 });
                 return;
@@ -161,9 +161,9 @@ export class PushqueueComponent implements OnInit {
             this.matDialogRef.close(['save', {data: this.queueForm, selected: this.selectedInsurance}]);
         } else {
             this.notificationService.notify({
-                alert_type: 'error',
+                alert_type: 'info',
                 body: 'The user does not have any insurance',
-                title: 'ERROR',
+                title: 'No Insurance',
                 placement: {horizontal: 'right', vertical: 'top'}
             });
         }
@@ -174,14 +174,15 @@ export class PushqueueComponent implements OnInit {
      * */
     listenForInsuranceArrayChanges(): void {
         // make checkList select one value only
-        if (this.insurance.length !== 0) {
-            this.insuranceSet = true;
-            this.insuranceAvailable = true;
-        } else {
-            this.insuranceSet = false;
-            this.insuranceAvailable = false;
-        }
-
+        this.queueForm.get('insurance').valueChanges.subscribe(() => {
+            if (this.insurance.length !== 0) {
+                this.insuranceSet = true;
+                this.insuranceAvailable = true;
+            } else {
+                this.insuranceSet = false;
+                this.insuranceAvailable = false;
+            }
+        });
     }
 
     setSelectedInsurance(checked, selectedInsurance: FormGroup, index): void {

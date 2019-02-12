@@ -171,11 +171,17 @@
                       mattooltip="Coming soon...">
         Multiple Payments
     </mat-slide-toggle>
-    <button (click)="preview()" color="accent" mat-raised-button class="m-24">
+    <button [disabled]="disableprecriptionbutton" (click)="printprescription()" color="accent" mat-raised-button class="m-12">
+        Print Prescription
         <i class="material-icons">print</i>
     </button>
-    <button (click)="pay()" color="accent" mat-raised-button>
-        <i class="material-icons">thumb_up</i>
+    <button (click)="preview()" color="accent" mat-raised-button class="m-12">
+        Print Invoice
+        <i class="material-icons">print</i>
+    </button>
+    <button color="warn" mat-raised-button class="m-12" [mat-dialog-close]="">
+        Dismiss
+        <i class="material-icons">close</i>
     </button>
 </div>
 

@@ -14,6 +14,7 @@ import {fuseAnimations} from '../../../../@fuse/animations';
 import {ProceduresService} from '../../services/procedures.service';
 import {NotificationService} from '../../../shared/services/notifications.service';
 import {FuseConfirmDialogComponent} from '../../../../@fuse/components/confirm-dialog/confirm-dialog.component';
+import {PrescriptionComponent} from '../prescription/prescription.component';
 
 @Component({
     selector: 'app-invoice-payment',
@@ -35,7 +36,7 @@ export class InvoiceCustomizationComponent implements OnInit {
     multipayment = false;
     selectedinsurance: Paymentmethods;
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
-
+    disableprecriptionbutton = false
 
     constructor(private queue: QueueService,
                 private hospital: HospitalService,
@@ -234,6 +235,14 @@ export class InvoiceCustomizationComponent implements OnInit {
             this.multipayment = false;
         }, 800);
 
+    }
+
+    printprescription (): void {
+        this.dialogRef = this._matDialog.open(PrescriptionComponent, {
+            data: this.patientid
+        });
+
+        this.dialogRef.afterClosed();
     }
 
     pay(): void {

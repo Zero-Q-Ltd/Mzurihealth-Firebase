@@ -8,15 +8,16 @@ import {InvoiceComponent} from './invoice/invoice.component';
 import {ProfileComponent} from './profile/profile.component';
 import {PushqueueComponent} from './pushqueue/pushqueue.component';
 import {InvoiceCustomizationComponent} from './invoice-customization/invoice-customization.component';
+import { PrescriptionComponent } from './prescription/prescription.component';
 
 @NgModule({
-    declarations: [AllComponent, AddComponent, InvoiceComponent, ProfileComponent, PushqueueComponent, InvoiceCustomizationComponent],
+    declarations: [AllComponent, AddComponent, InvoiceComponent, ProfileComponent, PushqueueComponent, InvoiceCustomizationComponent, PrescriptionComponent],
     imports: [
         CommonModule,
         PatientsRoutingModule,
         AdminSharedModule,
     ],
-    entryComponents: [AddComponent, PushqueueComponent, InvoiceComponent, InvoiceCustomizationComponent],
+    entryComponents: [AddComponent, PushqueueComponent, InvoiceComponent, InvoiceCustomizationComponent, PrescriptionComponent],
 
 })
 export class PatientsModule {

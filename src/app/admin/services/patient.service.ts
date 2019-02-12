@@ -203,8 +203,6 @@ export class PatientService {
          * 3.
          * */
 
-
-
         const visitTemp = {
             visitdescription: description,
             patientid: patient.id,
@@ -234,21 +232,6 @@ export class PatientService {
         };
 
         const combineData = Object.assign(emptypatientvisit, visitTemp);
-
-
-        console.log('..............................................................');
-
-        console.log('type');
-        console.log(type);
-        console.log('description');
-        console.log(description);
-        console.log('insurance');
-        console.log(insurance);
-        console.log('patient');
-        console.log(patient);
-        console.log('selected');
-        console.log(selected);
-
 
         // Get a new write batch
         const batch = this.db.firestore.batch();

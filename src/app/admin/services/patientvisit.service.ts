@@ -83,42 +83,7 @@ export class PatientvisitService {
                 }));
             });
     }
-
-    /**
-     *
-     * @param newpatient determines the status so we can distinguish completely new patients and returning ones
-     * @param description
-     * @param insuranceid
-     * @param splitpayment
-     */
-    createpatientvisit(newpatient: boolean, description: string, insuranceid ?: string, splitpayment?: boolean): any {
-        const visit: PatientVisit = {...emptypatientvisit};
-        visit.checkin = {
-            admin: this.adminid,
-            status: newpatient ? 0 : 1
-        };
-        visit.invoiceid = this.hospitalService.activehospital.value.invoicecount + 1;
-        visit.metadata = {
-            lastedit: firestore.Timestamp.now(),
-            date: firestore.Timestamp.now()
-        };
-        visit.hospitalid = this.hospitalid;
-        visit.visitdescription = description;
-        visit.payment = {
-            hasinsurance: !!insuranceid,
-            splitpayment: splitpayment,
-            status: false,
-            total: 0
-        };
-        visit.procedures = [];
-        return this.db.collection('hospitalvisits').add(visit).then(() => {
-                return this.db.collection('hospitals').doc(this.hospitalid).update({
-                    invoicecount: this.hospitalService.activehospital.value.invoicecount + 1
-                });
-            }
-        );
-    }
-
+    
     editpatientvisit(visit: PatientVisit): any {
         return this.db.collection('hospitalvisits').doc(visit.id).update(visit);
     }

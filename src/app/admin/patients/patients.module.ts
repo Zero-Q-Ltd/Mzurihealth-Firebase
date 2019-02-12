@@ -17,7 +17,7 @@ import { PrescriptionComponent } from './prescription/prescription.component';
         PatientsRoutingModule,
         AdminSharedModule,
     ],
-    entryComponents: [AddComponent, PushqueueComponent, InvoiceComponent, InvoiceCustomizationComponent],
+    entryComponents: [AddComponent, PushqueueComponent, InvoiceComponent, InvoiceCustomizationComponent, PrescriptionComponent],
 
 })
 export class PatientsModule {

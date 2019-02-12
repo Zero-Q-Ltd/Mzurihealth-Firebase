@@ -87,10 +87,8 @@
         </mat-header-cell>
         <mat-cell *matCellDef="let patient; let i = index">
             <mat-chip-list [ngSwitch]='patient.queuedata.checkin.status'>
-                <mat-chip *ngSwitchCase="0" color="warn" mat-raised-button selected>NEW </mat-chip>
                 <mat-chip *ngSwitchCase="1" color="primary" mat-raised-button selected>Waiting </mat-chip>
-                <mat-chip *ngSwitchCase="2" color="accent" mat-raised-button selected>In Progress</mat-chip>
-                <mat-chip *ngSwitchCase="3" color="warn" mat-raised-button selected>Waiting Payment</mat-chip>
+                <mat-chip *ngSwitchCase="2" color="basic" mat-raised-button selected>In Progress</mat-chip>
             </mat-chip-list>
         </mat-cell>
     </ng-container>

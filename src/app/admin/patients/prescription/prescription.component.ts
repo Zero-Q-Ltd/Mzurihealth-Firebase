@@ -1,15 +1,35 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Inject, OnInit} from '@angular/core';
+import {HospitalService} from '../../services/hospital.service';
+import {QueueService} from '../../services/queue.service';
+import {PaymentmethodService} from '../../services/paymentmethod.service';
+import {PatientvisitService} from '../../services/patientvisit.service';
+import {MAT_DIALOG_DATA} from '@angular/material';
+import {emptymergedQueueModel, MergedPatient_QueueModel} from '../../../models/MergedPatient_Queue.model';
+import {PaymentChannel} from '../../../models/PaymentChannel';
+import {Subject} from 'rxjs';
+import {Hospital} from '../../../models/Hospital';
 
 @Component({
-  selector: 'app-prescription',
-  templateUrl: './prescription.component.html',
-  styleUrls: ['./prescription.component.scss']
+    selector: 'app-prescription',
+    templateUrl: './prescription.component.html',
+    styleUrls: ['./prescription.component.scss']
 })
 export class PrescriptionComponent implements OnInit {
+    patientdata: MergedPatient_QueueModel = {...emptymergedQueueModel};
+    allpaymentchannels: Array<PaymentChannel> = [];
+    private _unsubscribeAll: Subject<any>;
+    activehospital: Hospital;
+    hidden = false;
 
-  constructor() { }
+    constructor(private hospitalservice: HospitalService,
+                private queue: QueueService,
+                private paymentmethodService: PaymentmethodService,
+                private patientvisit: PatientvisitService,
+                @Inject(MAT_DIALOG_DATA) public patientid: string) {
 
-  ngOnInit() {
-  }
+    }
+
+    ngOnInit() {
+    }
 
 }

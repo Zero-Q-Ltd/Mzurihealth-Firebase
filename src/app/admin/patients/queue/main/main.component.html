@@ -85,22 +85,22 @@
             <mat-chip-list [ngSwitch]='patient.queuedata.checkin.status'>
                 <mat-chip *ngSwitchCase="0" color="warn" mat-raised-button matTooltip="NEW" selected>
                     <mat-icon>new_releases</mat-icon>
-                    NEW
+                    &nbsp;New
                 </mat-chip>
                 <mat-chip *ngSwitchCase="1" class="text-truncate" color="primary" mat-raised-button matTooltip="Waiting"
                           selected>
                     <mat-icon>av_timer</mat-icon>
-                    {{hospitaladmins| adminName : patient.queuedata.checkin.admin }}
+                    &nbsp;{{hospitaladmins| adminName : patient.queuedata.checkin.admin }}
                 </mat-chip>
                 <mat-chip *ngSwitchCase="2" class="text-truncate" color="primary" mat-raised-button
                           matTooltip="In Progress" selected>
                     <mat-icon>done</mat-icon>
-                    {{hospitaladmins| adminName : patient.queuedata.checkin.admin }}
+                    &nbsp;{{hospitaladmins| adminName : patient.queuedata.checkin.admin }}
                 </mat-chip>
-                <mat-chip *ngSwitchCase="3" class="text-truncate" color="warn" mat-raised-button
+                <mat-chip *ngSwitchCase="3" class="text-truncate" color="accent" mat-raised-button
                           matTooltip="Waiting For Payment" selected>
                     <mat-icon>done_all</mat-icon>
-                    DONE
+                    &nbsp;Done
                 </mat-chip>
             </mat-chip-list>
         </mat-cell>

@@ -45,7 +45,7 @@ export class PatientService {
     getSinglePatient(patientID: string): Observable<Patient> {
         return this.db.collection('patients').doc(patientID).snapshotChanges().pipe(
             map(action => {
-                return Object.assign(emptypatient, action.payload.data()) as Patient;
+                return Object.assign({}, emptypatient, action.payload.data()) as Patient;
             })
         );
     }
@@ -102,7 +102,7 @@ export class PatientService {
         /**
          * join objects to create a full document
          * */
-        const patientDoc = Object.assign({...emptypatient}, modifiedData) as Patient;
+        const patientDoc = Object.assign({}, emptypatient, modifiedData) as Patient;
 
         /**
          * hospital file number
@@ -115,7 +115,7 @@ export class PatientService {
             idno: personalinfo.idno
         };
 
-        const hospitalFileNumber = Object.assign({...emptyfile}, hospitalFileNumberTemp);
+        const hospitalFileNumber = Object.assign({}, emptyfile, hospitalFileNumberTemp);
 
 
         /**
@@ -231,7 +231,7 @@ export class PatientService {
             }
         };
 
-        const combineData = Object.assign(emptypatientvisit, visitTemp);
+        const combineData = Object.assign({}, emptypatientvisit, visitTemp);
 
         // Get a new write batch
         const batch = this.db.firestore.batch();
@@ -256,7 +256,7 @@ export class PatientService {
             .doc(this.activehospital.id).collection('filenumbers').doc(patient.id);
 
 
-        batch.update(hospitalFileRef, Object.assign(patient.fileinfo, {visitcount: patient.fileinfo.visitcount + 1}));
+        batch.update(hospitalFileRef, Object.assign({}, patient.fileinfo, {visitcount: patient.fileinfo.visitcount + 1}));
 
         return batch.commit();
     }
@@ -301,7 +301,7 @@ export class PatientService {
                 /*
                 * current data of patient
                 * **/
-                const firstData = Object.assign(emptypatient, sfDoc.data(), {fileinfo: fileData});
+                const firstData = Object.assign({}, emptypatient, sfDoc.data(), {fileinfo: fileData});
 
                 /**
                  * now write the update
@@ -344,12 +344,12 @@ export class PatientService {
                     idno: personalinfo.idno
                 };
 
-                const secondData = Object.assign(emptypatient, modifiedData, {fileinfo: hospitalFileNumber});
+                const secondData = Object.assign({}, emptypatient, modifiedData, {fileinfo: hospitalFileNumber});
 
                 /**
                  * updated data set, this should be the updated data
                  * */
-                const updatedPatientData = Object.assign(firstData, secondData);
+                const updatedPatientData = Object.assign({}, firstData, secondData);
 
                 /**
                  * do the transactions
@@ -424,7 +424,7 @@ export class PatientService {
                         map(patientData => {
                             console.log('inside patient data');
                             console.log(patientData);
-                            return Object.assign(emptypatient, patientData.payload.data(), {fileinfo: fileInfo});
+                            return Object.assign({}, emptypatient, patientData.payload.data(), {fileinfo: fileInfo});
                         })
                     );
                 }));
@@ -453,7 +453,7 @@ export class PatientService {
                 }
                 return combineLatest(...f.map(t => {
 
-                    const patient = Object.assign(emptypatient, t.payload.doc.data());
+                    const patient = Object.assign({}, emptypatient, t.payload.doc.data());
 
                     return this.db.collection('hospitals')
                         .doc(this.activehospital.id)
@@ -490,7 +490,7 @@ export class PatientService {
                     return;
                 }
 
-                const patientData = Object.assign(emptypatient, patientDoc.data()) as Patient;
+                const patientData = Object.assign({}, emptypatient, patientDoc.data()) as Patient;
 
                 let tempMeta = null;
                 if (patientData.medicalinfo.metadata.date === null) {
@@ -505,7 +505,7 @@ export class PatientService {
                     };
                 }
 
-                transaction.update(patientsDocRef, Object.assign(patientData, {
+                transaction.update(patientsDocRef, Object.assign({}, patientData, {
                     medicalinfo: {
                         vitals,
                         conditions,

@@ -48,7 +48,7 @@
         </div>
 
         <!-- CONTENT CARD -->
-        <div class="content-card">
+        <div class="content-card" >
 
             <!-- CONTENT -->
 
@@ -72,8 +72,8 @@
             <!--Current-->
             <!--</a>-->
             <!--</nav>-->
-            <mat-tab-group (selectedTabChange)="tabChanged($event)" [selectedIndex]="activetabindex">
-                <mat-tab>
+            <mat-tab-group (selectedTabChange)="tabChanged($event)" [selectedIndex]="activetabindex" fusePerfectScrollbar>
+                <mat-tab >
                     <ng-template matTabLabel>
                         <span [matBadge]="mainQueue" matBadgeColor="warn" matBadgeOverlap="false"
                               matBadgePosition="above after">Main Queue</span>
@@ -104,8 +104,8 @@
                     </ng-template>
                     <ng-template matTabContent>
 
-                        <div class="tab-content p-24" fusePerfectScrollbar>
-                            <patient-current></patient-current>
+                        <div class="tab-content p-24" >
+                            <patient-current ></patient-current>
                         </div>
                     </ng-template>
                 </mat-tab>

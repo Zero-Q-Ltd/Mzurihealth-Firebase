@@ -3,51 +3,47 @@
     <small>{{gettime()}}</small>
 </legend>
 <mat-dialog-content>
-
-    <div class="table-responsive">
-        <table class="table m-b-0 table-hover">
-            <thead>
-            <tr>
-                <th>Photo</th>
-                <th>Name</th>
-                <th>Type</th>
-                <th>Availability</th>
-                <th>Status</th>
-                <th>Action</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr *ngFor='let admin of hospitaladmins'>
-                <td>
+    <table class="p-24">
+        <thead>
+        <tr>
+            <th class="katikati">Photo</th>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Availability</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor='let admin of hospitaladmins'>
+            <td>
             <span class="list-icon">
               <img class="patients-img" style="height: 45px" s
                    [src]="admin.data.photoURL ? admin.data.photoURL : 'assets/images/icons/male.png'" alt="">
             </span>
-                </td>
-                <td>{{admin.data.displayName}}</td>
+            </td>
+            <td>{{admin.data.displayName}}</td>
 
-                <td>{{leveltext(admin.config.level)}}</td>
-                <td>{{admin.config.availability}}</td>
-                <td>{{admin.config.availability}}</td>
-                <td *ngIf='admin.config.availability > 0'>
-                    <button *ngIf='chosenadmin!=admin' class="btn btn-success" (click)='chooseadmin(admin)'>CHOOSE
-                    </button>
-                    <button *ngIf='chosenadmin===admin' class="btn btn-default">CHOSEN</button>
-                </td>
-                <td *ngIf="admin.config.availability < 1">
-                    <button class="btn btn-success" disabled>Away</button>
-                </td>
-                <!-- <td><span class="badge badge-success">Approved</span></td> -->
-            </tr>
+            <td>{{leveltext(admin.config.level)}}</td>
+            <td>{{admin.config.availability}}</td>
+            <td>{{admin.config.availability}}</td>
+            <td *ngIf='admin.config.availability > 0'>
+                <button mat-raised-button color="basic" *ngIf='chosenadmin!=admin' (click)='chooseadmin(admin)'>CHOOSE
+                </button>
 
+                <button mat-raised-button color="primary" *ngIf='chosenadmin===admin'>CHOSEN</button>
 
-            </tbody>
-        </table>
-    </div>
+            </td>
+            <td *ngIf="admin.config.availability < 1">
+                <button mat-raised-button disabled>Away</button>
+
+            </td>
+        </tr>
+        </tbody>
+    </table>
 </mat-dialog-content>
-
+<br>
 <div class='col-sm-12'>
-    <button matDialogClose class="btn btn-danger btn-simple btn-round float-left">DISMISS</button>
-
-    <button [matDialogClose]='chosenadmin' class="btn btn-default btn-round btn-primary float-right">SAVE</button>
+    <button matDialogClose mat-raised-button color="warn">DISMISS</button> &nbsp;
+    <button [matDialogClose]='chosenadmin' mat-raised-button color="accent">SAVE</button>
 </div>

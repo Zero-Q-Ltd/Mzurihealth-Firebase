@@ -48,7 +48,7 @@ export class PatientvisitService {
      * @param procedure
      * @param per
      */
-    addprocedure(visitid: string, procedure: MergedProcedureModel, per: Procedureperformed): void {
+    addprocedure(visitid: string, procedure: MergedProcedureModel, per: Procedureperformed): Promise<void> {
         per.name = procedure.rawprocedure.name;
         per.metadata = {
             lastedit: firestore.Timestamp.now(),
@@ -62,7 +62,7 @@ export class PatientvisitService {
         };
         per.originalprocedureid = procedure.rawprocedure.id;
         per.customprocedureid = procedure.customprocedure.id;
-        this.db.collection('hospitalvisits').doc(visitid).update({
+        return this.db.collection('hospitalvisits').doc(visitid).update({
             procedures: firestore.FieldValue.arrayUnion(per)
         });
     }
@@ -75,7 +75,7 @@ export class PatientvisitService {
             .limit(10)
             .onSnapshot(snapshot => {
                 this.visithistory.next(snapshot.docs.map(value => {
-                    const visit = Object.assign(emptypatientvisit, value.data(), {id : value.id});
+                    const visit = Object.assign({...emptypatientvisit}, value.data(), {id: value.id});
                     if (!visit.payment.status) {
                         this.currentvisit.next(visit);
                     }
@@ -83,12 +83,12 @@ export class PatientvisitService {
                 }));
             });
     }
-    
-    editpatientvisit(visit: PatientVisit): any {
+
+    editpatientvisit(visit: PatientVisit): Promise<void> {
         return this.db.collection('hospitalvisits').doc(visit.id).update(visit);
     }
 
-    awaitpayment(visitid): any {
+    awaitpayment(visitid): Promise<any> {
         return this.db.collection('hospitalvisits').doc(visitid).update({
             checkin: {
                 status: 3,
@@ -97,7 +97,7 @@ export class PatientvisitService {
         });
     }
 
-    payandexit(visit: PatientVisit): any {
+    payandexit(visit: PatientVisit): Promise<void> {
         visit.checkin = {
             status: 4,
             admin: null,
@@ -106,7 +106,13 @@ export class PatientvisitService {
         return this.db.collection('hospitalvisits').doc(visit.id).update(visit);
     }
 
-    terminatepatientvisit(visitid): any {
+    setprescription(visitid: string, prescription: string): Promise<void> {
+        return this.db.collection('hospitalvisits').doc(visitid).update({
+            prescription: prescription
+        });
+    }
+
+    terminatepatientvisit(visitid): Promise<void> {
         return this.db.collection('hospitalvisits').doc(visitid).update({
             checkin: {
                 status: 4,

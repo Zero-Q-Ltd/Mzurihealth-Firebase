@@ -298,9 +298,9 @@
             <ng-template matExpansionPanelContent>
                 <div >
                     <div >
-                        <mat-form-field appearance="outline">
+                        <mat-form-field appearance="outline" fxFlex="100">
                             <mat-label>Prescription</mat-label>
-                            <textarea [(ngModel)]="currentpatient.queuedata.prescription"
+                            <textarea [(ngModel)]="currentvisit.prescription"
                                       cdkAutosizeMaxRows="25"
                                       cdkAutosizeMinRows="2"
                                       cdkTextareaAutosize

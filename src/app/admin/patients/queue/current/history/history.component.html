@@ -4,7 +4,10 @@
             <div class="example-header-image" mat-card-avatar></div>
             <mat-card-title>{{visit.metadata.date.toDate()}}</mat-card-title>
             <mat-card-subtitle>
-                {{visit.visitdescription}}
+                <strong>Visit Description : </strong> {{visit.visitdescription}}
+            </mat-card-subtitle>
+            <mat-card-subtitle>
+                <strong>Prescription : </strong> {{visit.prescription}}
             </mat-card-subtitle>
         </mat-card-header>
         <mat-card-content>

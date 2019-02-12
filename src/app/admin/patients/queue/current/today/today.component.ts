@@ -21,6 +21,7 @@ import {AdminSelectionComponent} from '../../admin-selection/admin-selection.com
 import {MatDialog, MatDialogRef} from '@angular/material';
 import {LocalcommunicationService} from '../localcommunication.service';
 import {emptypatientvisit, PatientVisit} from '../../../../../models/PatientVisit';
+import {NotificationService} from '../../../../../shared/services/notifications.service';
 
 @Component({
     selector: 'patient-today',
@@ -55,8 +56,8 @@ export class TodayComponent implements OnInit {
                 private queue: QueueService,
                 public _matDialog: MatDialog,
                 private patientvisitservice: PatientvisitService,
-                private patientvisitService: PatientvisitService,
-                private communication: LocalcommunicationService,) {
+                private communication: LocalcommunicationService,
+                private notifications: NotificationService) {
 
         procedureservice.procedurecategories.subscribe(categories => {
             this.procedurecategories = categories;
@@ -74,7 +75,7 @@ export class TodayComponent implements OnInit {
             this.imeanzilishwa.next(true);
         });
         patientvisitservice.currentvisit.subscribe(visit => {
-            console.log(visit)
+            console.log(visit);
             this.currentvisit = visit;
         });
         this.filteredprocedures = this.procedureselection.valueChanges
@@ -219,7 +220,17 @@ export class TodayComponent implements OnInit {
         this.patientservice.updateVitalsAllegiesConditions(this.currentpatient.patientdata.id,
             this.vitalsform.getRawValue(),
             this.medconditionsform.getRawValue().conditionsformArray,
-            this.allergiesform.getRawValue().allergiesformArray);
+            this.allergiesform.getRawValue().allergiesformArray).then(() => {
+            this.notifications.notify({
+                placement: {
+                    vertical: 'top',
+                    horizontal: 'right'
+                },
+                title: 'Success',
+                alert_type: 'success',
+                body: 'Saved'
+            });
+        });;
     }
 
 
@@ -259,7 +270,7 @@ export class TodayComponent implements OnInit {
         } else {
 
         }
-        this.patientvisitService.awaitpayment(this.currentpatient.queuedata.id);
+        this.patientvisitservice.awaitpayment(this.currentpatient.queuedata.id);
         /**
          * important to change from the currently active tab as it will become inactive
          */
@@ -351,7 +362,17 @@ export class TodayComponent implements OnInit {
     }
 
     saveprescription(): void {
-
+        this.patientvisitservice.setprescription(this.currentvisit.id, this.currentvisit.prescription).then(() => {
+            this.notifications.notify({
+                placement: {
+                    vertical: 'top',
+                    horizontal: 'right'
+                },
+                title: 'Success',
+                alert_type: 'success',
+                body: 'Saved'
+            });
+        });
     }
 
     addprocedure(): void {
@@ -359,7 +380,17 @@ export class TodayComponent implements OnInit {
             this.expand = false;
             const procedure: Procedureperformed = Object.assign({}, {...emptyproceduresperformed}, this.procedureperformed.getRawValue());
             const originaldata: MergedProcedureModel = this.procedureselection.getRawValue().selection;
-            this.patientvisitService.addprocedure(this.currentvisit.id, originaldata, procedure);
+            this.patientvisitservice.addprocedure(this.currentvisit.id, originaldata, procedure).then(() => {
+                this.notifications.notify({
+                    placement: {
+                        vertical: 'top',
+                        horizontal: 'right'
+                    },
+                    title: 'Success',
+                    alert_type: 'success',
+                    body: 'Saved'
+                });
+            });;
         }
     }
 

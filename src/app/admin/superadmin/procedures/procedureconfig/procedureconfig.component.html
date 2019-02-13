@@ -9,7 +9,12 @@
                 </button>
             </div>
             <div fxFlex="50" fxLayoutAlign="end">
-                <button (click)="saveprocedureconfig()" aria-label="More" mat-icon-button
+                <button (click)="reset()" mat-icon-button mat-raised-button matTooltip="Reset">
+                    <mat-icon>clear_all</mat-icon>
+                </button>
+            </div>
+            <div fxFlex="50" fxLayoutAlign="end">
+                <button (click)="saveprocedureconfig()" aria-label="Save" mat-icon-button
                         mat-raised-button matTooltip="Save">
                     <mat-icon>save</mat-icon>
                 </button>

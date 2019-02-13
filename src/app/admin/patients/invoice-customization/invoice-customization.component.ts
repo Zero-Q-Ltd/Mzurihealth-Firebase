@@ -36,7 +36,7 @@ export class InvoiceCustomizationComponent implements OnInit {
     multipayment = false;
     selectedinsurance: Paymentmethods;
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
-    disableprecriptionbutton = false
+    disableprecriptionbutton = true;
 
     constructor(private queue: QueueService,
                 private hospital: HospitalService,
@@ -237,7 +237,7 @@ export class InvoiceCustomizationComponent implements OnInit {
 
     }
 
-    printprescription (): void {
+    printprescription(): void {
         this.dialogRef = this._matDialog.open(PrescriptionComponent, {
             data: this.patientid
         });

@@ -22,4 +22,16 @@ export class LocalcommunicationService {
     resetall(): void {
         this.onprocedureselected.next({selectiontype: null, selection: null});
     }
+
+    resetselection(): void {
+        this.onprocedureselected.value.selection.customprocedure.regularprice = 0;
+        this.onprocedureselected.value.selection.customprocedure.insuranceprices = {};
+        this.onprocedureselected.value.selection.customprocedure.custominsuranceprice = false;
+        this.onprocedureselected.next({
+            selectiontype: this.onprocedureselected.value.selectiontype, selection: {
+                rawprocedure: this.onprocedureselected.value.selection.rawprocedure,
+                customprocedure: this.onprocedureselected.value.selection.customprocedure
+            }
+        });
+    }
 }

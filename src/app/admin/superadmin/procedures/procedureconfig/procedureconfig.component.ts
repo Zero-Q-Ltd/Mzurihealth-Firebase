@@ -71,6 +71,10 @@ export class ProcedureconfigComponent implements OnInit {
         this.communicatioservice.resetall();
     }
 
+    reset(): void {
+        this.communicatioservice.resetselection();
+    }
+
     saveprocedureconfig(): void {
         if (!this.regularpricecontrol.errors) {
             this.selectecustomprocedure.customprocedure.regularprice = this.regularpricecontrol.value;

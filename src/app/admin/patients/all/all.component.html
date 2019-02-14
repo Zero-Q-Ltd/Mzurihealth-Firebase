@@ -180,11 +180,14 @@
                 </ng-container>
 
                 <ng-container matColumnDef="Status">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>Status</mat-header-cell>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
                     <mat-cell *matCellDef="let patient">
-                        <p class="price text-truncate">
-                            {{patient.status}}
-                        </p>
+                        <button mat-raised-button color="accent" class="mr-4" (click)="editpatient(patient)">
+                            <i class="material-icons ">edit</i>
+                        </button>
+                        <button mat-raised-button color="warn">
+                            <i class="material-icons" (click)="deletepatient(patient)">delete</i>
+                        </button>
                     </mat-cell>
                 </ng-container>
 

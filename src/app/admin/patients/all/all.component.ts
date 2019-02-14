@@ -1,7 +1,7 @@
 import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {fuseAnimations} from '../../../../@fuse/animations';
-import {MatDialog, MatTableDataSource} from '@angular/material';
-import {emptypatient, Patient} from '../../../models/Patient';
+import {MatDialog, MatDialogRef, MatTableDataSource} from '@angular/material';
+import {Patient} from '../../../models/Patient';
 import * as moment from 'moment';
 import {firestore} from 'firebase';
 import {HospitalAdmin} from '../../../models/HospitalAdmin';
@@ -16,6 +16,8 @@ import {Router} from '@angular/router';
 import {PaymentmethodService} from '../../services/paymentmethod.service';
 import {Paymentmethods} from '../../../models/PaymentChannel';
 import {QueueService} from '../../services/queue.service';
+import {ProfileComponent} from '../profile/profile.component';
+import {FuseConfirmDialogComponent} from '../../../../@fuse/components/confirm-dialog/confirm-dialog.component';
 
 @Component({
     selector: 'all-patients',
@@ -32,6 +34,7 @@ export class AllComponent implements OnInit {
     userdata: HospitalAdmin;
     dialogRef: any;
     allInsurance: { [key: string]: Paymentmethods } = {};
+    confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
 
     searchForm: FormGroup;
 
@@ -40,7 +43,8 @@ export class AllComponent implements OnInit {
                 private hospitalservice: HospitalService,
                 private paymentethods: PaymentmethodService,
                 private notificationservice: NotificationService,
-                private dialog: MatDialog, private queueService: QueueService,
+                private dialog: MatDialog,
+                private queueService: QueueService,
                 private formBuilder: FormBuilder,
                 public _matDialog: MatDialog, private router: Router) {
 
@@ -147,6 +151,26 @@ export class AllComponent implements OnInit {
         });
     }
 
+    editpatient(patient: Patient): void {
+        event.stopPropagation();
+        this.dialogRef = this._matDialog.open(ProfileComponent, {
+            data: patient.id,
+            width: '80%'
+        });
+    }
+
+    deletepatient(patient: Patient): void {
+        event.stopPropagation();
+        this.confirmDialogRef = this._matDialog.open(FuseConfirmDialogComponent, {
+            disableClose: false
+        });
+        this.confirmDialogRef.componentInstance.confirmMessage = 'Delete Patient?';
+        this.confirmDialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                this.patientservice.deletepatient(patient.id);
+            }
+        });
+    }
 
     submitSearchForm(): void {
         if (this.searchForm.invalid) {

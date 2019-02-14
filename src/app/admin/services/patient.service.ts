@@ -50,6 +50,33 @@ export class PatientService {
         );
     }
 
+    async getpatientbyid(patientid: string) {
+        const mainpatientdata = await this.db.collection('patients').doc(patientid)
+            .get().toPromise().then(async value => {
+                const patient = Object.assign({...emptypatient}, value.data(), {id: value.id});
+                const patientdata = await this.db.collection('hospitals')
+                    .doc(this.activehospital.id)
+                    .collection('filenumbers')
+                    .doc(patientid).get()
+                    .toPromise()
+                    .then(val => {
+                        console.log(val.data());
+                        patient.fileinfo = val.data() as HospFile;
+                        console.log(patient);
+                        return patient;
+                    });
+                return patientdata;
+            });
+        return mainpatientdata;
+    }
+
+    deletepatient(patientid: string): Promise<void> {
+        const batch = this.db.firestore.batch();
+        batch.delete(this.db.firestore.collection('patients').doc(patientid));
+        batch.delete(this.db.firestore.collection('hospitals').doc(this.activehospital.id).collection('filenumbers').doc(patientid));
+        return batch.commit();
+    }
+
 
     /**
      * save patient to db

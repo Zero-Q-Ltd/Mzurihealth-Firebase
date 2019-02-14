@@ -131,7 +131,7 @@
                         <div fxFlex="1 0 auto" fxLayout="row wrap" fxLayoutAlign="start center">
 
                             <mat-form-field appearance="outline" fxFlex="100">
-                                <mat-label>Ocupation</mat-label>
+                                <mat-label>Occupation</mat-label>
                                 <input formControlName="occupation" matInput placeholder="Enter your occupation"
                                        autocomplete="off">
                                 <mat-error>Occupation is required!</mat-error>
@@ -171,7 +171,7 @@
                                 " fxFlex="33">
                                 <mat-label>Address</mat-label>
                                 <input #postalCode formControlName="address" matInput
-                                       maxlength="10" required autocomplete="off">
+                                       maxlength="20" required autocomplete="off">
                                 <mat-icon class="secondary-text" matSuffix>markunread_mailbox</mat-icon>
                                 <mat-hint align="end">{{postalCode.value.length}} / 10</mat-hint>
                                 <mat-error>Postal Code is required!</mat-error>

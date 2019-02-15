@@ -97,11 +97,11 @@ export class QueueService {
                     return this.db.collection('patients').doc(visit.patientid).snapshotChanges().pipe(
                         switchMap(patientdata => {
                             if (!patientdata.payload.exists) {
-                                console.log(visit)
+                                // console.log(visit)
                                 return of({...emptymergedQueueModel});
                             }
                             const patient: Patient = Object.assign(emptypatient, patientdata.payload.data(), {id: patientdata.payload.id});
-                            console.log(patient)
+                            // console.log(patient)
                             return of({patientdata: Object.assign({}, {...emptypatient}, patient), queuedata: visit});
                         })
                     );
@@ -127,7 +127,7 @@ export class QueueService {
 
             })
         ).subscribe(mergedData => {
-            console.log(mergedData);
+            // console.log(mergedData);
             this.mainpatientqueue.next(mergedData);
         });
     }

@@ -1,4 +1,5 @@
 import {emptymetadata, Metadata} from './universal';
+import {rawprocedurecategory} from './RawProcedure';
 
 export interface Proceduresperformed {
     id: string;
@@ -6,7 +7,7 @@ export interface Proceduresperformed {
 }
 
 export interface Procedureperformed {
-    description: string;
+    category: rawprocedurecategory;
     results: string;
     notes: Array<{
         note: string;
@@ -38,7 +39,7 @@ export interface Procedureperformed {
 }
 
 export const emptyprocedureperformed: Procedureperformed = {
-    description: null,
+    category: null,
     results: null,
     notes: [],
     adminid: null,

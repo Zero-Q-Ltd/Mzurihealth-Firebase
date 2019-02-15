@@ -1,27 +1,27 @@
-import { Component, OnInit } from '@angular/core';
-import { emptyproceduresperformed, Procedureperformed } from '../../../../../models/Procedureperformed';
-import { HospitalAdmin } from '../../../../../models/HospitalAdmin';
-import { HospitalService } from '../../../../services/hospital.service';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { PatientService } from '../../../../services/patient.service';
-import { PatientvisitService } from '../../../../services/patientvisit.service';
-import { RawProcedure, rawprocedurecategory } from '../../../../../models/RawProcedure';
-import { CustomProcedure } from '../../../../../models/CustomProcedure';
-import { ProceduresService } from '../../../../services/procedures.service';
-import { fuseAnimations } from '../../../../../../@fuse/animations';
-import { ProcedureCategory } from '../../../../../models/ProcedureCategory';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { MergedProcedureModel } from '../../../../../models/MergedProcedure.model';
-import { map, startWith } from 'rxjs/operators';
-import { allerytypearray } from '../../../../../models/Allergy.model';
-import { medicalconditionsarray } from '../../../../../models/MedicalConditions.model';
-import { QueueService } from '../../../../services/queue.service';
-import { MergedPatient_QueueModel } from '../../../../../models/MergedPatient_Queue.model';
-import { AdminSelectionComponent } from '../../admin-selection/admin-selection.component';
-import { MatDialog, MatDialogRef } from '@angular/material';
-import { LocalcommunicationService } from '../localcommunication.service';
-import { emptypatientvisit, PatientVisit } from '../../../../../models/PatientVisit';
-import { NotificationService } from '../../../../../shared/services/notifications.service';
+import {Component, OnInit} from '@angular/core';
+import {emptyproceduresperformed, Procedureperformed} from '../../../../../models/Procedureperformed';
+import {HospitalAdmin} from '../../../../../models/HospitalAdmin';
+import {HospitalService} from '../../../../services/hospital.service';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {PatientService} from '../../../../services/patient.service';
+import {PatientvisitService} from '../../../../services/patientvisit.service';
+import {RawProcedure, rawprocedurecategory} from '../../../../../models/RawProcedure';
+import {CustomProcedure} from '../../../../../models/CustomProcedure';
+import {ProceduresService} from '../../../../services/procedures.service';
+import {fuseAnimations} from '../../../../../../@fuse/animations';
+import {ProcedureCategory} from '../../../../../models/ProcedureCategory';
+import {BehaviorSubject, Observable} from 'rxjs';
+import {MergedProcedureModel} from '../../../../../models/MergedProcedure.model';
+import {map, startWith} from 'rxjs/operators';
+import {allerytypearray} from '../../../../../models/Allergy.model';
+import {medicalconditionsarray} from '../../../../../models/MedicalConditions.model';
+import {QueueService} from '../../../../services/queue.service';
+import {MergedPatient_QueueModel} from '../../../../../models/MergedPatient_Queue.model';
+import {AdminSelectionComponent} from '../../admin-selection/admin-selection.component';
+import {MatDialog, MatDialogRef} from '@angular/material';
+import {LocalcommunicationService} from '../localcommunication.service';
+import {emptypatientvisit, PatientVisit} from '../../../../../models/PatientVisit';
+import {NotificationService} from '../../../../../shared/services/notifications.service';
 
 @Component({
     selector: 'patient-today',
@@ -47,17 +47,17 @@ export class TodayComponent implements OnInit {
     dialogRef: MatDialogRef<any>;
     imeanzilishwa: BehaviorSubject<boolean> = new BehaviorSubject(false);
     hospitaladmins: Array<HospitalAdmin> = [];
-    currentvisit: PatientVisit = { ...emptypatientvisit };
+    currentvisit: PatientVisit = {...emptypatientvisit};
 
     constructor(private hospitalservice: HospitalService,
-        private formBuilder: FormBuilder,
-        private patientservice: PatientService,
-        private procedureservice: ProceduresService,
-        private queue: QueueService,
-        public _matDialog: MatDialog,
-        private patientvisitservice: PatientvisitService,
-        private communication: LocalcommunicationService,
-        private notifications: NotificationService) {
+                private formBuilder: FormBuilder,
+                private patientservice: PatientService,
+                private procedureservice: ProceduresService,
+                private queue: QueueService,
+                public _matDialog: MatDialog,
+                private patientvisitservice: PatientvisitService,
+                private communication: LocalcommunicationService,
+                private notifications: NotificationService) {
 
         procedureservice.procedurecategories.subscribe(categories => {
             this.procedurecategories = categories;
@@ -89,32 +89,6 @@ export class TodayComponent implements OnInit {
         this.initprocedureform();
         this.initvitalsformm();
         this.initconditionsallergiesforms();
-    }
-
-    private initconditionsallergiesforms(): void {
-        this.allergiesform = this.formBuilder.group({
-            allergiesformArray: this.formBuilder.array(this.currentpatient.patientdata.medicalinfo.allergies.map(mzio => {
-                return this.igamizio(mzio);
-            }))
-        });
-        this.medconditionsform = this.formBuilder.group({
-            conditionsformArray: this.formBuilder.array(this.currentpatient.patientdata.medicalinfo.conditions.map(tatizo => {
-                return this.igamatatizo(tatizo);
-            }))
-        });
-        /**
-         * neccessary the first time the form is created to allow enabling
-         */
-        this.allergychanges();
-        this.conditionschanges();
-    }
-
-    private _filter(value: { selection: MergedProcedureModel | string }): MergedProcedureModel[] {
-        if (!value || typeof value.selection !== 'string') {
-            return this.hospitalprocedures;
-        }
-        const filterValue = value.selection.toLowerCase();
-        return this.hospitalprocedures.filter(option => option.rawprocedure.name.toLowerCase().includes(filterValue));
     }
 
     /**
@@ -187,7 +161,6 @@ export class TodayComponent implements OnInit {
         });
     }
 
-
     createallergies(): FormGroup {
         const allergy = new FormControl('');
 
@@ -221,18 +194,18 @@ export class TodayComponent implements OnInit {
             this.vitalsform.getRawValue(),
             this.medconditionsform.getRawValue().conditionsformArray,
             this.allergiesform.getRawValue().allergiesformArray).then(() => {
-                this.notifications.notify({
-                    placement: {
-                        vertical: 'top',
-                        horizontal: 'right'
-                    },
-                    title: 'Success',
-                    alert_type: 'success',
-                    body: 'Saved'
-                });
-            });;
+            this.notifications.notify({
+                placement: {
+                    vertical: 'top',
+                    horizontal: 'right'
+                },
+                title: 'Success',
+                alert_type: 'success',
+                body: 'Saved'
+            });
+        });
+        ;
     }
-
 
     onSelect(selected: { rawprocedure: RawProcedure, customprocedure: CustomProcedure }): void {
         this.selectedprocedure = selected;
@@ -258,10 +231,11 @@ export class TodayComponent implements OnInit {
                 console.log(res);
                 this.queue.assignadmin(this.currentpatient.queuedata, res.id).then(() => {
                     /**
-               * important to change from the currently active tab as it will become inactive
-               */
+                     * important to change from the currently active tab as it will become inactive
+                     */
                     this.communication.ontabchanged.next(1);
-                });;
+                });
+                ;
             }
         });
     }
@@ -277,8 +251,8 @@ export class TodayComponent implements OnInit {
         }
         this.patientvisitservice.awaitpayment(this.currentpatient.queuedata.id).then(() => {
             /**
-       * important to change from the currently active tab as it will become inactive
-       */
+             * important to change from the currently active tab as it will become inactive
+             */
             this.communication.ontabchanged.next(1);
         });
     }
@@ -307,9 +281,9 @@ export class TodayComponent implements OnInit {
             x.get('type').valueChanges.subscribe(g => {
                 if (g) {
                     if (x.get('type').value.toString().length > -1) {
-                        x.get('detail').enable({ emitEvent: false });
+                        x.get('detail').enable({emitEvent: false});
                     } else {
-                        x.get('detail').disable({ emitEvent: false });
+                        x.get('detail').disable({emitEvent: false});
                     }
                 }
             });
@@ -336,15 +310,14 @@ export class TodayComponent implements OnInit {
             x.get('type').valueChanges.subscribe(g => {
                 if (g) {
                     if (x.get('type').value.toString().length > -1) {
-                        x.get('detail').enable({ emitEvent: false });
+                        x.get('detail').enable({emitEvent: false});
                     } else {
-                        x.get('detail').disable({ emitEvent: false });
+                        x.get('detail').disable({emitEvent: false});
                     }
                 }
             });
         });
     }
-
 
     initvitalsformm(): void {
         const height = new FormControl(this.currentpatient.patientdata.medicalinfo.vitals.height);
@@ -382,9 +355,10 @@ export class TodayComponent implements OnInit {
     }
 
     addprocedure(): void {
+        // return console.log(this.procedureselection.getRawValue());
         if (this.procedureperformed.valid) {
             this.expand = false;
-            const procedure: Procedureperformed = Object.assign({}, { ...emptyproceduresperformed }, this.procedureperformed.getRawValue());
+            const procedure: Procedureperformed = Object.assign({}, {...emptyproceduresperformed}, this.procedureperformed.getRawValue());
             const originaldata: MergedProcedureModel = this.procedureselection.getRawValue().selection;
             this.patientvisitservice.addprocedure(this.currentvisit.id, originaldata, procedure).then(() => {
                 this.notifications.notify({
@@ -396,11 +370,38 @@ export class TodayComponent implements OnInit {
                     alert_type: 'success',
                     body: 'Saved'
                 });
-            });;
+            });
+            ;
         }
     }
 
     ngOnInit(): void {
+    }
+
+    private initconditionsallergiesforms(): void {
+        this.allergiesform = this.formBuilder.group({
+            allergiesformArray: this.formBuilder.array(this.currentpatient.patientdata.medicalinfo.allergies.map(mzio => {
+                return this.igamizio(mzio);
+            }))
+        });
+        this.medconditionsform = this.formBuilder.group({
+            conditionsformArray: this.formBuilder.array(this.currentpatient.patientdata.medicalinfo.conditions.map(tatizo => {
+                return this.igamatatizo(tatizo);
+            }))
+        });
+        /**
+         * neccessary the first time the form is created to allow enabling
+         */
+        this.allergychanges();
+        this.conditionschanges();
+    }
+
+    private _filter(value: { selection: MergedProcedureModel | string }): MergedProcedureModel[] {
+        if (!value || typeof value.selection !== 'string') {
+            return this.hospitalprocedures;
+        }
+        const filterValue = value.selection.toLowerCase();
+        return this.hospitalprocedures.filter(option => option.rawprocedure.name.toLowerCase().includes(filterValue));
     }
 
 }

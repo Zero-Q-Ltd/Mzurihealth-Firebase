@@ -35,7 +35,6 @@ export class AllComponent implements OnInit, AfterViewInit {
     dialogRef: any;
     allInsurance: { [key: string]: Paymentmethods } = {};
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
-
     searchForm: FormGroup;
 
     @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -171,6 +170,12 @@ export class AllComponent implements OnInit, AfterViewInit {
 
     deletepatient(patient: Patient): void {
         event.stopPropagation();
+        return this.notificationservice.notify({
+            alert_type: 'error',
+            body: 'Feature temporarily disabled',
+            title: 'ERROR',
+            placement: {horizontal: 'right', vertical: 'top'}
+        });
         this.confirmDialogRef = this._matDialog.open(FuseConfirmDialogComponent, {
             disableClose: false
         });

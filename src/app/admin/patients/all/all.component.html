@@ -185,8 +185,8 @@
                         <button mat-raised-button color="accent" class="mr-4" (click)="editpatient(patient)">
                             <i class="material-icons ">edit</i>
                         </button>
-                        <button mat-raised-button color="warn">
-                            <i class="material-icons" disabled (click)="deletepatient(patient)">delete</i>
+                        <button mat-raised-button disabled color="warn">
+                            <i class="material-icons"  (click)="deletepatient(patient)">delete</i>
                         </button>
                     </mat-cell>
                 </ng-container>

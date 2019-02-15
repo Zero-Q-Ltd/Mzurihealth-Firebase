@@ -1,5 +1,4 @@
 <mat-table #table
-           [@animateStagger]="{value:'50'}"
            [dataSource]="patientsdatasource"
            class="patients-table"
            fusePerfectScrollbar
@@ -125,7 +124,6 @@
     <mat-row
         (click)="customizeInvoice(patient)"
         *matRowDef="let patient; columns: patientsheaders;"
-        [@animate]="{value:'*',params:{y:'100%'}}"
         matRipple>
     </mat-row>
 

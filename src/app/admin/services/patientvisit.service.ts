@@ -50,6 +50,7 @@ export class PatientvisitService {
      */
     addprocedure(visitid: string, procedure: MergedProcedureModel, per: Procedureperformed): Promise<void> {
         per.name = procedure.rawprocedure.name;
+        per.category = procedure.rawprocedure.category
         per.metadata = {
             lastedit: firestore.Timestamp.now(),
             date: firestore.Timestamp.now()

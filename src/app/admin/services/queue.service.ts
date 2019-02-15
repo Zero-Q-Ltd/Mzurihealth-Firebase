@@ -97,9 +97,11 @@ export class QueueService {
                     return this.db.collection('patients').doc(visit.patientid).snapshotChanges().pipe(
                         switchMap(patientdata => {
                             if (!patientdata.payload.exists) {
+                                console.log(visit)
                                 return of({...emptymergedQueueModel});
                             }
                             const patient: Patient = Object.assign(emptypatient, patientdata.payload.data(), {id: patientdata.payload.id});
+                            console.log(patient)
                             return of({patientdata: Object.assign({}, {...emptypatient}, patient), queuedata: visit});
                         })
                     );
@@ -107,10 +109,9 @@ export class QueueService {
             }),
             switchMap((val1: Array<MergedPatient_QueueModel>) => {
                 console.log(val1);
-
                 return combineLatest(...val1.map(t => {
-                    if (val1.length === 0) {
-                        return of([]);
+                    if (val1.length === 0 || !t.patientdata.id) {
+                        return of({...emptymergedQueueModel});
                     }
                     return this.db.collection('hospitals').doc(this.activehospitalid)
                         .collection('filenumbers')

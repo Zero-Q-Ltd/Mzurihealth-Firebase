@@ -1,5 +1,5 @@
-import {Component, OnInit, ViewEncapsulation} from '@angular/core';
-import {MatDialog, MatDialogRef, MatTableDataSource} from '@angular/material';
+import {AfterViewInit, Component, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
+import {MatDialog, MatDialogRef, MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
 import {fuseAnimations} from '../../../../../@fuse/animations';
 import {QueueService} from '../../../services/queue.service';
 import {MergedPatient_QueueModel} from '../../../../models/MergedPatient_Queue.model';
@@ -16,12 +16,16 @@ import {InvoiceCustomizationComponent} from '../../invoice-customization/invoice
     encapsulation: ViewEncapsulation.None,
     animations: fuseAnimations
 })
-export class MainComponent implements OnInit {
+export class MainComponent implements OnInit, AfterViewInit {
     patientsdatasource = new MatTableDataSource<MergedPatient_QueueModel>();
     patientsheaders = ['FileNo', 'Photo', 'Name', 'ID', 'Age', 'Phone', 'Last Visit', 'Status', 'Action'];
     dialogRef: MatDialogRef<any>;
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     hospitaladmins: Array<HospitalAdmin>;
+
+    @ViewChild(MatPaginator) paginator: MatPaginator;
+    @ViewChild(MatSort) sort: MatSort;
+
 
     constructor(private queue: QueueService,
                 private  hospitalservice: HospitalService,
@@ -36,6 +40,13 @@ export class MainComponent implements OnInit {
 
     ngOnInit(): void {
     }
+
+    ngAfterViewInit(): void {
+        this.patientsdatasource.sort = this.sort;
+        this.patientsdatasource.paginator = this.paginator;
+
+    }
+
 
     redirectadmin(data: MergedPatient_QueueModel): void {
         event.stopPropagation();

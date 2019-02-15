@@ -133,7 +133,7 @@
                 </ng-container>
 
                 <!-- Name Column -->
-                <ng-container matColumnDef="Name">
+                <ng-container matColumnDef="name">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
                     <mat-cell *matCellDef="let patient">
                         <p class="text-truncate">{{patient.personalinfo.name}}</p>
@@ -186,7 +186,7 @@
                             <i class="material-icons ">edit</i>
                         </button>
                         <button mat-raised-button color="warn">
-                            <i class="material-icons" (click)="deletepatient(patient)">delete</i>
+                            <i class="material-icons" disabled (click)="deletepatient(patient)">delete</i>
                         </button>
                     </mat-cell>
                 </ng-container>

@@ -1,6 +1,6 @@
-import {Component, OnInit, ViewEncapsulation} from '@angular/core';
+import {AfterViewInit, Component, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import {fuseAnimations} from '../../../../@fuse/animations';
-import {MatDialog, MatDialogRef, MatTableDataSource} from '@angular/material';
+import {MatDialog, MatDialogRef, MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
 import {Patient} from '../../../models/Patient';
 import * as moment from 'moment';
 import {firestore} from 'firebase';
@@ -26,17 +26,20 @@ import {FuseConfirmDialogComponent} from '../../../../@fuse/components/confirm-d
     encapsulation: ViewEncapsulation.None,
     animations: fuseAnimations
 })
-export class AllComponent implements OnInit {
+export class AllComponent implements OnInit, AfterViewInit {
     patientsdatasource = new MatTableDataSource<Patient>();
-    patientsheaders = ['FileNo', 'Photo', 'Name', 'ID', 'Age', 'Phone', 'Last Visit', 'Status'];
+    patientsheaders = ['FileNo', 'Photo', 'name', 'ID', 'Age', 'Phone', 'Last Visit', 'Status'];
     activehospital: Hospital = Object.assign({}, emptyhospital);
     hospitaladmins: Array<HospitalAdmin> = [];
     userdata: HospitalAdmin;
     dialogRef: any;
     allInsurance: { [key: string]: Paymentmethods } = {};
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
-
     searchForm: FormGroup;
+
+    @ViewChild(MatPaginator) paginator: MatPaginator;
+    @ViewChild(MatSort) sort: MatSort;
+
 
     constructor(private adminservice: AdminService,
                 private patientservice: PatientService,
@@ -71,6 +74,12 @@ export class AllComponent implements OnInit {
     }
 
     ngOnInit(): void {
+
+    }
+
+    ngAfterViewInit(): void {
+        this.patientsdatasource.sort = this.sort;
+        this.patientsdatasource.paginator = this.paginator;
 
     }
 
@@ -161,6 +170,12 @@ export class AllComponent implements OnInit {
 
     deletepatient(patient: Patient): void {
         event.stopPropagation();
+        return this.notificationservice.notify({
+            alert_type: 'error',
+            body: 'Feature temporarily disabled',
+            title: 'ERROR',
+            placement: {horizontal: 'right', vertical: 'top'}
+        });
         this.confirmDialogRef = this._matDialog.open(FuseConfirmDialogComponent, {
             disableClose: false
         });

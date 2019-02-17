@@ -1,10 +1,11 @@
-import {AbstractControl, ValidatorFn} from '@angular/forms';
+import {AbstractControl, AsyncValidatorFn, ValidatorFn} from '@angular/forms';
 import {PatientService} from '../services/patient.service';
 import {map, take} from 'rxjs/operators';
+import {of} from 'rxjs';
 
 
 export class FilenumberValidator {
-    static validate(patientService: PatientService): ValidatorFn {
+    static validate(patientService: PatientService): AsyncValidatorFn {
         return (control: AbstractControl) => {
             console.log(control);
             if (control.value) {
@@ -15,7 +16,7 @@ export class FilenumberValidator {
                     })
                 );
             } else {
-                return null;
+                return of([null]);
             }
 
         };

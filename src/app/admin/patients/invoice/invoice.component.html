@@ -65,12 +65,12 @@
     </table>
     <div id="thanks">Thank you!</div>
     <div id="notices">
-        <h3>PAYMENT CHANNELS:</h3>
         <table>
+            <h3>PAYMENT CHANNELS:</h3>
             <tr *ngFor="let paymentchannel of activehospital.paymentmethods">
-                <td class="desc">{{allpaymentchannels | paymentmethod : paymentchannel.paymentchannelid :paymentchannel.paymentmethodid |titlecase}}</td>
-                <td class="desc">{{paymentchannel.accountnumber}}</td>
-                <td class="desc">{{paymentchannel.extrainfo}}</td>
+                <td class="channels">{{allpaymentchannels | paymentmethod : paymentchannel.paymentchannelid :paymentchannel.paymentmethodid |titlecase}}</td>
+                <td class="channels">{{paymentchannel.accountnumber}}</td>
+                <td class="channels">{{paymentchannel.extrainfo}}</td>
             </tr>
         </table>
     </div>

@@ -127,6 +127,7 @@ export class AddComponent implements OnInit {
             // FilenumberValidator.validate(this.patientservice)
         ]));
 
+
         this.personalinfo = new FormGroup({
             firstname: firstname,
             lastname: lastname,

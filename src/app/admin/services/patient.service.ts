@@ -9,7 +9,7 @@ import {AngularFirestore} from '@angular/fire/firestore';
 import * as moment from 'moment';
 import {emptyfile, HospFile} from '../../models/HospFile';
 import {AddPatientFormModel} from '../../models/AddPatientForm.model';
-import {map, switchMap} from 'rxjs/operators';
+import {debounce, debounceTime, map, reduce, switchMap} from 'rxjs/operators';
 import {BehaviorSubject, combineLatest, Observable, of} from 'rxjs';
 import 'rxjs/add/observable/empty';
 import {PaymentChannel} from '../../models/PaymentChannel';
@@ -542,6 +542,22 @@ export class PatientService {
                 }));
             });
         });
+    }
+
+    /*
+    * will use this to check if the file number is available
+    * **/
+    getHospitalFileByNumber(fileNumber: string): Observable<HospFile[]> {
+        console.log('fetch hospital file');
+        return this.db.collection('hospitals')
+            .doc(this.activehospital.id)
+            .collection('filenumbers').snapshotChanges().pipe(
+                debounceTime(500),
+                map(actions => actions.map(action => {
+                    return action.payload.doc.data() as HospFile;
+                }))
+            );
+
     }
 
 }

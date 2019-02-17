@@ -296,7 +296,11 @@
 
 
                     <div fxFlex="1 0 auto" fxLayout="row" fxLayoutAlign="center center">
-                        <button class="py-4" color="accent" fxFlex="50" mat-raised-button>Save Patient</button>
+                        <button class="p-8" color="accent" fxFlex="50" mat-raised-button fxLayout="row"
+                                fxLayoutAlign="center center" [disabled]="savingUser">
+                            <mat-spinner [diameter]="30" *ngIf="savingUser"></mat-spinner>
+                            <span *ngIf="!savingUser">Save Patient</span>
+                        </button>
                     </div>
 
                 </form>

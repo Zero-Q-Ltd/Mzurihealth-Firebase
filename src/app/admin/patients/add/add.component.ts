@@ -14,6 +14,8 @@ import {Paymentmethods} from '../../../models/PaymentChannel';
 import {PaymentmethodService} from '../../services/paymentmethod.service';
 import {NumberValidator} from '../../validators/number.validator';
 import {firestore} from 'firebase';
+import {FilenumberValidator} from '../../validators/filenumber.validator';
+import {map} from 'rxjs/operators';
 
 @Component({
     selector: 'app-add',
@@ -33,6 +35,8 @@ export class AddComponent implements OnInit {
     insurance: FormArray;
     // doctor will do this
     // private medicalinfo: FormGroup;
+
+    savingUser: Boolean = false;
 
 
     maxDate: Date;
@@ -118,7 +122,10 @@ export class AddComponent implements OnInit {
 
         ]));
 
-        const fileno = new FormControl('', Validators.required);
+        const fileno = new FormControl('', Validators.compose([
+            Validators.required,
+            // FilenumberValidator.validate(this.patientservice)
+        ]));
 
         this.personalinfo = new FormGroup({
             firstname: firstname,
@@ -174,13 +181,27 @@ export class AddComponent implements OnInit {
 
     submitPatientsForm(): void {
 
-
         if (this.patientsForm.valid) {
+            this.savingUser = true;
+
             this.patientservice.savePatient(this.patientsForm.getRawValue()).then(() => {
                 console.log('patient added successfully');
+                this.savingUser = false;
+                this.notificationservice.notify({
+                    alert_type: 'success',
+                    body: 'User was successfully added',
+                    title: 'Success',
+                    placement: {horizontal: 'right', vertical: 'top'}
+                });
+
+                // clear inputs
+                this.patientsForm.reset();
+
+
                 this.router.navigate(['admin/patients/all']);
             });
         } else {
+            this.savingUser = false;
             this.notificationservice.notify({
                 alert_type: 'error',
                 body: 'Please fill all the required inputs',

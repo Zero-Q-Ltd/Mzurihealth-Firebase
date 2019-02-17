@@ -34,6 +34,8 @@ export class AddComponent implements OnInit {
     // doctor will do this
     // private medicalinfo: FormGroup;
 
+    savingUser: Boolean = false;
+
 
     maxDate: Date;
 
@@ -174,13 +176,27 @@ export class AddComponent implements OnInit {
 
     submitPatientsForm(): void {
 
-
         if (this.patientsForm.valid) {
+            this.savingUser = true;
+
             this.patientservice.savePatient(this.patientsForm.getRawValue()).then(() => {
                 console.log('patient added successfully');
+                this.savingUser = false;
+                this.notificationservice.notify({
+                    alert_type: 'success',
+                    body: 'User was successfully added',
+                    title: 'Success',
+                    placement: {horizontal: 'right', vertical: 'top'}
+                });
+
+                // clear inputs
+                this.patientsForm.reset();
+
+
                 this.router.navigate(['admin/patients/all']);
             });
         } else {
+            this.savingUser = false;
             this.notificationservice.notify({
                 alert_type: 'error',
                 body: 'Please fill all the required inputs',

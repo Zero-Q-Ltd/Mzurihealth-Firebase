@@ -7,7 +7,7 @@ import {PatientService} from '../../services/patient.service';
 import {NotificationService} from '../../../shared/services/notifications.service';
 import {PaymentmethodService} from '../../services/paymentmethod.service';
 import {QueueService} from '../../services/queue.service';
-import {MAT_DIALOG_DATA} from '@angular/material';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import * as moment from 'moment';
 
 @Component({
@@ -32,6 +32,7 @@ export class ProfileComponent implements OnInit {
                 private notificationservice: NotificationService,
                 private paymentethods: PaymentmethodService,
                 private queue: QueueService,
+                public dialogRef: MatDialogRef<any>,
                 @Optional() @Inject(MAT_DIALOG_DATA) private data: string) {
 
         this.paymentethods.allinsurance.subscribe(insurance => {
@@ -57,8 +58,8 @@ export class ProfileComponent implements OnInit {
                 this.patientsForm.controls['personalinfo']
                     .get('fileno').patchValue(value.fileinfo.no);
 
-                this.patientsForm.controls['personalinfo']
-                    .get('fileno').disable({onlySelf: true});
+                // this.patientsForm.controls['personalinfo']
+                //     .get('fileno').disable({onlySelf: true});
 
                 this.patientsForm.controls['personalinfo']
                     .get('firstname').patchValue(value.personalinfo.name.split(' ')[0]);
@@ -210,6 +211,8 @@ export class ProfileComponent implements OnInit {
                         vertical: 'top'
                     }
                 });
+                this.dialogRef.close();
+
             });
         } else {
             this.notificationservice.notify({

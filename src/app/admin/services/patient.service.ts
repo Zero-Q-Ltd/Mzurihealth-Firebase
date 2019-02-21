@@ -298,11 +298,11 @@ export class PatientService {
      *
      *   return  Promise
      * */
-    updatePatient(patientID: string, {personalinfo, insurance, nextofkin}: AddPatientFormModel): any {
+    updatePatient(patientID: string, {personalinfo, insurance, nextofkin}: AddPatientFormModel): Promise<any> {
         // get current data
         const patientDataRef = this.db.firestore.collection('patients').doc(patientID);
 
-        this.db.firestore.runTransaction(transaction => {
+        return this.db.firestore.runTransaction(transaction => {
             return transaction.get(patientDataRef).then(async sfDoc => {
                 if (!sfDoc.exists) {
                     Promise.reject('Document does not exist!');

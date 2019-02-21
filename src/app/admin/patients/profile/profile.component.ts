@@ -101,8 +101,13 @@ export class ProfileComponent implements OnInit {
                     .get('workplace').patchValue(value.nextofkin.workplace);
 
 
+                console.log('magic insurance');
+                console.log(value.insurance);
+
                 value.insurance.forEach(i => {
-                    this.insurance.push(this.replicateInsurance(i));
+                    if (i.id !== '') {
+                        this.insurance.push(this.replicateInsurance(i));
+                    }
                     this.insurancechanges();
                 });
 
@@ -138,7 +143,6 @@ export class ProfileComponent implements OnInit {
         const gender = new FormControl('', Validators.required);
         const birth = new FormControl('', Validators.required);
         const email = new FormControl('', Validators.compose([
-            Validators.required,
             Validators.email
         ]));
         const userWorkplace = new FormControl('', Validators.required);
@@ -242,6 +246,7 @@ export class ProfileComponent implements OnInit {
     }
 
     replicateInsurance(insurancedata: { id: string; insuranceno: string; }): FormGroup {
+
         const insurancex = new FormControl({
             value: insurancedata.id,
             disabled: false
@@ -274,6 +279,10 @@ export class ProfileComponent implements OnInit {
     addInsurance(): void {
         this.insurance.push(this.createInsurance());
         this.insurancechanges();
+    }
+
+    removeInsurance(index: number): void {
+        this.insurance.removeAt(index);
     }
 
 }

@@ -80,8 +80,8 @@
 
                 <mat-form-field appearance="outline" fxFlex="100">
                     <mat-label>Email Address</mat-label>
-                    <input matInput placeholder="Enter your email" formControlName="email" required>
-                    <mat-error>Email address is required!</mat-error>
+                    <input matInput placeholder="Enter your email" formControlName="email">
+                    <mat-error>Should be a valid email address!</mat-error>
                 </mat-form-field>
 
             </div>
@@ -153,7 +153,7 @@
 
                 </mat-form-field>
                 <div class="pl-8" fxFlex="5">
-                    <button color="warn" mat-mini-fab>
+                    <button color="warn" mat-mini-fab type="button" (click)="removeInsurance(i)">
                         <mat-icon>delete</mat-icon>
                     </button>
                 </div>

@@ -7,18 +7,17 @@ import {of} from 'rxjs';
 export class FilenumberValidator {
     static validate(patientService: PatientService): AsyncValidatorFn {
         return (control: AbstractControl) => {
-            console.log(control);
             if (control.value) {
                 return patientService.getHospitalFileByNumber(control.value).pipe(
                     take(1),
                     map(d => {
-                        return d ? {fileError: true} : null;
+                        console.log(d);
+                        return d.length !== 0 ? {fileError: true} : null;
                     })
                 );
             } else {
                 return of([null]);
             }
-
         };
     }
 }

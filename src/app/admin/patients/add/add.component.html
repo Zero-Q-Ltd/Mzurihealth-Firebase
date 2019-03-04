@@ -152,7 +152,7 @@
 
                             <mat-form-field appearance="outline" class="px-8" fxFlex="34">
                                 <mat-label>Mobile Number</mat-label>
-                                <input formControlName="phone" matInput required autocomplete="off" maxlength="10"
+                                <input formControlName="phone" matInput required autocomplete="off" maxlength="14"
                                        minlength="10">
                                 <mat-icon class="secondary-text" matSuffix>local_phone</mat-icon>
                                 <mat-error *ngIf="personalinfo.get('phone').errors?.required">Phone number is

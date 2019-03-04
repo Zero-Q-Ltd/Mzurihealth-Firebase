@@ -37,7 +37,7 @@
         <!-- CONTENT CARD -->
         <div class="content-card">
 
-            <mat-expansion-panel class="m-4 expansion-headers-align" >
+            <mat-expansion-panel class=" toolbar headers-align">
                 <mat-expansion-panel-header>
                     <mat-panel-title>
                         Search
@@ -47,56 +47,53 @@
                         <mat-icon> search</mat-icon>
                     </mat-panel-description>
                 </mat-expansion-panel-header>
-                <ng-template matExpansionPanelContent>
+                <div class="my-4">
 
-                    <form class=" p-24 m-24" fxFlex="1 0 auto"
-                          fxLayout="column" fxLayoutAlign="start" name="form" [formGroup]="searchForm"
-                          (ngSubmit)="submitSearchForm()">
+                    <form (ngSubmit)="submitSearchForm()" [formGroup]="searchForm" class=" " fxFlex="1 0 auto" fxLayoutAlign="start"
+                          name="form">
 
                         <!--First name, second name-->
-                        <div fxFlex="1 0 auto" fxLayout="row" fxLayoutAlign="start center">
 
-                            <mat-form-field appearance="outline" class="pl-4" fxFlex="33">
-                                <mat-label>Select search field</mat-label>
-                                <mat-select required formControlName="field">
+                        <mat-form-field appearance="outline" class="pl-4 searchfields" >
+                            <mat-label>Select search field</mat-label>
+                            <mat-select formControlName="field" required>
 
-                                    <mat-option [value]="'no'">
-                                        File Number
-                                    </mat-option>
+                                <mat-option [value]="'no'">
+                                    File Number
+                                </mat-option>
 
-                                    <mat-option [value]="'idno'">
-                                        ID number
-                                    </mat-option>
+                                <mat-option [value]="'idno'">
+                                    ID number
+                                </mat-option>
 
-                                    <mat-option [value]="'phone'">
-                                        Mobile Number
-                                    </mat-option>
+                                <mat-option [value]="'phone'">
+                                    Mobile Number
+                                </mat-option>
 
-                                    <mat-option [value]="'name'">
-                                        Full Name
-                                    </mat-option>
+                                <mat-option [value]="'name'">
+                                    Full Name
+                                </mat-option>
 
-                                </mat-select>
+                            </mat-select>
 
-                                <mat-icon class="secondary-text" matSuffix>insert_drive_file</mat-icon>
-                                <mat-error>Field is required!</mat-error>
-                            </mat-form-field>
+                            <mat-icon class="secondary-text" matSuffix>insert_drive_file</mat-icon>
+                            <mat-error>Field is required!</mat-error>
+                        </mat-form-field>
 
-                            <mat-form-field appearance="outline" class="pl-4" fxFlex="40">
-                                <mat-label>Field</mat-label>
-                                <input matInput required formControlName="fieldValue">
-                                <mat-icon class="secondary-text" matSuffix>account_circle</mat-icon>
-                                <mat-error>This field is required!</mat-error>
-                            </mat-form-field>
+                        <mat-form-field appearance="outline" class="pl-4 searchfields" >
+                            <mat-label>Field</mat-label>
+                            <input formControlName="fieldValue" matInput required>
+                            <mat-icon class="secondary-text" matSuffix>account_circle</mat-icon>
+                            <mat-error>This field is required!</mat-error>
+                        </mat-form-field>
 
-                            <button mat-button color="accent" class="p-8 ml-4 mb-16" fxFlex="25"
-                                    mat-raised-button>
-                                Search
-                            </button>
-                        </div>
+                        <button class="p-8 ml-4 mb-16 searchfields" color="accent" mat-button
+                                mat-raised-button>
+                            Search
+                        </button>
                     </form>
 
-                </ng-template>
+                </div>
             </mat-expansion-panel>
 
             <mat-table #table
@@ -120,13 +117,13 @@
                     <mat-cell *matCellDef="let patient">
 
                         <p>
-                            <img class="avatar" *ngIf="patient.personalinfo.gender == 1"
-                                 [src]="patient.personalinfo.photoURL || 'assets/images/avatars/male.png'"
-                                 alt="male avatar"/>
+                            <img *ngIf="patient.personalinfo.gender == 1" [src]="patient.personalinfo.photoURL || 'assets/images/avatars/male.png'"
+                                 alt="male avatar"
+                                 class="avatar"/>
 
-                            <img class="avatar" *ngIf="patient.personalinfo.gender == 0"
-                                 [src]="patient.personalinfo.photoURL || 'assets/images/avatars/female.png'"
-                                 alt="female avatar"/>
+                            <img *ngIf="patient.personalinfo.gender == 0" [src]="patient.personalinfo.photoURL || 'assets/images/avatars/female.png'"
+                                 alt="female avatar"
+                                 class="avatar"/>
                         </p>
 
                     </mat-cell>
@@ -182,19 +179,19 @@
                 <ng-container matColumnDef="Status">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
                     <mat-cell *matCellDef="let patient">
-                        <button mat-raised-button color="accent" class="mr-4" (click)="editpatient(patient)">
+                        <button (click)="editpatient(patient)" class="mr-4" color="accent" mat-raised-button>
                             <i class="material-icons ">edit</i>
                         </button>
-                        <button mat-raised-button disabled color="warn">
-                            <i class="material-icons"  (click)="deletepatient(patient)">delete</i>
+                        <button color="warn" mat-raised-button>
+                            <i (click)="deletepatient(patient)" class="material-icons">delete</i>
                         </button>
                     </mat-cell>
                 </ng-container>
 
                 <mat-header-row *matHeaderRowDef="patientsheaders; sticky:true"></mat-header-row>
 
-                <mat-row *matRowDef="let patient; columns: patientsheaders;"
-                         (click)="addToQueue(patient)"
+                <mat-row (click)="addToQueue(patient)"
+                         *matRowDef="let patient; columns: patientsheaders;"
                          class="product"
                          matRipple>
                 </mat-row>

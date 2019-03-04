@@ -42,16 +42,17 @@ export class MineComponent implements OnInit {
 
     acceptpatient(data: MergedPatient_QueueModel): void {
         event.stopPropagation();
+        this.queue.acceptpatient(data.queuedata);
 
-        this.confirmDialogRef = this._matDialog.open(FuseConfirmDialogComponent, {
-            disableClose: false
-        });
-        this.confirmDialogRef.componentInstance.confirmMessage = 'Accept?';
-        this.confirmDialogRef.afterClosed().subscribe(result => {
-            if (result) {
-                this.queue.acceptpatient(data.queuedata);
-            }
-        });
+        // this.confirmDialogRef = this._matDialog.open(FuseConfirmDialogComponent, {
+        //     disableClose: false
+        // });
+        // this.confirmDialogRef.componentInstance.confirmMessage = 'Accept?';
+        // this.confirmDialogRef.afterClosed().subscribe(result => {
+        //     if (result) {
+        //         this.queue.acceptpatient(data.queuedata);
+        //     }
+        // });
     }
 
     viewinvoice(data: MergedPatient_QueueModel): void {

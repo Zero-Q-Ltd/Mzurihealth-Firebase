@@ -50,15 +50,16 @@ export class MainComponent implements OnInit, AfterViewInit {
 
     redirectadmin(data: MergedPatient_QueueModel): void {
         event.stopPropagation();
-        this.confirmDialogRef = this._matDialog.open(FuseConfirmDialogComponent, {
-            disableClose: false
-        });
-        this.confirmDialogRef.componentInstance.confirmMessage = 'Redirect Patient?';
-        this.confirmDialogRef.afterClosed().subscribe(result => {
-            if (result) {
-                this.showadminchoice(data);
-            }
-        });
+        this.showadminchoice(data);
+        // this.confirmDialogRef = this._matDialog.open(FuseConfirmDialogComponent, {
+        //     disableClose: false
+        // });
+        // this.confirmDialogRef.componentInstance.confirmMessage = 'Redirect Patient?';
+        // this.confirmDialogRef.afterClosed().subscribe(result => {
+        //     if (result) {
+        //         this.showadminchoice(data);
+        //     }
+        // });
     }
 
     showadminchoice(data: MergedPatient_QueueModel): void {

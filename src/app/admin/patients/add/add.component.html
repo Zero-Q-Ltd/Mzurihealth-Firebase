@@ -106,7 +106,7 @@
                                        matInput placeholder="Please choose a date" autocomplete="off">
 
                                 <mat-datepicker-toggle [for]="myDatepicker" matSuffix></mat-datepicker-toggle>
-                                <mat-datepicker #myDatepicker (closed)="bDate.blur()"></mat-datepicker>
+                                    <mat-datepicker #myDatepicker (closed)="bDate.blur()" startView="multi-year"></mat-datepicker>
 
                                 <mat-error>Date of birth is required</mat-error>
                                 <mat-error>Date of birth should be valid</mat-error>
@@ -153,7 +153,7 @@
 
                             <mat-form-field appearance="outline" class="px-8" fxFlex="34">
                                 <mat-label>Mobile Number</mat-label>
-                                <input formControlName="phone" matInput required autocomplete="off" maxlength="10"
+                                <input formControlName="phone" matInput required autocomplete="off" maxlength="14"
                                        minlength="10">
                                 <mat-icon class="secondary-text" matSuffix>local_phone</mat-icon>
                                 <mat-error *ngIf="personalinfo.get('phone').errors?.required">Phone number is

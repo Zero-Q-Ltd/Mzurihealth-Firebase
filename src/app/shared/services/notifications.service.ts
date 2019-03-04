@@ -63,7 +63,7 @@ export class NotificationService {
     }
 
     notify(alert: Alert): void {
-        console.log(alert);
+        // console.log(alert);
         this.notificationSubject.next(alert);
     }
 }

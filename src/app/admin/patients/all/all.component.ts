@@ -95,9 +95,9 @@ export class AllComponent implements OnInit, AfterViewInit {
 
         if (fil.length !== 0) {
             this.notificationservice.notify({
-                alert_type: 'error',
+                alert_type: 'warning',
                 body: 'The user in the main queue',
-                title: 'ERROR',
+                title: 'Warning',
                 placement: {horizontal: 'center', vertical: 'top'}
             });
             return;
@@ -170,12 +170,19 @@ export class AllComponent implements OnInit, AfterViewInit {
 
     deletepatient(patient: Patient): void {
         event.stopPropagation();
-        return this.notificationservice.notify({
-            alert_type: 'error',
-            body: 'Feature temporarily disabled',
-            title: 'ERROR',
-            placement: {horizontal: 'right', vertical: 'top'}
+        const fil = this.queueService.mainpatientqueue.value.filter(value => {
+            return value.patientdata.id === patient.id;
         });
+
+        if (fil.length !== 0) {
+            this.notificationservice.notify({
+                alert_type: 'error',
+                body: 'You must first exit the patient from queue to delete them',
+                title: 'ERROR',
+                placement: {horizontal: 'center', vertical: 'top'}
+            });
+            return;
+        }
         this.confirmDialogRef = this._matDialog.open(FuseConfirmDialogComponent, {
             disableClose: false
         });

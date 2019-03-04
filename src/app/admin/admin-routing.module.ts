@@ -41,11 +41,10 @@ const routes: Routes = [
                 path: 'documentation',
                 loadChildren: 'app/admin/documentation/documentation.module#DocumentationModule'
             },
-            // {
-            //     path: 'payments',
-            //     canActivate: [UsersGuard],
-            //     loadChildren: 'app/superadmin/payments/payments.module#PaymentsModule'
-            // },
+            {
+                path: 'payments',
+                loadChildren: 'app/admin/payments/payments.module#PaymentsModule'
+            },
             {
                 path: 'superadmin',
                 // canActivate: [UsersGuard],

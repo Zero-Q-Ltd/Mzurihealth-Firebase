@@ -49,41 +49,6 @@ export class QueueService {
      *fetches patientvisit and merges it with hospital file info and patient info
      */
     private getwholequeue(): void {
-
-        // this.db.collection('hospitalvisits', ref => ref
-        //     .where('hospitalid', '==', this.activehospitalid)
-        //     .where('checkin.status', '<', 4))
-        //     .snapshotChanges().pipe(
-        //     switchMap(f => {
-        //         return combineLatest(...f.map(t => {
-        //             if (f.length === 0) {
-        //                 return of([]);
-        //             }
-        //             const visit: PatientVisit = Object.assign(emptypatientvisit, t.payload.doc.data(), {id: t.payload.doc.id});
-        //             return this.db.collection('patients').doc(visit.patientid).snapshotChanges().pipe(
-        //                 switchMap(patientdata => {
-        //                     if (!patientdata.payload.exists) {
-        //                         return of({...emptymergedQueueModel});
-        //                     }
-        //                     const patient: Patient = Object.assign(emptypatient, patientdata.payload.data(), {id: patientdata.payload.id});
-        //                     return of({patientdata: Object.assign({}, emptypatient, patient), queuedata: visit});
-        //                     return this.db.collection('hospitals').doc(this.activehospitalid)
-        //                         .collection('filenumbers')
-        //                         .doc(patient.id)
-        //                         .snapshotChanges()
-        //                         .pipe().map(filedata => {
-        //                             const file: HospFile = Object.assign(emptyfile, filedata.payload.data(), {id: patient.id});
-        //                             patient.fileinfo = file;
-        //                             return {patientdata: patient, queuedata: visit};
-        //                         });
-        //                 })
-        //             );
-        //         }));
-        //     })
-        // ).subscribe(mergedData => {
-        //     this.mainpatientqueue.next(mergedData);
-        // });
-
         this.db.collection('hospitalvisits', ref => ref
             .where('hospitalid', '==', this.activehospitalid)
             .where('checkin.status', '<', 4))

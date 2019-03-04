@@ -96,7 +96,7 @@ export class AllComponent implements OnInit, AfterViewInit {
         if (fil.length !== 0) {
             this.notificationservice.notify({
                 alert_type: 'warning',
-                body: 'The user in the main queue',
+                body: 'The patient is already in the queue',
                 title: 'Warning',
                 placement: {horizontal: 'center', vertical: 'top'}
             });

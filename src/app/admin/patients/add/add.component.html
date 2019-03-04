@@ -105,7 +105,7 @@
                                        matInput placeholder="Please choose a date" autocomplete="off">
 
                                 <mat-datepicker-toggle [for]="myDatepicker" matSuffix></mat-datepicker-toggle>
-                                <mat-datepicker #myDatepicker (closed)="bDate.blur()"></mat-datepicker>
+                                    <mat-datepicker #myDatepicker (closed)="bDate.blur()" startView="multi-year"></mat-datepicker>
 
                                 <mat-error>Date of birth is required</mat-error>
                                 <mat-error>Date of birth should be valid</mat-error>

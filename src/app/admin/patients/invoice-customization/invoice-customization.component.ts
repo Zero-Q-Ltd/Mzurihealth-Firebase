@@ -47,27 +47,31 @@ export class InvoiceCustomizationComponent implements OnInit {
                 private procedureservice: ProceduresService,
                 private notifications: NotificationService,
                 public thisdialogRef: MatDialogRef<InvoiceCustomizationComponent>,
-                @Inject(MAT_DIALOG_DATA) public patientid: string) {
+                @Inject(MAT_DIALOG_DATA) public patient: string | MergedPatient_QueueModel) {
         /**
          * Subscribe so that other admin changes are immediately reflected
          */
-        queue.mainpatientqueue.subscribe(queuedata => {
-            queuedata.filter(value => {
-                if (value.patientdata.id === this.patientid) {
-                    /**
-                     * Initialize the prices
-                     */
-                    if (!value.queuedata.payment.hasinsurance) {
-                        value.queuedata.procedures = value.queuedata.procedures.map(value1 => {
-                            value1.payment.amount = this.getpaymentamount(value1.customprocedureid);
-                            return value1;
-                        });
+        if (typeof patient === 'string') {
+            queue.mainpatientqueue.subscribe(queuedata => {
+                queuedata.filter(value => {
+                    if (value.patientdata.id === this.patient) {
+                        /**
+                         * Initialize the prices
+                         */
+                        if (!value.queuedata.payment.hasinsurance) {
+                            value.queuedata.procedures = value.queuedata.procedures.map(value1 => {
+                                value1.payment.amount = this.getpaymentamount(value1.customprocedureid);
+                                return value1;
+                            });
+                        }
+                        this.patientdata = value;
+                        this.proceduresdatasouce.data = value.queuedata.procedures;
                     }
-                    this.patientdata = value;
-                    this.proceduresdatasouce.data = value.queuedata.procedures;
-                }
+                });
             });
-        });
+        } else {
+            this.patientdata = patient;
+        }
 
         hospitalservice.hospitaladmins.subscribe(admins => {
             this.hospitaladmins = admins;
@@ -114,7 +118,7 @@ export class InvoiceCustomizationComponent implements OnInit {
 
     preview(): void {
         this.dialogRef = this._matDialog.open(InvoiceComponent, {
-            data: this.patientid
+            data: this.patient
         });
 
         this.dialogRef.afterClosed();
@@ -239,7 +243,7 @@ export class InvoiceCustomizationComponent implements OnInit {
 
     printprescription(): void {
         this.dialogRef = this._matDialog.open(PrescriptionComponent, {
-            data: this.patientid
+            data: this.patient
         });
 
         this.dialogRef.afterClosed();

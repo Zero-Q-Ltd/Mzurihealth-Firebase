@@ -14,6 +14,7 @@ import {Paymentmethods} from '../../../models/PaymentChannel';
 import {PaymentmethodService} from '../../services/paymentmethod.service';
 import {NumberValidator} from '../../validators/number.validator';
 import {firestore} from 'firebase';
+import {FilenumberValidator} from '../../validators/filenumber.validator';
 
 @Component({
     selector: 'app-add',
@@ -120,10 +121,15 @@ export class AddComponent implements OnInit {
 
         ]));
 
-        const fileno = new FormControl('', Validators.compose([
+
+        // const fileno = new FormControl('', {
+        //     validators: [Validators.required],
+        //     asyncValidators: [FilenumberValidator.validate(this.patientservice)]
+        // });
+
+        const fileno = new FormControl('',
             Validators.required,
-            // FilenumberValidator.validate(this.patientservice)
-        ]));
+            FilenumberValidator.validate(this.patientservice));
 
 
         this.personalinfo = new FormGroup({
@@ -179,6 +185,8 @@ export class AddComponent implements OnInit {
 
 
     submitPatientsForm(): void {
+
+        console.log(this.patientsForm);
 
         if (this.patientsForm.valid) {
             this.savingUser = true;

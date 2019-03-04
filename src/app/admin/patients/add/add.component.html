@@ -68,7 +68,8 @@
                                 <mat-label>Patient file number</mat-label>
                                 <input formControlName="fileno" matInput required autocomplete="off">
                                 <mat-icon class="secondary-text" matSuffix>account_circle</mat-icon>
-                                <mat-error>File number is required!</mat-error>
+                                <mat-error  *ngIf="personalinfo.get('fileno').errors?.required">File number is required!</mat-error>
+                                <mat-error  *ngIf="personalinfo.get('fileno').errors?.fileError">Select a non used number!</mat-error>
                             </mat-form-field>
                         </div>
 

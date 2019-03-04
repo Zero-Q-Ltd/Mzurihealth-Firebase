@@ -551,7 +551,8 @@ export class PatientService {
         console.log('fetch hospital file');
         return this.db.collection('hospitals')
             .doc(this.activehospital.id)
-            .collection('filenumbers').snapshotChanges().pipe(
+            .collection('filenumbers', ref => ref.where('no', '==', fileNumber))
+            .snapshotChanges().pipe(
                 debounceTime(500),
                 map(actions => actions.map(action => {
                     return action.payload.doc.data() as HospFile;

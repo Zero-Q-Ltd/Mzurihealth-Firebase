@@ -1,6 +1,5 @@
 import {Component, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import {MatDialog, MatDialogRef, MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
-import {Patient} from '../../../models/Patient';
 import {emptyhospital, Hospital} from '../../../models/Hospital';
 import {HospitalAdmin} from '../../../models/HospitalAdmin';
 import {Paymentmethods} from '../../../models/PaymentChannel';
@@ -10,8 +9,8 @@ import {fuseAnimations} from '../../../../@fuse/animations';
 import {InvoiceCustomizationComponent} from '../../patients/invoice-customization/invoice-customization.component';
 import {MergedPatient_QueueModel} from '../../../models/MergedPatient_Queue.model';
 import {PatientService} from '../../services/patient.service';
-import {HospitalService} from '../../services/hospital.service';
 import {QueueService} from '../../services/queue.service';
+import {PaymentHistoryService} from '../../services/payment-history.service';
 
 @Component({
     selector: 'app-all',
@@ -22,8 +21,8 @@ import {QueueService} from '../../services/queue.service';
 })
 export class AllComponent implements OnInit {
     viewcriteria: 'week' | 'month' | 'year' = 'week';
-    patientsdatasource = new MatTableDataSource<Patient>();
-    patientsheaders = ['FileNo', 'Photo', 'name', 'ID', 'Phone', 'Procedures', 'Amount'];
+    patientshistorydatasource = new MatTableDataSource<MergedPatient_QueueModel>();
+    patientsheaders = ['FileNo', 'Photo', 'name', 'ID', 'Phone', 'Date', 'Procedures', 'Amount'];
     activehospital: Hospital = Object.assign({}, emptyhospital);
     hospitaladmins: Array<HospitalAdmin> = [];
     userdata: HospitalAdmin;
@@ -37,7 +36,11 @@ export class AllComponent implements OnInit {
 
     constructor(public _matDialog: MatDialog,
                 private patientservice: PatientService,
-                private queueService: QueueService,) {
+                private queueService: QueueService,
+                private paymenthistservice: PaymentHistoryService) {
+        paymenthistservice.paymentshistory.subscribe(hist => {
+            this.patientshistorydatasource.data = hist;
+        });
     }
 
     viewinvoice(data: MergedPatient_QueueModel): void {
@@ -52,7 +55,8 @@ export class AllComponent implements OnInit {
 
     changecriteria(value: 'week' | 'month' | 'year'): void {
         if (this.viewcriteria !== value) {
-            this.queueService
+            this.viewcriteria = value;
+            this.paymenthistservice.gethistory(value);
         }
     }
 

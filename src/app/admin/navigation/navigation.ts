@@ -91,14 +91,14 @@ export const navigation: FuseNavigation[] = [
                 icon: 'payment',
                 url: 'payments/all',
             },
-            {
-                id: 'Today',
-                title: 'Add',
-                // translate: 'NAV.add',
-                type: 'item',
-                icon: 'today',
-                url: 'payments/today',
-            }
+            // {
+            //     id: 'Today',
+            //     title: 'Add',
+            //     // translate: 'NAV.add',
+            //     type: 'item',
+            //     icon: 'today',
+            //     url: 'payments/today',
+            // }
         ]
     },
     {

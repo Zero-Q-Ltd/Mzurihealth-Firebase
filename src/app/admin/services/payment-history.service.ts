@@ -19,7 +19,7 @@ export class PaymentHistoryService {
         this.hospitalservice.activehospital.subscribe(hospital => {
             if (hospital.id) {
                 this.activehospitalid = hospital.id;
-                this.gethistory('week');
+                this.gethistory('day');
             }
         });
     }
@@ -27,7 +27,7 @@ export class PaymentHistoryService {
     /**
      *fetches patientvisit and merges it with hospital file info and patient info
      */
-    gethistory(timeframe: 'week' | 'month' | 'year'): void {
+    gethistory(timeframe: 'day' | 'week' | 'month' | 'year'): void {
         this.paymentshistory.next([]);
         this.db.firestore.collection('hospitalvisits')
             .where('hospitalid', '==', this.activehospitalid)
@@ -56,14 +56,16 @@ export class PaymentHistoryService {
         });
     }
 
-    private timeframetodate(timeframe: 'week' | 'month' | 'year'): Date {
+    private timeframetodate(timeframe: 'day' | 'week' | 'month' | 'year'): Date {
         switch (timeframe) {
+            case 'day' :
+                return moment().startOf('day').toDate();
             case 'week' :
-                return moment().subtract(1, 'week').toDate();
+                return moment().startOf('week').toDate();
             case 'month':
-                return moment().subtract(1, 'month').toDate();
+                return moment().startOf('month').toDate();
             default :
-                return moment().subtract(1, 'year').toDate();
+                return moment().startOf('year').toDate();
         }
     }
 

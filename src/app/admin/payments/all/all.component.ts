@@ -20,7 +20,7 @@ import {PaymentHistoryService} from '../../services/payment-history.service';
     animations: fuseAnimations
 })
 export class AllComponent implements OnInit {
-    viewcriteria: 'week' | 'month' | 'year' = 'week';
+    viewcriteria: 'day'| 'week' | 'month' | 'year' = 'week';
     patientshistorydatasource = new MatTableDataSource<MergedPatient_QueueModel>();
     patientsheaders = ['FileNo', 'Photo', 'name', 'ID', 'Phone', 'Date', 'Procedures', 'Amount'];
     activehospital: Hospital = Object.assign({}, emptyhospital);
@@ -53,7 +53,7 @@ export class AllComponent implements OnInit {
         this.dialogRef.afterClosed();
     }
 
-    changecriteria(timeframe: 'week' | 'month' | 'year'): void {
+    changecriteria(timeframe: 'day'| 'week' | 'month' | 'year'): void {
         if (this.viewcriteria !== timeframe) {
             this.viewcriteria = timeframe;
             this.paymenthistservice.gethistory(timeframe);

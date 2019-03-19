@@ -38,7 +38,7 @@ export class PaymentHistoryService {
                 console.log(docdata.data());
                 const visit: PatientVisit = Object.assign({...emptypatientvisit}, docdata.data(), {id: docdata.id});
                 return this.db.firestore.collection('patients').doc(visit.patientid).get().then(async value1 => {
-                    const patient: Patient = Object.assign(emptypatient, value1.data(), {id: value1.id});
+                    const patient: Patient = Object.assign({...emptypatient}, value1.data(), {id: value1.id});
                     const filedata = await this.db.firestore.collection('hospitals').doc(this.activehospitalid)
                         .collection('filenumbers')
                         .doc(patient.id)

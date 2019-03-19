@@ -53,10 +53,10 @@ export class AllComponent implements OnInit {
         this.dialogRef.afterClosed();
     }
 
-    changecriteria(value: 'week' | 'month' | 'year'): void {
-        if (this.viewcriteria !== value) {
-            this.viewcriteria = value;
-            this.paymenthistservice.gethistory(value);
+    changecriteria(timeframe: 'week' | 'month' | 'year'): void {
+        if (this.viewcriteria !== timeframe) {
+            this.viewcriteria = timeframe;
+            this.paymenthistservice.gethistory(timeframe);
         }
     }
 

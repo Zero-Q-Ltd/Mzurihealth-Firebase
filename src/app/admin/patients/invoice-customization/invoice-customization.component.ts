@@ -118,7 +118,8 @@ export class InvoiceCustomizationComponent implements OnInit {
 
     preview(): void {
         this.dialogRef = this._matDialog.open(InvoiceComponent, {
-            data: this.patient
+            data: this.patient,
+            width : '75%'
         });
 
         this.dialogRef.afterClosed();

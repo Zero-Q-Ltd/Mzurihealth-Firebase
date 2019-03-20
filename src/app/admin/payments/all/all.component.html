@@ -18,6 +18,10 @@
 
             <!-- CONTENT TOOLBAR -->
             <div class="toolbar px-24 py-8">
+                <button (click)="changecriteria('day')" [color]="viewcriteria === 'day' ? 'primary' : ''"
+                        class="mx-8" mat-button mat-raised-button>
+                    Day
+                </button>
                 <button (click)="changecriteria('week')" [color]="viewcriteria === 'week' ? 'primary' : ''"
                         class="mx-8" mat-button mat-raised-button>
                     Week

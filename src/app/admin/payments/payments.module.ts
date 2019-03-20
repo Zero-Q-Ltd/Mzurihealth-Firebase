@@ -3,7 +3,7 @@ import {CommonModule} from '@angular/common';
 import {PaymentsRoutingModule} from './payments-routing.module';
 import {AllComponent} from './all/all.component';
 import {AdminSharedModule} from '../shared/admin-shared.module';
-import { InvoiceComponent } from './invoice/invoice.component';
+import {InvoiceComponent} from './invoice/invoice.component';
 
 @NgModule({
     declarations: [AllComponent, InvoiceComponent],
@@ -11,7 +11,8 @@ import { InvoiceComponent } from './invoice/invoice.component';
         AdminSharedModule,
         CommonModule,
         PaymentsRoutingModule
-    ]
+    ],
+    entryComponents: [InvoiceComponent]
 })
 export class PaymentsModule {
 }

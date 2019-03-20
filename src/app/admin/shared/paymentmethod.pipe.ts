@@ -7,9 +7,9 @@ import {PaymentChannel} from '../../models/PaymentChannel';
 export class PaymentmethodPipe implements PipeTransform {
 
     transform(allpaymentchannels: Array<PaymentChannel>, channelid: string, methodid: string): string {
-        return allpaymentchannels.find(value => {
+        return allpaymentchannels.length > 0 ? allpaymentchannels.find(value => {
             return value.id === channelid;
-        }).methods[methodid].name;
+        }).methods[methodid].name : '';
     }
 
 }

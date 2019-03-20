@@ -35,7 +35,6 @@ export class PaymentHistoryService {
             .where('metadata.date', '>=', this.timeframetodate(timeframe))
             .get().then(async value => {
             Promise.all(value.docs.map(async docdata => {
-                console.log(docdata.data());
                 const visit: PatientVisit = Object.assign({...emptypatientvisit}, docdata.data(), {id: docdata.id});
                 return this.db.firestore.collection('patients').doc(visit.patientid).get().then(async value1 => {
                     const patient: Patient = Object.assign({...emptypatient}, value1.data(), {id: value1.id});
@@ -43,14 +42,12 @@ export class PaymentHistoryService {
                         .collection('filenumbers')
                         .doc(patient.id)
                         .get();
-                    console.log(patient);
                     const file: HospFile = Object.assign({...emptyfile}, filedata.data(), {id: filedata.id});
                     patient.fileinfo = file;
                     return {queuedata: visit, patientdata: patient};
                 });
 
             })).then(res => {
-                console.log(res);
                 this.paymentshistory.next(res);
             });
         });

@@ -73,6 +73,24 @@
           "order": "ASCENDING"
         }
       ]
+    },
+    {
+      "collectionGroup": "hospitalvisits",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "checkin.status",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "hospitalid",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "metadata.date",
+          "order": "ASCENDING"
+        }
+      ]
     }
   ],
   "fieldOverrides": []

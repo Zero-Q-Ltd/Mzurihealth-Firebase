@@ -47,41 +47,42 @@ export class InvoiceCustomizationComponent implements OnInit {
                 private procedureservice: ProceduresService,
                 private notifications: NotificationService,
                 public thisdialogRef: MatDialogRef<InvoiceCustomizationComponent>,
-                @Inject(MAT_DIALOG_DATA) public patient: string | MergedPatient_QueueModel) {
-        /**
-         * Subscribe so that other admin changes are immediately reflected
-         */
-        if (typeof patient === 'string') {
-            queue.mainpatientqueue.subscribe(queuedata => {
-                queuedata.filter(value => {
-                    if (value.patientdata.id === this.patient) {
-                        /**
-                         * Initialize the prices
-                         */
-                        if (!value.queuedata.payment.hasinsurance) {
-                            value.queuedata.procedures = value.queuedata.procedures.map(value1 => {
-                                value1.payment.amount = this.getpaymentamount(value1.customprocedureid);
-                                return value1;
-                            });
-                        }
-                        this.patientdata = value;
-                        this.proceduresdatasouce.data = value.queuedata.procedures;
-                    }
-                });
-            });
-        } else {
-            this.patientdata = patient;
-        }
+                @Inject(MAT_DIALOG_DATA) public patient: string) {
+
 
         hospitalservice.hospitaladmins.subscribe(admins => {
             this.hospitaladmins = admins;
         });
 
+        /**
+         * make sure the payment methods have been fetched before fetching the queue info,
+         */
         this.paymentmethodService.allpaymentchannels.subscribe(channels => {
             this.allpaymentchannels = channels;
+            this.getqueueinfo();
         });
         this.hospital.activehospital.subscribe(hosp => {
             this.hospitalmethods = hosp.paymentmethods;
+        });
+    }
+
+    getqueueinfo(): void {
+        /**
+         * Subscribe so that other admin changes are immediately reflected
+         */
+        this.queue.mainpatientqueue.subscribe(queuedata => {
+            queuedata.filter(value => {
+                if (value.patientdata.id === this.patient) {
+                    this.patientdata = value;
+                    this.proceduresdatasouce.data = value.queuedata.procedures;
+                    if (this.allpaymentchannels.length > 0) {
+                        /**
+                         * Calculate the totals with the first pre-selected channel
+                         */
+                        this.setchannel(this.allpaymentchannels.filter(channel => channel.id === value.queuedata.payment.singlepayment.channelid)[0]);
+                    }
+                }
+            });
         });
     }
 
@@ -119,7 +120,7 @@ export class InvoiceCustomizationComponent implements OnInit {
     preview(): void {
         this.dialogRef = this._matDialog.open(InvoiceComponent, {
             data: this.patient,
-            width : '75%'
+            width: '75%'
         });
 
         this.dialogRef.afterClosed();

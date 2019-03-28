@@ -113,6 +113,7 @@
                 <td>
                     <div class="title">
                         <mat-checkbox (change)="setchannel(channel)"
+                                      [disabled]="channel.name === 'insurance' && patientdata.patientdata.insurance.length<1"
                                       [checked]="multipayment? false : patientdata.queuedata.payment?.singlepayment?.channelid === channel.id">
                             {{channel.name}}
                         </mat-checkbox>

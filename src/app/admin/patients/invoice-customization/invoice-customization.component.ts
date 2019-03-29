@@ -159,6 +159,10 @@ export class InvoiceCustomizationComponent implements OnInit {
         const isinsurance = channel.name === 'insurance';
         if (!isinsurance) {
             this.patientdata.queuedata.payment.hasinsurance = null;
+        }else {
+            /**
+             * @TODO: find a way of selecting the insurance
+             */
         }
         let total = 0;
         this.patientdata.queuedata.procedures.map(value => {

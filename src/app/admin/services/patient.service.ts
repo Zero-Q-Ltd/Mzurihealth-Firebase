@@ -129,7 +129,7 @@ export class PatientService {
         /**
          * join objects to create a full document
          * */
-        const patientDoc = Object.assign({}, emptypatient, modifiedData) as Patient;
+        const patientDoc = Object.assign({}, {...emptypatient}, {...modifiedData}) as Patient;
 
         /**
          * hospital file number
@@ -337,7 +337,6 @@ export class PatientService {
                     // todays date
                 const todayDate = moment().toDate();
 
-                console.log(insurance);
                 const tempInsurance = insurance.map((value, index: number) => {
                     return {id: value.id, insuranceno: value.insurancenumber};
                 });
@@ -371,12 +370,13 @@ export class PatientService {
                     idno: personalinfo.idno
                 };
 
-                const secondData = Object.assign({}, emptypatient, modifiedData, {fileinfo: hospitalFileNumber});
+
+                const secondData = Object.assign({}, {...emptypatient}, {...modifiedData}, {fileinfo: hospitalFileNumber});
 
                 /**
                  * updated data set, this should be the updated data
                  * */
-                const updatedPatientData = Object.assign({}, firstData, secondData);
+                const updatedPatientData = Object.assign({}, {...firstData}, {...secondData});
 
                 /**
                  * do the transactions

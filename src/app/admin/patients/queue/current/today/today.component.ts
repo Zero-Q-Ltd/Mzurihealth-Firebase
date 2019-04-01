@@ -204,7 +204,6 @@ export class TodayComponent implements OnInit {
                 body: 'Saved'
             });
         });
-        ;
     }
 
     onSelect(selected: { rawprocedure: RawProcedure, customprocedure: CustomProcedure }): void {

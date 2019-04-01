@@ -502,9 +502,6 @@ export class PatientService {
 
     }
 
-    /*
-    * update
-    * **/
 
     updateVitalsAllegiesConditions(patientID: string, vitals, conditions: Array<any>, allegies: Array<any>): any {
         // get current user
@@ -517,7 +514,7 @@ export class PatientService {
                     return;
                 }
 
-                const patientData = Object.assign({}, emptypatient, patientDoc.data()) as Patient;
+                const patientData = Object.assign({}, {...emptypatient}, patientDoc.data()) as Patient;
 
                 let tempMeta = null;
                 if (patientData.medicalinfo.metadata.date === null) {

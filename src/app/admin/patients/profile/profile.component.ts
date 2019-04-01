@@ -209,6 +209,8 @@ export class ProfileComponent implements OnInit {
 
     submitPatientsForm(): void {
         if (this.patientsForm.valid) {
+
+
             this.patientservice.updatePatient(this.currentpatient.id, this.patientsForm.getRawValue()).then(() => {
                 this.notificationservice.notify({
                     alert_type: 'success',

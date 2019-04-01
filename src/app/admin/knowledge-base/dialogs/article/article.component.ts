@@ -1,14 +1,13 @@
-import { Component, ViewEncapsulation, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import {Component, Inject, ViewEncapsulation} from '@angular/core';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 
 @Component({
-    selector     : 'knowledge-base-article',
-    templateUrl  : './article.component.html',
-    styleUrls    : ['./article.component.scss'],
+    selector: 'knowledge-base-article',
+    templateUrl: './article.component.html',
+    styleUrls: ['./article.component.scss'],
     encapsulation: ViewEncapsulation.None
 })
-export class KnowledgeBaseArticleComponent
-{
+export class KnowledgeBaseArticleComponent {
     /**
      * Constructor
      *
@@ -18,7 +17,6 @@ export class KnowledgeBaseArticleComponent
     constructor(
         public matDialogRef: MatDialogRef<KnowledgeBaseArticleComponent>,
         @Inject(MAT_DIALOG_DATA) public _data: any
-    )
-    {
+    ) {
     }
 }

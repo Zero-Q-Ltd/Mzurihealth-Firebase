@@ -10,7 +10,7 @@ import {AddComponent} from './procedures/add/add.component';
 import {ProfileComponent} from './admins/profile/profile.component';
 import {AlladminComponent} from './admins/all/alladmin.component';
 import {AddadminComponent} from './admins/add/addadmin.component';
-import { AdminconfigComponent } from './admins/adminconfig/adminconfig.component';
+import {AdminconfigComponent} from './admins/adminconfig/adminconfig.component';
 
 @NgModule({
     declarations: [

@@ -16,9 +16,9 @@ import {MAT_DIALOG_DATA} from '@angular/material';
 })
 export class InvoiceComponent implements OnInit, OnDestroy {
     allpaymentchannels: Array<PaymentChannel> = [];
-    private _unsubscribeAll: Subject<any>;
     activehospital: Hospital;
     hidden = false;
+    private _unsubscribeAll: Subject<any>;
 
     constructor(private hospitalservice: HospitalService,
                 private queue: QueueService,

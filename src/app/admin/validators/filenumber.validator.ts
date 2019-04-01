@@ -1,4 +1,4 @@
-import {AbstractControl, AsyncValidatorFn, ValidatorFn} from '@angular/forms';
+import {AbstractControl, AsyncValidatorFn} from '@angular/forms';
 import {PatientService} from '../services/patient.service';
 import {map, take} from 'rxjs/operators';
 import {of} from 'rxjs';

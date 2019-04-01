@@ -1,15 +1,15 @@
-import { inject, TestBed } from '@angular/core/testing';
+import {inject, TestBed} from '@angular/core/testing';
 
-import { NotificationsService } from './notifications.service';
+import {NotificationsService} from './notifications.service';
 
 describe('NotificationsService', () => {
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      providers: [NotificationsService]
+    beforeEach(() => {
+        TestBed.configureTestingModule({
+            providers: [NotificationsService]
+        });
     });
-  });
 
-  it('should be created', inject([NotificationsService], (service: NotificationsService) => {
-    expect(service).toBeTruthy();
-  }));
+    it('should be created', inject([NotificationsService], (service: NotificationsService) => {
+        expect(service).toBeTruthy();
+    }));
 });

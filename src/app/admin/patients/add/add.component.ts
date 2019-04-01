@@ -93,6 +93,86 @@ export class AddComponent implements OnInit {
     ngOnInit(): void {
     }
 
+    submitPatientsForm(): void {
+
+        console.log(this.patientsForm);
+
+        if (this.patientsForm.valid) {
+            this.savingUser = true;
+
+            this.patientservice.savePatient(this.patientsForm.getRawValue()).then(() => {
+                console.log('patient added successfully');
+                this.savingUser = false;
+                this.notificationservice.notify({
+                    alert_type: 'success',
+                    body: 'User was successfully added',
+                    title: 'Success',
+                    placement: {horizontal: 'right', vertical: 'top'}
+                });
+
+                // clear inputs
+                this.patientsForm.reset();
+
+
+                this.router.navigate(['admin/patients/all']);
+            });
+        } else {
+            this.savingUser = false;
+            this.notificationservice.notify({
+                alert_type: 'error',
+                body: 'Please fill all the required inputs',
+                title: 'ERROR',
+                placement: {horizontal: 'right', vertical: 'top'}
+            });
+        }
+    }
+
+    createInsurance(): FormGroup {
+        const insurancex = new FormControl('');
+
+        const insurancenumber = new FormControl({
+            value: '',
+            disabled: true
+        });
+
+        return this.formBuilder.group({
+            id: insurancex,
+            insurancenumber: insurancenumber
+        });
+    }
+
+    insurancechanges(): void {
+
+        this.insurance.controls.forEach(x => {
+            x.get('id').valueChanges.subscribe(g => {
+                if (g) {
+                    if (x.get('id').value.toString().length > -1) {
+                        x.get('insurancenumber').enable({emitEvent: false});
+                    } else {
+                        x.get('insurancenumber').disable({emitEvent: false});
+                    }
+                }
+            });
+        });
+    }
+
+    addInsurance(): void {
+        this.insurance.push(this.createInsurance());
+        this.insurancechanges();
+    }
+
+    removeInsurance(index: number): void {
+        if (index === 0) {
+            // clear the insurance input
+            this.insurance.at(index).get('id').patchValue(undefined);
+            this.insurance.at(index).get('id').markAsUntouched();
+            this.insurance.at(index).get('insurancenumber').patchValue(undefined);
+            this.insurance.at(index).get('insurancenumber').disable();
+            return;
+        }
+
+        this.insurance.removeAt(index);
+    }
 
     /**
      * Init form values inside a here.
@@ -181,87 +261,5 @@ export class AddComponent implements OnInit {
         * init the insurance list
         * **/
         this.insurance = this.patientsForm.get('insurance') as FormArray;
-    }
-
-
-    submitPatientsForm(): void {
-
-        console.log(this.patientsForm);
-
-        if (this.patientsForm.valid) {
-            this.savingUser = true;
-
-            this.patientservice.savePatient(this.patientsForm.getRawValue()).then(() => {
-                console.log('patient added successfully');
-                this.savingUser = false;
-                this.notificationservice.notify({
-                    alert_type: 'success',
-                    body: 'User was successfully added',
-                    title: 'Success',
-                    placement: {horizontal: 'right', vertical: 'top'}
-                });
-
-                // clear inputs
-                this.patientsForm.reset();
-
-
-                this.router.navigate(['admin/patients/all']);
-            });
-        } else {
-            this.savingUser = false;
-            this.notificationservice.notify({
-                alert_type: 'error',
-                body: 'Please fill all the required inputs',
-                title: 'ERROR',
-                placement: {horizontal: 'right', vertical: 'top'}
-            });
-        }
-    }
-
-    createInsurance(): FormGroup {
-        const insurancex = new FormControl('');
-
-        const insurancenumber = new FormControl({
-            value: '',
-            disabled: true
-        });
-
-        return this.formBuilder.group({
-            id: insurancex,
-            insurancenumber: insurancenumber
-        });
-    }
-
-    insurancechanges(): void {
-
-        this.insurance.controls.forEach(x => {
-            x.get('id').valueChanges.subscribe(g => {
-                if (g) {
-                    if (x.get('id').value.toString().length > -1) {
-                        x.get('insurancenumber').enable({emitEvent: false});
-                    } else {
-                        x.get('insurancenumber').disable({emitEvent: false});
-                    }
-                }
-            });
-        });
-    }
-
-    addInsurance(): void {
-        this.insurance.push(this.createInsurance());
-        this.insurancechanges();
-    }
-
-    removeInsurance(index: number): void {
-        if (index === 0) {
-            // clear the insurance input
-            this.insurance.at(index).get('id').patchValue(undefined);
-            this.insurance.at(index).get('id').markAsUntouched();
-            this.insurance.at(index).get('insurancenumber').patchValue(undefined);
-            this.insurance.at(index).get('insurancenumber').disable();
-            return;
-        }
-
-        this.insurance.removeAt(index);
     }
 }

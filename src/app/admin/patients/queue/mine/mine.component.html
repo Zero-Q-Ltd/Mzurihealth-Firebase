@@ -86,7 +86,7 @@
         </mat-header-cell>
         <mat-cell *matCellDef="let patient; let i = index">
             <mat-chip-list [ngSwitch]='patient.queuedata.checkin.status'>
-                <mat-chip *ngSwitchCase="1" color="primary" mat-raised-button selected>Waiting </mat-chip>
+                <mat-chip *ngSwitchCase="1" color="primary" mat-raised-button selected>Waiting</mat-chip>
                 <mat-chip *ngSwitchCase="2" color="basic" mat-raised-button selected>In Progress</mat-chip>
             </mat-chip-list>
         </mat-cell>
@@ -116,8 +116,8 @@
 
     <mat-header-row *matHeaderRowDef="patientsheaders; sticky:true"></mat-header-row>
 
-    <mat-row *matRowDef="let patient; columns: patientsheaders;"
-             (click)="viewinvoice(patient)" class="product"
+    <mat-row (click)="viewinvoice(patient)"
+             *matRowDef="let patient; columns: patientsheaders;" class="product"
              matRipple>
     </mat-row>
 

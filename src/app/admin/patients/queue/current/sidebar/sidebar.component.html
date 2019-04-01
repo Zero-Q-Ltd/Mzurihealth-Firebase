@@ -111,14 +111,16 @@
                 <mat-expansion-panel-header>
                     Allergies ({{ patient.patientdata.medicalinfo.allergies.length}})
                 </mat-expansion-panel-header>
-                <span *ngFor="let allergy of patient.patientdata.medicalinfo.allergies" class="text-truncate">{{allergy.type}}=> {{allergy.detail}}</span>
+                <span *ngFor="let allergy of patient.patientdata.medicalinfo.allergies"
+                      class="text-truncate">{{allergy.type}}=> {{allergy.detail}}</span>
             </mat-expansion-panel>
 
             <mat-expansion-panel>
                 <mat-expansion-panel-header>
                     Conditions ({{patient.patientdata.medicalinfo.conditions.length}})
                 </mat-expansion-panel-header>
-                <span *ngFor="let condition of patient.patientdata.medicalinfo.conditions">{{condition.type}}=>{{condition.detail}}</span>
+                <span *ngFor="let condition of patient.patientdata.medicalinfo.conditions">{{condition.type}}
+                    =>{{condition.detail}}</span>
             </mat-expansion-panel>
 
         </mat-accordion>

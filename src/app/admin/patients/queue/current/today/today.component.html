@@ -165,7 +165,7 @@
                 </mat-horizontal-stepper>
             </ng-template>
         </mat-expansion-panel>
-        <mat-expansion-panel>
+        <mat-expansion-panel expanded>
             <mat-expansion-panel-header>
                 <mat-panel-title>
                     Procedures Performed
@@ -175,24 +175,57 @@
                 </mat-panel-description>
             </mat-expansion-panel-header>
             <ng-template matExpansionPanelContent>
+                <div>
+                    <table mat-table [dataSource]="proceduresdatasource">
 
-                <div *ngFor="let procedure of currentvisit.procedures" class="pb-8">
-                    <mat-card>
-                        <mat-card-header>
-                            <mat-card-title>{{procedure.name}}</mat-card-title>
-                            <mat-card-subtitle>                    {{hospitaladmins| adminName : procedure.adminid }}
-                                : {{procedure.metadata.lastedit?.toDate().toDateString()}}</mat-card-subtitle>
-                        </mat-card-header>
-                        <mat-card-content>
-                            <p>
-                                <strong>Results :</strong> {{procedure.results}}
-                            </p>
-                            <p>
-                                <strong>Notes : </strong> {{procedure.notes}}
-                            </p>
+                        <!--- Note that these columns can be defined in any order.
+                              The actual rendered columns are set as a property on the row definition" -->
 
-                        </mat-card-content>
-                    </mat-card>
+                        <ng-container matColumnDef="name">
+                            <th mat-header-cell *matHeaderCellDef> Procedure</th>
+                            <td mat-cell *matCellDef="let procedure"> {{procedure.name}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="practitioner">
+                            <th mat-header-cell *matHeaderCellDef> Practitioner</th>
+                            <td mat-cell *matCellDef="let procedure">
+                                {{hospitaladmins| adminName : procedure.adminid }}
+                                : {{procedure.metadata.lastedit?.toDate().toDateString()}}
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="results">
+                            <th mat-header-cell *matHeaderCellDef> Practitioner</th>
+                            <td mat-cell *matCellDef="let procedure">
+                                {{procedure.results}}
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="notes">
+                            <th mat-header-cell *matHeaderCellDef> Notes</th>
+                            <td mat-cell *matCellDef="let procedure">
+                                <button color="accent" mat-raised-button matStepperNext type="button">
+                                    {{procedure.notes === '' ? 'ADD' : 'VIEW'}}
+                                </button>
+                            </td>
+                        </ng-container>
+
+                        <tr mat-header-row *matHeaderRowDef="procedurecolumns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: procedurecolumns;"></tr>
+                    </table>
+                </div>
+                <div class="row">
+
+                    <div class="col-md-1">
+                        <button (click)="performprocedures()" class="add-icon" mat-raised-button>
+                            <mat-icon>add_box</mat-icon>
+                            PROCEDURE
+                        </button>
+                    </div>
+                    <div class="col-md-10">
+                        <mat-paginator [pageSizeOptions]="[10, 20, 50, 100]" [pageSize]="10"
+                                       showFirstLastButtons></mat-paginator>
+                    </div>
                 </div>
             </ng-template>
         </mat-expansion-panel>
@@ -324,7 +357,8 @@
         <button (click)="showadminchoice()" class="mx-4 " color="primary" mat-raised-button>Internal Referral
         </button>
 
-        <button disabled (click)="exitpatientandbreak()" class="mx-4 " color="primary" mat-raised-button>Exit Patient and
+        <button (click)="exitpatientandbreak()" class="mx-4 " color="primary" disabled mat-raised-button>Exit Patient
+            and
             Break
         </button>
 

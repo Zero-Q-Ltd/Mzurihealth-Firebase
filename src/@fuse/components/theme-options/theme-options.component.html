@@ -4,7 +4,7 @@
 
         <span class="title">Theme Options</span>
 
-        <button mat-icon-button class="close-button" (click)="toggleSidebarOpen('themeOptionsPanel')">
+        <button (click)="toggleSidebarOpen('themeOptionsPanel')" class="close-button" mat-icon-button>
             <mat-icon>close</mat-icon>
         </button>
 
@@ -17,7 +17,7 @@
 
             <h2>Color themes</h2>
 
-            <mat-radio-group fxLayout="column" fxLayoutAlign="start start" formControlName="colorTheme">
+            <mat-radio-group formControlName="colorTheme" fxLayout="column" fxLayoutAlign="start start">
                 <mat-radio-button class="mb-12" value="theme-default">Default Light</mat-radio-button>
                 <mat-radio-button class="mb-12" value="theme-yellow-light">Yellow Light</mat-radio-button>
                 <mat-radio-button class="mb-12" value="theme-blue-gray-dark">Blue-Gray Dark</mat-radio-button>
@@ -31,7 +31,7 @@
 
             <h2>Layout Styles</h2>
 
-            <mat-radio-group fxLayout="column" fxLayoutAlign="start start" formControlName="style">
+            <mat-radio-group formControlName="style" fxLayout="column" fxLayoutAlign="start start">
 
                 <mat-radio-button class="mb-12" value="vertical-layout-1">
                     Vertical Layout #1
@@ -61,7 +61,7 @@
                     <div class="group mt-32">
 
                         <h2>Layout Width</h2>
-                        <mat-radio-group fxLayout="column" fxLayoutAlign="start start" formControlName="width">
+                        <mat-radio-group formControlName="width" fxLayout="column" fxLayoutAlign="start start">
                             <mat-radio-button class="mb-12" value="fullwidth">Fullwidth</mat-radio-button>
                             <mat-radio-button class="mb-12" value="boxed">Boxed</mat-radio-button>
                         </mat-radio-group>
@@ -82,13 +82,13 @@
                         </mat-slide-toggle>
 
                         <h3 class="mt-24">Position:</h3>
-                        <mat-radio-group fxLayout="column" fxLayoutAlign="start start" formControlName="position">
+                        <mat-radio-group formControlName="position" fxLayout="column" fxLayoutAlign="start start">
                             <mat-radio-button class="mb-16" value="left">Left</mat-radio-button>
                             <mat-radio-button class="mb-16" value="right">Right</mat-radio-button>
                         </mat-radio-group>
 
                         <h3 class="mt-8">Variant:</h3>
-                        <mat-radio-group fxLayout="column" fxLayoutAlign="start start" formControlName="variant">
+                        <mat-radio-group formControlName="variant" fxLayout="column" fxLayoutAlign="start start">
                             <mat-radio-button class="mb-16" value="vertical-style-1">Style 1</mat-radio-button>
                             <mat-radio-button class="mb-16" value="vertical-style-2">Style 2</mat-radio-button>
                         </mat-radio-group>
@@ -113,7 +113,7 @@
                         </mat-slide-toggle>
 
                         <h3 class="mt-24">Position:</h3>
-                        <mat-radio-group fxLayout="column" fxLayoutAlign="start start" formControlName="position">
+                        <mat-radio-group formControlName="position" fxLayout="column" fxLayoutAlign="start start">
                             <mat-radio-button class="mb-12" value="above">Above</mat-radio-button>
                             <mat-radio-button class="mb-12" value="below-static">Below Static</mat-radio-button>
                             <mat-radio-button class="mb-12" value="below-fixed">Below Fixed</mat-radio-button>
@@ -139,7 +139,7 @@
                         </mat-slide-toggle>
 
                         <h3 class="mt-24">Position:</h3>
-                        <mat-radio-group fxLayout="column" fxLayoutAlign="start start" formControlName="position">
+                        <mat-radio-group formControlName="position" fxLayout="column" fxLayoutAlign="start start">
                             <mat-radio-button class="mb-12" value="above">Above</mat-radio-button>
                             <mat-radio-button class="mb-12" value="below-static">Below Static</mat-radio-button>
                             <mat-radio-button class="mb-12" value="below-fixed">Below Fixed</mat-radio-button>
@@ -165,7 +165,7 @@
                         </mat-slide-toggle>
 
                         <h3 class="mt-24">Position:</h3>
-                        <mat-radio-group fxLayout="column" fxLayoutAlign="start start" formControlName="position">
+                        <mat-radio-group formControlName="position" fxLayout="column" fxLayoutAlign="start start">
                             <mat-radio-button class="mb-12" value="left">Left</mat-radio-button>
                             <mat-radio-button class="mb-12" value="right">Right</mat-radio-button>
                         </mat-radio-group>
@@ -181,7 +181,7 @@
                     <div class="group mt-32">
 
                         <h2>Layout Width</h2>
-                        <mat-radio-group fxLayout="column" fxLayoutAlign="start start" formControlName="width">
+                        <mat-radio-group formControlName="width" fxLayout="column" fxLayoutAlign="start start">
                             <mat-radio-button class="mb-12" value="fullwidth">Fullwidth</mat-radio-button>
                             <mat-radio-button class="mb-12" value="boxed">Boxed</mat-radio-button>
                         </mat-radio-group>
@@ -202,13 +202,13 @@
                         </mat-slide-toggle>
 
                         <h3 class="mt-24">Position:</h3>
-                        <mat-radio-group fxLayout="column" fxLayoutAlign="start start" formControlName="position">
+                        <mat-radio-group formControlName="position" fxLayout="column" fxLayoutAlign="start start">
                             <mat-radio-button class="mb-16" value="left">Left</mat-radio-button>
                             <mat-radio-button class="mb-16" value="right">Right</mat-radio-button>
                         </mat-radio-group>
 
                         <h3 class="mt-8">Variant:</h3>
-                        <mat-radio-group fxLayout="column" fxLayoutAlign="start start" formControlName="variant">
+                        <mat-radio-group formControlName="variant" fxLayout="column" fxLayoutAlign="start start">
                             <mat-radio-button class="mb-16" value="vertical-style-1">Style 1</mat-radio-button>
                             <mat-radio-button class="mb-16" value="vertical-style-2">Style 2</mat-radio-button>
                         </mat-radio-group>
@@ -233,7 +233,7 @@
                         </mat-slide-toggle>
 
                         <h3 class="mt-24">Position:</h3>
-                        <mat-radio-group fxLayout="column" fxLayoutAlign="start start" formControlName="position">
+                        <mat-radio-group formControlName="position" fxLayout="column" fxLayoutAlign="start start">
                             <mat-radio-button class="mb-12" value="above-static">Above Static</mat-radio-button>
                             <mat-radio-button class="mb-12" value="above-fixed">Above Fixed</mat-radio-button>
                             <mat-radio-button class="mb-12" value="below">Below</mat-radio-button>
@@ -259,7 +259,7 @@
                         </mat-slide-toggle>
 
                         <h3 class="mt-24">Position:</h3>
-                        <mat-radio-group fxLayout="column" fxLayoutAlign="start start" formControlName="position">
+                        <mat-radio-group formControlName="position" fxLayout="column" fxLayoutAlign="start start">
                             <mat-radio-button class="mb-12" value="above-static">Above Static</mat-radio-button>
                             <mat-radio-button class="mb-12" value="above-fixed">Above Fixed</mat-radio-button>
                             <mat-radio-button class="mb-12" value="below">Below</mat-radio-button>
@@ -285,7 +285,7 @@
                         </mat-slide-toggle>
 
                         <h3 class="mt-24">Position:</h3>
-                        <mat-radio-group fxLayout="column" fxLayoutAlign="start start" formControlName="position">
+                        <mat-radio-group formControlName="position" fxLayout="column" fxLayoutAlign="start start">
                             <mat-radio-button class="mb-12" value="left">Left</mat-radio-button>
                             <mat-radio-button class="mb-12" value="right">Right</mat-radio-button>
                         </mat-radio-group>
@@ -301,7 +301,7 @@
                     <div class="group mt-32">
 
                         <h2>Layout Width</h2>
-                        <mat-radio-group fxLayout="column" fxLayoutAlign="start start" formControlName="width">
+                        <mat-radio-group formControlName="width" fxLayout="column" fxLayoutAlign="start start">
                             <mat-radio-button class="mb-12" value="fullwidth">Fullwidth</mat-radio-button>
                             <mat-radio-button class="mb-12" value="boxed">Boxed</mat-radio-button>
                         </mat-radio-group>
@@ -322,13 +322,13 @@
                         </mat-slide-toggle>
 
                         <h3 class="mt-24">Position:</h3>
-                        <mat-radio-group fxLayout="column" fxLayoutAlign="start start" formControlName="position">
+                        <mat-radio-group formControlName="position" fxLayout="column" fxLayoutAlign="start start">
                             <mat-radio-button class="mb-16" value="left">Left</mat-radio-button>
                             <mat-radio-button class="mb-16" value="right">Right</mat-radio-button>
                         </mat-radio-group>
 
                         <h3 class="mt-8">Variant:</h3>
-                        <mat-radio-group fxLayout="column" fxLayoutAlign="start start" formControlName="variant">
+                        <mat-radio-group formControlName="variant" fxLayout="column" fxLayoutAlign="start start">
                             <mat-radio-button class="mb-16" value="vertical-style-1">Style 1</mat-radio-button>
                             <mat-radio-button class="mb-16" value="vertical-style-2">Style 2</mat-radio-button>
                         </mat-radio-group>
@@ -353,7 +353,7 @@
                         </mat-slide-toggle>
 
                         <h3 class="mt-24">Position:</h3>
-                        <mat-radio-group fxLayout="column" fxLayoutAlign="start start" formControlName="position">
+                        <mat-radio-group formControlName="position" fxLayout="column" fxLayoutAlign="start start">
                             <mat-radio-button class="mb-12" value="above-static">Above Static</mat-radio-button>
                             <mat-radio-button class="mb-12" value="above-fixed">Above Fixed</mat-radio-button>
                         </mat-radio-group>
@@ -378,7 +378,7 @@
                         </mat-slide-toggle>
 
                         <h3 class="mt-24">Position:</h3>
-                        <mat-radio-group fxLayout="column" fxLayoutAlign="start start" formControlName="position">
+                        <mat-radio-group formControlName="position" fxLayout="column" fxLayoutAlign="start start">
                             <mat-radio-button class="mb-12" value="above-static">Above Static</mat-radio-button>
                             <mat-radio-button class="mb-12" value="above-fixed">Above Fixed</mat-radio-button>
                         </mat-radio-group>
@@ -403,7 +403,7 @@
                         </mat-slide-toggle>
 
                         <h3 class="mt-24">Position:</h3>
-                        <mat-radio-group fxLayout="column" fxLayoutAlign="start start" formControlName="position">
+                        <mat-radio-group formControlName="position" fxLayout="column" fxLayoutAlign="start start">
                             <mat-radio-button class="mb-12" value="left">Left</mat-radio-button>
                             <mat-radio-button class="mb-12" value="right">Right</mat-radio-button>
                         </mat-radio-group>
@@ -419,7 +419,7 @@
                     <div class="group mt-32">
 
                         <h2>Layout Width</h2>
-                        <mat-radio-group fxLayout="column" fxLayoutAlign="start start" formControlName="width">
+                        <mat-radio-group formControlName="width" fxLayout="column" fxLayoutAlign="start start">
                             <mat-radio-button class="mb-12" value="fullwidth">Fullwidth</mat-radio-button>
                             <mat-radio-button class="mb-12" value="boxed">Boxed</mat-radio-button>
                         </mat-radio-group>
@@ -436,12 +436,12 @@
                         </mat-slide-toggle>
 
                         <h3 class="mt-24">Position:</h3>
-                        <mat-radio-group fxLayout="column" fxLayoutAlign="start start" formControlName="position">
+                        <mat-radio-group formControlName="position" fxLayout="column" fxLayoutAlign="start start">
                             <mat-radio-button class="mb-16" value="top">Top</mat-radio-button>
                         </mat-radio-group>
 
                         <h3 class="mt-8">Variant (Vertical):</h3>
-                        <mat-radio-group fxLayout="column" fxLayoutAlign="start start" formControlName="variant">
+                        <mat-radio-group formControlName="variant" fxLayout="column" fxLayoutAlign="start start">
                             <mat-radio-button class="mb-16" value="vertical-style-1">Style 1</mat-radio-button>
                             <mat-radio-button class="mb-16" value="vertical-style-2">Style 2</mat-radio-button>
                         </mat-radio-group>
@@ -468,7 +468,7 @@
                         </mat-slide-toggle>
 
                         <h3 class="mt-24">Position:</h3>
-                        <mat-radio-group fxLayout="column" fxLayoutAlign="start start" formControlName="position">
+                        <mat-radio-group formControlName="position" fxLayout="column" fxLayoutAlign="start start">
                             <mat-radio-button class="mb-12" value="above">Above</mat-radio-button>
                             <mat-radio-button class="mb-12" value="below">Below</mat-radio-button>
                         </mat-radio-group>
@@ -493,7 +493,7 @@
                         </mat-slide-toggle>
 
                         <h3 class="mt-24">Position:</h3>
-                        <mat-radio-group fxLayout="column" fxLayoutAlign="start start" formControlName="position">
+                        <mat-radio-group formControlName="position" fxLayout="column" fxLayoutAlign="start start">
                             <mat-radio-button class="mb-12" value="above-fixed">Above Fixed</mat-radio-button>
                             <mat-radio-button class="mb-12" value="above-static">Above Static</mat-radio-button>
                         </mat-radio-group>
@@ -518,7 +518,7 @@
                         </mat-slide-toggle>
 
                         <h3 class="mt-24">Position:</h3>
-                        <mat-radio-group fxLayout="column" fxLayoutAlign="start start" formControlName="position">
+                        <mat-radio-group formControlName="position" fxLayout="column" fxLayoutAlign="start start">
                             <mat-radio-button class="mb-12" value="left">Left</mat-radio-button>
                             <mat-radio-button class="mb-12" value="right">Right</mat-radio-button>
                         </mat-radio-group>

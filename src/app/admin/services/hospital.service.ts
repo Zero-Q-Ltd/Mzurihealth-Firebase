@@ -60,7 +60,7 @@ export class HospitalService {
         this.db.firestore.collection('hospitals').doc(this.userdata.config.hospitalid)
             .onSnapshot(hospitaldata => {
                 if (hospitaldata.exists) {
-                    const temp: Hospital = Object.assign( emptyhospital, hospitaldata.data() as HospitalAdmin, {id : hospitaldata.id});
+                    const temp: Hospital = Object.assign(emptyhospital, hospitaldata.data() as HospitalAdmin, {id: hospitaldata.id});
                     this.activehospital.next(temp);
                     // Update Admins if data changes when the user is in the admins page
                     // this.db.firestore.collection('hospitals').doc(this.userdata.config.hospitalid).collection('admins').doc(this.userdata.data.uid).set({status : true})

@@ -19,12 +19,12 @@ export class ProfileComponent implements OnInit {
     allInsurance: { [key: string]: Paymentmethods } = {};
     patientsForm: FormGroup;
     currentpatient: Patient;
-    private personalinfo: FormGroup;
-    private nextofkin: FormGroup;
-    private insurance: FormArray;
-    // doctor will do this
     // private medicalinfo: FormGroup;
     loading = true;
+    private personalinfo: FormGroup;
+    private nextofkin: FormGroup;
+    // doctor will do this
+    private insurance: FormArray;
 
     constructor(private adminservice: AdminService,
                 private patientservice: PatientService,
@@ -104,7 +104,6 @@ export class ProfileComponent implements OnInit {
                     .get('workplace').patchValue(value.nextofkin.workplace);
 
 
-
                 console.log('magic insurance');
                 console.log(value.insurance);
 
@@ -130,6 +129,89 @@ export class ProfileComponent implements OnInit {
 
     getage(dob): number {
         return moment().diff(dob, 'years');
+    }
+
+    submitPatientsForm(): void {
+        if (this.patientsForm.valid) {
+
+
+            this.patientservice.updatePatient(this.currentpatient.id, this.patientsForm.getRawValue()).then(() => {
+                this.notificationservice.notify({
+                    alert_type: 'success',
+                    body: 'Saved',
+                    title: 'Success',
+                    placement: {
+                        horizontal: 'right',
+                        vertical: 'top'
+                    }
+                });
+                this.dialogRef.close();
+
+            });
+        } else {
+            this.notificationservice.notify({
+                alert_type: 'error',
+                body: 'Please fill all the required inputs',
+                title: 'ERROR',
+                placement: {
+                    horizontal: 'center',
+                    vertical: 'bottom'
+                }
+            });
+        }
+    }
+
+    createInsurance(): FormGroup {
+        const insurancex = new FormControl('');
+
+        const insurancenumber = new FormControl({
+            value: '',
+            disabled: true
+        });
+
+        return this.formBuilder.group({
+            id: insurancex,
+            insurancenumber: insurancenumber
+        });
+    }
+
+    replicateInsurance(insurancedata: { id: string; insuranceno: string; }): FormGroup {
+
+        const insurancex = new FormControl({
+            value: insurancedata.id,
+            disabled: false
+        });
+        const insurancenumber = new FormControl({
+            value: insurancedata.insuranceno,
+            disabled: false
+        });
+        return this.formBuilder.group({
+            id: insurancex,
+            insurancenumber: insurancenumber
+        });
+    }
+
+    insurancechanges(): void {
+        this.insurance.controls.forEach(x => {
+            x.get('id').valueChanges.subscribe(g => {
+                if (g) {
+                    if (x.get('id').value.toString().length > -1) {
+                        x.get('insurancenumber').enable({emitEvent: false});
+                    } else {
+                        x.get('insurancenumber').disable({emitEvent: false});
+                    }
+                }
+            });
+        });
+    }
+
+    addInsurance(): void {
+        this.insurance.push(this.createInsurance());
+        this.insurancechanges();
+    }
+
+    removeInsurance(index: number): void {
+        this.insurance.removeAt(index);
     }
 
     /**
@@ -204,91 +286,6 @@ export class ProfileComponent implements OnInit {
         * init the insurance list
         * **/
         this.insurance = this.patientsForm.get('insurance') as FormArray;
-    }
-
-
-    submitPatientsForm(): void {
-        if (this.patientsForm.valid) {
-
-
-            this.patientservice.updatePatient(this.currentpatient.id, this.patientsForm.getRawValue()).then(() => {
-                this.notificationservice.notify({
-                    alert_type: 'success',
-                    body: 'Saved',
-                    title: 'Success',
-                    placement: {
-                        horizontal: 'right',
-                        vertical: 'top'
-                    }
-                });
-                this.dialogRef.close();
-
-            });
-        } else {
-            this.notificationservice.notify({
-                alert_type: 'error',
-                body: 'Please fill all the required inputs',
-                title: 'ERROR',
-                placement: {
-                    horizontal: 'center',
-                    vertical: 'bottom'
-                }
-            });
-        }
-    }
-
-    createInsurance(): FormGroup {
-        const insurancex = new FormControl('');
-
-        const insurancenumber = new FormControl({
-            value: '',
-            disabled: true
-        });
-
-        return this.formBuilder.group({
-            id: insurancex,
-            insurancenumber: insurancenumber
-        });
-    }
-
-    replicateInsurance(insurancedata: { id: string; insuranceno: string; }): FormGroup {
-
-        const insurancex = new FormControl({
-            value: insurancedata.id,
-            disabled: false
-        });
-        const insurancenumber = new FormControl({
-            value: insurancedata.insuranceno,
-            disabled: false
-        });
-        return this.formBuilder.group({
-            id: insurancex,
-            insurancenumber: insurancenumber
-        });
-    }
-
-
-    insurancechanges(): void {
-        this.insurance.controls.forEach(x => {
-            x.get('id').valueChanges.subscribe(g => {
-                if (g) {
-                    if (x.get('id').value.toString().length > -1) {
-                        x.get('insurancenumber').enable({emitEvent: false});
-                    } else {
-                        x.get('insurancenumber').disable({emitEvent: false});
-                    }
-                }
-            });
-        });
-    }
-
-    addInsurance(): void {
-        this.insurance.push(this.createInsurance());
-        this.insurancechanges();
-    }
-
-    removeInsurance(index: number): void {
-        this.insurance.removeAt(index);
     }
 
 }

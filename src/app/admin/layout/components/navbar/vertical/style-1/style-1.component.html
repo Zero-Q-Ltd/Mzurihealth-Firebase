@@ -1,6 +1,6 @@
 <div [ngClass]="fuseConfig.layout.navbar.secondaryBackground" class="navbar-top">
     <div class="logo">
-        <img class="logo-icon" [src]="activehospital.logourl || 'assets/images/logos/fuse.svg'">
+        <img [src]="activehospital.logourl || 'assets/images/logos/fuse.svg'" class="logo-icon">
         <span class="logo-text secondary-text">{{activehospital.name | uppercase}}</span>
     </div>
     <div class="buttons">
@@ -15,14 +15,14 @@
     </div>
 </div>
 
-<div class="navbar-scroll-container" [ngClass]="fuseConfig.layout.navbar.primaryBackground"
-     fusePerfectScrollbar [fusePerfectScrollbarOptions]="{suppressScrollX: true}">
-    <div class="user" fxLayout="column" [ngClass]="fuseConfig.layout.navbar.secondaryBackground">
+<div [fusePerfectScrollbarOptions]="{suppressScrollX: true}" [ngClass]="fuseConfig.layout.navbar.primaryBackground"
+     class="navbar-scroll-container" fusePerfectScrollbar>
+    <div [ngClass]="fuseConfig.layout.navbar.secondaryBackground" class="user" fxLayout="column">
         <div class="h3 username">{{userdata.data.displayName}}</div>
         <div class="h5 email hint-text mt-8">{{userdata.data.email}}</div>
-        <div class="avatar-container" [ngClass]="fuseConfig.layout.navbar.primaryBackground">
+        <div [ngClass]="fuseConfig.layout.navbar.primaryBackground" class="avatar-container">
             <a [routerLink]="'profile'">
-                <img class="avatar" src="{{userdata.data.photoURL || 'assets/images/avatars/docicon.svg'}}" alt="">
+                <img alt="" class="avatar" src="{{userdata.data.photoURL || 'assets/images/avatars/docicon.svg'}}">
             </a>
         </div>
     </div>

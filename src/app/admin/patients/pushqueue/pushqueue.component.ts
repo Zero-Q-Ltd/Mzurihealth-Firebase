@@ -70,71 +70,6 @@ export class PushqueueComponent implements OnInit {
         this.insurance = this.queueForm.get('insurance') as FormArray;
     }
 
-    private listenForInsurance(): void {
-        this.queueForm.get('type').valueChanges.subscribe((value: PaymentChannel) => {
-            if (value.name === 'insurance') {
-                this.insuranceSet = true;
-
-                // this.patientService.
-                this.patientService.getSinglePatient(this.patient.id).subscribe(pData => {
-
-                    if (pData.insurance.length === 0) {
-                        this.insuranceAvailable = false;
-                    }
-                    pData.insurance.map((insuranceData: { id: string, insuranceno: string }, index) => {
-                        this.insuranceAvailable = true;
-                        this.addInsurance();
-
-                        const mergedData = Object.assign({}, this.allInsurance[insuranceData.id],
-                            {id: insuranceData.id, insuranceno: insuranceData.insuranceno});
-
-                        this.insurance.controls[index].get('insuranceControl').patchValue(mergedData.id, {emitEvent: false});
-                        this.insurance.controls[index].get('insurancenumber').patchValue(mergedData.insuranceno, {emitEvent: false});
-
-                        /*
-                        * disable inputs
-                        * **/
-                        this.insurance.controls[index].get('insuranceControl').disable({emitEvent: false});
-                        this.insurance.controls[index].get('insurancenumber').disable({emitEvent: false});
-                    });
-                });
-
-            } else {
-                // clear formArray values
-                this.insurance.controls = [];
-                this.selected = null;
-                this.selectedInsurance = null;
-
-
-                this.insuranceSet = false;
-                this.insuranceAvailable = false;
-            }
-        });
-    }
-
-
-    private createInsurance(): FormGroup {
-        return this._formBuilder.group({
-            insuranceControl: new FormControl('', Validators.required),
-            insurancenumber: new FormControl('', Validators.required)
-        });
-    }
-
-    private createPayment(): FormGroup {
-        return this._formBuilder.group({
-            typeCtr: ['', Validators.required],
-            insurancenumber: ['', Validators.required]
-        });
-    }
-
-    private insuranceEnabled(): boolean {
-        if (this.insuranceSet) {
-            return this.insuranceAvailable;
-        } else {
-            return true;
-        }
-    }
-
     removeInsurance(index: number): void {
         this.insurance.removeAt(index);
         if (index === this.selected) {
@@ -194,5 +129,69 @@ export class PushqueueComponent implements OnInit {
         }
         this.selected = index;
         this.selectedInsurance = selectedInsurance.getRawValue();
+    }
+
+    private listenForInsurance(): void {
+        this.queueForm.get('type').valueChanges.subscribe((value: PaymentChannel) => {
+            if (value.name === 'insurance') {
+                this.insuranceSet = true;
+
+                // this.patientService.
+                this.patientService.getSinglePatient(this.patient.id).subscribe(pData => {
+
+                    if (pData.insurance.length === 0) {
+                        this.insuranceAvailable = false;
+                    }
+                    pData.insurance.map((insuranceData: { id: string, insuranceno: string }, index) => {
+                        this.insuranceAvailable = true;
+                        this.addInsurance();
+
+                        const mergedData = Object.assign({}, this.allInsurance[insuranceData.id],
+                            {id: insuranceData.id, insuranceno: insuranceData.insuranceno});
+
+                        this.insurance.controls[index].get('insuranceControl').patchValue(mergedData.id, {emitEvent: false});
+                        this.insurance.controls[index].get('insurancenumber').patchValue(mergedData.insuranceno, {emitEvent: false});
+
+                        /*
+                        * disable inputs
+                        * **/
+                        this.insurance.controls[index].get('insuranceControl').disable({emitEvent: false});
+                        this.insurance.controls[index].get('insurancenumber').disable({emitEvent: false});
+                    });
+                });
+
+            } else {
+                // clear formArray values
+                this.insurance.controls = [];
+                this.selected = null;
+                this.selectedInsurance = null;
+
+
+                this.insuranceSet = false;
+                this.insuranceAvailable = false;
+            }
+        });
+    }
+
+    private createInsurance(): FormGroup {
+        return this._formBuilder.group({
+            insuranceControl: new FormControl('', Validators.required),
+            insurancenumber: new FormControl('', Validators.required)
+        });
+    }
+
+    private createPayment(): FormGroup {
+        return this._formBuilder.group({
+            typeCtr: ['', Validators.required],
+            insurancenumber: ['', Validators.required]
+        });
+    }
+
+    private insuranceEnabled(): boolean {
+        if (this.insuranceSet) {
+            return this.insuranceAvailable;
+        } else {
+            return true;
+        }
     }
 }

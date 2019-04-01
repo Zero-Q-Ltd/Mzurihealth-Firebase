@@ -148,18 +148,6 @@ export class AllComponent implements OnInit, AfterViewInit {
             });
     }
 
-
-    private initialSearchForm(): void {
-        this.searchForm = this.formBuilder.group({
-            field: new FormControl('', [
-                Validators.required,
-            ]),
-            fieldValue: new FormControl('', [
-                Validators.required
-            ]),
-        });
-    }
-
     editpatient(patient: Patient): void {
         event.stopPropagation();
         this.dialogRef = this._matDialog.open(ProfileComponent, {
@@ -201,5 +189,16 @@ export class AllComponent implements OnInit, AfterViewInit {
 
         const {field, fieldValue} = this.searchForm.value;
         this.patientservice.searchPatient(field, fieldValue);
+    }
+
+    private initialSearchForm(): void {
+        this.searchForm = this.formBuilder.group({
+            field: new FormControl('', [
+                Validators.required,
+            ]),
+            fieldValue: new FormControl('', [
+                Validators.required
+            ]),
+        });
     }
 }

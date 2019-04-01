@@ -49,12 +49,13 @@
                 </mat-expansion-panel-header>
                 <div class="my-4">
 
-                    <form (ngSubmit)="submitSearchForm()" [formGroup]="searchForm" class=" " fxFlex="1 0 auto" fxLayoutAlign="start"
+                    <form (ngSubmit)="submitSearchForm()" [formGroup]="searchForm" class=" " fxFlex="1 0 auto"
+                          fxLayoutAlign="start"
                           name="form">
 
                         <!--First name, second name-->
 
-                        <mat-form-field appearance="outline" class="pl-4 searchfields" >
+                        <mat-form-field appearance="outline" class="pl-4 searchfields">
                             <mat-label>Select search field</mat-label>
                             <mat-select formControlName="field" required>
 
@@ -80,7 +81,7 @@
                             <mat-error>Field is required!</mat-error>
                         </mat-form-field>
 
-                        <mat-form-field appearance="outline" class="pl-4 searchfields" >
+                        <mat-form-field appearance="outline" class="pl-4 searchfields">
                             <mat-label>Field</mat-label>
                             <input formControlName="fieldValue" matInput required>
                             <mat-icon class="secondary-text" matSuffix>account_circle</mat-icon>
@@ -117,11 +118,13 @@
                     <mat-cell *matCellDef="let patient">
 
                         <p>
-                            <img *ngIf="patient.personalinfo.gender == 1" [src]="patient.personalinfo.photoURL || 'assets/images/avatars/male.png'"
+                            <img *ngIf="patient.personalinfo.gender == 1"
+                                 [src]="patient.personalinfo.photoURL || 'assets/images/avatars/male.png'"
                                  alt="male avatar"
                                  class="avatar"/>
 
-                            <img *ngIf="patient.personalinfo.gender == 0" [src]="patient.personalinfo.photoURL || 'assets/images/avatars/female.png'"
+                            <img *ngIf="patient.personalinfo.gender == 0"
+                                 [src]="patient.personalinfo.photoURL || 'assets/images/avatars/female.png'"
                                  alt="female avatar"
                                  class="avatar"/>
                         </p>

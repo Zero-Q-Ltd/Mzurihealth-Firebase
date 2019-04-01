@@ -1,86 +1,86 @@
 <div class="dialog-content-wrapper queue-form-dialog">
-    <mat-toolbar matDialogTitle class="mat-accent m-0">
+    <mat-toolbar class="mat-accent m-0" matDialogTitle>
         <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center">
             <span class="title dialog-title">{{dialogTitle}}</span>
-            <button mat-icon-button (click)="matDialogRef.close()" aria-label="Close dialog">
+            <button (click)="matDialogRef.close()" aria-label="Close dialog" mat-icon-button>
                 <mat-icon>close</mat-icon>
             </button>
         </mat-toolbar-row>
 
         <mat-toolbar-row class="toolbar-bottom py-16" fxLayout="column" fxLayoutAlign="center center">
             <p>
-                <img class="avatar contact-avatar huge m-0" *ngIf="patient.personalinfo.gender == 1"
-                     [src]="patient.personalinfo.photoURL || 'assets/images/avatars/male.png'"
-                     alt="male avatar"/>
+                <img *ngIf="patient.personalinfo.gender == 1" [src]="patient.personalinfo.photoURL || 'assets/images/avatars/male.png'"
+                     alt="male avatar"
+                     class="avatar contact-avatar huge m-0"/>
 
-                <img class="avatar contact-avatar huge m-0" *ngIf="patient.personalinfo.gender == 0"
-                     [src]="patient.personalinfo.photoURL || 'assets/images/avatars/female.png'"
-                     alt="female avatar"/>
+                <img *ngIf="patient.personalinfo.gender == 0" [src]="patient.personalinfo.photoURL || 'assets/images/avatars/female.png'"
+                     alt="female avatar"
+                     class="avatar contact-avatar huge m-0"/>
             </p>
             <div class="contact-name mt-8">{{patient.personalinfo.name}}</div>
         </mat-toolbar-row>
     </mat-toolbar>
 
-    <div mat-dialog-content class="pt-24 pb-4 m-0" fusePerfectScrollbar>
+    <div class="pt-24 pb-4 m-0" fusePerfectScrollbar mat-dialog-content>
 
         <form [formGroup]="queueForm">
 
             <div fxLayout="row" fxLayoutAlign="start start">
                 <mat-form-field appearance="outline" fxFlex>
                     <mat-label>Visit description</mat-label>
-                    <textarea matInput formControlName="description" required>
+                    <textarea formControlName="description" matInput required>
                     </textarea>
-                    <mat-icon matSuffix class="secondary-text">description</mat-icon>
+                    <mat-icon class="secondary-text" matSuffix>description</mat-icon>
                 </mat-form-field>
             </div>
 
             <div fxLayout="row" fxLayoutAlign="start start">
 
-                <div fxLayout="row" fxLayoutAlign="start start" fxFlex="100">
+                <div fxFlex="100" fxLayout="row" fxLayoutAlign="start start">
 
                     <mat-form-field appearance="outline" fxFlex>
                         <mat-label>Payment type</mat-label>
-                        <mat-select required formControlName="type">
+                        <mat-select formControlName="type" required>
                             <mat-option *ngFor="let option of paymentMethods" [value]="option">
                                 {{option.name}}
                             </mat-option>
                         </mat-select>
-                        <mat-icon matSuffix class="secondary-text">account_circle</mat-icon>
+                        <mat-icon class="secondary-text" matSuffix>account_circle</mat-icon>
                     </mat-form-field>
                 </div>
 
             </div>
 
-            <div fxLayout="row" fxLayoutAlign="start start"
-                 *ngFor="let item of queueForm.get('insurance')['controls']; let i = index;" formArrayName="insurance">
+            <div *ngFor="let item of queueForm.get('insurance')['controls']; let i = index;" formArrayName="insurance"
+                 fxLayout="row" fxLayoutAlign="start start">
 
-                <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto" [formGroupName]="i">
+                <div [formGroupName]="i" fxFlex="1 0 auto" fxLayout="row" fxLayoutAlign="start center">
                     <div fxFlex="5">
                         <mat-checkbox (change)="setSelectedInsurance($event.checked, item, i)"
                                       [checked]="selected === i"></mat-checkbox>
                     </div>
-                    <mat-form-field appearance="outline" fxFlex="40" class="mr-12">
+                    <mat-form-field appearance="outline" class="mr-12" fxFlex="40">
                         <mat-label>Insurance name</mat-label>
-                        <mat-select required formControlName="insuranceControl">
-                            <mat-option class="text-truncate" *ngFor="let option of allInsurance | keyvalue"
-                                        [value]="option?.key ">
+                        <mat-select formControlName="insuranceControl" required>
+                            <mat-option *ngFor="let option of allInsurance | keyvalue" [value]="option?.key "
+                                        class="text-truncate">
                                 {{option.value.name |titlecase}}
                             </mat-option>
                         </mat-select>
-                        <mat-icon matSuffix class="secondary-text">account_circle</mat-icon>
+                        <mat-icon class="secondary-text" matSuffix>account_circle</mat-icon>
                     </mat-form-field>
 
                     <mat-form-field appearance="outline" fxFlex="40">
                         <mat-label>Insurance number</mat-label>
-                        <input formControlName="insurancenumber" matInput required autocomplete="off">
+                        <input autocomplete="off" formControlName="insurancenumber" matInput required>
                         <mat-icon class="secondary-text" matSuffix>confirmation_number</mat-icon>
 
                         <mat-error>Insurance number is required</mat-error>
                     </mat-form-field>
 
                     <span fxFlex="10">
-                         <button (click)="removeInsurance(i)" color="warn" mat-mini-fab type="button"
-                                 class="mb-20 ml-8">
+                         <button (click)="removeInsurance(i)" class="mb-20 ml-8" color="warn" mat-mini-fab
+                                 type="button">
                                     <mat-icon *ngIf="i !== 0">clear</mat-icon>
                                     <mat-icon *ngIf="i === 0">delete</mat-icon>
                          </button>
@@ -89,9 +89,9 @@
             </div>
 
 
-            <div fxLayout="row" fxLayoutAlign="start start" *ngIf="insuranceSet">
+            <div *ngIf="insuranceSet" fxLayout="row" fxLayoutAlign="start start">
 
-                <div fxLayout="row" fxLayoutAlign="start start" fxFlex="100">
+                <div fxFlex="100" fxLayout="row" fxLayoutAlign="start start">
                     <button (click)="addInsurance()" color="basic" mat-mini-fab type="button">
                         <mat-icon>library_add</mat-icon>
                     </button>
@@ -104,14 +104,14 @@
 
     </div>
 
-    <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">
+    <div class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center" mat-dialog-actions>
 
 
-        <button mat-button
-                class="save-button"
+        <button (click)="submitForm()"
                 [disabled]="queueForm.invalid"
-                (click)="submitForm()"
-                aria-label="SAVE">
+                aria-label="SAVE"
+                class="save-button"
+                mat-button>
             SAVE
         </button>
 

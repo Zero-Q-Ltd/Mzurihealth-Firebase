@@ -1,15 +1,14 @@
-import { AfterContentInit, Component, ContentChildren, ElementRef, HostBinding, QueryList, Renderer2, ViewEncapsulation } from '@angular/core';
-import { FuseWidgetToggleDirective } from './widget-toggle.directive';
+import {AfterContentInit, Component, ContentChildren, ElementRef, HostBinding, QueryList, Renderer2, ViewEncapsulation} from '@angular/core';
+import {FuseWidgetToggleDirective} from './widget-toggle.directive';
 
 @Component({
-    selector     : 'fuse-widget',
-    templateUrl  : './widget.component.html',
-    styleUrls    : ['./widget.component.scss'],
+    selector: 'fuse-widget',
+    templateUrl: './widget.component.html',
+    styleUrls: ['./widget.component.scss'],
     encapsulation: ViewEncapsulation.None
 })
 
-export class FuseWidgetComponent implements AfterContentInit
-{
+export class FuseWidgetComponent implements AfterContentInit {
     @HostBinding('class.flipped')
     flipped = false;
 
@@ -25,8 +24,7 @@ export class FuseWidgetComponent implements AfterContentInit
     constructor(
         private _elementRef: ElementRef,
         private _renderer: Renderer2
-    )
-    {
+    ) {
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -36,8 +34,7 @@ export class FuseWidgetComponent implements AfterContentInit
     /**
      * After content init
      */
-    ngAfterContentInit(): void
-    {
+    ngAfterContentInit(): void {
         // Listen for the flip button click
         setTimeout(() => {
             this.toggleButtons.forEach(flipButton => {
@@ -57,8 +54,7 @@ export class FuseWidgetComponent implements AfterContentInit
     /**
      * Toggle the flipped status
      */
-    toggle(): void
-    {
+    toggle(): void {
         this.flipped = !this.flipped;
     }
 

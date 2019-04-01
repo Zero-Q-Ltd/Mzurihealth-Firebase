@@ -1,18 +1,18 @@
-import { NgModule } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import {NgModule} from '@angular/core';
+import {RouterModule} from '@angular/router';
 
-import { MatExpansionModule, MatIconModule } from '@angular/material';
+import {MatExpansionModule, MatIconModule} from '@angular/material';
 
-import { FuseSharedModule } from '@fuse/shared.module';
+import {FuseSharedModule} from '@fuse/shared.module';
 import {FaqComponent} from './faq.component';
 import {FaqService} from './faq.service';
 
 
 const routes = [
     {
-        path     : 'faq',
+        path: 'faq',
         component: FaqComponent,
-        resolve  : {
+        resolve: {
             faq: FaqService
         }
     }
@@ -22,7 +22,7 @@ const routes = [
     declarations: [
         FaqComponent
     ],
-    imports     : [
+    imports: [
         RouterModule.forChild(routes),
 
         MatExpansionModule,
@@ -30,10 +30,9 @@ const routes = [
 
         FuseSharedModule
     ],
-    providers   : [
+    providers: [
         FaqService
     ]
 })
-export class FaqModule
-{
+export class FaqModule {
 }

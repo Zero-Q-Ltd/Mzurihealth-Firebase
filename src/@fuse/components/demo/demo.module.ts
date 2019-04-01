@@ -1,27 +1,26 @@
-import { NgModule } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import {NgModule} from '@angular/core';
+import {RouterModule} from '@angular/router';
 
-import { MatDividerModule, MatListModule } from '@angular/material';
+import {MatDividerModule, MatListModule} from '@angular/material';
 
-import { FuseDemoContentComponent } from './demo-content/demo-content.component';
-import { FuseDemoSidebarComponent } from './demo-sidebar/demo-sidebar.component';
+import {FuseDemoContentComponent} from './demo-content/demo-content.component';
+import {FuseDemoSidebarComponent} from './demo-sidebar/demo-sidebar.component';
 
 @NgModule({
     declarations: [
         FuseDemoContentComponent,
         FuseDemoSidebarComponent
     ],
-    imports     : [
+    imports: [
         RouterModule,
 
         MatDividerModule,
         MatListModule
     ],
-    exports     : [
+    exports: [
         FuseDemoContentComponent,
         FuseDemoSidebarComponent
     ]
 })
-export class FuseDemoModule
-{
+export class FuseDemoModule {
 }

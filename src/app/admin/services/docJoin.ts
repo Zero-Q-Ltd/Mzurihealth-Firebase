@@ -1,8 +1,7 @@
+import {AngularFirestore} from '@angular/fire/firestore';
 
-import { AngularFirestore } from '@angular/fire/firestore';
-
-import { combineLatest, defer } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import {combineLatest, defer} from 'rxjs';
+import {map, switchMap} from 'rxjs/operators';
 
 /**
  * docJoin - Joins multiple docs together into a single unified object. Useful when you have multiple has-one relationships
@@ -40,11 +39,11 @@ export const docJoin = (
                     // We now have all the associated douments
                     // Reduce them to a single object based on the parent's keys
                     const joins = keys.reduce((acc, cur, idx) => {
-                        return { ...acc, [cur]: arr[idx] };
+                        return {...acc, [cur]: arr[idx]};
                     }, {});
 
                     // Return the parent doc with the joined objects
-                    return { ...parent, ...joins };
+                    return {...parent, ...joins};
                 })
             );
         });

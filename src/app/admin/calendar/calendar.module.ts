@@ -1,35 +1,33 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import {
-    MatButtonModule, MatDatepickerModule, MatDialogModule, MatFormFieldModule, MatIconModule, MatInputModule, MatSlideToggleModule, MatToolbarModule, MatTooltipModule
-} from '@angular/material';
-import { ColorPickerModule } from 'ngx-color-picker';
-import { CalendarModule as AngularCalendarModule, DateAdapter } from 'angular-calendar';
-import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
+import {NgModule} from '@angular/core';
+import {RouterModule, Routes} from '@angular/router';
+import {MatButtonModule, MatDatepickerModule, MatDialogModule, MatFormFieldModule, MatIconModule, MatInputModule, MatSlideToggleModule, MatToolbarModule, MatTooltipModule} from '@angular/material';
+import {ColorPickerModule} from 'ngx-color-picker';
+import {CalendarModule as AngularCalendarModule, DateAdapter} from 'angular-calendar';
+import {adapterFactory} from 'angular-calendar/date-adapters/date-fns';
 
-import { FuseSharedModule } from '@fuse/shared.module';
-import { FuseConfirmDialogModule } from '@fuse/components';
+import {FuseSharedModule} from '@fuse/shared.module';
+import {FuseConfirmDialogModule} from '@fuse/components';
 import {CalendarComponent} from './calendar.component';
 import {CalendarService} from './calendar.service';
 import {CalendarEventFormDialogComponent} from './event-form/event-form.component';
 
 const routes: Routes = [
     {
-        path     : '**',
+        path: '**',
         component: CalendarComponent,
-        children : [],
-        resolve  : {
+        children: [],
+        resolve: {
             chat: CalendarService
         }
     }
 ];
 
 @NgModule({
-    declarations   : [
+    declarations: [
         CalendarComponent,
         CalendarEventFormDialogComponent
     ],
-    imports        : [
+    imports: [
         RouterModule.forChild(routes),
 
         MatButtonModule,
@@ -42,7 +40,7 @@ const routes: Routes = [
         MatToolbarModule,
         MatTooltipModule,
         AngularCalendarModule.forRoot({
-            provide   : DateAdapter,
+            provide: DateAdapter,
             useFactory: adapterFactory
         }),
         ColorPickerModule,
@@ -50,13 +48,12 @@ const routes: Routes = [
         FuseSharedModule,
         FuseConfirmDialogModule
     ],
-    providers      : [
+    providers: [
         CalendarService
     ],
     entryComponents: [
         CalendarEventFormDialogComponent
     ]
 })
-export class CalendarModule
-{
+export class CalendarModule {
 }

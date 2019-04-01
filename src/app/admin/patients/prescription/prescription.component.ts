@@ -17,9 +17,9 @@ import {Hospital} from '../../../models/Hospital';
 export class PrescriptionComponent implements OnInit {
     patientdata: MergedPatient_QueueModel = {...emptymergedQueueModel};
     allpaymentchannels: Array<PaymentChannel> = [];
-    private _unsubscribeAll: Subject<any>;
     activehospital: Hospital;
     hidden = false;
+    private _unsubscribeAll: Subject<any>;
 
     constructor(private hospitalservice: HospitalService,
                 private queue: QueueService,

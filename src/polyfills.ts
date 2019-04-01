@@ -33,32 +33,29 @@ import 'core-js/es6/regexp';
 import 'core-js/es6/map';
 import 'core-js/es6/weak-map';
 import 'core-js/es6/set';
-
 /**
  * If the application will be indexed by Google Search, the following is required.
  * Googlebot uses a renderer based on Chrome 41.
  * https://developers.google.com/search/docs/guides/rendering
  **/
 import 'core-js/es7/array';
-
 /** IE10 and IE11 requires the following for NgClass support on SVG elements */
-import 'classlist.js';  // Run `npm install --save classlist.js`.
-
+import 'classlist.js'; // Run `npm install --save classlist.js`.
 /** IE10 and IE11 requires the following for the Reflect API. */
 import 'core-js/es6/reflect';
-
-
 /** Evergreen browsers require these. **/
 // Used for reflect-metadata in JIT. If you use AOT (and only Angular decorators), you can remove.
 import 'core-js/es7/reflect';
-
-
 /**
  * Web Animations `@angular/platform-browser/animations`
  * Only required if AnimationBuilder is used within the application and using IE/Edge or Safari.
  * Standard animation support in Angular DOES NOT require any polyfills (as of Angular 6.0).
  **/
-import 'web-animations-js';  // Run `npm install --save web-animations-js`.
+import 'web-animations-js'; // Run `npm install --save web-animations-js`.
+/***************************************************************************************************
+ * Zone JS is required by default for Angular itself.
+ */
+import 'zone.js/dist/zone'; // Included with Angular CLI.
 
 /**
  * By default, zone.js will patch all possible macroTask and DomEvents
@@ -75,11 +72,6 @@ import 'web-animations-js';  // Run `npm install --save web-animations-js`.
 */
 // (window as any).__Zone_enable_cross_context_check = true;
 
-/***************************************************************************************************
- * Zone JS is required by default for Angular itself.
- */
-import 'zone.js/dist/zone';  // Included with Angular CLI.
-
 
 /***************************************************************************************************
  * APPLICATION IMPORTS
@@ -91,7 +83,6 @@ import 'zone.js/dist/zone';  // Included with Angular CLI.
 /**
  * Fix for ngx-chart to work on ie11
  */
-if ( typeof SVGElement.prototype.contains === 'undefined' )
-{
+if (typeof SVGElement.prototype.contains === 'undefined') {
     SVGElement.prototype.contains = HTMLDivElement.prototype.contains;
 }

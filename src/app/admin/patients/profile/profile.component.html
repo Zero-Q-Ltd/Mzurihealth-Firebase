@@ -117,9 +117,9 @@
 
                 <mat-form-field appearance="outline" fxFlex="33">
                     <mat-label>Address</mat-label>
-                    <input #postalCode formControlName="address" matInput maxlength="10" required>
+                    <input #postalCode formControlName="address" matInput maxlength="100" required>
                     <mat-icon class="secondary-text" matSuffix>markunread_mailbox</mat-icon>
-                    <mat-hint align="end">{{postalCode.value.length}} / 10</mat-hint>
+                    <mat-hint align="end">{{postalCode.value.length}} / 100</mat-hint>
                     <mat-error>Postal Code is required!</mat-error>
                 </mat-form-field>
 

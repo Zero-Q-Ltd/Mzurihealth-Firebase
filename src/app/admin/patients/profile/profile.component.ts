@@ -88,6 +88,9 @@ export class ProfileComponent implements OnInit {
                 this.patientsForm.controls['personalinfo']
                     .get('address').patchValue(value.personalinfo.address);
 
+                this.patientsForm.controls['personalinfo']
+                    .get('occupation').patchValue(value.personalinfo.occupation);
+
                 this.patientsForm.controls['nextofkin']
                     .get('relationship').patchValue(value.nextofkin.relationship);
 
@@ -99,6 +102,7 @@ export class ProfileComponent implements OnInit {
 
                 this.patientsForm.controls['nextofkin']
                     .get('workplace').patchValue(value.nextofkin.workplace);
+
 
 
                 console.log('magic insurance');

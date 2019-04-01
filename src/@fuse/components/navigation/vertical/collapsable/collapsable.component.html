@@ -1,59 +1,59 @@
 <ng-container *ngIf="!item.hidden">
 
     <!-- normal collapsable -->
-    <a class="nav-link" [ngClass]="item.classes" *ngIf="!item.url && !item.function"
-       (click)="toggleOpen($event)">
+    <a (click)="toggleOpen($event)" *ngIf="!item.url && !item.function" [ngClass]="item.classes"
+       class="nav-link">
         <ng-container *ngTemplateOutlet="itemContent"></ng-container>
     </a>
 
     <!-- item.url -->
-    <a class="nav-link" [ngClass]="item.classes" *ngIf="item.url && !item.externalUrl && !item.function"
-       (click)="toggleOpen($event)"
-       [routerLink]="[item.url]" [routerLinkActive]="['active', 'accent']"
+    <a (click)="toggleOpen($event)" *ngIf="item.url && !item.externalUrl && !item.function" [ngClass]="item.classes"
        [routerLinkActiveOptions]="{exact: item.exactMatch || false}"
-       [target]="item.openInNewTab ? '_blank' : '_self'">
+       [routerLinkActive]="['active', 'accent']" [routerLink]="[item.url]"
+       [target]="item.openInNewTab ? '_blank' : '_self'"
+       class="nav-link">
         <ng-container *ngTemplateOutlet="itemContent"></ng-container>
     </a>
 
     <!-- item.externalUrl -->
-    <a class="nav-link" [ngClass]="item.classes" *ngIf="item.url && item.externalUrl && !item.function"
-       (click)="toggleOpen($event)"
-       [href]="item.url" [target]="item.openInNewTab ? '_blank' : '_self'">
+    <a (click)="toggleOpen($event)" *ngIf="item.url && item.externalUrl && !item.function" [href]="item.url"
+       [ngClass]="item.classes"
+       [target]="item.openInNewTab ? '_blank' : '_self'" class="nav-link">
         <ng-container *ngTemplateOutlet="itemContent"></ng-container>
     </a>
 
     <!-- item.function -->
-    <span class="nav-link" [ngClass]="item.classes" *ngIf="!item.url && item.function"
-          (click)="toggleOpen($event);item.function()">
+    <span (click)="toggleOpen($event);item.function()" *ngIf="!item.url && item.function" [ngClass]="item.classes"
+          class="nav-link">
         <ng-container *ngTemplateOutlet="itemContent"></ng-container>
     </span>
 
     <!-- item.url && item.function -->
-    <a class="nav-link" [ngClass]="item.classes" *ngIf="item.url && !item.externalUrl && item.function"
-       (click)="toggleOpen($event);item.function()"
-       [routerLink]="[item.url]" [routerLinkActive]="['active', 'accent']"
-       [routerLinkActiveOptions]="{exact: item.exactMatch || false}">
+    <a (click)="toggleOpen($event);item.function()" *ngIf="item.url && !item.externalUrl && item.function" [ngClass]="item.classes"
+       [routerLinkActiveOptions]="{exact: item.exactMatch || false}"
+       [routerLinkActive]="['active', 'accent']" [routerLink]="[item.url]"
+       class="nav-link">
         <ng-container *ngTemplateOutlet="itemContent"></ng-container>
     </a>
 
     <!-- item.externalUrl && item.function -->
-    <a class="nav-link" [ngClass]="item.classes" *ngIf="item.url && item.externalUrl && item.function"
-       (click)="toggleOpen($event);item.function()"
-       [href]="item.url" [target]="item.openInNewTab ? '_blank' : '_self'">
+    <a (click)="toggleOpen($event);item.function()" *ngIf="item.url && item.externalUrl && item.function" [href]="item.url"
+       [ngClass]="item.classes"
+       [target]="item.openInNewTab ? '_blank' : '_self'" class="nav-link">
         <ng-container *ngTemplateOutlet="itemContent"></ng-container>
     </a>
 
     <ng-template #itemContent>
-        <mat-icon class="nav-link-icon" *ngIf="item.icon">{{item.icon}}</mat-icon>
-        <span class="nav-link-title" [translate]="item.translate">{{item.title}}</span>
-        <span class="nav-link-badge" *ngIf="item.badge" [translate]="item.badge.translate"
-              [ngStyle]="{'background-color': item.badge.bg,'color': item.badge.fg}">
+        <mat-icon *ngIf="item.icon" class="nav-link-icon">{{item.icon}}</mat-icon>
+        <span [translate]="item.translate" class="nav-link-title">{{item.title}}</span>
+        <span *ngIf="item.badge" [ngStyle]="{'background-color': item.badge.bg,'color': item.badge.fg}" [translate]="item.badge.translate"
+              class="nav-link-badge">
             {{item.badge.title}}
         </span>
         <mat-icon class="collapsable-arrow">keyboard_arrow_right</mat-icon>
     </ng-template>
 
-    <div class="children" [@slideInOut]="isOpen">
+    <div [@slideInOut]="isOpen" class="children">
         <ng-container *ngFor="let item of item.children">
             <fuse-nav-vertical-item *ngIf="item.type=='item'" [item]="item"></fuse-nav-vertical-item>
             <fuse-nav-vertical-collapsable *ngIf="item.type=='collapsable'"

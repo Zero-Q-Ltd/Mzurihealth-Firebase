@@ -1,5 +1,4 @@
 import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
 import {AuthenticationRoutingModule} from './authentication-routing.module';
 import {MailConfirmModule} from './mail-confirm/mail-confirm.module';
 import {LockModule} from './lock/lock.module';

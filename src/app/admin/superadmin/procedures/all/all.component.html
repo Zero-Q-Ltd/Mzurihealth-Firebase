@@ -8,7 +8,8 @@
 
     <ng-container matColumnDef="name">
         <mat-header-cell *matHeaderCellDef> Name</mat-header-cell>
-        <mat-cell *matCellDef="let element" > <span class="text-truncate">{{element.rawprocedure.name | titlecase}}</span> </mat-cell>
+        <mat-cell *matCellDef="let element"><span class="text-truncate">{{element.rawprocedure.name | titlecase}}</span>
+        </mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="category">
@@ -31,7 +32,8 @@
     <ng-container matColumnDef="action">
         <mat-header-cell *matHeaderCellDef> Action</mat-header-cell>
         <mat-cell *matCellDef="let element">
-            <button (click)='disableeprocedure($event,element.customprocedure)' class="sendbutton" color="warn" mat-raised-button matRipple>
+            <button (click)='disableeprocedure($event,element.customprocedure)' class="sendbutton" color="warn"
+                    mat-raised-button matRipple>
                 Disable!
                 <mat-icon>cancel</mat-icon>
             </button>
@@ -39,7 +41,7 @@
     </ng-container>
 
     <mat-header-row *matHeaderRowDef="procedureheaders"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: procedureheaders;" (click)="onSelect(row)"
+    <mat-row (click)="onSelect(row)" *matRowDef="let row; columns: procedureheaders;"
              [@animate]="{value:'*',params:{y:'100%'}}"
              [ngClass]="{'selected' : row == selectedprocedure}" matRipple></mat-row>
 </mat-table>

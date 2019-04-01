@@ -1,6 +1,7 @@
 import {NgModule} from '@angular/core';
 import {
-    MatAutocompleteModule, MatBadgeModule,
+    MatAutocompleteModule,
+    MatBadgeModule,
     MatButtonModule,
     MatCardModule,
     MatCheckboxModule,
@@ -18,10 +19,12 @@ import {
     MatProgressSpinnerModule,
     MatRippleModule,
     MatSelectModule,
-    MatSidenavModule, MatSliderModule,
+    MatSidenavModule,
+    MatSliderModule,
     MatSlideToggleModule,
     MatSnackBarModule,
-    MatSortModule, MatStepperModule,
+    MatSortModule,
+    MatStepperModule,
     MatTableModule,
     MatTabsModule,
     MatToolbarModule,
@@ -34,9 +37,9 @@ import {FuseConfirmDialogModule, FuseProgressBarModule, FuseSidebarModule, FuseT
 import {RouterModule} from '@angular/router';
 import {AgmCoreModule} from '@agm/core';
 import {CommonModule} from '@angular/common';
-import { PaymentmethodPipe } from './paymentmethod.pipe';
-import { AgePipe } from './age.pipe';
-import { AdminNamePipe } from './reveal-admin.pipe';
+import {PaymentmethodPipe} from './paymentmethod.pipe';
+import {AgePipe} from './age.pipe';
+import {AdminNamePipe} from './reveal-admin.pipe';
 
 @NgModule({
     imports: [

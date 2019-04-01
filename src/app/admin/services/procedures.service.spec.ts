@@ -1,15 +1,15 @@
-import { inject, TestBed } from '@angular/core/testing';
+import {inject, TestBed} from '@angular/core/testing';
 
-import { ProceduresService } from './procedures.service';
+import {ProceduresService} from './procedures.service';
 
 describe('ProceduresService', () => {
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      providers: [ProceduresService]
+    beforeEach(() => {
+        TestBed.configureTestingModule({
+            providers: [ProceduresService]
+        });
     });
-  });
 
-  it('should be created', inject([ProceduresService], (service: ProceduresService) => {
-    expect(service).toBeTruthy();
-  }));
+    it('should be created', inject([ProceduresService], (service: ProceduresService) => {
+        expect(service).toBeTruthy();
+    }));
 });

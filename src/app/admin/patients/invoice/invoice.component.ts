@@ -17,9 +17,9 @@ import {PaymentChannel} from '../../../models/PaymentChannel';
 export class InvoiceComponent implements OnInit, OnDestroy {
     patientdata: MergedPatient_QueueModel = {...emptymergedQueueModel};
     allpaymentchannels: Array<PaymentChannel> = [];
-    private _unsubscribeAll: Subject<any>;
     activehospital: Hospital;
     hidden = false;
+    private _unsubscribeAll: Subject<any>;
 
     constructor(private hospitalservice: HospitalService,
                 private queue: QueueService,
@@ -81,7 +81,7 @@ export class InvoiceComponent implements OnInit, OnDestroy {
             setTimeout(() => {
                 this.hidden = false;
             }, 2000);
-            }, 200);
+        }, 200);
 
     }
 }

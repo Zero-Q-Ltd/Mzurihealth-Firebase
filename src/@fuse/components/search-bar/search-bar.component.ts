@@ -1,16 +1,15 @@
-import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import {Component, EventEmitter, OnDestroy, OnInit, Output} from '@angular/core';
+import {Subject} from 'rxjs';
+import {takeUntil} from 'rxjs/operators';
 
-import { FuseConfigService } from '@fuse/services/config.service';
+import {FuseConfigService} from '@fuse/services/config.service';
 
 @Component({
-    selector   : 'fuse-search-bar',
+    selector: 'fuse-search-bar',
     templateUrl: './search-bar.component.html',
-    styleUrls  : ['./search-bar.component.scss']
+    styleUrls: ['./search-bar.component.scss']
 })
-export class FuseSearchBarComponent implements OnInit, OnDestroy
-{
+export class FuseSearchBarComponent implements OnInit, OnDestroy {
     collapsed: boolean;
     fuseConfig: any;
 
@@ -27,8 +26,7 @@ export class FuseSearchBarComponent implements OnInit, OnDestroy
      */
     constructor(
         private _fuseConfigService: FuseConfigService
-    )
-    {
+    ) {
         // Set the defaults
         this.input = new EventEmitter();
         this.collapsed = true;
@@ -44,8 +42,7 @@ export class FuseSearchBarComponent implements OnInit, OnDestroy
     /**
      * On init
      */
-    ngOnInit(): void
-    {
+    ngOnInit(): void {
         // Subscribe to config changes
         this._fuseConfigService.config
             .pipe(takeUntil(this._unsubscribeAll))
@@ -59,8 +56,7 @@ export class FuseSearchBarComponent implements OnInit, OnDestroy
     /**
      * On destroy
      */
-    ngOnDestroy(): void
-    {
+    ngOnDestroy(): void {
         // Unsubscribe from all subscriptions
         this._unsubscribeAll.next();
         this._unsubscribeAll.complete();
@@ -73,16 +69,14 @@ export class FuseSearchBarComponent implements OnInit, OnDestroy
     /**
      * Collapse
      */
-    collapse(): void
-    {
+    collapse(): void {
         this.collapsed = true;
     }
 
     /**
      * Expand
      */
-    expand(): void
-    {
+    expand(): void {
         this.collapsed = false;
     }
 
@@ -91,8 +85,7 @@ export class FuseSearchBarComponent implements OnInit, OnDestroy
      *
      * @param event
      */
-    search(event): void
-    {
+    search(event): void {
         this.input.emit(event.target.value);
     }
 

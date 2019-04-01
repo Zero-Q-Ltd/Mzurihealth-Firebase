@@ -15,5 +15,5 @@ export const emptyfile: HospFile = {
     lastvisit: new firestore.Timestamp(0, 0),
     no: '0',
     idno: null,
-    visitcount : 0
+    visitcount: 0
 };

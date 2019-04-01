@@ -1,18 +1,17 @@
-import { NgModule } from '@angular/core';
+import {NgModule} from '@angular/core';
 
-import { FuseWidgetComponent } from './widget.component';
-import { FuseWidgetToggleDirective } from './widget-toggle.directive';
+import {FuseWidgetComponent} from './widget.component';
+import {FuseWidgetToggleDirective} from './widget-toggle.directive';
 
 @NgModule({
     declarations: [
         FuseWidgetComponent,
         FuseWidgetToggleDirective
     ],
-    exports     : [
+    exports: [
         FuseWidgetComponent,
         FuseWidgetToggleDirective
     ],
 })
-export class FuseWidgetModule
-{
+export class FuseWidgetModule {
 }

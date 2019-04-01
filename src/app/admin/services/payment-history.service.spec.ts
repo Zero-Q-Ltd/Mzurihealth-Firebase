@@ -1,12 +1,12 @@
-import { TestBed } from '@angular/core/testing';
+import {TestBed} from '@angular/core/testing';
 
-import { PaymentHistoryService } from './payment-history.service';
+import {PaymentHistoryService} from './payment-history.service';
 
 describe('PaymentHistoryService', () => {
-  beforeEach(() => TestBed.configureTestingModule({}));
+    beforeEach(() => TestBed.configureTestingModule({}));
 
-  it('should be created', () => {
-    const service: PaymentHistoryService = TestBed.get(PaymentHistoryService);
-    expect(service).toBeTruthy();
-  });
+    it('should be created', () => {
+        const service: PaymentHistoryService = TestBed.get(PaymentHistoryService);
+        expect(service).toBeTruthy();
+    });
 });

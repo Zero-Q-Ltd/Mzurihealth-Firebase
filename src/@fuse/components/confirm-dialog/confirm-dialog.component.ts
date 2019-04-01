@@ -1,13 +1,12 @@
-import { Component } from '@angular/core';
-import { MatDialogRef } from '@angular/material';
+import {Component} from '@angular/core';
+import {MatDialogRef} from '@angular/material';
 
 @Component({
-    selector   : 'fuse-confirm-dialog',
+    selector: 'fuse-confirm-dialog',
     templateUrl: './confirm-dialog.component.html',
-    styleUrls  : ['./confirm-dialog.component.scss']
+    styleUrls: ['./confirm-dialog.component.scss']
 })
-export class FuseConfirmDialogComponent
-{
+export class FuseConfirmDialogComponent {
     public confirmMessage: string;
 
     /**
@@ -17,8 +16,7 @@ export class FuseConfirmDialogComponent
      */
     constructor(
         public dialogRef: MatDialogRef<FuseConfirmDialogComponent>
-    )
-    {
+    ) {
     }
 
 }

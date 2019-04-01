@@ -14,6 +14,7 @@ import {GeneralDetailsComponent} from './current/generaldetails/general-details.
 import {FuseSharedModule} from '../../../../@fuse/shared.module';
 import {FuseWidgetModule} from '../../../../@fuse/components';
 import {AdminSelectionComponent} from './admin-selection/admin-selection.component';
+import {PerformProcedureComponent} from './current/perform-procedure/perform-procedure.component';
 
 @NgModule({
     declarations: [MainComponent,
@@ -25,7 +26,8 @@ import {AdminSelectionComponent} from './admin-selection/admin-selection.compone
         TodayComponent,
         CurrentComponent,
         SidebarComponent,
-        AdminSelectionComponent],
+        AdminSelectionComponent,
+        PerformProcedureComponent],
     imports: [
         CommonModule,
         QueueRoutingModule,
@@ -33,7 +35,7 @@ import {AdminSelectionComponent} from './admin-selection/admin-selection.compone
         FuseSharedModule,
         FuseWidgetModule
     ],
-    entryComponents: [AdminSelectionComponent]
+    entryComponents: [AdminSelectionComponent, PerformProcedureComponent]
 })
 export class QueueModule {
 }

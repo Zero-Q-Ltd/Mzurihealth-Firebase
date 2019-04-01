@@ -1,20 +1,19 @@
-import { Component, OnInit, OnDestroy, ViewEncapsulation } from '@angular/core';
-import { FormControl } from '@angular/forms';
-import { Subject } from 'rxjs';
-import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
+import {Component, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
+import {FormControl} from '@angular/forms';
+import {Subject} from 'rxjs';
+import {debounceTime, distinctUntilChanged, takeUntil} from 'rxjs/operators';
 
-import { FuseUtils } from '@fuse/utils';
+import {FuseUtils} from '@fuse/utils';
 import {FaqService} from './faq.service';
 
 
 @Component({
-    selector     : 'faq',
-    templateUrl  : './faq.component.html',
-    styleUrls    : ['./faq.component.scss'],
+    selector: 'faq',
+    templateUrl: './faq.component.html',
+    styleUrls: ['./faq.component.scss'],
     encapsulation: ViewEncapsulation.None
 })
-export class FaqComponent implements OnInit, OnDestroy
-{
+export class FaqComponent implements OnInit, OnDestroy {
     faqs: any;
     faqsFiltered: any;
     step: number;
@@ -30,8 +29,7 @@ export class FaqComponent implements OnInit, OnDestroy
      */
     constructor(
         private _faqService: FaqService
-    )
-    {
+    ) {
         // Set the defaults
         this.searchInput = new FormControl('');
         this.step = 0;
@@ -47,8 +45,7 @@ export class FaqComponent implements OnInit, OnDestroy
     /**
      * On init
      */
-    ngOnInit(): void
-    {
+    ngOnInit(): void {
         this._faqService.onFaqsChanged
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe(response => {
@@ -70,8 +67,7 @@ export class FaqComponent implements OnInit, OnDestroy
     /**
      * On destroy
      */
-    ngOnDestroy(): void
-    {
+    ngOnDestroy(): void {
         // Unsubscribe from all subscriptions
         this._unsubscribeAll.next();
         this._unsubscribeAll.complete();
@@ -86,24 +82,21 @@ export class FaqComponent implements OnInit, OnDestroy
      *
      * @param {number} index
      */
-    setStep(index: number): void
-    {
+    setStep(index: number): void {
         this.step = index;
     }
 
     /**
      * Next step
      */
-    nextStep(): void
-    {
+    nextStep(): void {
         this.step++;
     }
 
     /**
      * Previous step
      */
-    prevStep(): void
-    {
+    prevStep(): void {
         this.step--;
     }
 }

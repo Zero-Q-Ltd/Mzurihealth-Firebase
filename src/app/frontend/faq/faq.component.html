@@ -1,4 +1,4 @@
-<div id="faq" class="page-layout simple full-width">
+<div class="page-layout simple full-width" id="faq">
 
     <!-- HEADER -->
     <div class="header accent p-16 p-sm-24" fxLayout="column" fxLayoutAlign="center center">
@@ -9,7 +9,7 @@
 
         <div class="search mat-elevation-z7" fxLayout="row" fxLayoutAlign="start center">
             <mat-icon>search</mat-icon>
-            <input [formControl]="searchInput" placeholder="Search in FAQs..." fxFlex>
+            <input [formControl]="searchInput" fxFlex placeholder="Search in FAQs...">
         </div>
 
     </div>
@@ -20,7 +20,8 @@
 
         <mat-accordion class="faqs-accordion">
 
-            <mat-expansion-panel *ngFor="let faq of faqsFiltered; let i = index" [expanded]="step === i" (opened)="setStep(i)">
+            <mat-expansion-panel (opened)="setStep(i)" *ngFor="let faq of faqsFiltered; let i = index"
+                                 [expanded]="step === i">
                 <mat-expansion-panel-header>
                     <mat-panel-title fxLayout="row" fxLayoutAlign="start center">
                         <mat-icon class="mr-12 s-20 secondary-text">help_outline</mat-icon>

@@ -8,7 +8,7 @@ export interface AdminCategory {
     };
 }
 
-export interface Adminsubcategory  {
+export interface Adminsubcategory {
     name: string;
     description: string;
     level: number;
@@ -16,7 +16,8 @@ export interface Adminsubcategory  {
      * There can only be a 1: 1 relationship
      */
     parent1: number;
-};
+}
+
 export const emptyadminCategory: AdminCategory = {
     name: null,
     description: null,

@@ -1,26 +1,25 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {RouterModule} from '@angular/router';
 
-import { MatButtonModule, MatIconModule } from '@angular/material';
+import {MatButtonModule, MatIconModule} from '@angular/material';
 
-import { FuseSearchBarComponent } from './search-bar.component';
+import {FuseSearchBarComponent} from './search-bar.component';
 
 @NgModule({
     declarations: [
         FuseSearchBarComponent
     ],
-    imports     : [
+    imports: [
         CommonModule,
         RouterModule,
 
         MatButtonModule,
         MatIconModule
     ],
-    exports     : [
+    exports: [
         FuseSearchBarComponent
     ]
 })
-export class FuseSearchBarModule
-{
+export class FuseSearchBarModule {
 }

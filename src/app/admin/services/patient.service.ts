@@ -9,7 +9,7 @@ import {AngularFirestore} from '@angular/fire/firestore';
 import * as moment from 'moment';
 import {emptyfile, HospFile} from '../../models/HospFile';
 import {AddPatientFormModel} from '../../models/AddPatientForm.model';
-import {debounce, debounceTime, map, reduce, switchMap} from 'rxjs/operators';
+import {debounceTime, map, switchMap} from 'rxjs/operators';
 import {BehaviorSubject, combineLatest, Observable, of} from 'rxjs';
 import 'rxjs/add/observable/empty';
 import {PaymentChannel} from '../../models/PaymentChannel';
@@ -202,10 +202,6 @@ export class PatientService {
         });
     }
 
-    private getTime(date?: Date): any {
-        return date != null ? date.getTime() : 0;
-    }
-
     addPatientToQueue({type, description, insurance}: {
                           type: PaymentChannel,
                           description: string, insurance: Array<{ insuranceControl: string; insurancenumber: string; }>
@@ -287,7 +283,6 @@ export class PatientService {
 
         return batch.commit();
     }
-
 
     /***
      *
@@ -428,6 +423,65 @@ export class PatientService {
         }
     }
 
+    updateVitalsAllegiesConditions(patientID: string, vitals, conditions: Array<any>, allegies: Array<any>): any {
+        // get current user
+        const patientsDocRef = this.db.firestore.collection('patients').doc(patientID);
+
+        return this.db.firestore.runTransaction(transaction => {
+            return transaction.get(patientsDocRef).then(patientDoc => {
+                if (!patientDoc.exists) {
+                    Promise.reject('No such document');
+                    return;
+                }
+
+                const patientData = Object.assign({}, {...emptypatient}, patientDoc.data()) as Patient;
+
+                let tempMeta = null;
+                if (patientData.medicalinfo.metadata.date === null) {
+                    tempMeta = {
+                        date: moment().toDate(),
+                        lastedit: moment().toDate()
+                    };
+                } else {
+                    tempMeta = {
+                        date: patientData.medicalinfo.metadata.date,
+                        lastedit: moment().toDate()
+                    };
+                }
+
+                transaction.update(patientsDocRef, Object.assign({}, patientData, {
+                    medicalinfo: {
+                        vitals,
+                        conditions,
+                        allergies: allegies,
+                        metadata: tempMeta
+                    }
+                }));
+            });
+        });
+    }
+
+    /*
+    * will use this to check if the file number is available
+    * **/
+    getHospitalFileByNumber(fileNumber: string): Observable<HospFile[]> {
+        console.log('fetch hospital file');
+        return this.db.collection('hospitals')
+            .doc(this.activehospital.id)
+            .collection('filenumbers', ref => ref.where('no', '==', fileNumber))
+            .snapshotChanges().pipe(
+                debounceTime(500),
+                map(actions => actions.map(action => {
+                    return action.payload.doc.data() as HospFile;
+                }))
+            );
+
+    }
+
+    private getTime(date?: Date): any {
+        return date != null ? date.getTime() : 0;
+    }
+
     private searchFromHospitalFile(field: string, value: string): any {
         /**
          * search filenumber
@@ -499,62 +553,6 @@ export class PatientService {
         ).subscribe(mergedData => {
             this.hospitalpatients.next(mergedData);
         });
-
-    }
-
-
-    updateVitalsAllegiesConditions(patientID: string, vitals, conditions: Array<any>, allegies: Array<any>): any {
-        // get current user
-        const patientsDocRef = this.db.firestore.collection('patients').doc(patientID);
-
-        return this.db.firestore.runTransaction(transaction => {
-            return transaction.get(patientsDocRef).then(patientDoc => {
-                if (!patientDoc.exists) {
-                    Promise.reject('No such document');
-                    return;
-                }
-
-                const patientData = Object.assign({}, {...emptypatient}, patientDoc.data()) as Patient;
-
-                let tempMeta = null;
-                if (patientData.medicalinfo.metadata.date === null) {
-                    tempMeta = {
-                        date: moment().toDate(),
-                        lastedit: moment().toDate()
-                    };
-                } else {
-                    tempMeta = {
-                        date: patientData.medicalinfo.metadata.date,
-                        lastedit: moment().toDate()
-                    };
-                }
-
-                transaction.update(patientsDocRef, Object.assign({}, patientData, {
-                    medicalinfo: {
-                        vitals,
-                        conditions,
-                        allergies: allegies,
-                        metadata: tempMeta
-                    }
-                }));
-            });
-        });
-    }
-
-    /*
-    * will use this to check if the file number is available
-    * **/
-    getHospitalFileByNumber(fileNumber: string): Observable<HospFile[]> {
-        console.log('fetch hospital file');
-        return this.db.collection('hospitals')
-            .doc(this.activehospital.id)
-            .collection('filenumbers', ref => ref.where('no', '==', fileNumber))
-            .snapshotChanges().pipe(
-                debounceTime(500),
-                map(actions => actions.map(action => {
-                    return action.payload.doc.data() as HospFile;
-                }))
-            );
 
     }
 

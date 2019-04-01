@@ -1,4 +1,4 @@
-<div id="knowledgebase" class="page-layout simple full-width">
+<div class="page-layout simple full-width" id="knowledgebase">
 
     <!-- HEADER -->
     <div class="header accent p-16 p-sm-24" fxLayout="column" fxLayoutAlign="center center">
@@ -16,17 +16,17 @@
 
         <div fxLayout="row wrap" fxLayoutAlign="center">
 
-            <mat-nav-list class="articles-list" *ngFor="let category of knowledgeBase">
+            <mat-nav-list *ngFor="let category of knowledgeBase" class="articles-list">
 
                 <h3 mat-subheader>{{category.title}}</h3>
 
-                <a mat-list-item *ngFor="let article of category.featuredArticles"
-                   (click)="readArticle(article)">
+                <a (click)="readArticle(article)" *ngFor="let article of category.featuredArticles"
+                   mat-list-item>
                     <mat-icon class="hint-text mr-8">insert_drive_file</mat-icon>
                     {{ article.title }}
                 </a>
 
-                <a mat-list-item class="see-all-link accent-fg" [routerLink]="category.path">
+                <a [routerLink]="category.path" class="see-all-link accent-fg" mat-list-item>
                     See all articles ({{category.articlesCount}})
                 </a>
 

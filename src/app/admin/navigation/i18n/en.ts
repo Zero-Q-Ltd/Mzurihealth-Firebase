@@ -3,13 +3,13 @@ export const locale = {
     data: {
         'NAV': {
             'Hospital': 'HOSPITAL',
-            'SAMPLE'        : {
+            'SAMPLE': {
                 'TITLE': 'Sample',
                 'BADGE': '25'
             },
-            'appointments' : 'Appointments',
-            'dashboard' : 'Dashboard',
-            'superadmin' : 'SuperAdmin'
+            'appointments': 'Appointments',
+            'dashboard': 'Dashboard',
+            'superadmin': 'SuperAdmin'
         }
     }
 };

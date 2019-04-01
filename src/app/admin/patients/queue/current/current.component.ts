@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {fuseAnimations} from '../../../../../@fuse/animations';
 import {LocalcommunicationService} from './localcommunication.service';
-import {Patient} from '../../../../models/Patient';
 import {PatientService} from '../../../services/patient.service';
 
 @Component({

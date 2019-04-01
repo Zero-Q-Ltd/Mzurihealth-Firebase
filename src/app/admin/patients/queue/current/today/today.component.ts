@@ -234,7 +234,6 @@ export class TodayComponent implements OnInit {
                      */
                     this.communication.ontabchanged.next(1);
                 });
-                ;
             }
         });
     }
@@ -370,7 +369,7 @@ export class TodayComponent implements OnInit {
                     body: 'Saved'
                 });
             });
-            ;
+
         }
     }
 

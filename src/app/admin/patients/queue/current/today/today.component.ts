@@ -18,10 +18,11 @@ import {medicalconditionsarray} from '../../../../../models/MedicalConditions.mo
 import {QueueService} from '../../../../services/queue.service';
 import {MergedPatient_QueueModel} from '../../../../../models/MergedPatient_Queue.model';
 import {AdminSelectionComponent} from '../../admin-selection/admin-selection.component';
-import {MatDialog, MatDialogRef} from '@angular/material';
+import {MatDialog, MatDialogRef, MatTableDataSource} from '@angular/material';
 import {LocalcommunicationService} from '../localcommunication.service';
 import {emptypatientvisit, PatientVisit} from '../../../../../models/PatientVisit';
 import {NotificationService} from '../../../../../shared/services/notifications.service';
+import {PerformProcedureComponent} from '../perform-procedure/perform-procedure.component';
 
 @Component({
     selector: 'patient-today',
@@ -48,6 +49,8 @@ export class TodayComponent implements OnInit {
     imeanzilishwa: BehaviorSubject<boolean> = new BehaviorSubject(false);
     hospitaladmins: Array<HospitalAdmin> = [];
     currentvisit: PatientVisit = {...emptypatientvisit};
+    proceduresdatasource: MatTableDataSource<Procedureperformed> = new MatTableDataSource([]);
+    procedurecolumns = ['name', 'practitioner', 'results', 'notes'];
 
     constructor(private hospitalservice: HospitalService,
                 private formBuilder: FormBuilder,
@@ -77,6 +80,7 @@ export class TodayComponent implements OnInit {
         patientvisitservice.currentvisit.subscribe(visit => {
             console.log(visit);
             this.currentvisit = visit;
+            this.proceduresdatasource.data = visit.procedures;
         });
         this.filteredprocedures = this.procedureselection.valueChanges
             .pipe(
@@ -99,6 +103,20 @@ export class TodayComponent implements OnInit {
         return this.hospitalservice.hospitaladmins.value.find(admin => {
             return admin.id === adminid;
         });
+    }
+
+    performprocedures() {
+        const dialogRef = this._matDialog.open(PerformProcedureComponent, {
+            width: "80%",
+            data: "Attach"
+        });
+        dialogRef.afterClosed().subscribe((result: Array<Procedureperformed> | null) => {
+            if (result) {
+
+            }
+
+        });
+
     }
 
     /**

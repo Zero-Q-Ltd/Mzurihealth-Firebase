@@ -23,6 +23,7 @@ import {LocalcommunicationService} from '../localcommunication.service';
 import {emptypatientvisit, PatientVisit} from '../../../../../models/PatientVisit';
 import {NotificationService} from '../../../../../shared/services/notifications.service';
 import {PerformProcedureComponent} from '../perform-procedure/perform-procedure.component';
+import {SelectionModel} from '@angular/cdk/collections';
 
 @Component({
     selector: 'patient-today',
@@ -110,8 +111,25 @@ export class TodayComponent implements OnInit {
             width: "80%",
             data: "Attach"
         });
-        dialogRef.afterClosed().subscribe((result: Array<Procedureperformed> | null) => {
+        dialogRef.afterClosed().subscribe((result) => {
             if (result) {
+                /***
+                 * Haaaaack
+                 * I hate this
+                 */
+                console.log(result);
+                const selection: SelectionModel<MergedProcedureModel> = result.selection;
+                const res: Array<Procedureperformed> = result.res;
+
+
+                const mappedData: Array<Procedureperformed> = selection.selected.map(value => {
+                    return res.map(value1 => {
+                        if (value1.originalprocedureid === value.rawprocedure.id) {
+                            return value1;
+                        }
+                    })[0];
+                });
+                this.patientvisitservice.addprocedures(this.currentvisit.id, mappedData);
 
             }
 

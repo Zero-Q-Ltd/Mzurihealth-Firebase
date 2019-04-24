@@ -44,6 +44,7 @@ export class PatientvisitService {
 
 
     /**
+     * @deprecated : use addprocedures() instead, clean the data before passing to function
      * @param visitid
      * @param procedure
      * @param per
@@ -65,6 +66,17 @@ export class PatientvisitService {
         per.customprocedureid = procedure.customprocedure.id;
         return this.db.collection('hospitalvisits').doc(visitid).update({
             procedures: firestore.FieldValue.arrayUnion(per)
+        });
+    }
+
+    /**
+     * @param visitid
+     * @param procedure
+     * @param per
+     */
+    addprocedures(visitid: string, procedures: Array<Procedureperformed>): Promise<void> {
+        return this.db.collection('hospitalvisits').doc(visitid).update({
+            procedures: firestore.FieldValue.arrayUnion(procedures)
         });
     }
 

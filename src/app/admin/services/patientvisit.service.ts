@@ -76,7 +76,7 @@ export class PatientvisitService {
      */
     addprocedures(visitid: string, procedures: Array<Procedureperformed>): Promise<void> {
         return this.db.collection('hospitalvisits').doc(visitid).update({
-            procedures: firestore.FieldValue.arrayUnion(procedures)
+            procedures: firestore.FieldValue.arrayUnion(...procedures)
         });
     }
 

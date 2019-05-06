@@ -24,6 +24,8 @@ import {emptypatientvisit, PatientVisit} from '../../../../../models/PatientVisi
 import {NotificationService} from '../../../../../shared/services/notifications.service';
 import {PerformProcedureComponent} from '../perform-procedure/perform-procedure.component';
 import {SelectionModel} from '@angular/cdk/collections';
+import {firestore} from 'firebase';
+import {AdminService} from '../../../../services/admin.service';
 
 @Component({
     selector: 'patient-today',
@@ -61,6 +63,7 @@ export class TodayComponent implements OnInit {
                 public _matDialog: MatDialog,
                 private patientvisitservice: PatientvisitService,
                 private communication: LocalcommunicationService,
+                private adminservice: AdminService,
                 private notifications: NotificationService) {
 
         procedureservice.procedurecategories.subscribe(categories => {
@@ -123,16 +126,35 @@ export class TodayComponent implements OnInit {
 
 
                 const mappedData: Array<Procedureperformed> = selection.selected.map(value => {
-                    return res.map(value1 => {
-                        if (value1.originalprocedureid === value.rawprocedure.id) {
-                            return value1;
-                        }
+                    const ff = res.filter(value1 => {
+                        return value1.originalprocedureid === value.rawprocedure.id;
                     })[0];
+                    ff.name = value.rawprocedure.name;
+                    ff.category = value.rawprocedure.category;
+                    ff.metadata = {
+                        lastedit: firestore.Timestamp.now(),
+                        date: firestore.Timestamp.now()
+                    };
+                    ff.adminid = this.patientvisitservice.adminid;
+                    ff.payment = {
+                        amount: 0,
+                        hasinsurance: false,
+                        methods: []
+                    };
+                    ff.originalprocedureid = value.rawprocedure.id;
+                    ff.customprocedureid = value.customprocedure.id;
+                    ff.notes[0] = {
+                        admin: {
+                            id: this.adminservice.userdata.id,
+                            name: this.adminservice.userdata.data.displayName
+                        },
+                        note: ff.notes as any
+                    };
+                    return ff;
                 });
+                console.log(mappedData);
                 this.patientvisitservice.addprocedures(this.currentvisit.id, mappedData);
-
             }
-
         });
 
     }

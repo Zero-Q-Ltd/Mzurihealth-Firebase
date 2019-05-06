@@ -11,7 +11,7 @@ import { MockStitchService } from '../../../testing/mock-stitch.service';
 import { TestActionsProvider } from '../../../testing/test-actions';
 import { User, UserData } from '../model/user';
 import { SetUserAction, SetUserDataAction } from '../store/app/app-actions';
-import { AppRootState } from '../store/index';
+import { AppRootState } from '../store';
 import { AuthService } from './auth.service';
 import { StitchService } from '../stitch/stitch.service';
 

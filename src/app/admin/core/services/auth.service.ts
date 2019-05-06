@@ -16,7 +16,7 @@ import { Observable, defer, of, from } from 'rxjs';
 import { catchError, map, switchMap, take, tap } from 'rxjs/operators';
 import { uuid } from '../core-utils';
 
-import { AppRootState } from '../store/index';
+import { AppRootState } from '../store';
 import { User, UserData } from '../model/user';
 import { SetUserAction, SetUserDataAction } from '../store/app/app-actions';
 import { defaultUserData } from '../store/app/app-reducer';

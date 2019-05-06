@@ -11,7 +11,7 @@ import {
   StitchUser,
 } from 'mongodb-stitch-browser-sdk';
 
-import { environment } from '../../../environments/environment';
+import { environment } from '../../../../environments/environment';
 import { isUnitTestContext } from '../core-utils';
 import { User } from '../model/user';
 import { HttpStitchTransport } from './http-stitch-transport';
@@ -41,10 +41,10 @@ export class StitchService {
    */
   public connectToDb(): void {
     if (this.auth.isLoggedIn) {
-      // console.log('StitchService#connectToDb: logged in, nothing to do...', this.auth.user);
+      console.log('StitchService#connectToDb: logged in, nothing to do...', this.auth.user);
       this.store.dispatch(new DbReadyAction());
     } else {
-      // console.log('StitchService#connectToDb, logging in...');
+      console.log('StitchService#connectToDb, logging in...');
       this.connectToDbAsAnonymous().then((user: StitchUser) => {
         this.store.dispatch(new DbReadyAction());
         return user;

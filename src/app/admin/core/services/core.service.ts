@@ -4,7 +4,7 @@ import {Observable, defer, from} from 'rxjs';
 import {filter, tap} from 'rxjs/operators';
 import {selectIsDbReady} from '../store/app/app-selectors';
 
-import {AppRootState} from '../store/index';
+import {AppRootState} from '../store';
 
 @Injectable({
     providedIn: 'root',

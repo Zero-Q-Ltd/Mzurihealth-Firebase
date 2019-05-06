@@ -23,6 +23,19 @@ import {FrontendModule} from './frontend/frontend.module';
 import {AgmCoreModule} from '@agm/core';
 import {CommonModule} from '@angular/common';
 import {NotificationComponent} from './shared/components/notification/notification.component';
+import {CoreModule} from './admin/core/core.module';
+import {StoreModule} from '@ngrx/store';
+import {metaReducers, reducers} from './admin/core/store';
+import {EffectsModule} from '@ngrx/effects';
+import {AuthService} from './admin/core/services/auth.service';
+import {RouterEffects} from './admin/core/services/router-effects';
+import {RouterStateSerializer, StoreRouterConnectingModule} from '@ngrx/router-store';
+import {environment} from '../environments/environment';
+import {isUnitTestContext} from './admin/core/core-utils';
+import {StoreDevtoolsModule} from '@ngrx/store-devtools';
+import {AppRouterStateSerializer} from './admin/core/store/router/router-state-serializer';
+import {Angulartics2Module, Angulartics2Settings} from 'angulartics2';
+import {Angulartics2GoogleAnalytics} from 'angulartics2/ga';
 
 export const firebaseConfig = {
     apiKey: 'AIzaSyDaiEsgWOaeopaYQTgTWPIatMeKLZjZc-A',
@@ -62,9 +75,28 @@ export const firebaseConfig = {
         Error404Module,
         Error500Module,
         FrontendModule,
+
+        // @ngrx store
+        StoreModule.forRoot(reducers, {metaReducers}),
+        EffectsModule.forRoot([AuthService, RouterEffects]),
+        StoreRouterConnectingModule,
+        /* istanbul ignore next */
+        environment.production || isUnitTestContext()
+            ? []
+            : StoreDevtoolsModule.instrument({name: 'what-conference-next.com'}),
+
+        Angulartics2Module.forRoot(<Angulartics2Settings>{
+            pageTracking: {clearHash: true, clearQueryParams: true},
+            ga: {transport: 'beacon'},
+            developerMode: !environment.gaTrackingId, // developerMode disables tracking
+        }),
+
+        // SW
+        // ServiceWorkerModule.register('/ngsw-worker.js', { enabled: environment.production }),
     ],
+
     entryComponents: [NotificationComponent],
-    providers: [AngularFireAuth],
+    providers: [{provide: RouterStateSerializer, useClass: AppRouterStateSerializer}, AngularFireAuth],
     bootstrap: [
         AppComponent,
     ]

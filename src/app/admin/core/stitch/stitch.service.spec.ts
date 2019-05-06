@@ -3,7 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { Store, StoreModule } from '@ngrx/store';
 
 import { mockStitchUser } from '../../../testing/fixtures/user';
-import { AppRootState } from '../store/index';
+import { AppRootState } from '../store';
 import { StitchService } from './stitch.service';
 
 describe('StitchService', () => {

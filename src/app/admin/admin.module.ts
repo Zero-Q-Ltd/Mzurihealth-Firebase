@@ -12,6 +12,7 @@ import {AuthenticationModule} from './authentication/authentication.module';
 import {CalendarModule} from './calendar/calendar.module';
 import {AdminSharedModule} from './shared/admin-shared.module';
 import {AdminprofileComponent} from './adminprofile/adminprofile.component';
+import {CoreModule} from './core/core.module';
 
 @NgModule({
     imports: [
@@ -33,6 +34,7 @@ import {AdminprofileComponent} from './adminprofile/adminprofile.component';
         CalendarModule,
 
         AdminSharedModule,
+        CoreModule
 
     ],
     declarations: [

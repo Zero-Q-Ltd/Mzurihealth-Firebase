@@ -1,8 +1,8 @@
 import { Params } from '@angular/router';
-// import { ConferenceEvent, ConferenceEventRef } from '../event-base/model/conference-event';
-// import { EventTag } from '../event-base/model/event-tag';
-//
-// import { EventsFilters } from '../event-base/model/events-filters';
+import { ConferenceEvent, ConferenceEventRef } from '../event-base/model/conference-event';
+import { EventTag } from '../event-base/model/event-tag';
+
+import { EventsFilters } from '../event-base/model/events-filters';
 import { AppSortInfo } from './model/entity';
 import { AppRouterParams, AppRouterState } from './store/router/router';
 

@@ -12,6 +12,7 @@ export class UsersGuard implements CanActivate {
 
     canActivate(active: ActivatedRouteSnapshot, activated: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
         // console.log(active, activated)
+        return true;
         return this.adminservice.observableuserdata
             .map(userdata => {
                 // console.log(userdata)

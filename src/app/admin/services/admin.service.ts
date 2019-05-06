@@ -6,7 +6,6 @@ import {NotificationService} from '../../shared/services/notifications.service';
 import {AdminCategory} from '../../models/AdminCategory';
 import {AdminInvite} from '../../models/AdminInvite';
 import {firestore} from 'firebase/app';
-import {StitchClientFactory, Stitch, AnonymousCredential} from 'mongodb-stitch';
 
 @Injectable({
     providedIn: 'root'
@@ -19,16 +18,9 @@ export class AdminService {
     validuser: boolean;
     admincategories: BehaviorSubject<Array<AdminCategory>> = new BehaviorSubject<Array<AdminCategory>>([]);
 
-    constructor(private mongo: Stitch,
-                private router: Router,
-                private notificationservice: NotificationService) {
-
-        const client = Stitch.defaultAppClient;
-
-        console.log("logging in anonymously");
-        client.auth.loginWithCredential(new AnonymousCredential()).then(user => {
-            console.log(`logged in anonymously as user ${user.id}`);
-        });
+    constructor(
+        private router: Router,
+        private notificationservice: NotificationService) {
     }
 
     // The the status of the activeadmin
@@ -132,60 +124,60 @@ export class AdminService {
 
     checkinvite(user: firebase.User): void {
         // const invitequery = this.db.firestore.collection('admininvites')
-            // .where('email', '==', user.email)
-            // .limit(1)
-            // .get().then(snapshot => {
-            //     if (!snapshot.empty) {
-            //         const invite = snapshot.docs[0].data() as AdminInvite;
-            //         const newadmin: HospitalAdmin = {
-            //             id: user.uid,
-            //             data: {
-            //                 displayName: user.displayName,
-            //                 email: user.email,
-            //                 photoURL: user.photoURL,
-            //                 uid: user.uid
-            //             },
-            //             profiledata: {
-            //                 phone: '',
-            //                 address: '',
-            //                 age: '',
-            //                 bio: '',
-            //                 status: null
-            //             },
-            //             config: {
-            //                 level: invite.level,
-            //                 categoryid: invite.categoyid,
-            //                 availability: 1,
-            //                 hospitalid: invite.hospitalid
-            //             },
-            //             status: true,
-            //             metadata: {
-            //                 date: firestore.Timestamp.now(),
-            //                 lastedit: firestore.Timestamp.now()
-            //             }
-            //         };
-            //         this.db.firestore.collection(`hospitaladmins`).doc(user.uid).set(newadmin).then(result => {
-            //             this.db.firestore.collection(`admininvites`).doc(snapshot.docs[0].id).delete();
-            //             if (this.activeurl === '/authentication/signin') {
-            //                 this.router.navigate(['/dashboard']);
-            //             }
-            //         });
-            //     } else {
-            //         // console.log('User does not exist!!')
-            //         this.notificationservice.notify({
-            //             alert_type: 'error',
-            //             body: 'You have not registered with any Hospital. Please contactperson us for instrustions',
-            //             title: 'ERROR', duration: 10000,
-            //             icon: '',
-            //             placement: {
-            //                 vertical: 'top',
-            //                 horizontal: 'center'
-            //             }
-            //         });
-            //     }
-            // }, error => {
-            //     console.log('Error verifying invite');
-            // });
+        // .where('email', '==', user.email)
+        // .limit(1)
+        // .get().then(snapshot => {
+        //     if (!snapshot.empty) {
+        //         const invite = snapshot.docs[0].data() as AdminInvite;
+        //         const newadmin: HospitalAdmin = {
+        //             id: user.uid,
+        //             data: {
+        //                 displayName: user.displayName,
+        //                 email: user.email,
+        //                 photoURL: user.photoURL,
+        //                 uid: user.uid
+        //             },
+        //             profiledata: {
+        //                 phone: '',
+        //                 address: '',
+        //                 age: '',
+        //                 bio: '',
+        //                 status: null
+        //             },
+        //             config: {
+        //                 level: invite.level,
+        //                 categoryid: invite.categoyid,
+        //                 availability: 1,
+        //                 hospitalid: invite.hospitalid
+        //             },
+        //             status: true,
+        //             metadata: {
+        //                 date: firestore.Timestamp.now(),
+        //                 lastedit: firestore.Timestamp.now()
+        //             }
+        //         };
+        //         this.db.firestore.collection(`hospitaladmins`).doc(user.uid).set(newadmin).then(result => {
+        //             this.db.firestore.collection(`admininvites`).doc(snapshot.docs[0].id).delete();
+        //             if (this.activeurl === '/authentication/signin') {
+        //                 this.router.navigate(['/dashboard']);
+        //             }
+        //         });
+        //     } else {
+        //         // console.log('User does not exist!!')
+        //         this.notificationservice.notify({
+        //             alert_type: 'error',
+        //             body: 'You have not registered with any Hospital. Please contactperson us for instrustions',
+        //             title: 'ERROR', duration: 10000,
+        //             icon: '',
+        //             placement: {
+        //                 vertical: 'top',
+        //                 horizontal: 'center'
+        //             }
+        //         });
+        //     }
+        // }, error => {
+        //     console.log('Error verifying invite');
+        // });
     }
 
 

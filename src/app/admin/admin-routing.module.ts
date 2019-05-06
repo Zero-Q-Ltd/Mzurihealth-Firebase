@@ -8,8 +8,8 @@ import {AdminprofileComponent} from './adminprofile/adminprofile.component';
 const routes: Routes = [
     {
         path: '',
-        canActivate: [UsersGuard],
-        canLoad: [UsersGuard],
+        // canActivate: [UsersGuard],
+        // canLoad: [UsersGuard],
         component: AdminlayoutComponent,
         children: [
             {

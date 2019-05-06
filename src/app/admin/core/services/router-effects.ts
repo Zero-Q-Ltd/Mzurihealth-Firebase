@@ -10,7 +10,7 @@ import { pluck, take, tap } from 'rxjs/operators';
 // import { EventsFilters } from '../../event-base/model/events-filters';
 
 import { AppSortInfo } from '../model/entity';
-import { AppRootState } from '../store/index';
+import { AppRootState } from '../store';
 import { AppRouterState, getAppRouterState } from '../store/router/router';
 import * as fromRouter from '../store/router/router-actions';
 import { RouterActionType } from '../store/router/router-actions';

@@ -8,7 +8,7 @@ import { Store, StoreModule } from '@ngrx/store';
 import { of } from 'rxjs';
 import { cold, hot } from 'jasmine-marbles';
 
-import { AppRootState, metaReducers, reducers } from '../store/index';
+import { AppRootState, metaReducers, reducers } from '../store';
 import { AppRouterState, defaultAppRouterState } from '../store/router/router';
 import { RouterEffects } from './router-effects';
 import { BackAction, ForwardAction, GoAction } from '../store/router/router-actions';

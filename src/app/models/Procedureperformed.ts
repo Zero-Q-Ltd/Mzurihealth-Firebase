@@ -9,16 +9,14 @@ export interface Proceduresperformed {
 export interface Procedureperformed {
     category: rawprocedurecategory;
     results: string;
-    notes: Array<{
-        note: string;
-        admin: {
-            id: string,
-            name: string
-        };
-    }>;
+    /**
+     * temporary storage for notes, useful for bulk addition of notes where the behavious of dynamic
+     * arrays for ngmodel is unpredictable
+     */
+    tempnote?: string
+    notes: Array<ProcedureNotes>;
     adminid: string;
     hospitalid: string;
-    patientid: string;
     name: string;
     originalprocedureid: string;
     customprocedureid: string;
@@ -44,7 +42,6 @@ export const emptyprocedureperformed: Procedureperformed = {
     notes: [],
     adminid: null,
     hospitalid: null,
-    patientid: null,
     name: null,
     originalprocedureid: null,
     customprocedureid: null,
@@ -61,3 +58,12 @@ export const emptyproceduresperformed: Proceduresperformed = {
     procedures: []
 };
 
+export interface ProcedureNotes {
+
+    note: string;
+    admin: {
+        id: string,
+        name: string
+    };
+
+}

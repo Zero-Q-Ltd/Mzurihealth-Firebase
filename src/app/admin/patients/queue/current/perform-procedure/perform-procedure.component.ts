@@ -1,9 +1,10 @@
-import {Component, Inject, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {SelectionModel} from '@angular/cdk/collections';
 import {MergedProcedureModel} from '../../../../../models/MergedProcedure.model';
-import {MAT_DIALOG_DATA, MatDialogRef, MatTableDataSource} from '@angular/material';
+import {MatDialogRef, MatTableDataSource} from '@angular/material';
 import {ProceduresService} from '../../../../services/procedures.service';
 import {emptyprocedureperformed, Procedureperformed} from '../../../../../models/Procedureperformed';
+import {AdminService} from '../../../../services/admin.service';
 
 @Component({
     selector: 'app-perform-procedure',
@@ -40,7 +41,9 @@ export class PerformProcedureComponent implements OnInit {
     }
 
     constructor(public dialogRef: MatDialogRef<PerformProcedureComponent>,
-                private procedureservice: ProceduresService,) {
+                private procedureservice: ProceduresService,
+                private adminservice: AdminService,
+    ) {
         /**
          *TODO: Here I've had to device a temporary hack that should be fixed
          * Iterate through the procedures and create resulst for all of them, so that the html renders without errors
@@ -53,6 +56,13 @@ export class PerformProcedureComponent implements OnInit {
                  */
                 this.procedureResults[i].originalprocedureid = r.rawprocedure.id;
                 this.procedureResults[i].customprocedureid = r.customprocedure.id;
+                this.procedureResults[i].notes[0] = {
+                    note: '',
+                    admin: {
+                        id: this.adminservice.userdata.id,
+                        name: this.adminservice.userdata.data.displayName
+                    }
+                };
             });
             this.proceduresdataSource.data = mergedprocedures;
 
@@ -63,7 +73,11 @@ export class PerformProcedureComponent implements OnInit {
         this.dialogRef.close();
     }
 
-    ngOnInit() {
+    doCleanup() {
+
+    }
+
+    ngOnInit(): void {
     }
 
 }

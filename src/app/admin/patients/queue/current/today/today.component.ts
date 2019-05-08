@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {emptyproceduresperformed, Procedureperformed} from '../../../../../models/Procedureperformed';
+import {emptyproceduresperformed, ProcedureNotes, Procedureperformed} from '../../../../../models/Procedureperformed';
 import {HospitalAdmin} from '../../../../../models/HospitalAdmin';
 import {HospitalService} from '../../../../services/hospital.service';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
@@ -26,6 +26,7 @@ import {PerformProcedureComponent} from '../perform-procedure/perform-procedure.
 import {SelectionModel} from '@angular/cdk/collections';
 import {firestore} from 'firebase';
 import {AdminService} from '../../../../services/admin.service';
+import {ProcedurenotesComponent} from '../procedure-notes/procedurenotes.component';
 
 @Component({
     selector: 'patient-today',
@@ -111,8 +112,8 @@ export class TodayComponent implements OnInit {
 
     performprocedures() {
         const dialogRef = this._matDialog.open(PerformProcedureComponent, {
-            width: "80%",
-            data: "Attach"
+            width: '80%',
+            data: 'Attach'
         });
         dialogRef.afterClosed().subscribe((result) => {
             if (result) {
@@ -148,12 +149,26 @@ export class TodayComponent implements OnInit {
                             id: this.adminservice.userdata.id,
                             name: this.adminservice.userdata.data.displayName
                         },
-                        note: ff.notes as any
+                        note: ff.tempnote
                     };
+                    delete ff.tempnote;
                     return ff;
                 });
                 console.log(mappedData);
                 this.patientvisitservice.addprocedures(this.currentvisit.id, mappedData);
+            }
+        });
+    }
+
+    viewnotes(index: number): void {
+        console.log(index);
+        const dialogRef = this._matDialog.open(ProcedurenotesComponent, {
+            width: '80%',
+            data: index
+        });
+        dialogRef.afterClosed().subscribe((result: Array<ProcedureNotes>) => {
+            if (result) {
+
             }
         });
 

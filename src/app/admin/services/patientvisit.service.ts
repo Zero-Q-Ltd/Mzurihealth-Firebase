@@ -80,6 +80,12 @@ export class PatientvisitService {
         });
     }
 
+    updateprocedures(visitid: string, procedures: Array<Procedureperformed>): Promise<void> {
+        return this.db.collection('hospitalvisits').doc(visitid).set({
+            procedures: procedures
+        });
+    }
+
     fetchvisithistory(): void {
         this.db.firestore.collection('hospitalvisits')
             .where('hospitalid', '==', this.hospitalid)

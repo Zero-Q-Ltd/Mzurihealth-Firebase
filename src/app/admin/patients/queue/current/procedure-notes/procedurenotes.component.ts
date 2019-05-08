@@ -15,11 +15,12 @@ export class ProcedurenotesComponent implements OnInit {
     private procedurenores: Array<ProcedureNotes>;
     newnoteform: FormGroup;
     patientvisit: PatientVisit;
+    private dialogRef: MatDialogRef<ProcedurenotesComponent>;
 
-    constructor(public dialogRef: MatDialogRef<ProcedurenotesComponent>,
-                private adminservice: AdminService,
-                private patientvisitservice: PatientvisitService,
-                @Inject(MAT_DIALOG_DATA) private procedureid: number
+    constructor(
+        private adminservice: AdminService,
+        private patientvisitservice: PatientvisitService,
+        @Inject(MAT_DIALOG_DATA) private procedureid: number
     ) {
         console.log(this.procedureid);
         this.patientvisitservice.currentvisit.subscribe(value => {
@@ -33,7 +34,21 @@ export class ProcedurenotesComponent implements OnInit {
                 }
             } else {
                 this.patientvisit = value;
-                this.procedurenores = value.procedures[this.procedureid].notes;
+                if (typeof value.procedures[this.procedureid].notes === 'string') {
+                    /**
+                     * Some notes had already been saved in the database with the wrong format, so I had to make this hack
+                     */
+                    // @ts-ignore
+                    this.procedurenores[0] = {
+                        note: value.procedures[this.procedureid].notes,
+                        admin: {
+                            name: 'unknown',
+                            id: null
+                        }
+                    };
+                } else {
+                    this.procedurenores = value.procedures[this.procedureid].notes;
+                }
 
             }
         });
@@ -59,6 +74,7 @@ export class ProcedurenotesComponent implements OnInit {
                 },
                 note: ''
             }, this.newnoteform.getRawValue()));
+            this.dialogRef.close(this.procedurenores);
         }
     }
 }

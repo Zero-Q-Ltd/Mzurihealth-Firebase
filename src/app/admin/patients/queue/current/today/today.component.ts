@@ -27,6 +27,7 @@ import {SelectionModel} from '@angular/cdk/collections';
 import {firestore} from 'firebase';
 import {AdminService} from '../../../../services/admin.service';
 import {ProcedurenotesComponent} from '../procedure-notes/procedurenotes.component';
+import {FuseConfirmDialogComponent} from '../../../../../../@fuse/components/confirm-dialog/confirm-dialog.component';
 
 @Component({
     selector: 'patient-today',
@@ -54,7 +55,8 @@ export class TodayComponent implements OnInit {
     hospitaladmins: Array<HospitalAdmin> = [];
     currentvisit: PatientVisit = {...emptypatientvisit};
     proceduresdatasource: MatTableDataSource<Procedureperformed> = new MatTableDataSource([]);
-    procedurecolumns = ['name', 'practitioner', 'results', 'notes'];
+    procedurecolumns = ['name', 'practitioner', 'results', 'notes', 'action'];
+    confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
 
     constructor(private hospitalservice: HospitalService,
                 private formBuilder: FormBuilder,
@@ -110,7 +112,7 @@ export class TodayComponent implements OnInit {
         });
     }
 
-    performprocedures() {
+    performprocedures(): void {
         const dialogRef = this._matDialog.open(PerformProcedureComponent, {
             width: '80%',
             data: 'Attach'
@@ -160,6 +162,20 @@ export class TodayComponent implements OnInit {
         });
     }
 
+    deleteprocedure(index: number): void {
+        this.currentvisit.procedures.splice(index, 1);
+        this.confirmDialogRef = this._matDialog.open(FuseConfirmDialogComponent, {
+            disableClose: false
+        });
+
+        this.confirmDialogRef.componentInstance.confirmMessage = 'Are you sure you want to delete this procedure?';
+        this.confirmDialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                this.patientvisitservice.updateprocedures(this.currentvisit.id, this.currentvisit.procedures);
+            }
+        });
+    }
+
     viewnotes(index: number): void {
         console.log(index);
         const dialogRef = this._matDialog.open(ProcedurenotesComponent, {
@@ -168,7 +184,8 @@ export class TodayComponent implements OnInit {
         });
         dialogRef.afterClosed().subscribe((result: Array<ProcedureNotes>) => {
             if (result) {
-
+                this.currentvisit.procedures[index].notes = result;
+                this.patientvisitservice.updateprocedures(this.currentvisit.id, this.currentvisit.procedures);
             }
         });
 

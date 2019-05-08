@@ -15,14 +15,13 @@ export class ProcedurenotesComponent implements OnInit {
     private procedurenores: Array<ProcedureNotes>;
     newnoteform: FormGroup;
     patientvisit: PatientVisit;
-    private dialogRef: MatDialogRef<ProcedurenotesComponent>;
 
     constructor(
         private adminservice: AdminService,
         private patientvisitservice: PatientvisitService,
-        @Inject(MAT_DIALOG_DATA) private procedureid: number
+        @Inject(MAT_DIALOG_DATA) private procedureid: number,
+        private dialogRef: MatDialogRef<ProcedurenotesComponent>
     ) {
-        console.log(this.procedureid);
         this.patientvisitservice.currentvisit.subscribe(value => {
 
             if (this.patientvisit) {
@@ -34,12 +33,13 @@ export class ProcedurenotesComponent implements OnInit {
                 }
             } else {
                 this.patientvisit = value;
-                if (typeof value.procedures[this.procedureid].notes === 'string') {
-                    /**
-                     * Some notes had already been saved in the database with the wrong format, so I had to make this hack
-                     */
-                    // @ts-ignore
+                if (value.procedures[this.procedureid] && typeof value.procedures[this.procedureid].notes === 'string') {
+
                     this.procedurenores[0] = {
+                        /**
+                         * Some notes had already been saved in the database with the wrong format, so I had to make this hack
+                         */
+                        // @ts-ignore
                         note: value.procedures[this.procedureid].notes,
                         admin: {
                             name: 'unknown',
@@ -47,7 +47,7 @@ export class ProcedurenotesComponent implements OnInit {
                         }
                     };
                 } else {
-                    this.procedurenores = value.procedures[this.procedureid].notes;
+                    this.procedurenores = value.procedures[this.procedureid] ? value.procedures[this.procedureid].notes : [];
                 }
 
             }

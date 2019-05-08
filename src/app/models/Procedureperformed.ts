@@ -16,7 +16,6 @@ export interface Procedureperformed {
     tempnote?: string
     notes: Array<ProcedureNotes>;
     adminid: string;
-    hospitalid: string;
     name: string;
     originalprocedureid: string;
     customprocedureid: string;
@@ -41,7 +40,6 @@ export const emptyprocedureperformed: Procedureperformed = {
     results: null,
     notes: [],
     adminid: null,
-    hospitalid: null,
     name: null,
     originalprocedureid: null,
     customprocedureid: null,

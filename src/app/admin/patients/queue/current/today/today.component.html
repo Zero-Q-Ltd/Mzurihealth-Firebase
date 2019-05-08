@@ -213,7 +213,8 @@
                         <ng-container matColumnDef="action">
                             <th mat-header-cell *matHeaderCellDef> Action</th>
                             <td mat-cell *matCellDef="let procedure; let i = index">
-                                <button mat-raised-button color="warn" (click)="deleteprocedure(i)">DELETE</button>
+                                <button mat-raised-button color="warn" (click)="deleteprocedure($event,i)">DELETE
+                                </button>
                             </td>
                         </ng-container>
 

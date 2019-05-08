@@ -132,6 +132,7 @@ export class TodayComponent implements OnInit {
                     const ff = res.filter(value1 => {
                         return value1.originalprocedureid === value.rawprocedure.id;
                     })[0];
+                    ff.results = ff.results || '';
                     ff.name = value.rawprocedure.name;
                     ff.category = value.rawprocedure.category;
                     ff.metadata = {
@@ -146,13 +147,18 @@ export class TodayComponent implements OnInit {
                     };
                     ff.originalprocedureid = value.rawprocedure.id;
                     ff.customprocedureid = value.customprocedure.id;
-                    ff.notes[0] = {
-                        admin: {
-                            id: this.adminservice.userdata.id,
-                            name: this.adminservice.userdata.data.displayName
-                        },
-                        note: ff.tempnote
-                    };
+                    if (ff.tempnote && ff.tempnote !== '') {
+                        ff.notes[0] = {
+                            admin: {
+                                id: this.adminservice.userdata.id,
+                                name: this.adminservice.userdata.data.displayName
+                            },
+                            note: ff.tempnote
+                        };
+                    } else {
+                        ff.notes = [];
+                    }
+
                     delete ff.tempnote;
                     return ff;
                 });
@@ -162,7 +168,9 @@ export class TodayComponent implements OnInit {
         });
     }
 
-    deleteprocedure(index: number): void {
+    deleteprocedure(event, index: number): void {
+        event.stopPropagation();
+
         this.currentvisit.procedures.splice(index, 1);
         this.confirmDialogRef = this._matDialog.open(FuseConfirmDialogComponent, {
             disableClose: false

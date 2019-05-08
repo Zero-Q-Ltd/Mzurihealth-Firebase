@@ -81,7 +81,7 @@ export class PatientvisitService {
     }
 
     updateprocedures(visitid: string, procedures: Array<Procedureperformed>): Promise<void> {
-        return this.db.collection('hospitalvisits').doc(visitid).set({
+        return this.db.collection('hospitalvisits').doc(visitid).update({
             procedures: procedures
         });
     }

@@ -12,16 +12,11 @@ import {AuthenticationModule} from './authentication/authentication.module';
 import {CalendarModule} from './calendar/calendar.module';
 import {AdminSharedModule} from './shared/admin-shared.module';
 import {AdminprofileComponent} from './adminprofile/adminprofile.component';
-import {CoreModule} from './core/core.module';
+import {StitchService} from './core/stitch/stitch.service';
 
 @NgModule({
     imports: [
         CommonModule,
-
-        // App modules
-        LayoutModule,
-
-        // App modules
 
         RouterModule,
         FormsModule,
@@ -34,7 +29,6 @@ import {CoreModule} from './core/core.module';
         CalendarModule,
 
         AdminSharedModule,
-        CoreModule
 
     ],
     declarations: [
@@ -47,4 +41,11 @@ import {CoreModule} from './core/core.module';
     providers: [UsersGuard]
 })
 export class AdminModule {
+    public constructor(
+        stitch: StitchService,
+    ) {
+
+        // Connect to MongoDB Stitch ASAP
+        stitch.connectToDb();
+    }
 }

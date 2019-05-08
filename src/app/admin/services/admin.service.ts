@@ -6,11 +6,26 @@ import {NotificationService} from '../../shared/services/notifications.service';
 import {AdminCategory} from '../../models/AdminCategory';
 import {AdminInvite} from '../../models/AdminInvite';
 import {firestore} from 'firebase/app';
+import {
+    AnonymousCredential,
+    RemoteMongoClient,
+    RemoteMongoDatabase,
+    Stitch,
+    StitchAppClient,
+    StitchAppClientConfiguration,
+    StitchAuth,
+    StitchUser,
+} from 'mongodb-stitch-browser-sdk';
 
 @Injectable({
     providedIn: 'root'
 })
 export class AdminService {
+    public client!: StitchAppClient;
+    public auth!: StitchAuth;
+    public db!: RemoteMongoDatabase;
+
+
     observableuserdata: ReplaySubject<HospitalAdmin> = new ReplaySubject(1);
     userdata: HospitalAdmin = emptyadmin;
     activeurl: string = null;
@@ -18,9 +33,8 @@ export class AdminService {
     validuser: boolean;
     admincategories: BehaviorSubject<Array<AdminCategory>> = new BehaviorSubject<Array<AdminCategory>>([]);
 
-    constructor(
-        private router: Router,
-        private notificationservice: NotificationService) {
+    constructor(private router: Router,
+                private notificationservice: NotificationService) {
     }
 
     // The the status of the activeadmin

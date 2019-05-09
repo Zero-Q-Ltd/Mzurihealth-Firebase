@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {emptyproceduresperformed, Procedureperformed} from '../../../../../models/Procedureperformed';
+import {emptyproceduresperformed, ProcedureNotes, Procedureperformed} from '../../../../../models/Procedureperformed';
 import {HospitalAdmin} from '../../../../../models/HospitalAdmin';
 import {HospitalService} from '../../../../services/hospital.service';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
@@ -26,6 +26,8 @@ import {PerformProcedureComponent} from '../perform-procedure/perform-procedure.
 import {SelectionModel} from '@angular/cdk/collections';
 import {firestore} from 'firebase';
 import {AdminService} from '../../../../services/admin.service';
+import {ProcedurenotesComponent} from '../procedure-notes/procedurenotes.component';
+import {FuseConfirmDialogComponent} from '../../../../../../@fuse/components/confirm-dialog/confirm-dialog.component';
 
 @Component({
     selector: 'patient-today',
@@ -53,7 +55,8 @@ export class TodayComponent implements OnInit {
     hospitaladmins: Array<HospitalAdmin> = [];
     currentvisit: PatientVisit = {...emptypatientvisit};
     proceduresdatasource: MatTableDataSource<Procedureperformed> = new MatTableDataSource([]);
-    procedurecolumns = ['name', 'practitioner', 'results', 'notes'];
+    procedurecolumns = ['name', 'practitioner', 'results', 'notes', 'action'];
+    confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
 
     constructor(private hospitalservice: HospitalService,
                 private formBuilder: FormBuilder,
@@ -109,10 +112,10 @@ export class TodayComponent implements OnInit {
         });
     }
 
-    performprocedures() {
+    performprocedures(): void {
         const dialogRef = this._matDialog.open(PerformProcedureComponent, {
-            width: "80%",
-            data: "Attach"
+            width: '80%',
+            data: 'Attach'
         });
         dialogRef.afterClosed().subscribe((result) => {
             if (result) {
@@ -129,6 +132,7 @@ export class TodayComponent implements OnInit {
                     const ff = res.filter(value1 => {
                         return value1.originalprocedureid === value.rawprocedure.id;
                     })[0];
+                    ff.results = ff.results || '';
                     ff.name = value.rawprocedure.name;
                     ff.category = value.rawprocedure.category;
                     ff.metadata = {
@@ -143,17 +147,53 @@ export class TodayComponent implements OnInit {
                     };
                     ff.originalprocedureid = value.rawprocedure.id;
                     ff.customprocedureid = value.customprocedure.id;
-                    ff.notes[0] = {
-                        admin: {
-                            id: this.adminservice.userdata.id,
-                            name: this.adminservice.userdata.data.displayName
-                        },
-                        note: ff.notes as any
-                    };
+                    if (ff.tempnote && ff.tempnote !== '') {
+                        ff.notes[0] = {
+                            admin: {
+                                id: this.adminservice.userdata.id,
+                                name: this.adminservice.userdata.data.displayName
+                            },
+                            note: ff.tempnote
+                        };
+                    } else {
+                        ff.notes = [];
+                    }
+
+                    delete ff.tempnote;
                     return ff;
                 });
                 console.log(mappedData);
                 this.patientvisitservice.addprocedures(this.currentvisit.id, mappedData);
+            }
+        });
+    }
+
+    deleteprocedure(event, index: number): void {
+        event.stopPropagation();
+
+        this.currentvisit.procedures.splice(index, 1);
+        this.confirmDialogRef = this._matDialog.open(FuseConfirmDialogComponent, {
+            disableClose: false
+        });
+
+        this.confirmDialogRef.componentInstance.confirmMessage = 'Are you sure you want to delete this procedure?';
+        this.confirmDialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                this.patientvisitservice.updateprocedures(this.currentvisit.id, this.currentvisit.procedures);
+            }
+        });
+    }
+
+    viewnotes(index: number): void {
+        console.log(index);
+        const dialogRef = this._matDialog.open(ProcedurenotesComponent, {
+            width: '80%',
+            data: index
+        });
+        dialogRef.afterClosed().subscribe((result: Array<ProcedureNotes>) => {
+            if (result) {
+                this.currentvisit.procedures[index].notes = result;
+                this.patientvisitservice.updateprocedures(this.currentvisit.id, this.currentvisit.procedures);
             }
         });
 

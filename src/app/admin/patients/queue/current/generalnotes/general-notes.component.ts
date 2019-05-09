@@ -6,14 +6,15 @@ import {PatientnotesService} from '../../../../services/patientnotes.service';
 
 @Component({
     selector: 'patient-notes',
-    templateUrl: './notes.component.html',
-    styleUrls: ['./notes.component.scss']
+    templateUrl: './general-notes.component.html',
+    styleUrls: ['./general-notes.component.scss']
 })
-export class NotesComponent implements OnInit {
+export class GeneralNotesComponent implements OnInit {
     patientnotes: Array<Patientnote> = [];
     newnoteform: FormGroup;
 
-    constructor(private patientservice: PatientService, private patientnotesService: PatientnotesService) {
+    constructor(private patientservice: PatientService,
+                private patientnotesService: PatientnotesService) {
         this.initformm();
         patientnotesService.patientnotes.subscribe(notes => {
             this.patientnotes = notes;

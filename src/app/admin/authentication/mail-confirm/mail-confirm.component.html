@@ -1,8 +1,8 @@
-<div id="mail-confirm" fxLayout="column">
+<div fxLayout="column" id="mail-confirm">
 
-    <div id="mail-confirm-form-wrapper" fxLayout="column" fxLayoutAlign="center center">
+    <div fxLayout="column" fxLayoutAlign="center center" id="mail-confirm-form-wrapper">
 
-        <div id="mail-confirm-form" [@animate]="{value:'*',params:{duration:'300ms',y:'100px'}}">
+        <div [@animate]="{value:'*',params:{duration:'300ms',y:'100px'}}" id="mail-confirm-form">
 
             <div class="logo">
                 <mat-icon class="mat-accent s-96">email</mat-icon>
@@ -20,7 +20,7 @@
             </div>
 
             <div class="message">
-                <a class="link" [routerLink]="'/pages/auth/login'">Go back to login page</a>
+                <a [routerLink]="'/pages/auth/login'" class="link">Go back to login page</a>
             </div>
 
         </div>

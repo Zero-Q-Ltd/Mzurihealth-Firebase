@@ -1,14 +1,14 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import {NgModule} from '@angular/core';
+import {RouterModule, Routes} from '@angular/router';
 
-import { MatIconModule } from '@angular/material';
+import {MatIconModule} from '@angular/material';
 
-import { FuseSharedModule } from '@fuse/shared.module';
-import { DocsChangelogComponent } from './changelog/changelog.component';
+import {FuseSharedModule} from '@fuse/shared.module';
+import {DocsChangelogComponent} from './changelog/changelog.component';
 
 const routes: Routes = [
     {
-        path     : 'changelog',
+        path: 'changelog',
         component: DocsChangelogComponent
     },
     // {
@@ -41,7 +41,7 @@ const routes: Routes = [
     declarations: [
         DocsChangelogComponent
     ],
-    imports     : [
+    imports: [
         RouterModule.forChild(routes),
 
         MatIconModule,
@@ -49,6 +49,5 @@ const routes: Routes = [
         FuseSharedModule
     ]
 })
-export class DocumentationModule
-{
+export class DocumentationModule {
 }

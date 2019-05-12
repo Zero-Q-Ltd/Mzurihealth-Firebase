@@ -1,16 +1,14 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 
 @Component({
-    selector   : 'fuse-demo-sidebar',
+    selector: 'fuse-demo-sidebar',
     templateUrl: './demo-sidebar.component.html',
-    styleUrls  : ['./demo-sidebar.component.scss']
+    styleUrls: ['./demo-sidebar.component.scss']
 })
-export class FuseDemoSidebarComponent
-{
+export class FuseDemoSidebarComponent {
     /**
      * Constructor
      */
-    constructor()
-    {
+    constructor() {
     }
 }

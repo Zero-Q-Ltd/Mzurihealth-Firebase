@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Subject} from 'rxjs';
-import {Howl, Howler} from 'howler';
+import {Howl} from 'howler';
 import {Alert} from '../../models/Alert';
 import {NotificationComponent} from '../components/notification/notification.component';
 import {MatSnackBar} from '@angular/material';
@@ -22,11 +22,11 @@ export class NotificationService {
                 sound.play();
             }
             this.snackBar.openFromComponent(NotificationComponent, {
-              duration: alert.duration ? alert.duration : 2000,
-              data: alert,
+                duration: alert.duration ? alert.duration : 2000,
+                data: alert,
                 horizontalPosition: alert.placement.horizontal,
                 verticalPosition: alert.placement.vertical,
-              panelClass: ['blue-snackbar']
+                panelClass: ['blue-snackbar']
             });
         });
     }

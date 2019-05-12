@@ -1,19 +1,12 @@
-import { Injectable } from '@angular/core';
-import { NavigationCancel, NavigationEnd, NavigationError, NavigationStart, Router } from '@angular/router';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { filter } from 'rxjs/operators';
+import {Injectable} from '@angular/core';
+import {NavigationCancel, NavigationEnd, NavigationError, NavigationStart, Router} from '@angular/router';
+import {BehaviorSubject, Observable} from 'rxjs';
+import {filter} from 'rxjs/operators';
 
 @Injectable({
     providedIn: 'root'
 })
-export class FuseProgressBarService
-{
-    // Private
-    private _bufferValue: BehaviorSubject<number>;
-    private _mode: BehaviorSubject<string>;
-    private _value: BehaviorSubject<number>;
-    private _visible: BehaviorSubject<boolean>;
-
+export class FuseProgressBarService {
     /**
      * Constructor
      *
@@ -21,61 +14,62 @@ export class FuseProgressBarService
      */
     constructor(
         private _router: Router
-    )
-    {
+    ) {
         // Initialize the service
         this._init();
+    }
+
+    // Private
+    private _bufferValue: BehaviorSubject<number>;
+
+    /**
+     * Buffer value
+     */
+    get bufferValue(): Observable<any> {
+        return this._bufferValue.asObservable();
+    }
+
+    private _mode: BehaviorSubject<string>;
+
+    /**
+     * Mode
+     */
+    get mode(): Observable<any> {
+        return this._mode.asObservable();
     }
 
     // -----------------------------------------------------------------------------------------------------
     // @ Accessors
     // -----------------------------------------------------------------------------------------------------
 
-    /**
-     * Buffer value
-     */
-    get bufferValue(): Observable<any>
-    {
-        return this._bufferValue.asObservable();
-    }
-
-    setBufferValue(value: number): void
-    {
-        this._bufferValue.next(value);
-    }
-
-    /**
-     * Mode
-     */
-    get mode(): Observable<any>
-    {
-        return this._mode.asObservable();
-    }
-
-    setMode(value: 'determinate' | 'indeterminate' | 'buffer' | 'query'): void
-    {
-        this._mode.next(value);
-    }
+    private _value: BehaviorSubject<number>;
 
     /**
      * Value
      */
-    get value(): Observable<any>
-    {
+    get value(): Observable<any> {
         return this._value.asObservable();
     }
 
-    setValue(value: number): void
-    {
-        this._value.next(value);
-    }
+    private _visible: BehaviorSubject<boolean>;
 
     /**
      * Visible
      */
-    get visible(): Observable<any>
-    {
+    get visible(): Observable<any> {
         return this._visible.asObservable();
+    }
+
+    setBufferValue(value: number): void {
+        this._bufferValue.next(value);
+    }
+
+    setMode(value: 'determinate' | 'indeterminate' | 'buffer' | 'query'): void {
+        this._mode.next(value);
+    }
+
+    setValue(value: number): void {
+        this._value.next(value);
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -83,12 +77,29 @@ export class FuseProgressBarService
     // -----------------------------------------------------------------------------------------------------
 
     /**
+     * Show the progress bar
+     */
+    show(): void {
+        this._visible.next(true);
+    }
+
+    // -----------------------------------------------------------------------------------------------------
+    // @ Public methods
+    // -----------------------------------------------------------------------------------------------------
+
+    /**
+     * Hide the progress bar
+     */
+    hide(): void {
+        this._visible.next(false);
+    }
+
+    /**
      * Initialize
      *
      * @private
      */
-    private _init(): void
-    {
+    private _init(): void {
         // Initialize the behavior subjects
         this._bufferValue = new BehaviorSubject(0);
         this._mode = new BehaviorSubject('indeterminate');
@@ -107,26 +118,6 @@ export class FuseProgressBarService
             .subscribe(() => {
                 this.hide();
             });
-    }
-
-    // -----------------------------------------------------------------------------------------------------
-    // @ Public methods
-    // -----------------------------------------------------------------------------------------------------
-
-    /**
-     * Show the progress bar
-     */
-    show(): void
-    {
-        this._visible.next(true);
-    }
-
-    /**
-     * Hide the progress bar
-     */
-    hide(): void
-    {
-        this._visible.next(false);
     }
 }
 

@@ -1,17 +1,16 @@
-import { Component, ContentChild, ElementRef, Input, OnDestroy, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import {Component, ContentChild, ElementRef, Input, OnDestroy, OnInit} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {Subject} from 'rxjs';
+import {takeUntil} from 'rxjs/operators';
 import * as Prism from 'prismjs/prism';
 import '@fuse/components/highlight/prism-languages';
 
 @Component({
-    selector : 'fuse-highlight',
-    template : '',
+    selector: 'fuse-highlight',
+    template: '',
     styleUrls: ['./highlight.component.scss']
 })
-export class FuseHighlightComponent implements OnInit, OnDestroy
-{
+export class FuseHighlightComponent implements OnInit, OnDestroy {
     // Source
     @ContentChild('source')
     source: ElementRef;
@@ -36,8 +35,7 @@ export class FuseHighlightComponent implements OnInit, OnDestroy
     constructor(
         private _elementRef: ElementRef,
         private _httpClient: HttpClient
-    )
-    {
+    ) {
         // Set the private defaults
         this._unsubscribeAll = new Subject();
     }
@@ -49,17 +47,14 @@ export class FuseHighlightComponent implements OnInit, OnDestroy
     /**
      * On init
      */
-    ngOnInit(): void
-    {
+    ngOnInit(): void {
         // If there is no language defined, return...
-        if ( !this.lang )
-        {
+        if (!this.lang) {
             return;
         }
 
         // If the path is defined...
-        if ( this.path )
-        {
+        if (this.path) {
             // Get the source
             this._httpClient.get(this.path, {responseType: 'text'})
                 .pipe(takeUntil(this._unsubscribeAll))
@@ -71,8 +66,7 @@ export class FuseHighlightComponent implements OnInit, OnDestroy
         }
 
         // If the path is not defined and the source element exists...
-        if ( !this.path && this.source )
-        {
+        if (!this.path && this.source) {
             // Highlight it
             this.highlight(this.source.nativeElement.value);
         }
@@ -81,8 +75,7 @@ export class FuseHighlightComponent implements OnInit, OnDestroy
     /**
      * On destroy
      */
-    ngOnDestroy(): void
-    {
+    ngOnDestroy(): void {
         // Unsubscribe from all subscriptions
         this._unsubscribeAll.next();
         this._unsubscribeAll.complete();
@@ -97,8 +90,7 @@ export class FuseHighlightComponent implements OnInit, OnDestroy
      *
      * @param sourceCode
      */
-    highlight(sourceCode): void
-    {
+    highlight(sourceCode): void {
         // Split the source into lines
         const sourceLines = sourceCode.split('\n');
 
@@ -106,13 +98,11 @@ export class FuseHighlightComponent implements OnInit, OnDestroy
         // code if they are blank lines. This way, the html
         // can be formatted properly while using fuse-highlight
         // component
-        if ( !sourceLines[0].trim() )
-        {
+        if (!sourceLines[0].trim()) {
             sourceLines.shift();
         }
 
-        if ( !sourceLines[sourceLines.length - 1].trim() )
-        {
+        if (!sourceLines[sourceLines.length - 1].trim()) {
             sourceLines.pop();
         }
 
@@ -131,8 +121,7 @@ export class FuseHighlightComponent implements OnInit, OnDestroy
             source = source + line.substr(indexOfFirstChar, line.length);
 
             // If it's not the last line...
-            if ( index !== sourceLines.length - 1 )
-            {
+            if (index !== sourceLines.length - 1) {
                 // Add a line break at the end
                 source = source + '\n';
             }

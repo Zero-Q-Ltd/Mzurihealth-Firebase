@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {emptyproceduresperformed, Procedureperformed} from '../../../../../models/Procedureperformed';
+import {emptyproceduresperformed, ProcedureNotes, Procedureperformed} from '../../../../../models/Procedureperformed';
 import {HospitalAdmin} from '../../../../../models/HospitalAdmin';
 import {HospitalService} from '../../../../services/hospital.service';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
@@ -18,10 +18,16 @@ import {medicalconditionsarray} from '../../../../../models/MedicalConditions.mo
 import {QueueService} from '../../../../services/queue.service';
 import {MergedPatient_QueueModel} from '../../../../../models/MergedPatient_Queue.model';
 import {AdminSelectionComponent} from '../../admin-selection/admin-selection.component';
-import {MatDialog, MatDialogRef} from '@angular/material';
+import {MatDialog, MatDialogRef, MatTableDataSource} from '@angular/material';
 import {LocalcommunicationService} from '../localcommunication.service';
 import {emptypatientvisit, PatientVisit} from '../../../../../models/PatientVisit';
 import {NotificationService} from '../../../../../shared/services/notifications.service';
+import {PerformProcedureComponent} from '../perform-procedure/perform-procedure.component';
+import {SelectionModel} from '@angular/cdk/collections';
+import {firestore} from 'firebase';
+import {AdminService} from '../../../../services/admin.service';
+import {ProcedurenotesComponent} from '../procedure-notes/procedurenotes.component';
+import {FuseConfirmDialogComponent} from '../../../../../../@fuse/components/confirm-dialog/confirm-dialog.component';
 
 @Component({
     selector: 'patient-today',
@@ -48,6 +54,9 @@ export class TodayComponent implements OnInit {
     imeanzilishwa: BehaviorSubject<boolean> = new BehaviorSubject(false);
     hospitaladmins: Array<HospitalAdmin> = [];
     currentvisit: PatientVisit = {...emptypatientvisit};
+    proceduresdatasource: MatTableDataSource<Procedureperformed> = new MatTableDataSource([]);
+    procedurecolumns = ['name', 'practitioner', 'results', 'notes', 'action'];
+    confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
 
     constructor(private hospitalservice: HospitalService,
                 private formBuilder: FormBuilder,
@@ -57,6 +66,7 @@ export class TodayComponent implements OnInit {
                 public _matDialog: MatDialog,
                 private patientvisitservice: PatientvisitService,
                 private communication: LocalcommunicationService,
+                private adminservice: AdminService,
                 private notifications: NotificationService) {
 
         procedureservice.procedurecategories.subscribe(categories => {
@@ -77,6 +87,7 @@ export class TodayComponent implements OnInit {
         patientvisitservice.currentvisit.subscribe(visit => {
             console.log(visit);
             this.currentvisit = visit;
+            this.proceduresdatasource.data = visit.procedures;
         });
         this.filteredprocedures = this.procedureselection.valueChanges
             .pipe(
@@ -101,17 +112,104 @@ export class TodayComponent implements OnInit {
         });
     }
 
+    performprocedures(): void {
+        const dialogRef = this._matDialog.open(PerformProcedureComponent, {
+            width: '80%',
+            data: 'Attach'
+        });
+        dialogRef.afterClosed().subscribe((result) => {
+            if (result) {
+                /***
+                 * Haaaaack
+                 * I hate this
+                 */
+                console.log(result);
+                const selection: SelectionModel<MergedProcedureModel> = result.selection;
+                const res: Array<Procedureperformed> = result.res;
+
+
+                const mappedData: Array<Procedureperformed> = selection.selected.map(value => {
+                    const ff = res.filter(value1 => {
+                        return value1.originalprocedureid === value.rawprocedure.id;
+                    })[0];
+                    ff.results = ff.results || '';
+                    ff.name = value.rawprocedure.name;
+                    ff.category = value.rawprocedure.category;
+                    ff.metadata = {
+                        lastedit: firestore.Timestamp.now(),
+                        date: firestore.Timestamp.now()
+                    };
+                    ff.adminid = this.patientvisitservice.adminid;
+                    ff.payment = {
+                        amount: 0,
+                        hasinsurance: false,
+                        methods: []
+                    };
+                    ff.originalprocedureid = value.rawprocedure.id;
+                    ff.customprocedureid = value.customprocedure.id;
+                    if (ff.tempnote && ff.tempnote !== '') {
+                        ff.notes[0] = {
+                            admin: {
+                                id: this.adminservice.userdata.id,
+                                name: this.adminservice.userdata.data.displayName
+                            },
+                            note: ff.tempnote
+                        };
+                    } else {
+                        ff.notes = [];
+                    }
+
+                    delete ff.tempnote;
+                    return ff;
+                });
+                console.log(mappedData);
+                this.patientvisitservice.addprocedures(this.currentvisit.id, mappedData);
+            }
+        });
+    }
+
+    deleteprocedure(event, index: number): void {
+        event.stopPropagation();
+
+        this.currentvisit.procedures.splice(index, 1);
+        this.confirmDialogRef = this._matDialog.open(FuseConfirmDialogComponent, {
+            disableClose: false
+        });
+
+        this.confirmDialogRef.componentInstance.confirmMessage = 'Are you sure you want to delete this procedure?';
+        this.confirmDialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                this.patientvisitservice.updateprocedures(this.currentvisit.id, this.currentvisit.procedures);
+            }
+        });
+    }
+
+    viewnotes(index: number): void {
+        console.log(index);
+        const dialogRef = this._matDialog.open(ProcedurenotesComponent, {
+            width: '80%',
+            data: index
+        });
+        dialogRef.afterClosed().subscribe((result: Array<ProcedureNotes>) => {
+            if (result) {
+                this.currentvisit.procedures[index].notes = result;
+                this.patientvisitservice.updateprocedures(this.currentvisit.id, this.currentvisit.procedures);
+            }
+        });
+
+    }
+
     /**
      * initializes forms and from controls
      */
     initprocedureform(): void {
-        const results = new FormControl('', [Validators.required]);
-        const notes = new FormControl('', [Validators.required]);
+        let results = new FormControl('', [Validators.required]);
+        let notes = new FormControl('', [Validators.required]);
         this.procedureperformed = new FormGroup({
             results: results,
             notes: notes
         });
-        const selection = new FormControl('');
+        let selection = new FormControl('');
 
         this.procedureselection = new FormGroup({
             selection: selection,
@@ -124,12 +222,12 @@ export class TodayComponent implements OnInit {
      * @param mzio
      */
     igamizio(mzio): FormGroup {
-        const allergy = new FormControl({
+        let allergy = new FormControl({
             value: mzio.type,
             disabled: false
         });
 
-        const detail = new FormControl({
+        let detail = new FormControl({
             value: mzio.detail,
             disabled: false
         });
@@ -145,12 +243,12 @@ export class TodayComponent implements OnInit {
      * @param tatizo
      */
     igamatatizo(tatizo): FormGroup {
-        const allergy = new FormControl({
+        let allergy = new FormControl({
             value: tatizo.type,
             disabled: false
         });
 
-        const detail = new FormControl({
+        let detail = new FormControl({
             value: tatizo.detail,
             disabled: false
         });
@@ -162,9 +260,9 @@ export class TodayComponent implements OnInit {
     }
 
     createallergies(): FormGroup {
-        const allergy = new FormControl('');
+        let allergy = new FormControl('');
 
-        const detail = new FormControl({
+        let detail = new FormControl({
             value: '',
             disabled: true
         });
@@ -176,9 +274,9 @@ export class TodayComponent implements OnInit {
     }
 
     createmedconditions(): FormGroup {
-        const condition = new FormControl('');
+        let condition = new FormControl('');
 
-        const detail = new FormControl({
+        let detail = new FormControl({
             value: '',
             disabled: true
         });
@@ -204,7 +302,6 @@ export class TodayComponent implements OnInit {
                 body: 'Saved'
             });
         });
-        ;
     }
 
     onSelect(selected: { rawprocedure: RawProcedure, customprocedure: CustomProcedure }): void {
@@ -235,7 +332,6 @@ export class TodayComponent implements OnInit {
                      */
                     this.communication.ontabchanged.next(1);
                 });
-                ;
             }
         });
     }
@@ -320,12 +416,12 @@ export class TodayComponent implements OnInit {
     }
 
     initvitalsformm(): void {
-        const height = new FormControl(this.currentpatient.patientdata.medicalinfo.vitals.height);
-        const weight = new FormControl(this.currentpatient.patientdata.medicalinfo.vitals.weight);
-        const pressure = new FormControl(this.currentpatient.patientdata.medicalinfo.vitals.pressure);
-        const heartrate = new FormControl(this.currentpatient.patientdata.medicalinfo.vitals.heartrate);
-        const sugar = new FormControl(this.currentpatient.patientdata.medicalinfo.vitals.sugar);
-        const respiration = new FormControl(this.currentpatient.patientdata.medicalinfo.vitals.respiration);
+        let height = new FormControl(this.currentpatient.patientdata.medicalinfo.vitals.height);
+        let weight = new FormControl(this.currentpatient.patientdata.medicalinfo.vitals.weight);
+        let pressure = new FormControl(this.currentpatient.patientdata.medicalinfo.vitals.pressure);
+        let heartrate = new FormControl(this.currentpatient.patientdata.medicalinfo.vitals.heartrate);
+        let sugar = new FormControl(this.currentpatient.patientdata.medicalinfo.vitals.sugar);
+        let respiration = new FormControl(this.currentpatient.patientdata.medicalinfo.vitals.respiration);
         this.vitalsform = new FormGroup({
             height: height,
             weight: weight,
@@ -371,7 +467,7 @@ export class TodayComponent implements OnInit {
                     body: 'Saved'
                 });
             });
-            ;
+
         }
     }
 

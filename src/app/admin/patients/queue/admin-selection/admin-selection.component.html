@@ -18,8 +18,8 @@
         <tr *ngFor='let admin of hospitaladmins'>
             <td>
             <span class="list-icon">
-              <img class="patients-img" style="height: 45px" s
-                   [src]="admin.data.photoURL ? admin.data.photoURL : 'assets/images/icons/male.png'" alt="">
+              <img [src]="admin.data.photoURL ? admin.data.photoURL : 'assets/images/icons/male.png'" alt="" class="patients-img"
+                   s style="height: 45px">
             </span>
             </td>
             <td>{{admin.data.displayName}}</td>
@@ -28,14 +28,14 @@
             <td>{{admin.config.availability}}</td>
             <td>{{admin.config.availability}}</td>
             <td *ngIf='admin.config.availability > 0'>
-                <button mat-raised-button color="basic" *ngIf='chosenadmin!=admin' (click)='chooseadmin(admin)'>CHOOSE
+                <button (click)='chooseadmin(admin)' *ngIf='chosenadmin!=admin' color="basic" mat-raised-button>CHOOSE
                 </button>
 
-                <button mat-raised-button color="primary" *ngIf='chosenadmin===admin'>CHOSEN</button>
+                <button *ngIf='chosenadmin===admin' color="primary" mat-raised-button>CHOSEN</button>
 
             </td>
             <td *ngIf="admin.config.availability < 1">
-                <button mat-raised-button disabled>Away</button>
+                <button disabled mat-raised-button>Away</button>
 
             </td>
         </tr>
@@ -44,6 +44,6 @@
 </mat-dialog-content>
 <br>
 <div class='col-sm-12'>
-    <button matDialogClose mat-raised-button color="warn">DISMISS</button> &nbsp;
-    <button [matDialogClose]='chosenadmin' mat-raised-button color="accent">SAVE</button>
+    <button color="warn" mat-raised-button matDialogClose>DISMISS</button> &nbsp;
+    <button [matDialogClose]='chosenadmin' color="accent" mat-raised-button>SAVE</button>
 </div>

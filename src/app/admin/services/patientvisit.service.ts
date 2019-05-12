@@ -44,13 +44,14 @@ export class PatientvisitService {
 
 
     /**
+     * @deprecated : use addprocedures() instead, clean the data before passing to function
      * @param visitid
      * @param procedure
      * @param per
      */
     addprocedure(visitid: string, procedure: MergedProcedureModel, per: Procedureperformed): Promise<void> {
         per.name = procedure.rawprocedure.name;
-        per.category = procedure.rawprocedure.category
+        per.category = procedure.rawprocedure.category;
         per.metadata = {
             lastedit: firestore.Timestamp.now(),
             date: firestore.Timestamp.now()
@@ -65,6 +66,23 @@ export class PatientvisitService {
         per.customprocedureid = procedure.customprocedure.id;
         return this.db.collection('hospitalvisits').doc(visitid).update({
             procedures: firestore.FieldValue.arrayUnion(per)
+        });
+    }
+
+    /**
+     * @param visitid
+     * @param procedure
+     * @param per
+     */
+    addprocedures(visitid: string, procedures: Array<Procedureperformed>): Promise<void> {
+        return this.db.collection('hospitalvisits').doc(visitid).update({
+            procedures: firestore.FieldValue.arrayUnion(...procedures)
+        });
+    }
+
+    updateprocedures(visitid: string, procedures: Array<Procedureperformed>): Promise<void> {
+        return this.db.collection('hospitalvisits').doc(visitid).update({
+            procedures: procedures
         });
     }
 

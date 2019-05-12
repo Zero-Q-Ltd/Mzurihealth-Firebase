@@ -1,10 +1,10 @@
-import { NgModule } from '@angular/core';
+import {NgModule} from '@angular/core';
 
-import { KeysPipe } from './keys.pipe';
-import { GetByIdPipe } from './getById.pipe';
-import { HtmlToPlaintextPipe } from './htmlToPlaintext.pipe';
-import { FilterPipe } from './filter.pipe';
-import { CamelCaseToDashPipe } from './camelCaseToDash.pipe';
+import {KeysPipe} from './keys.pipe';
+import {GetByIdPipe} from './getById.pipe';
+import {HtmlToPlaintextPipe} from './htmlToPlaintext.pipe';
+import {FilterPipe} from './filter.pipe';
+import {CamelCaseToDashPipe} from './camelCaseToDash.pipe';
 
 @NgModule({
     declarations: [
@@ -14,8 +14,8 @@ import { CamelCaseToDashPipe } from './camelCaseToDash.pipe';
         FilterPipe,
         CamelCaseToDashPipe
     ],
-    imports     : [],
-    exports     : [
+    imports: [],
+    exports: [
         KeysPipe,
         GetByIdPipe,
         HtmlToPlaintextPipe,
@@ -23,6 +23,5 @@ import { CamelCaseToDashPipe } from './camelCaseToDash.pipe';
         CamelCaseToDashPipe
     ]
 })
-export class FusePipesModule
-{
+export class FusePipesModule {
 }

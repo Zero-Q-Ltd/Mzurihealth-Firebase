@@ -28,10 +28,6 @@ import {ProceduresService} from './services/procedures.service';
 export class AdminlayoutComponent implements OnInit {
     fuseConfig: any;
     navigation: any;
-
-    // Private
-    private _unsubscribeAll: Subject<any>;
-
     previousUrl: string;
     url: string;
     authstate: boolean;
@@ -42,7 +38,8 @@ export class AdminlayoutComponent implements OnInit {
         activehospital: Object.assign({}, emptyhospital),
         userdata: Object.assign({}, emptyadmin)
     };
-
+    // Private
+    private _unsubscribeAll: Subject<any>;
 
     // Private
     /**

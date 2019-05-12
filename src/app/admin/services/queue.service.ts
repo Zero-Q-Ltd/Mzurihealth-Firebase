@@ -46,6 +46,67 @@ export class QueueService {
     }
 
     /**
+     * filters the queue to find the doc's queue as well as his current patient
+     */
+    filterqueue(): void {
+        this.mainpatientqueue.subscribe(queuedata => {
+            /**
+             * reset the current patient every time patients data changes, because we are only filtering this data
+             */
+            let currentpatientfound = false;
+            this.mypatientqueue.next(queuedata.filter(queue => {
+                const equality = queue.queuedata.checkin.admin === this.adminid;
+                if (equality && queue.queuedata.checkin.status === 2) {
+                    console.log(queue);
+                    this.currentpatient.next(queue);
+                    currentpatientfound = true;
+                }
+                /***
+                 * Only reset it when no value has been found, otherwise we know that the value has just changed and is already overwritten
+                 */
+                if (!currentpatientfound) {
+                    this.currentpatient.next({...emptymergedQueueModel});
+                }
+                return equality;
+            }));
+        });
+    }
+
+    /**
+     * From reception to rest of admins or admins to admins
+     * @param visit
+     * @param adminid
+     */
+    assignadmin(visit: PatientVisit, adminid: string): Promise<void> {
+        visit.checkin = {
+            status: 1,
+            admin: adminid
+        };
+        visit.metadata.lastedit = firestore.Timestamp.now();
+        console.log(visit);
+        return this.db.firestore.collection('hospitalvisits').doc(visit.id).update(visit);
+    }
+
+    acceptpatient(visit: PatientVisit): Promise<void> {
+        const batch = this.db.firestore.batch();
+        visit.checkin = {
+            status: 2,
+            admin: this.adminid
+        };
+        batch.update(this.db.firestore.collection('hospitalvisits').doc(visit.id), visit);
+        return batch.commit();
+    }
+
+    getinsuanceprice(procedure: MergedProcedureModel): number {
+        // if (this.currentpatient.value.queuedata.paymentmethod) {
+        //     if (procedure.customprocedure.insuranceprices[this.currentpatient.value.queuedata.paymentmethod]) {
+        //
+        //     }
+        // }
+        return 0;
+    }
+
+    /**
      *fetches patientvisit and merges it with hospital file info and patient info
      */
     private getwholequeue(): void {
@@ -95,69 +156,5 @@ export class QueueService {
             // console.log(mergedData);
             this.mainpatientqueue.next(mergedData);
         });
-    }
-
-    /**
-     * filters the queue to find the doc's queue as well as his current patient
-     */
-    filterqueue(): void {
-        this.mainpatientqueue.subscribe(queuedata => {
-            /**
-             * reset the current patient every time patients data changes, because we are only filtering this data
-             */
-            let currentpatientfound = false;
-            this.mypatientqueue.next(queuedata.filter(queue => {
-                const equality = queue.queuedata.checkin.admin === this.adminid;
-                if (equality && queue.queuedata.checkin.status === 2) {
-                    console.log(queue);
-                    this.currentpatient.next(queue);
-                    currentpatientfound = true;
-                }
-                /***
-                 * Only reset it when no value has been found, otherwise we know that the value has just changed and is already overwritten
-                 */
-                if (!currentpatientfound) {
-                    this.currentpatient.next({...emptymergedQueueModel});
-                }
-                return equality;
-            }));
-        });
-    }
-
-
-    /**
-     * From reception to rest of admins or admins to admins
-     * @param visit
-     * @param adminid
-     */
-    assignadmin(visit: PatientVisit, adminid: string): Promise<void> {
-        visit.checkin = {
-            status: 1,
-            admin: adminid
-        };
-        visit.metadata.lastedit = firestore.Timestamp.now();
-        console.log(visit);
-        return this.db.firestore.collection('hospitalvisits').doc(visit.id).update(visit);
-    }
-
-
-    acceptpatient(visit: PatientVisit): Promise<void> {
-        const batch = this.db.firestore.batch();
-        visit.checkin = {
-            status: 2,
-            admin: this.adminid
-        };
-        batch.update(this.db.firestore.collection('hospitalvisits').doc(visit.id), visit);
-        return batch.commit();
-    }
-
-
-    getinsuanceprice(procedure: MergedProcedureModel): number {
-        // if (this.currentpatient.value.queuedata.paymentmethod) {
-        //     if (procedure.customprocedure.insuranceprices[this.currentpatient.value.queuedata.paymentmethod]) {
-        //
-        //     }
-        // }
-        return 0;   
     }
 }

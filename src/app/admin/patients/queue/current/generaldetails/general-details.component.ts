@@ -22,12 +22,12 @@ export class GeneralDetailsComponent implements OnInit {
     allInsurance: { [key: string]: Paymentmethods } = {};
     patientsForm: FormGroup;
     currentpatient: Patient;
-    private personalinfo: FormGroup;
-    private nextofkin: FormGroup;
-    private insurance: FormArray;
-    // doctor will do this
     // private medicalinfo: FormGroup;
     loading = true;
+    private personalinfo: FormGroup;
+    private nextofkin: FormGroup;
+    // doctor will do this
+    private insurance: FormArray;
 
     constructor(private adminservice: AdminService,
                 private patientservice: PatientService,
@@ -89,6 +89,9 @@ export class GeneralDetailsComponent implements OnInit {
                 this.patientsForm.controls['personalinfo']
                     .get('address').patchValue(value.patientdata.personalinfo.address);
 
+                this.patientsForm.controls['personalinfo']
+                    .get('occupation').patchValue(value.patientdata.personalinfo.occupation);
+
                 this.patientsForm.controls['nextofkin']
                     .get('relationship').patchValue(value.patientdata.nextofkin.relationship);
 
@@ -122,6 +125,80 @@ export class GeneralDetailsComponent implements OnInit {
 
     getage(dob): number {
         return moment().diff(dob, 'years');
+    }
+
+    submitPatientsForm(): void {
+        if (this.patientsForm.valid) {
+            this.patientservice.updatePatient(this.currentpatient.id, this.patientsForm.getRawValue()).then(() => {
+                this.notificationservice.notify({
+                    alert_type: 'success',
+                    body: 'Patient successifully updated',
+                    title: 'Success',
+                    placement: {
+                        horizontal: 'right',
+                        vertical: 'top'
+                    }
+                });
+            });
+        } else {
+            this.notificationservice.notify({
+                alert_type: 'error',
+                body: 'Please fill all the required inputs',
+                title: 'ERROR',
+                placement: {
+                    horizontal: 'center',
+                    vertical: 'bottom'
+                }
+            });
+        }
+    }
+
+    createInsurance(): FormGroup {
+        const insurancex = new FormControl('');
+
+        const insurancenumber = new FormControl({
+            value: '',
+            disabled: true
+        });
+
+        return this.formBuilder.group({
+            id: insurancex,
+            insurancenumber: insurancenumber
+        });
+    }
+
+    replicateInsurance(insurancedata: { id: string; insuranceno: string; }): FormGroup {
+        const insurancex = new FormControl({
+            value: insurancedata.id,
+            disabled: false
+        });
+        const insurancenumber = new FormControl({
+            value: insurancedata.insuranceno,
+            disabled: false
+        });
+        return this.formBuilder.group({
+            id: insurancex,
+            insurancenumber: insurancenumber
+        });
+    }
+
+    insurancechanges(): void {
+        this.insurance.controls.forEach(x => {
+            x.get('id').valueChanges.subscribe(g => {
+                if (g) {
+                    if (x.get('id').value.toString().length > -1) {
+                        x.get('insurancenumber').enable({emitEvent: false});
+                    } else {
+                        x.get('insurancenumber').disable({emitEvent: false});
+                    }
+                }
+            });
+        });
+    }
+
+    addInsurance(): void {
+        this.insurance.push(this.createInsurance());
+        this.insurancechanges();
     }
 
     /**
@@ -197,74 +274,6 @@ export class GeneralDetailsComponent implements OnInit {
         * init the insurance list
         * **/
         this.insurance = this.patientsForm.get('insurance') as FormArray;
-    }
-
-
-    submitPatientsForm(): void {
-        if (this.patientsForm.valid) {
-            this.patientservice.updatePatient(this.currentpatient.id, this.patientsForm.getRawValue()).then(() => {
-                console.log('patient added successfully');
-            });
-        } else {
-            this.notificationservice.notify({
-                alert_type: 'error',
-                body: 'Please fill all the required inputs',
-                title: 'ERROR',
-                placement: {
-                    horizontal : 'center',
-                    vertical : 'bottom'
-                }
-            });
-        }
-    }
-
-    createInsurance(): FormGroup {
-        const insurancex = new FormControl('');
-
-        const insurancenumber = new FormControl({
-            value: '',
-            disabled: true
-        });
-
-        return this.formBuilder.group({
-            id: insurancex,
-            insurancenumber: insurancenumber
-        });
-    }
-
-    replicateInsurance(insurancedata: { id: string; insuranceno: string; }): FormGroup {
-        const insurancex = new FormControl({
-            value: insurancedata.id,
-            disabled: false
-        });
-        const insurancenumber = new FormControl({
-            value: insurancedata.insuranceno,
-            disabled: false
-        });
-        return this.formBuilder.group({
-            id: insurancex,
-            insurancenumber: insurancenumber
-        });
-    }
-
-
-    insurancechanges(): void {
-        this.insurance.controls.forEach(x => {
-            x.get('id').valueChanges.subscribe(g => {
-                if (g) {
-                    if (x.get('id').value.toString().length > -1) {
-                        x.get('insurancenumber').enable({emitEvent: false});
-                    } else {
-                        x.get('insurancenumber').disable({emitEvent: false});
-                    }
-                }
-            });
-        });
-    }
-
-    addInsurance(): void {
-        this.insurance.push(this.createInsurance());
-        this.insurancechanges();
     }
 
 }

@@ -1,6 +1,6 @@
 import {Customfields, emptymetadata, Metadata} from './universal';
 import {firestore} from 'firebase/app';
-import {emptyfile, HospFile} from './HospFile';
+import {HospFile} from './HospFile';
 import {Condition} from './MedicalConditions.model';
 import {Allegy} from './Allergy.model';
 

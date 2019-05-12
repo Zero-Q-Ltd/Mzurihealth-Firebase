@@ -1,21 +1,8 @@
-import {Injectable, NgZone} from '@angular/core';
-import {Store} from '@ngrx/store';
-import {
-    AnonymousCredential,
-    RemoteMongoClient,
-    RemoteMongoDatabase,
-    Stitch,
-    StitchAppClient,
-    StitchAppClientConfiguration,
-    StitchAuth,
-    StitchUser,
-} from 'mongodb-stitch-browser-sdk';
+import { Injectable, NgZone } from '@angular/core';
+import { AnonymousCredential, RemoteMongoClient, RemoteMongoDatabase, Stitch, StitchAppClient, StitchAppClientConfiguration, StitchAuth, StitchUser, } from 'mongodb-stitch-browser-sdk';
 
-import {environment} from '../../../../environments/environment';
-import {isUnitTestContext} from '../core-utils';
-import {User} from '../model/user';
-import {HttpStitchTransport} from './http-stitch-transport';
-import {DbReadyAction, SetUserAction} from '../store/app/app-actions';
+import { environment } from '../../../../environments/environment';
+import { HttpStitchTransport } from './http-stitch-transport';
 
 @Injectable({
     providedIn: 'root',
@@ -25,7 +12,7 @@ export class StitchService {
     public auth!: StitchAuth;
     public db!: RemoteMongoDatabase;
 
-    public constructor(private zone: NgZone, private store: Store<any>, private transport: HttpStitchTransport) {
+    public constructor(private zone: NgZone, private transport: HttpStitchTransport) {
         // Run it outside Angular, so it doesn't result with any change detection events etc...
         zone.runOutsideAngular(() => this.createStitchApp());
     }
@@ -42,11 +29,9 @@ export class StitchService {
     public connectToDb(): void {
         if (this.auth.isLoggedIn) {
             console.log('StitchService#connectToDb: logged in, nothing to do...', this.auth.user);
-            this.store.dispatch(new DbReadyAction());
         } else {
             console.log('StitchService#connectToDb, logging in...');
             this.connectToDbAsAnonymous().then((user: StitchUser) => {
-                this.store.dispatch(new DbReadyAction());
                 return user;
             });
         }
@@ -84,17 +69,14 @@ export class StitchService {
                 // emit full user after `handleRedirectResult()` has been called.
                 // Therefore we re-emit it here.
                 // TODO: this is tight coupled, must be somehow resolved...
-                this.store.dispatch(new SetUserAction(User.fromStitch(u)));
             });
         }
     }
 
     protected createStitchApp(): void {
-        // TODO: rewrite, make it configurable/injectable
-        const config = new StitchAppClientConfiguration({transport: this.transport} as any, 'local-app', '0.0.1');
+        const config = new StitchAppClientConfiguration({ transport: this.transport } as any, 'local-app', '0.0.1');
 
-        // TODO: improve creating these instances during tests...
-        const stitchAppId = environment.mongo.stitchAppId + (isUnitTestContext() ? Math.random() : '');
+        const stitchAppId = environment.mongo.stitchAppId;
         this.client = Stitch.initializeAppClient(stitchAppId);
 
         // Just a shortcut to StitchAuth, since it's often accessed

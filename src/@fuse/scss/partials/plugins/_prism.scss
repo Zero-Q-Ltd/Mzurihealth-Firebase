@@ -178,7 +178,6 @@ $code-color-punctuation: $code-color-fade !default;
         &.string {
             color: $code-color-string;
         }
-
         &.attr-name {
             color: $code-color-attr-name;
         }
@@ -201,11 +200,9 @@ $code-color-punctuation: $code-color-fade !default;
         &.unit {
             color: $code-color-keyword;
         }
-
         &.important {
             color: $code-color-important;
         }
-
         &.atrule {
             color: $code-color-atrule;
         }
@@ -228,7 +225,6 @@ $code-color-punctuation: $code-color-fade !default;
         &.property {
             color: $code-color-property;
         }
-
         &.tag {
             color: $code-color-tag;
         }

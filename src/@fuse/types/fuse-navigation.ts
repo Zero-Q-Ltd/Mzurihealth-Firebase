@@ -1,4 +1,5 @@
-export interface FuseNavigationItem {
+export interface FuseNavigationItem
+{
     id: string;
     title: string;
     type: 'item' | 'group' | 'collapsable';
@@ -20,6 +21,7 @@ export interface FuseNavigationItem {
     children?: FuseNavigationItem[];
 }
 
-export interface FuseNavigation extends FuseNavigationItem {
+export interface FuseNavigation extends FuseNavigationItem
+{
     children?: FuseNavigationItem[];
 }

@@ -12,7 +12,7 @@ import {AuthenticationModule} from './authentication/authentication.module';
 import {CalendarModule} from './calendar/calendar.module';
 import {AdminSharedModule} from './shared/admin-shared.module';
 import {AdminprofileComponent} from './adminprofile/adminprofile.component';
-import {StitchService} from './core/stitch/stitch.service';
+import {StitchService} from './services/stitch/stitch.service';
 
 @NgModule({
     imports: [

@@ -1,6 +1,6 @@
-import {NgModule} from '@angular/core';
+import { NgModule } from '@angular/core';
 
-import {FuseHighlightComponent} from '@fuse/components/highlight/highlight.component';
+import { FuseHighlightComponent } from '@fuse/components/highlight/highlight.component';
 
 @NgModule({
     declarations: [
@@ -10,5 +10,6 @@ import {FuseHighlightComponent} from '@fuse/components/highlight/highlight.compo
         FuseHighlightComponent
     ],
 })
-export class FuseHighlightModule {
+export class FuseHighlightModule
+{
 }

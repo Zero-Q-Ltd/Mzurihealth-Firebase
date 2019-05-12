@@ -1,15 +1,16 @@
-import {Component, Input, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
-import {interval, Subject} from 'rxjs';
-import {map, takeUntil} from 'rxjs/operators';
+import { Component, Input, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
+import { interval, Subject } from 'rxjs';
+import { map, takeUntil } from 'rxjs/operators';
 import * as moment from 'moment';
 
 @Component({
-    selector: 'fuse-countdown',
+    selector   : 'fuse-countdown',
     templateUrl: './countdown.component.html',
-    styleUrls: ['./countdown.component.scss'],
+    styleUrls    : ['./countdown.component.scss'],
     encapsulation: ViewEncapsulation.None
 })
-export class FuseCountdownComponent implements OnInit, OnDestroy {
+export class FuseCountdownComponent implements OnInit, OnDestroy
+{
     // Event date
     @Input('eventDate')
     eventDate;
@@ -22,11 +23,12 @@ export class FuseCountdownComponent implements OnInit, OnDestroy {
     /**
      * Constructor
      */
-    constructor() {
+    constructor()
+    {
         // Set the defaults
         this.countdown = {
-            days: '',
-            hours: '',
+            days   : '',
+            hours  : '',
             minutes: '',
             seconds: ''
         };
@@ -42,7 +44,8 @@ export class FuseCountdownComponent implements OnInit, OnDestroy {
     /**
      * On init
      */
-    ngOnInit(): void {
+    ngOnInit(): void
+    {
         const currDate = moment();
         const eventDate = moment(this.eventDate);
 
@@ -75,7 +78,8 @@ export class FuseCountdownComponent implements OnInit, OnDestroy {
     /**
      * On destroy
      */
-    ngOnDestroy(): void {
+    ngOnDestroy(): void
+    {
         // Unsubscribe from all subscriptions
         this._unsubscribeAll.next();
         this._unsubscribeAll.complete();
@@ -91,12 +95,13 @@ export class FuseCountdownComponent implements OnInit, OnDestroy {
      * @param seconds
      * @private
      */
-    private _secondsToRemaining(seconds): any {
+    private _secondsToRemaining(seconds): any
+    {
         const timeLeft = moment.duration(seconds, 'seconds');
 
         return {
-            days: timeLeft.asDays().toFixed(0),
-            hours: timeLeft.hours(),
+            days   : timeLeft.asDays().toFixed(0),
+            hours  : timeLeft.hours(),
             minutes: timeLeft.minutes(),
             seconds: timeLeft.seconds()
         };

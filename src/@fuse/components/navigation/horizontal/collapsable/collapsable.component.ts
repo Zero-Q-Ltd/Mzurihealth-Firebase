@@ -1,17 +1,18 @@
-import {Component, HostBinding, HostListener, Input, OnDestroy, OnInit} from '@angular/core';
-import {Subject} from 'rxjs';
-import {takeUntil} from 'rxjs/operators';
+import { Component, HostBinding, HostListener, Input, OnDestroy, OnInit } from '@angular/core';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
-import {fuseAnimations} from '@fuse/animations';
-import {FuseConfigService} from '@fuse/services/config.service';
+import { fuseAnimations } from '@fuse/animations';
+import { FuseConfigService } from '@fuse/services/config.service';
 
 @Component({
-    selector: 'fuse-nav-horizontal-collapsable',
+    selector   : 'fuse-nav-horizontal-collapsable',
     templateUrl: './collapsable.component.html',
-    styleUrls: ['./collapsable.component.scss'],
-    animations: fuseAnimations
+    styleUrls  : ['./collapsable.component.scss'],
+    animations : fuseAnimations
 })
-export class FuseNavHorizontalCollapsableComponent implements OnInit, OnDestroy {
+export class FuseNavHorizontalCollapsableComponent implements OnInit, OnDestroy
+{
     fuseConfig: any;
     isOpen = false;
 
@@ -26,7 +27,8 @@ export class FuseNavHorizontalCollapsableComponent implements OnInit, OnDestroy 
 
     constructor(
         private _fuseConfigService: FuseConfigService
-    ) {
+    )
+    {
         // Set the private defaults
         this._unsubscribeAll = new Subject();
     }
@@ -38,7 +40,8 @@ export class FuseNavHorizontalCollapsableComponent implements OnInit, OnDestroy 
     /**
      * On init
      */
-    ngOnInit(): void {
+    ngOnInit(): void
+    {
         // Subscribe to config changes
         this._fuseConfigService.config
             .pipe(takeUntil(this._unsubscribeAll))
@@ -52,7 +55,8 @@ export class FuseNavHorizontalCollapsableComponent implements OnInit, OnDestroy 
     /**
      * On destroy
      */
-    ngOnDestroy(): void {
+    ngOnDestroy(): void
+    {
         // Unsubscribe from all subscriptions
         this._unsubscribeAll.next();
         this._unsubscribeAll.complete();
@@ -66,7 +70,8 @@ export class FuseNavHorizontalCollapsableComponent implements OnInit, OnDestroy 
      * Open
      */
     @HostListener('mouseenter')
-    open(): void {
+    open(): void
+    {
         this.isOpen = true;
     }
 
@@ -74,7 +79,8 @@ export class FuseNavHorizontalCollapsableComponent implements OnInit, OnDestroy 
      * Close
      */
     @HostListener('mouseleave')
-    close(): void {
+    close(): void
+    {
         this.isOpen = false;
     }
 }

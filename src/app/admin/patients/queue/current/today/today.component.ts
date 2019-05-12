@@ -203,13 +203,13 @@ export class TodayComponent implements OnInit {
      * initializes forms and from controls
      */
     initprocedureform(): void {
-        const results = new FormControl('', [Validators.required]);
-        const notes = new FormControl('', [Validators.required]);
+        let results = new FormControl('', [Validators.required]);
+        let notes = new FormControl('', [Validators.required]);
         this.procedureperformed = new FormGroup({
             results: results,
             notes: notes
         });
-        const selection = new FormControl('');
+        let selection = new FormControl('');
 
         this.procedureselection = new FormGroup({
             selection: selection,
@@ -222,12 +222,12 @@ export class TodayComponent implements OnInit {
      * @param mzio
      */
     igamizio(mzio): FormGroup {
-        const allergy = new FormControl({
+        let allergy = new FormControl({
             value: mzio.type,
             disabled: false
         });
 
-        const detail = new FormControl({
+        let detail = new FormControl({
             value: mzio.detail,
             disabled: false
         });
@@ -243,12 +243,12 @@ export class TodayComponent implements OnInit {
      * @param tatizo
      */
     igamatatizo(tatizo): FormGroup {
-        const allergy = new FormControl({
+        let allergy = new FormControl({
             value: tatizo.type,
             disabled: false
         });
 
-        const detail = new FormControl({
+        let detail = new FormControl({
             value: tatizo.detail,
             disabled: false
         });
@@ -260,9 +260,9 @@ export class TodayComponent implements OnInit {
     }
 
     createallergies(): FormGroup {
-        const allergy = new FormControl('');
+        let allergy = new FormControl('');
 
-        const detail = new FormControl({
+        let detail = new FormControl({
             value: '',
             disabled: true
         });
@@ -274,9 +274,9 @@ export class TodayComponent implements OnInit {
     }
 
     createmedconditions(): FormGroup {
-        const condition = new FormControl('');
+        let condition = new FormControl('');
 
-        const detail = new FormControl({
+        let detail = new FormControl({
             value: '',
             disabled: true
         });
@@ -416,12 +416,12 @@ export class TodayComponent implements OnInit {
     }
 
     initvitalsformm(): void {
-        const height = new FormControl(this.currentpatient.patientdata.medicalinfo.vitals.height);
-        const weight = new FormControl(this.currentpatient.patientdata.medicalinfo.vitals.weight);
-        const pressure = new FormControl(this.currentpatient.patientdata.medicalinfo.vitals.pressure);
-        const heartrate = new FormControl(this.currentpatient.patientdata.medicalinfo.vitals.heartrate);
-        const sugar = new FormControl(this.currentpatient.patientdata.medicalinfo.vitals.sugar);
-        const respiration = new FormControl(this.currentpatient.patientdata.medicalinfo.vitals.respiration);
+        let height = new FormControl(this.currentpatient.patientdata.medicalinfo.vitals.height);
+        let weight = new FormControl(this.currentpatient.patientdata.medicalinfo.vitals.weight);
+        let pressure = new FormControl(this.currentpatient.patientdata.medicalinfo.vitals.pressure);
+        let heartrate = new FormControl(this.currentpatient.patientdata.medicalinfo.vitals.heartrate);
+        let sugar = new FormControl(this.currentpatient.patientdata.medicalinfo.vitals.sugar);
+        let respiration = new FormControl(this.currentpatient.patientdata.medicalinfo.vitals.respiration);
         this.vitalsform = new FormGroup({
             height: height,
             weight: weight,

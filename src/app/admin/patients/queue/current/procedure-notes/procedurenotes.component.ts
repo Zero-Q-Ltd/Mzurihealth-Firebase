@@ -12,7 +12,7 @@ import {PatientvisitService} from '../../../../services/patientvisit.service';
     styleUrls: ['./procedurenotes.component.scss']
 })
 export class ProcedurenotesComponent implements OnInit {
-    private procedurenores: Array<ProcedureNotes>;
+    procedurenores: Array<ProcedureNotes>;
     newnoteform: FormGroup;
     patientvisit: PatientVisit;
 

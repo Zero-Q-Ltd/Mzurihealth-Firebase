@@ -416,12 +416,12 @@ export class TodayComponent implements OnInit {
     }
 
     initvitalsformm(): void {
-        const height = new FormControl(this.currentpatient.patientdata.medicalinfo.vitals.height);
-        const weight = new FormControl(this.currentpatient.patientdata.medicalinfo.vitals.weight);
-        const pressure = new FormControl(this.currentpatient.patientdata.medicalinfo.vitals.pressure);
-        const heartrate = new FormControl(this.currentpatient.patientdata.medicalinfo.vitals.heartrate);
-        const sugar = new FormControl(this.currentpatient.patientdata.medicalinfo.vitals.sugar);
-        const respiration = new FormControl(this.currentpatient.patientdata.medicalinfo.vitals.respiration);
+        let height = new FormControl(this.currentpatient.patientdata.medicalinfo.vitals.height);
+        let weight = new FormControl(this.currentpatient.patientdata.medicalinfo.vitals.weight);
+        let pressure = new FormControl(this.currentpatient.patientdata.medicalinfo.vitals.pressure);
+        let heartrate = new FormControl(this.currentpatient.patientdata.medicalinfo.vitals.heartrate);
+        let sugar = new FormControl(this.currentpatient.patientdata.medicalinfo.vitals.sugar);
+        let respiration = new FormControl(this.currentpatient.patientdata.medicalinfo.vitals.respiration);
         this.vitalsform = new FormGroup({
             height: height,
             weight: weight,

@@ -167,8 +167,8 @@ export class PatientService {
         const numberOfPatientsRef = this.db.firestore.collection('hospitals').doc(this.activehospital.id);
         batch.update(numberOfPatientsRef, {patientcount: this.activehospital.patientcount + 1});
 
-
         return batch.commit();
+
     }
 
 

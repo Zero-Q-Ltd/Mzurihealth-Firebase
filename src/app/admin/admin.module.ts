@@ -44,8 +44,5 @@ export class AdminModule {
     public constructor(
         stitch: StitchService,
     ) {
-
-        // Connect to MongoDB Stitch ASAP
-        stitch.connectToDb();
     }
 }

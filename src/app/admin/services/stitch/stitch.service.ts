@@ -1,41 +1,72 @@
-import { Injectable, NgZone } from '@angular/core';
-import { AnonymousCredential, RemoteMongoClient, RemoteMongoDatabase, Stitch, StitchAppClient, StitchAppClientConfiguration, StitchAuth, StitchUser, } from 'mongodb-stitch-browser-sdk';
+import {Injectable, NgZone} from '@angular/core';
+import {
+    AnonymousCredential,
+    GoogleRedirectCredential,
+    RemoteMongoClient,
+    RemoteMongoDatabase,
+    Stitch,
+    StitchAppClient,
+    StitchAppClientConfiguration,
+    StitchAuth,
+    StitchUser
+} from 'mongodb-stitch-browser-sdk';
 
-import { environment } from '../../../../environments/environment';
-import { HttpStitchTransport } from './http-stitch-transport';
+import {environment} from '../../../../environments/environment';
+import {HttpStitchTransport} from './http-stitch-transport';
+import {ReplaySubject} from 'rxjs';
 
 @Injectable({
     providedIn: 'root',
 })
 export class StitchService {
-    public client!: StitchAppClient;
-    public auth!: StitchAuth;
-    public db!: RemoteMongoDatabase;
+    client!: StitchAppClient;
+    auth!: StitchAuth;
+    db!: RemoteMongoDatabase;
+    user: ReplaySubject<StitchUser> = new ReplaySubject<StitchUser>(1);
 
     public constructor(private zone: NgZone, private transport: HttpStitchTransport) {
         // Run it outside Angular, so it doesn't result with any change detection events etc...
         zone.runOutsideAngular(() => this.createStitchApp());
+        /**
+         * connect to the database as soo as the service is loaded onto mem
+         */
+        this.auth.addAuthListener({onAuthEvent: this.onStitchAuthEvent.bind(this)});
+
     }
 
-    /**
-     * Connects to MongoDB Stitch database, by authenticating anonymous user, if needed.
-     * Needs to be called *before* any db.collection() query.
-     *
-     * Call it from root module constructor, to make sure it's called as early as possible.
-     *
-     * Note: for now we don't want to run it during the test, since
-     * we'd need to always mock these responses... (to login and then to user profile).
-     */
-    public connectToDb(): void {
-        if (this.auth.isLoggedIn) {
-            console.log('StitchService#connectToDb: logged in, nothing to do...', this.auth.user);
+    protected createStitchApp(): void {
+        const config = new StitchAppClientConfiguration({transport: this.transport} as any, 'local-app', '0.0.1');
+
+        const stitchAppId = environment.mongo.stitchAppId;
+        this.client = Stitch.initializeAppClient(stitchAppId);
+
+        // Just a shortcut to StitchAuth, since it's often accessed
+        this.auth = this.client.auth;
+
+        // It's OK to get RemoteMongoDatabase *before* connecting/authenticating the client
+        this.db = this.client.getServiceClient(RemoteMongoClient.factory, 'mongodb-atlas').db(environment.mongo.database);
+
+        // console.log('StitchService#createStitchApp', {
+        //   loggedIn: this.client.auth.isLoggedIn,
+        //   hasRedirectResult: this.auth.hasRedirectResult(),
+        //   user: this.client.auth.user,
+        //   client: this.client,
+        //   auth: this.auth,
+        //   db: this.db,
+        // });
+
+        this.handleRedirectResultIfNeeded();
+    }
+
+    private onStitchAuthEvent(auth: StitchAuth): void {
+        // console.log('AuthService#onStitchAuthEvent', auth);
+        if (auth.user && auth.user.loggedInProviderType !== 'anon-user') {
+            this.user.next(auth.user);
         } else {
-            console.log('StitchService#connectToDb, logging in...');
-            this.connectToDbAsAnonymous().then((user: StitchUser) => {
-                return user;
-            });
+            this.loginWithGoogle();
         }
     }
+
 
     public connectToDbAsAnonymous(): Promise<StitchUser> {
         return this.auth.loginWithCredential(new AnonymousCredential());
@@ -73,27 +104,8 @@ export class StitchService {
         }
     }
 
-    protected createStitchApp(): void {
-        const config = new StitchAppClientConfiguration({ transport: this.transport } as any, 'local-app', '0.0.1');
-
-        const stitchAppId = environment.mongo.stitchAppId;
-        this.client = Stitch.initializeAppClient(stitchAppId);
-
-        // Just a shortcut to StitchAuth, since it's often accessed
-        this.auth = this.client.auth;
-
-        // It's OK to get RemoteMongoDatabase *before* connecting/authenticating the client
-        this.db = this.client.getServiceClient(RemoteMongoClient.factory, 'mongodb-atlas').db(environment.mongo.database);
-
-        // console.log('StitchService#createStitchApp', {
-        //   loggedIn: this.client.auth.isLoggedIn,
-        //   hasRedirectResult: this.auth.hasRedirectResult(),
-        //   user: this.client.auth.user,
-        //   client: this.client,
-        //   auth: this.auth,
-        //   db: this.db,
-        // });
-
-        this.handleRedirectResultIfNeeded();
+    private loginWithGoogle(): void {
+        const credential = new GoogleRedirectCredential();
+        return this.auth.loginWithRedirect(credential);
     }
 }

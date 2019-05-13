@@ -1,11 +1,22 @@
 import {Injectable} from '@angular/core';
 import {BehaviorSubject, ReplaySubject} from 'rxjs';
 import {Router} from '@angular/router';
-import {emptyadmin, HospitalAdmin} from '../../models/HospitalAdmin';
+import {emptyadmin, HospitalAdmin} from '../../models/user/HospitalAdmin';
 import {NotificationService} from '../../shared/services/notifications.service';
-import {AdminCategory} from '../../models/AdminCategory';
-import {AdminInvite} from '../../models/AdminInvite';
+import {AdminCategory} from '../../models/user/AdminCategory';
+import {AdminInvite} from '../../models/user/AdminInvite';
 import {StitchService} from './stitch/stitch.service';
+import {
+    AnonymousCredential,
+    GoogleRedirectCredential,
+    RemoteMongoClient,
+    RemoteMongoDatabase,
+    Stitch,
+    StitchAppClient,
+    StitchAppClientConfiguration,
+    StitchAuth,
+    StitchUser
+} from 'mongodb-stitch-browser-sdk';
 
 @Injectable({
     providedIn: 'root'
@@ -20,61 +31,62 @@ export class AdminService {
     admincategories: BehaviorSubject<Array<AdminCategory>> = new BehaviorSubject<Array<AdminCategory>>([]);
 
     constructor(private router: Router,
-                private notificationservice: NotificationService, private stitch: StitchService) {
+                private notificationservice: NotificationService,
+                private stitch: StitchService) {
+        this.stitch.user.subscribe(value => {
+            this.getuser(value);
+        });
     }
 
     // The the status of the activeadmin
     setstatus(availability: number): void {
         const config = this.userdata.config;
         config.availability = availability;
-        // this.db.firestore.collection('hospitaladmins').doc(this.userdata.data.uid).update({config: config});
+
     }
 
-    // getuser(user): void {
-    //     this.db.firestore.collection('hospitaladmins').doc(user.uid)
-    //         .onSnapshot(userdata => {
-    //             if (userdata.exists) {
-    //                 // console.log(userdata.data());
-    //                 const temp = userdata.data() as HospitalAdmin;
-    //                 temp.id = userdata.id;
-    //                 if (!temp.status) {
-    //                     this.observableuserdata.next(null);
-    //                     this.notificationservice.notify({
-    //                         alert_type: 'info',
-    //                         body: 'Your account has been disabled!! Please contact us for more information',
-    //                         title: 'Error!',
-    //                         duration: 10000,
-    //                         icon: '',
-    //                         placement: {
-    //                             vertical: 'top',
-    //                             horizontal: 'center'
-    //                         }
-    //                     });
-    //                 }
-    //
-    //                 if (temp['config']['availability'] == null) {
-    //                     const config = temp['config'];
-    //                     config['availability'] = 2;
-    //                     this.db.firestore.collection('hospitaladmins').doc(user.uid).update({config: config});
-    //                 }
-    //                 // this.userdata = this.objectassign(temp, emptyadmin)
-    //                 this.userdata = emptyadmin;
-    //                 Object.assign(this.userdata, temp);
-    //
-    //                 // this.showNotification('success', `Welcome ${user.displayName}`, 'bottom', 5000)
-    //
-    //                 this.observableuserdata.next(temp.status ? this.userdata : null);
-    //                 this.getadmincategories();
-    //
-    //             } else {
-    //                 this.checkinvite(user);
-    //                 // this.observableuserdata.next(true)
-    //             }
-    //
-    //         }, err => {
-    //             console.log(`Encountered error: ${err}`);
-    //         });
-    // }
+    getuser(user: StitchUser): void {
+        this.stitch.db.collection<HospitalAdmin>('hospitaladmins').watch([user.id])
+            .then(userdata => {
+                    userdata.onNext(data => {
+                        const temp = data.fullDocument;
+                        if (!temp.status) {
+                            this.observableuserdata.next(null);
+                            this.notificationservice.notify({
+                                alert_type: 'info',
+                                body: 'Your account has been disabled!! Please contact us for more information',
+                                title: 'Error!',
+                                duration: 10000,
+                                icon: '',
+                                placement: {
+                                    vertical: 'top',
+                                    horizontal: 'center'
+                                }
+                            });
+                        }
+
+                        if (temp['config']['availability'] == null) {
+                            const config = temp['config'];
+                            config['availability'] = 2;
+                            // this.db.firestore.collection('hospitaladmins').doc(user.uid).update({config: config});
+                        }
+                        // this.userdata = this.objectassign(temp, emptyadmin)
+                        this.userdata = emptyadmin;
+                        Object.assign(this.userdata, temp);
+
+                        // this.showNotification('success', `Welcome ${user.displayName}`, 'bottom', 5000)
+
+                        this.observableuserdata.next(temp.status ? this.userdata : null);
+                        this.getadmincategories();
+
+                    });
+                    userdata.onError(error1 => {
+                        this.checkinvite(user);
+                    });
+                    // console.log(userdata.data());
+                }
+            );
+    }
 
     getadmincategories(): void {
         // this.db.firestore.collection('admincategories').onSnapshot(allcategorydata => {
@@ -122,7 +134,7 @@ export class AdminService {
         this.router.navigate(['/admin/authentication/login']);
     }
 
-    checkinvite(user: firebase.User): void {
+    checkinvite(user: StitchUser): void {
         // const invitequery = this.db.firestore.collection('admininvites')
         // .where('email', '==', user.email)
         // .limit(1)

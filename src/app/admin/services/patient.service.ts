@@ -1,18 +1,18 @@
 import {Injectable} from '@angular/core';
-import {emptypatient, Patient} from '../../models/Patient';
-import {emptypatientvisit} from '../../models/PatientVisit';
-import {Hospital} from '../../models/Hospital';
-import {HospitalAdmin} from '../../models/HospitalAdmin';
+import {emptypatient, Patient} from '../../models/patient/Patient';
+import {emptypatientvisit} from '../../models/visit/PatientVisit';
+import {Hospital} from '../../models/hospital/Hospital';
+import {HospitalAdmin} from '../../models/user/HospitalAdmin';
 import {HospitalService} from './hospital.service';
 import {AdminService} from './admin.service';
 import {AngularFirestore} from '@angular/fire/firestore';
 import * as moment from 'moment';
-import {emptyfile, HospFile} from '../../models/HospFile';
-import {AddPatientFormModel} from '../../models/AddPatientForm.model';
+import {emptyfile, HospFile} from '../../models/hospital/HospFile';
+import {AddPatientFormModel} from '../../models/patient/AddPatientForm.model';
 import {debounceTime, map, switchMap} from 'rxjs/operators';
 import {BehaviorSubject, combineLatest, Observable, of} from 'rxjs';
 import 'rxjs/add/observable/empty';
-import {PaymentChannel} from '../../models/PaymentChannel';
+import {PaymentChannel} from '../../models/payment/PaymentChannel';
 import {firestore} from 'firebase/app';
 
 @Injectable({

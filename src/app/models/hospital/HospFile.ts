@@ -1,4 +1,4 @@
-import {firestore} from 'firebase/app';
+import {firestore} from 'firebase';
 
 export interface HospFile {
     id: string;

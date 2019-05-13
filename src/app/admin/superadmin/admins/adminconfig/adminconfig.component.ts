@@ -2,8 +2,8 @@ import {Component, Input, OnInit} from '@angular/core';
 import {LocalcommunicationService} from '../../localcommunication.service';
 import {AdminService} from '../../../services/admin.service';
 import {NotificationService} from '../../../../shared/services/notifications.service';
-import {HospitalAdmin} from '../../../../models/HospitalAdmin';
-import {AdminCategory} from '../../../../models/AdminCategory';
+import {HospitalAdmin} from '../../../../models/user/HospitalAdmin';
+import {AdminCategory} from '../../../../models/user/AdminCategory';
 
 @Component({
     selector: 'admins-adminconfig',

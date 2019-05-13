@@ -2,14 +2,14 @@ import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {fuseAnimations} from '../../../../../@fuse/animations';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ProceduresService} from '../../../services/procedures.service';
-import {ProcedureCategory} from '../../../../models/ProcedureCategory';
-import {emptyprawrocedure, RawProcedure, rawprocedurecategory} from '../../../../models/RawProcedure';
+import {ProcedureCategory} from '../../../../models/procedure/ProcedureCategory';
+import {emptyprawrocedure, RawProcedure, rawprocedurecategory} from '../../../../models/procedure/RawProcedure';
 import {MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
 import {FuseSidebarService} from '../../../../../@fuse/components/sidebar/sidebar.service';
 import {LocalcommunicationService} from '../../localcommunication.service';
 import {NotificationService} from '../../../../shared/services/notifications.service';
-import {emptycustomprocedure} from '../../../../models/CustomProcedure';
-import {Paymentmethods} from '../../../../models/PaymentChannel';
+import {emptycustomprocedure} from '../../../../models/procedure/CustomProcedure';
+import {Paymentmethods} from '../../../../models/payment/PaymentChannel';
 
 @Component({
     selector: 'procedure-add',

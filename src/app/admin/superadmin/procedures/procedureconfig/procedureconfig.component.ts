@@ -1,14 +1,14 @@
 import {Component, OnInit} from '@angular/core';
 import {fuseAnimations} from '../../../../../@fuse/animations';
 import {LocalcommunicationService} from '../../localcommunication.service';
-import {emptyprawrocedure, RawProcedure} from '../../../../models/RawProcedure';
-import {CustomProcedure, emptycustomprocedure} from '../../../../models/CustomProcedure';
+import {emptyprawrocedure, RawProcedure} from '../../../../models/procedure/RawProcedure';
+import {CustomProcedure, emptycustomprocedure} from '../../../../models/procedure/CustomProcedure';
 import {ProceduresService} from '../../../services/procedures.service';
 import {NotificationService} from '../../../../shared/services/notifications.service';
 import * as moment from 'moment';
 import {FormControl, Validators} from '@angular/forms';
 import {PaymentmethodService} from '../../../services/paymentmethod.service';
-import {Paymentmethods} from '../../../../models/PaymentChannel';
+import {Paymentmethods} from '../../../../models/payment/PaymentChannel';
 
 @Component({
     selector: 'app-procedureconfig',

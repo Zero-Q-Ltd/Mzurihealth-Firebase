@@ -7,8 +7,9 @@ import {FuseSplashScreenService} from '../../../../@fuse/services/splash-screen.
 import {AdminService} from '../../services/admin.service';
 import {AngularFireAuth} from '@angular/fire/auth';
 import * as firebase from 'firebase';
-import {HospitalAdmin} from '../../../models/HospitalAdmin';
+import {HospitalAdmin} from '../../../models/user/HospitalAdmin';
 import {Router} from '@angular/router';
+import {StitchService} from '../../services/stitch/stitch.service';
 
 @Component({
     selector: 'login-2',
@@ -39,6 +40,7 @@ export class Login2Component implements OnInit {
         private adminservice: AdminService,
         private afAuth: AngularFireAuth,
         private router: Router,
+        private stitch: StitchService
     ) {
         // Configure the layout
         this._fuseConfigService.config = {
@@ -64,24 +66,8 @@ export class Login2Component implements OnInit {
         });
     }
 
-    loginWithGoogle() {
-        this.loading = true;
-        this.afAuth.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()).then(userData => {
-            this.loading = false;
-            this.infofield = null;
-            if (userData) {
-
-            }
-            console.log(userData);
-        }, err => {
-            this.loading = false;
-            console.log(err);
-            if (err.code === 'auth/popup-closed-by-user') {
-                this.infofield = 'Please Authorise MzuriHealth to Access your Google Account';
-            } else {
-                this.infofield = err.message;
-            }
-        });
+    loginWithGoogle(): void {
+        this.stitch.loginWithGoogle();
     }
 
     // -----------------------------------------------------------------------------------------------------

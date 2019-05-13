@@ -1,13 +1,13 @@
 import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {MatDialog, MatDialogRef, MatTableDataSource} from '@angular/material';
-import {HospitalAdmin} from '../../../../models/HospitalAdmin';
+import {HospitalAdmin} from '../../../../models/user/HospitalAdmin';
 import {fuseAnimations} from '../../../../../@fuse/animations';
 import {HospitalService} from '../../../services/hospital.service';
 import {AdminService} from '../../../services/admin.service';
 import {ProceduresService} from '../../../services/procedures.service';
 import {LocalcommunicationService} from '../../localcommunication.service';
-import {AdminInvite} from '../../../../models/AdminInvite';
-import {AdminCategory} from '../../../../models/AdminCategory';
+import {AdminInvite} from '../../../../models/user/AdminInvite';
+import {AdminCategory} from '../../../../models/user/AdminCategory';
 import {FuseConfirmDialogComponent} from '../../../../../@fuse/components/confirm-dialog/confirm-dialog.component';
 import {NotificationService} from '../../../../shared/services/notifications.service';
 

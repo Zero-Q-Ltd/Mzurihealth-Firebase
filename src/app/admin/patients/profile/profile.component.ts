@@ -1,7 +1,7 @@
 import {Component, Inject, OnInit, Optional} from '@angular/core';
-import {Paymentmethods} from '../../../models/PaymentChannel';
+import {Paymentmethods} from '../../../models/payment/PaymentChannel';
 import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {Patient} from '../../../models/Patient';
+import {Patient} from '../../../models/patient/Patient';
 import {AdminService} from '../../services/admin.service';
 import {PatientService} from '../../services/patient.service';
 import {NotificationService} from '../../../shared/services/notifications.service';

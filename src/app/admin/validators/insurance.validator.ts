@@ -1,5 +1,5 @@
 import {AbstractControl, ValidatorFn} from '@angular/forms';
-import {Paymentmethods} from '../../models/PaymentChannel';
+import {Paymentmethods} from '../../models/payment/PaymentChannel';
 
 export class InsuranceValidator {
     static available(allInsurance: { [key: string]: Paymentmethods }): ValidatorFn {

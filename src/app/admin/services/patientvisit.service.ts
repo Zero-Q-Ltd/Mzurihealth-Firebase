@@ -2,10 +2,10 @@ import {Injectable} from '@angular/core';
 import {QueueService} from './queue.service';
 import {AngularFirestore} from '@angular/fire/firestore';
 import {HospitalService} from './hospital.service';
-import {emptypatientvisit, PatientVisit} from '../../models/PatientVisit';
+import {emptypatientvisit, PatientVisit} from '../../models/visit/PatientVisit';
 import {BehaviorSubject} from 'rxjs';
-import {Procedureperformed} from '../../models/Procedureperformed';
-import {MergedProcedureModel} from '../../models/MergedProcedure.model';
+import {Procedureperformed} from '../../models/procedure/Procedureperformed';
+import {MergedProcedureModel} from '../../models/procedure/MergedProcedure.model';
 import {firestore} from 'firebase';
 import {AdminService} from './admin.service';
 

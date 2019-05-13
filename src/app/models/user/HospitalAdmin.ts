@@ -1,4 +1,4 @@
-import {emptymetadata, Metadata} from './universal';
+import {emptymetadata, Metadata} from '../universal';
 
 export interface HospitalAdmin {
     id: string;

@@ -1,6 +1,6 @@
-import {firestore} from 'firebase/app';
-import {emptymetadata, Metadata} from './universal';
-import {CustomPaymentMethod} from './CustomPaymentMethod.model';
+import {firestore} from 'firebase';
+import {emptymetadata, Metadata} from '../universal';
+import {CustomPaymentMethod} from '../payment/CustomPaymentMethod.model';
 
 export interface Hospital {
     location: firestore.GeoPoint;

@@ -1,12 +1,12 @@
 import {Injectable} from '@angular/core';
 import {BehaviorSubject} from 'rxjs';
-import {MergedPatient_QueueModel} from '../../models/MergedPatient_Queue.model';
+import {MergedPatient_QueueModel} from '../../models/visit/MergedPatient_Queue.model';
 import {AngularFirestore} from '@angular/fire/firestore';
 import {HospitalService} from './hospital.service';
-import {emptypatientvisit, PatientVisit} from '../../models/PatientVisit';
-import {emptypatient, Patient} from '../../models/Patient';
+import {emptypatientvisit, PatientVisit} from '../../models/visit/PatientVisit';
+import {emptypatient, Patient} from '../../models/patient/Patient';
 import * as moment from 'moment';
-import {emptyfile, HospFile} from '../../models/HospFile';
+import {emptyfile, HospFile} from '../../models/hospital/HospFile';
 
 @Injectable({
     providedIn: 'root'

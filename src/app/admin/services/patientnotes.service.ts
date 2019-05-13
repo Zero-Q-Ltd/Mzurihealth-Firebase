@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {QueueService} from './queue.service';
 import {BehaviorSubject} from 'rxjs';
-import {emptynote, Patientnote} from '../../models/Patientnote';
+import {emptynote, Patientnote} from '../../models/patient/Patientnote';
 import {AngularFirestore} from '@angular/fire/firestore';
 import {AdminService} from './admin.service';
 import {firestore} from 'firebase/app';

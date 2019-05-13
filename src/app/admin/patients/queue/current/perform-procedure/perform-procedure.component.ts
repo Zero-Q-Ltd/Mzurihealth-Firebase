@@ -1,9 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {SelectionModel} from '@angular/cdk/collections';
-import {MergedProcedureModel} from '../../../../../models/MergedProcedure.model';
+import {MergedProcedureModel} from '../../../../../models/procedure/MergedProcedure.model';
 import {MatDialogRef, MatTableDataSource} from '@angular/material';
 import {ProceduresService} from '../../../../services/procedures.service';
-import {emptyprocedureperformed, Procedureperformed} from '../../../../../models/Procedureperformed';
+import {emptyprocedureperformed, Procedureperformed} from '../../../../../models/procedure/Procedureperformed';
 import {AdminService} from '../../../../services/admin.service';
 
 @Component({

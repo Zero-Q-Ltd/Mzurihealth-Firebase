@@ -1,9 +1,9 @@
 import {Component, Inject, OnInit, ViewEncapsulation} from '@angular/core';
 import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {Patient} from '../../../models/Patient';
+import {Patient} from '../../../models/patient/Patient';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import {PaymentmethodService} from '../../services/paymentmethod.service';
-import {PaymentChannel, Paymentmethods} from '../../../models/PaymentChannel';
+import {PaymentChannel, Paymentmethods} from '../../../models/payment/PaymentChannel';
 import {PatientService} from '../../services/patient.service';
 import {NotificationService} from '../../../shared/services/notifications.service';
 

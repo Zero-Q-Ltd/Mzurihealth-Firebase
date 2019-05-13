@@ -1,8 +1,8 @@
-import {Customfields, emptymetadata, Metadata} from './universal';
-import {firestore} from 'firebase/app';
-import {HospFile} from './HospFile';
-import {Condition} from './MedicalConditions.model';
-import {Allegy} from './Allergy.model';
+import {Customfields, emptymetadata, Metadata} from '../universal';
+import {firestore} from 'firebase';
+import {HospFile} from '../hospital/HospFile';
+import {Condition} from '../procedure/MedicalConditions.model';
+import {Allegy} from '../procedure/Allergy.model';
 
 export interface Patient {
     personalinfo: {

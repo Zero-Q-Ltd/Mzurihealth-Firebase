@@ -1,17 +1,18 @@
 import {AppEnvironment} from './model';
 
+const production = false;
 export const defaultEnvironmentConfig: AppEnvironment = {
     /**
      * Production environment
      */
-    production: false,
+    production: production,
     hmr: false,
 
     /**
      * MongoDB Stitch settings
      */
     mongo: {
-        stitchAppId: 'first-sdnxa',
-        database: 'Mzurihealth',
+        stitchAppId: 'stitch-uyxfz',
+        database: production ? 'live' : 'dev',
     },
 };

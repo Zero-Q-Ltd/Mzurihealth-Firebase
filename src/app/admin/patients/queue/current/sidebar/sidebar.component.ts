@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {LocalcommunicationService} from '../localcommunication.service';
 import * as moment from 'moment';
 import {QueueService} from '../../../../services/queue.service';
-import {emptymergedQueueModel, MergedPatient_QueueModel} from '../../../../../models/MergedPatient_Queue.model';
+import {emptymergedQueueModel, MergedPatient_QueueModel} from '../../../../../models/visit/MergedPatient_Queue.model';
 
 @Component({
     selector: 'current-patients-sidebar',

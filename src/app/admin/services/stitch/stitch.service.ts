@@ -35,8 +35,6 @@ export class StitchService {
     }
 
     protected createStitchApp(): void {
-        const config = new StitchAppClientConfiguration({transport: this.transport} as any, 'local-app', '0.0.1');
-
         const stitchAppId = environment.mongo.stitchAppId;
         this.client = Stitch.initializeAppClient(stitchAppId);
 
@@ -62,8 +60,6 @@ export class StitchService {
         // console.log('AuthService#onStitchAuthEvent', auth);
         if (auth.user && auth.user.loggedInProviderType !== 'anon-user') {
             this.user.next(auth.user);
-        } else {
-            this.loginWithGoogle();
         }
     }
 
@@ -84,7 +80,6 @@ export class StitchService {
      */
     public logout(): void {
         this.auth.logout();
-        this.connectToDbAsAnonymous();
     }
 
     /**
@@ -104,8 +99,8 @@ export class StitchService {
         }
     }
 
-    private loginWithGoogle(): void {
-        const credential = new GoogleRedirectCredential();
+    loginWithGoogle(): void {
+        const credential = new GoogleRedirectCredential('http://localhost:4200/admin');
         return this.auth.loginWithRedirect(credential);
     }
 }

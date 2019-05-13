@@ -1,12 +1,12 @@
 import {Component, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import {MatDialog, MatDialogRef, MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
-import {emptyhospital, Hospital} from '../../../models/Hospital';
-import {HospitalAdmin} from '../../../models/HospitalAdmin';
-import {Paymentmethods} from '../../../models/PaymentChannel';
+import {emptyhospital, Hospital} from '../../../models/hospital/Hospital';
+import {HospitalAdmin} from '../../../models/user/HospitalAdmin';
+import {Paymentmethods} from '../../../models/payment/PaymentChannel';
 import {FuseConfirmDialogComponent} from '../../../../@fuse/components/confirm-dialog/confirm-dialog.component';
 import {FormGroup} from '@angular/forms';
 import {fuseAnimations} from '../../../../@fuse/animations';
-import {MergedPatient_QueueModel} from '../../../models/MergedPatient_Queue.model';
+import {MergedPatient_QueueModel} from '../../../models/visit/MergedPatient_Queue.model';
 import {PatientService} from '../../services/patient.service';
 import {QueueService} from '../../services/queue.service';
 import {PaymentHistoryService} from '../../services/payment-history.service';

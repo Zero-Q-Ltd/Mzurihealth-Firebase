@@ -8,8 +8,8 @@ import {FuseConfigService} from '@fuse/services/config.service';
 import {FuseSidebarService} from '@fuse/components/sidebar/sidebar.service';
 
 import {navigation} from 'app/admin/navigation/navigation';
-import {emptyhospital, Hospital} from '../../../../models/Hospital';
-import {emptyadmin, HospitalAdmin} from '../../../../models/HospitalAdmin';
+import {emptyhospital, Hospital} from '../../../../models/hospital/Hospital';
+import {emptyadmin, HospitalAdmin} from '../../../../models/user/HospitalAdmin';
 import {AdminService} from '../../../services/admin.service';
 import {HospitalService} from '../../../services/hospital.service';
 import {AngularFireAuth} from '@angular/fire/auth';

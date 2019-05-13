@@ -5,7 +5,7 @@ import {FuseSidebarService} from '../../../@fuse/components/sidebar/sidebar.serv
 import {LocalcommunicationService} from './localcommunication.service';
 import {ProceduresService} from '../services/procedures.service';
 import {AdminService} from '../services/admin.service';
-import {HospitalAdmin} from '../../models/HospitalAdmin';
+import {HospitalAdmin} from '../../models/user/HospitalAdmin';
 
 @Component({
     selector: 'app-admin',

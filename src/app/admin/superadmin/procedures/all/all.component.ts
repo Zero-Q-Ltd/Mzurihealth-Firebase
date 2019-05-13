@@ -1,9 +1,9 @@
 import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {MatDialog, MatDialogRef, MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
-import {RawProcedure, rawprocedurecategory} from '../../../../models/RawProcedure';
+import {RawProcedure, rawprocedurecategory} from '../../../../models/procedure/RawProcedure';
 import {ProceduresService} from '../../../services/procedures.service';
-import {CustomProcedure, emptycustomprocedure} from '../../../../models/CustomProcedure';
-import {ProcedureCategory} from '../../../../models/ProcedureCategory';
+import {CustomProcedure, emptycustomprocedure} from '../../../../models/procedure/CustomProcedure';
+import {ProcedureCategory} from '../../../../models/procedure/ProcedureCategory';
 import {LocalcommunicationService} from '../../localcommunication.service';
 import {fuseAnimations} from '../../../../../@fuse/animations';
 import {FuseConfirmDialogComponent} from '../../../../../@fuse/components/confirm-dialog/confirm-dialog.component';

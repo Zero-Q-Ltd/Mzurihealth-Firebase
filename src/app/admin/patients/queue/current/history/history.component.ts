@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {PatientvisitService} from '../../../../services/patientvisit.service';
-import {PatientVisit} from '../../../../../models/PatientVisit';
-import {HospitalAdmin} from '../../../../../models/HospitalAdmin';
+import {PatientVisit} from '../../../../../models/visit/PatientVisit';
+import {HospitalAdmin} from '../../../../../models/user/HospitalAdmin';
 import {HospitalService} from '../../../../services/hospital.service';
 
 @Component({

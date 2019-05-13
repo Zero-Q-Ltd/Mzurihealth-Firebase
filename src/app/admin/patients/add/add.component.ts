@@ -4,13 +4,13 @@ import {NotificationService} from '../../../shared/services/notifications.servic
 import {AdminService} from '../../services/admin.service';
 import {PatientService} from '../../services/patient.service';
 import {HospitalService} from '../../services/hospital.service';
-import {emptyhospital, Hospital} from '../../../models/Hospital';
-import {emptyfile, HospFile} from '../../../models/HospFile';
+import {emptyhospital, Hospital} from '../../../models/hospital/Hospital';
+import {emptyfile, HospFile} from '../../../models/hospital/HospFile';
 import * as moment from 'moment';
 import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {fuseAnimations} from '../../../../@fuse/animations';
 import {Router} from '@angular/router';
-import {Paymentmethods} from '../../../models/PaymentChannel';
+import {Paymentmethods} from '../../../models/payment/PaymentChannel';
 import {PaymentmethodService} from '../../services/paymentmethod.service';
 import {NumberValidator} from '../../validators/number.validator';
 import {firestore} from 'firebase';

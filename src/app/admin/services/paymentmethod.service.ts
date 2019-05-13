@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
 import {AngularFirestore} from '@angular/fire/firestore';
 import {HospitalService} from './hospital.service';
-import {Hospital} from '../../models/Hospital';
-import {PaymentChannel, Paymentmethods} from '../../models/PaymentChannel';
+import {Hospital} from '../../models/hospital/Hospital';
+import {PaymentChannel, Paymentmethods} from '../../models/payment/PaymentChannel';
 import {BehaviorSubject} from 'rxjs';
 
 // import * as paymentchannels from 'assets/paymentchannels.json';

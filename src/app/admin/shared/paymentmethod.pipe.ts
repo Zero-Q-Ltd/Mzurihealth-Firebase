@@ -1,5 +1,5 @@
 import {Pipe, PipeTransform} from '@angular/core';
-import {PaymentChannel} from '../../models/PaymentChannel';
+import {PaymentChannel} from '../../models/payment/PaymentChannel';
 
 @Pipe({
     name: 'paymentmethod'

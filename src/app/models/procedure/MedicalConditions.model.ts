@@ -1,4 +1,4 @@
-import {Metadata} from './universal';
+import {Metadata} from '../universal';
 
 type MedicalConditionsModel =
     'Alzheimer\'s'

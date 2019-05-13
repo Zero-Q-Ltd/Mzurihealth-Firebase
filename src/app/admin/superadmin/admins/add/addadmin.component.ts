@@ -4,9 +4,9 @@ import {AdminService} from '../../../services/admin.service';
 import {ProceduresService} from '../../../services/procedures.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {NotificationService} from '../../../../shared/services/notifications.service';
-import {AdminCategory, Adminsubcategory, emptyadminCategory} from '../../../../models/AdminCategory';
-import {AdminInvite, emptyadmininvite} from '../../../../models/AdminInvite';
-import {HospitalAdmin} from '../../../../models/HospitalAdmin';
+import {AdminCategory, Adminsubcategory, emptyadminCategory} from '../../../../models/user/AdminCategory';
+import {AdminInvite, emptyadmininvite} from '../../../../models/user/AdminInvite';
+import {HospitalAdmin} from '../../../../models/user/HospitalAdmin';
 
 @Component({
     selector: 'admin-add',

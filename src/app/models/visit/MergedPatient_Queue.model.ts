@@ -1,4 +1,4 @@
-import {emptypatient, Patient} from './Patient';
+import {emptypatient, Patient} from '../patient/Patient';
 import {emptypatientvisit, PatientVisit} from './PatientVisit';
 
 export interface MergedPatient_QueueModel {

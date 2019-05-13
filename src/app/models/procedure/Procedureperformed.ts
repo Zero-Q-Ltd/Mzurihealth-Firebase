@@ -1,4 +1,4 @@
-import {emptymetadata, Metadata} from './universal';
+import {emptymetadata, Metadata} from '../universal';
 import {rawprocedurecategory} from './RawProcedure';
 
 export interface Proceduresperformed {

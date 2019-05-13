@@ -4,10 +4,10 @@ import {QueueService} from '../../services/queue.service';
 import {PaymentmethodService} from '../../services/paymentmethod.service';
 import {PatientvisitService} from '../../services/patientvisit.service';
 import {MAT_DIALOG_DATA} from '@angular/material';
-import {emptymergedQueueModel, MergedPatient_QueueModel} from '../../../models/MergedPatient_Queue.model';
-import {PaymentChannel} from '../../../models/PaymentChannel';
+import {emptymergedQueueModel, MergedPatient_QueueModel} from '../../../models/visit/MergedPatient_Queue.model';
+import {PaymentChannel} from '../../../models/payment/PaymentChannel';
 import {Subject} from 'rxjs';
-import {Hospital} from '../../../models/Hospital';
+import {Hospital} from '../../../models/hospital/Hospital';
 
 @Component({
     selector: 'app-prescription',

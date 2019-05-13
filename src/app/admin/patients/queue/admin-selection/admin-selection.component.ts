@@ -1,6 +1,6 @@
 import {Component, Inject, OnInit, Optional} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
-import {emptyadmin, HospitalAdmin} from '../../../../models/HospitalAdmin';
+import {emptyadmin, HospitalAdmin} from '../../../../models/user/HospitalAdmin';
 import * as moment from 'moment';
 import {HospitalService} from '../../../services/hospital.service';
 

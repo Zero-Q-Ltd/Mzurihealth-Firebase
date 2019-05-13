@@ -1,5 +1,5 @@
-import {emptymetadata, Metadata} from './universal';
-import {Procedureperformed} from './Procedureperformed';
+import {emptymetadata, Metadata} from '../universal';
+import {Procedureperformed} from '../procedure/Procedureperformed';
 
 export interface PatientVisit {
     procedures: Array<Procedureperformed>;

@@ -1,9 +1,9 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {ProcedureNotes} from '../../../../../models/Procedureperformed';
+import {ProcedureNotes} from '../../../../../models/procedure/Procedureperformed';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import {AdminService} from '../../../../services/admin.service';
-import {PatientVisit} from '../../../../../models/PatientVisit';
+import {PatientVisit} from '../../../../../models/visit/PatientVisit';
 import {PatientvisitService} from '../../../../services/patientvisit.service';
 
 @Component({

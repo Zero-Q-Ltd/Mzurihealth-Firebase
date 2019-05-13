@@ -1,14 +1,14 @@
 import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {PaymentmethodService} from '../../services/paymentmethod.service';
-import {PaymentChannel} from '../../../models/PaymentChannel';
-import {emptyhospital, Hospital} from '../../../models/Hospital';
+import {PaymentChannel} from '../../../models/payment/PaymentChannel';
+import {emptyhospital, Hospital} from '../../../models/hospital/Hospital';
 import {HospitalService} from '../../services/hospital.service';
 import {MouseEvent} from '@agm/core';
 import {firestore} from 'firebase';
 import {NotificationService} from '../../../shared/services/notifications.service';
 import {FuseConfirmDialogComponent} from '../../../../@fuse/components/confirm-dialog/confirm-dialog.component';
 import {MatDialog, MatDialogRef} from '@angular/material';
-import {emptypaymentmethod} from '../../../models/CustomPaymentMethod.model';
+import {emptypaymentmethod} from '../../../models/payment/CustomPaymentMethod.model';
 import {LocalcommunicationService} from '../localcommunication.service';
 import {fuseAnimations} from '../../../../@fuse/animations';
 

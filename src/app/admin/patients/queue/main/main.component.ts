@@ -2,9 +2,9 @@ import {AfterViewInit, Component, OnInit, ViewChild, ViewEncapsulation} from '@a
 import {MatDialog, MatDialogRef, MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
 import {fuseAnimations} from '../../../../../@fuse/animations';
 import {QueueService} from '../../../services/queue.service';
-import {MergedPatient_QueueModel} from '../../../../models/MergedPatient_Queue.model';
+import {MergedPatient_QueueModel} from '../../../../models/visit/MergedPatient_Queue.model';
 import {AdminSelectionComponent} from '../admin-selection/admin-selection.component';
-import {HospitalAdmin} from '../../../../models/HospitalAdmin';
+import {HospitalAdmin} from '../../../../models/user/HospitalAdmin';
 import {FuseConfirmDialogComponent} from '../../../../../@fuse/components/confirm-dialog/confirm-dialog.component';
 import {HospitalService} from '../../../services/hospital.service';
 import {InvoiceCustomizationComponent} from '../../invoice-customization/invoice-customization.component';

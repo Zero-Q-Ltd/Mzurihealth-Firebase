@@ -1,5 +1,5 @@
 import {AbstractControl, ValidatorFn} from '@angular/forms';
-import {MergedProcedureModel} from '../../models/MergedProcedure.model';
+import {MergedProcedureModel} from '../../models/procedure/MergedProcedure.model';
 
 export class ProcedureValidator {
     static available(allhospitalprocedures: MergedProcedureModel[]): ValidatorFn {

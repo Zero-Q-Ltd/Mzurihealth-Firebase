@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Subject} from 'rxjs';
 import {Howl} from 'howler';
-import {Alert} from '../../models/Alert';
+import {Alert} from '../../models/notification/Alert';
 import {NotificationComponent} from '../components/notification/notification.component';
 import {MatSnackBar} from '@angular/material';
 

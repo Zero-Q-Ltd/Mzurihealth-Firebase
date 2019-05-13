@@ -1,8 +1,8 @@
 import {Component, Inject, OnDestroy, OnInit} from '@angular/core';
-import {MergedPatient_QueueModel} from '../../../models/MergedPatient_Queue.model';
-import {PaymentChannel} from '../../../models/PaymentChannel';
+import {MergedPatient_QueueModel} from '../../../models/visit/MergedPatient_Queue.model';
+import {PaymentChannel} from '../../../models/payment/PaymentChannel';
 import {Subject} from 'rxjs';
-import {Hospital} from '../../../models/Hospital';
+import {Hospital} from '../../../models/hospital/Hospital';
 import {HospitalService} from '../../services/hospital.service';
 import {QueueService} from '../../services/queue.service';
 import {PaymentmethodService} from '../../services/paymentmethod.service';

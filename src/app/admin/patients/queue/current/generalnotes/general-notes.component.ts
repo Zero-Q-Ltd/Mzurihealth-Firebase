@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {emptynote, Patientnote} from '../../../../../models/Patientnote';
+import {emptynote, Patientnote} from '../../../../../models/patient/Patientnote';
 import {PatientService} from '../../../../services/patient.service';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {PatientnotesService} from '../../../../services/patientnotes.service';

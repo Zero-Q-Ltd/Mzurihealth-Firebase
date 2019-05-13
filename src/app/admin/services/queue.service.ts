@@ -3,15 +3,15 @@ import {AngularFirestore} from '@angular/fire/firestore';
 import {HospitalService} from './hospital.service';
 import {AdminService} from './admin.service';
 import {BehaviorSubject, combineLatest, of} from 'rxjs';
-import {emptypatient, Patient} from '../../models/Patient';
-import {HospitalAdmin} from '../../models/HospitalAdmin';
+import {emptypatient, Patient} from '../../models/patient/Patient';
+import {HospitalAdmin} from '../../models/user/HospitalAdmin';
 import {PatientService} from './patient.service';
 import {switchMap} from 'rxjs/operators';
-import {emptypatientvisit, PatientVisit} from '../../models/PatientVisit';
-import {emptymergedQueueModel, MergedPatient_QueueModel} from '../../models/MergedPatient_Queue.model';
+import {emptypatientvisit, PatientVisit} from '../../models/visit/PatientVisit';
+import {emptymergedQueueModel, MergedPatient_QueueModel} from '../../models/visit/MergedPatient_Queue.model';
 import {ProceduresService} from './procedures.service';
-import {MergedProcedureModel} from '../../models/MergedProcedure.model';
-import {emptyfile, HospFile} from '../../models/HospFile';
+import {MergedProcedureModel} from '../../models/procedure/MergedProcedure.model';
+import {emptyfile, HospFile} from '../../models/hospital/HospFile';
 import {firestore} from 'firebase';
 
 @Injectable({

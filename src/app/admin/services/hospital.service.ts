@@ -2,9 +2,9 @@ import {Injectable} from '@angular/core';
 import {AngularFirestore} from '@angular/fire/firestore';
 import {AdminService} from './admin.service';
 import {BehaviorSubject} from 'rxjs';
-import {HospitalAdmin} from '../../models/HospitalAdmin';
-import {emptyhospital, Hospital} from '../../models/Hospital';
-import {AdminInvite, emptyadmininvite} from '../../models/AdminInvite';
+import {HospitalAdmin} from '../../models/user/HospitalAdmin';
+import {emptyhospital, Hospital} from '../../models/hospital/Hospital';
+import {AdminInvite, emptyadmininvite} from '../../models/user/AdminInvite';
 
 @Injectable({
     providedIn: 'root'

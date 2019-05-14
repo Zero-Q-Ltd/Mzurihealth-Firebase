@@ -48,7 +48,7 @@ export class AdminService {
 
     getuser(user: StitchUser): void {
         this.stitch.db.collection<HospitalAdmin>('hospitaladmins')
-            .findOne({})
+            .findOne({_id: new BSON.ObjectId(user.id)})
             .then(userdata => {
                     console.log(user.id);
                     console.log(userdata);

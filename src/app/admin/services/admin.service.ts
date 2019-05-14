@@ -15,7 +15,8 @@ import {
     StitchAppClient,
     StitchAppClientConfiguration,
     StitchAuth,
-    StitchUser
+    StitchUser,
+    BSON
 } from 'mongodb-stitch-browser-sdk';
 
 @Injectable({
@@ -46,44 +47,41 @@ export class AdminService {
     }
 
     getuser(user: StitchUser): void {
-        this.stitch.db.collection<HospitalAdmin>('hospitaladmins').watch([user.id])
+        this.stitch.db.collection<HospitalAdmin>('hospitaladmins')
+            .findOne({})
             .then(userdata => {
-                    userdata.onNext(data => {
-                        const temp = data.fullDocument;
-                        if (!temp.status) {
-                            this.observableuserdata.next(null);
-                            this.notificationservice.notify({
-                                alert_type: 'info',
-                                body: 'Your account has been disabled!! Please contact us for more information',
-                                title: 'Error!',
-                                duration: 10000,
-                                icon: '',
-                                placement: {
-                                    vertical: 'top',
-                                    horizontal: 'center'
-                                }
-                            });
-                        }
+                    console.log(user.id);
+                    console.log(userdata);
+                    // const temp = userdata;
+                    // if (!temp.status) {
+                    //     this.observableuserdata.next(null);
+                    //     this.notificationservice.notify({
+                    //         alert_type: 'info',
+                    //         body: 'Your account has been disabled!! Please contact us for more information',
+                    //         title: 'Error!',
+                    //         duration: 10000,
+                    //         icon: '',
+                    //         placement: {
+                    //             vertical: 'top',
+                    //             horizontal: 'center'
+                    //         }
+                    //     });
+                    // }
+                    //
+                    // if (temp['config']['availability'] == null) {
+                    //     const config = temp['config'];
+                    //     config['availability'] = 2;
+                    //     // this.db.firestore.collection('hospitaladmins').doc(user.uid).update({config: config});
+                    // }
+                    // // this.userdata = this.objectassign(temp, emptyadmin)
+                    // this.userdata = emptyadmin;
+                    // Object.assign(this.userdata, temp);
+                    //
+                    // // this.showNotification('success', `Welcome ${user.displayName}`, 'bottom', 5000)
+                    //
+                    // this.observableuserdata.next(temp.status ? this.userdata : null);
+                    // this.getadmincategories();
 
-                        if (temp['config']['availability'] == null) {
-                            const config = temp['config'];
-                            config['availability'] = 2;
-                            // this.db.firestore.collection('hospitaladmins').doc(user.uid).update({config: config});
-                        }
-                        // this.userdata = this.objectassign(temp, emptyadmin)
-                        this.userdata = emptyadmin;
-                        Object.assign(this.userdata, temp);
-
-                        // this.showNotification('success', `Welcome ${user.displayName}`, 'bottom', 5000)
-
-                        this.observableuserdata.next(temp.status ? this.userdata : null);
-                        this.getadmincategories();
-
-                    });
-                    userdata.onError(error1 => {
-                        this.checkinvite(user);
-                    });
-                    // console.log(userdata.data());
                 }
             );
     }

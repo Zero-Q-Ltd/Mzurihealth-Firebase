@@ -48,7 +48,7 @@ export class ProfileComponent implements OnInit {
                 /**
                  * check if this is an empty patient before
                  */
-                if (!value.id) {
+                if (!value._id) {
                     return;
                 }
                 this.initFormBuilder();
@@ -74,7 +74,7 @@ export class ProfileComponent implements OnInit {
                     .get('gender').patchValue(value.personalinfo.gender);
 
                 this.patientsForm.controls['personalinfo']
-                    .get('birth').patchValue(value.personalinfo.dob.toDate());
+                    .get('birth').patchValue(value.personalinfo.dob);
 
                 this.patientsForm.controls['personalinfo']
                     .get('email').patchValue(value.personalinfo.email);
@@ -135,7 +135,7 @@ export class ProfileComponent implements OnInit {
         if (this.patientsForm.valid) {
 
 
-            this.patientservice.updatePatient(this.currentpatient.id, this.patientsForm.getRawValue()).then(() => {
+            this.patientservice.updatePatient(this.currentpatient._id, this.patientsForm.getRawValue()).then(() => {
                 this.notificationservice.notify({
                     alert_type: 'success',
                     body: 'Saved',
@@ -193,9 +193,9 @@ export class ProfileComponent implements OnInit {
 
     insurancechanges(): void {
         this.insurance.controls.forEach(x => {
-            x.get('id').valueChanges.subscribe(g => {
+            x.get('_id').valueChanges.subscribe(g => {
                 if (g) {
-                    if (x.get('id').value.toString().length > -1) {
+                    if (x.get('_id').value.toString().length > -1) {
                         x.get('insurancenumber').enable({emitEvent: false});
                     } else {
                         x.get('insurancenumber').disable({emitEvent: false});

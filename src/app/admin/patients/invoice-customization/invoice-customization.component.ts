@@ -72,7 +72,7 @@ export class InvoiceCustomizationComponent implements OnInit {
          */
         this.queue.mainpatientqueue.subscribe(queuedata => {
             queuedata.filter(value => {
-                if (value.patientdata.id === this.patient) {
+                if (value.patientdata._id === this.patient) {
                     this.patientdata = value;
                     this.proceduresdatasouce.data = value.queuedata.procedures;
                     if (this.allpaymentchannels.length > 0) {
@@ -206,13 +206,13 @@ export class InvoiceCustomizationComponent implements OnInit {
         this.patientdata.queuedata.payment.hasinsurance = true;
         let total = 0;
         this.patientdata.queuedata.procedures.map(value => {
-            const amount = this.getpaymentamount(value.customprocedureid, insurance.id);
+            const amount = this.getpaymentamount(value.customprocedureid, insurance._id);
             value.payment = {
                 amount: amount,
                 methods: [{
                     amount: amount,
                     channelid: '',
-                    methidid: insurance.id,
+                    methidid: insurance._id,
                     transactionid: ''
                 }],
                 hasinsurance: true

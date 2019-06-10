@@ -6,16 +6,16 @@ import {HospitalAdmin} from '../../models/user/HospitalAdmin';
 })
 export class AdminNamePipe implements PipeTransform {
     /**
-     * get the admin corresponding to the id provided
+     * get the admin corresponding to the _id provided
      * @param admins
      * @param adminid
      */
     transform(admins: Array<HospitalAdmin>, adminid: string): string {
         if (admins.filter(admin => {
-            return admin.id === adminid;
+            return admin._id === adminid;
         }).length !== 0) {
             return admins.filter(admin => {
-                return admin.id === adminid;
+                return admin._id === adminid;
             })[0].data.displayName;
         } else {
             return '';

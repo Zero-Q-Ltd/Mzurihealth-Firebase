@@ -12,8 +12,8 @@ import {emptyhospital, Hospital} from '../../../../models/hospital/Hospital';
 import {emptyadmin, HospitalAdmin} from '../../../../models/user/HospitalAdmin';
 import {AdminService} from '../../../services/admin.service';
 import {HospitalService} from '../../../services/hospital.service';
-import {AngularFireAuth} from '@angular/fire/auth';
 import {Router} from '@angular/router';
+import {StitchService} from '../../../services/stitch/stitch.service';
 
 @Component({
     selector: 'toolbar',
@@ -57,8 +57,8 @@ export class ToolbarComponent implements OnInit, OnDestroy {
         private _translateService: TranslateService,
         private adminservice: AdminService,
         private hospitalservice: HospitalService,
-        private afAuth: AngularFireAuth,
         private router: Router,
+        private stitch: StitchService
     ) {
         // Set the defaults
         this.userStatusOptions = [
@@ -111,20 +111,19 @@ export class ToolbarComponent implements OnInit, OnDestroy {
          * custom code
          */
         adminservice.observableuserdata.subscribe((admin: HospitalAdmin) => {
-            if (admin.id) {
+            if (admin._id) {
                 this.userdata = admin;
             }
         });
         this.hospitalservice.activehospital.subscribe(hospital => {
-            if (hospital.id) {
+            if (hospital._id) {
                 this.activehospital = hospital;
             }
         });
     }
 
     onLogoutClick() {
-        this.afAuth.auth.signOut().then(result => {
-            // console.log(result)
+        this.stitch.auth.logout().then(() => {
             this.router.navigateByUrl('');
         });
     }
@@ -200,6 +199,6 @@ export class ToolbarComponent implements OnInit, OnDestroy {
         this.selectedLanguage = lang;
 
         // Use the selected language for translations
-        this._translateService.use(lang.id);
+        this._translateService.use(lang._id);
     }
 }

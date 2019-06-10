@@ -2,10 +2,9 @@ import {Injectable} from '@angular/core';
 import {QueueService} from './queue.service';
 import {BehaviorSubject} from 'rxjs';
 import {emptynote, Patientnote} from '../../models/patient/Patientnote';
-import {AngularFirestore} from '@angular/fire/firestore';
 import {AdminService} from './admin.service';
-import {firestore} from 'firebase/app';
-import Timestamp = firestore.Timestamp;
+import {StitchService} from './stitch/stitch.service';
+import * as moment from 'moment';
 
 @Injectable({
     providedIn: 'root'
@@ -15,39 +14,39 @@ export class PatientnotesService {
     patientid: string;
 
     constructor(private queueservice: QueueService,
-                private db: AngularFirestore,
+                private stitch: StitchService,
                 private admiservice: AdminService) {
         queueservice.currentpatient.subscribe(value => {
-            if (value.patientdata.id) {
-                this.patientid = value.patientdata.id;
-                this.fetchpatientnotes(value.patientdata.id);
+            if (value.patientdata._id) {
+                this.patientid = value.patientdata._id;
+                this.fetchpatientnotes(value.patientdata._id);
             }
         });
     }
 
     fetchpatientnotes(id: string): void {
-        this.db.firestore.collection('patientnotes')
-            .where('patientid', '==', id)
-            .limit(100)
-            .orderBy('metadata.date', 'desc')
-            .onSnapshot(rawdata => {
-                this.patientnotes.next(rawdata.docs.map(value => {
-                    return Object.assign({...emptynote}, value.data(), {id: value.id});
-                }));
-            });
+        // this.stitch.db.collection('patientnotes')
+        //     .where('patientid', '==', id)
+        //     .limit(100)
+        //     .orderBy('metadata.date', 'desc')
+        //     .onSnapshot(rawdata => {
+        //         this.patientnotes.next(rawdata.docs.map(value => {
+        //             return Object.assign({...emptynote}, value.data(), {id: value.id});
+        //         }));
+        //     });
     }
 
-    addnote(note: Patientnote): Promise<any> {
+    addnote(note: Patientnote): any {
         note.admin = {
-            id: this.admiservice.userdata.id,
+            id: this.admiservice.userdata._id,
             name: this.admiservice.userdata.data.displayName
         };
         note.patientid = this.patientid;
         note.metadata = {
-            lastedit: Timestamp.now(),
-            date: Timestamp.now()
+            lastedit: moment().toDate(),
+            date: moment().toDate()
         };
-        return this.db.firestore.collection('patientnotes').add(note);
+        // return this.db.collection('patientnotes').add(note);
 
     }
 

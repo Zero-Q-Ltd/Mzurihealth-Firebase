@@ -24,10 +24,10 @@ import {emptypatientvisit, PatientVisit} from '../../../../../models/visit/Patie
 import {NotificationService} from '../../../../../shared/services/notifications.service';
 import {PerformProcedureComponent} from '../perform-procedure/perform-procedure.component';
 import {SelectionModel} from '@angular/cdk/collections';
-import {firestore} from 'firebase';
 import {AdminService} from '../../../../services/admin.service';
 import {ProcedurenotesComponent} from '../procedure-notes/procedurenotes.component';
 import {FuseConfirmDialogComponent} from '../../../../../../@fuse/components/confirm-dialog/confirm-dialog.component';
+import * as moment from 'moment';
 
 @Component({
     selector: 'patient-today',
@@ -108,7 +108,7 @@ export class TodayComponent implements OnInit {
      */
     getadmin(adminid: string): HospitalAdmin {
         return this.hospitalservice.hospitaladmins.value.find(admin => {
-            return admin.id === adminid;
+            return admin._id === adminid;
         });
     }
 
@@ -136,8 +136,8 @@ export class TodayComponent implements OnInit {
                     ff.name = value.rawprocedure.name;
                     ff.category = value.rawprocedure.category;
                     ff.metadata = {
-                        lastedit: firestore.Timestamp.now(),
-                        date: firestore.Timestamp.now()
+                        lastedit: moment().toDate(),
+                        date: moment().toDate()
                     };
                     ff.adminid = this.patientvisitservice.adminid;
                     ff.payment = {
@@ -150,7 +150,7 @@ export class TodayComponent implements OnInit {
                     if (ff.tempnote && ff.tempnote !== '') {
                         ff.notes[0] = {
                             admin: {
-                                id: this.adminservice.userdata.id,
+                                id: this.adminservice.userdata._id,
                                 name: this.adminservice.userdata.data.displayName
                             },
                             note: ff.tempnote
@@ -288,7 +288,7 @@ export class TodayComponent implements OnInit {
     }
 
     updateVitalsAllegiesConditions(): void {
-        this.patientservice.updateVitalsAllegiesConditions(this.currentpatient.patientdata.id,
+        this.patientservice.updateVitalsAllegiesConditions(this.currentpatient.patientdata._id,
             this.vitalsform.getRawValue(),
             this.medconditionsform.getRawValue().conditionsformArray,
             this.allergiesform.getRawValue().allergiesformArray).then(() => {
@@ -326,7 +326,7 @@ export class TodayComponent implements OnInit {
             console.log(res);
             if (res) {
                 console.log(res);
-                this.queue.assignadmin(this.currentpatient.queuedata, res.id).then(() => {
+                this.queue.assignadmin(this.currentpatient.queuedata, res._id).then(() => {
                     /**
                      * important to change from the currently active tab as it will become inactive
                      */

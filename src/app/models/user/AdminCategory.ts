@@ -1,7 +1,9 @@
+import {BSON} from 'mongodb-stitch-browser-sdk';
+
 export interface AdminCategory {
     name: string;
     description: string;
-    id: string;
+    _id: string;
     level: number;
     subcategories: {
         [key: number]: AdminCategory
@@ -21,7 +23,7 @@ export interface Adminsubcategory {
 export const emptyadminCategory: AdminCategory = {
     name: null,
     description: null,
-    id: null,
+    _id: null,
     level: null,
     subcategories: {}
 };

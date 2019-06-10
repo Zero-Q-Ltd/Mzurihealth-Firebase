@@ -5,7 +5,6 @@ import {Hospital} from '../../models/hospital/Hospital';
 import {HospitalAdmin} from '../../models/user/HospitalAdmin';
 import {HospitalService} from './hospital.service';
 import {AdminService} from './admin.service';
-import {AngularFirestore} from '@angular/fire/firestore';
 import * as moment from 'moment';
 import {emptyfile, HospFile} from '../../models/hospital/HospFile';
 import {AddPatientFormModel} from '../../models/patient/AddPatientForm.model';
@@ -13,7 +12,7 @@ import {debounceTime, map, switchMap} from 'rxjs/operators';
 import {BehaviorSubject, combineLatest, Observable, of} from 'rxjs';
 import 'rxjs/add/observable/empty';
 import {PaymentChannel} from '../../models/payment/PaymentChannel';
-import {firestore} from 'firebase/app';
+import {StitchService} from './stitch/stitch.service';
 
 @Injectable({
     providedIn: 'root'
@@ -24,9 +23,11 @@ export class PatientService {
     userdata: HospitalAdmin;
     hospitalpatients: BehaviorSubject<Array<Patient>> = new BehaviorSubject([]);
 
-    constructor(private db: AngularFirestore, private hospitalservice: HospitalService, private adminservice: AdminService) {
+    constructor(private stitch: StitchService,
+                private hospitalservice: HospitalService,
+                private adminservice: AdminService) {
         this.hospitalservice.activehospital.subscribe(hospital => {
-            if (hospital.id) {
+            if (hospital._id) {
                 this.activehospital = hospital;
                 /**
                  * call the get hospital patients and invoke hospitalpatients
@@ -43,7 +44,7 @@ export class PatientService {
 
 
     getSinglePatient(patientID: string): Observable<Patient> {
-        return this.db.collection('patients').doc(patientID).snapshotChanges().pipe(
+        return this.stitch.db.collection('patients').doc(patientID).snapshotChanges().pipe(
             map(action => {
                 return Object.assign({}, emptypatient, action.payload.data()) as Patient;
             })
@@ -51,11 +52,11 @@ export class PatientService {
     }
 
     async getpatientbyid(patientid: string) {
-        const mainpatientdata = await this.db.collection('patients').doc(patientid)
+        const mainpatientdata = await this.stitch.db.collection('patients').doc(patientid)
             .get().toPromise().then(async value => {
                 const patient = Object.assign({...emptypatient}, value.data(), {id: value.id});
-                const patientdata = await this.db.collection('hospitals')
-                    .doc(this.activehospital.id)
+                const patientdata = await this.stitch.db.collection('hospitals')
+                    .doc(this.activehospital._id)
                     .collection('filenumbers')
                     .doc(patientid).get()
                     .toPromise()
@@ -71,9 +72,9 @@ export class PatientService {
     }
 
     deletepatient(patientid: string): Promise<void> {
-        const batch = this.db.firestore.batch();
-        batch.delete(this.db.firestore.collection('patients').doc(patientid));
-        batch.delete(this.db.firestore.collection('hospitals').doc(this.activehospital.id).collection('filenumbers').doc(patientid));
+        const batch = this.stitch.db.firestore.batch();
+        batch.delete(this.stitch.db.firestore.collection('patients').doc(patientid));
+        batch.delete(this.stitch.db.firestore.collection('hospitals').doc(this.activehospital._id).collection('filenumbers').doc(patientid));
         return batch.commit();
     }
 
@@ -102,7 +103,7 @@ export class PatientService {
         /**
          * patient document ID
          * **/
-        const patientID = this.db.createId();
+        const patientID = this.stitch.db.createId();
 
 
         const modifiedData = {
@@ -149,22 +150,22 @@ export class PatientService {
          * start batch write
          * */
             // create batch
-        const batch = this.db.firestore.batch();
+        const batch = this.stitch.db.firestore.batch();
 
-        const patientRef = this.db.firestore
+        const patientRef = this.stitch.db.firestore
             .collection('patients').doc(patientID);
 
         batch.set(patientRef, patientDoc);
 
 
         // batch write Hospital file
-        const patientFileRef = this.db.firestore.collection('hospitals')
-            .doc(this.activehospital.id).collection('filenumbers').doc(patientID);
+        const patientFileRef = this.stitch.db.firestore.collection('hospitals')
+            .doc(this.activehospital._id).collection('filenumbers').doc(patientID);
         batch.set(patientFileRef, hospitalFileNumber);
 
 
         // batch write the number of active patients
-        const numberOfPatientsRef = this.db.firestore.collection('hospitals').doc(this.activehospital.id);
+        const numberOfPatientsRef = this.stitch.db.firestore.collection('hospitals').doc(this.activehospital._id);
         batch.update(numberOfPatientsRef, {patientcount: this.activehospital.patientcount + 1});
 
         return batch.commit();
@@ -176,19 +177,19 @@ export class PatientService {
      * get all patients
      * */
     getHospitalPatients(): void {
-        this.db.collection('hospitals').doc(this.activehospital.id)
+        this.stitch.db.collection('hospitals').doc(this.activehospital._id)
             .collection('filenumbers', ref => ref.limit(100)).snapshotChanges().pipe(
             switchMap(f => {
                 return combineLatest(...f.map(t => {
                     const hospitalfile = t.payload.doc.data() as HospFile;
                     hospitalfile.id = t.payload.doc.id;
-                    return this.db.collection('patients').doc(hospitalfile.id).snapshotChanges().pipe(
+                    return this.stitch.db.collection('patients').doc(hospitalfile.id).snapshotChanges().pipe(
                         map(patientdata => {
                             if (!patientdata.payload.exists) {
                                 return {...emptypatient};
                             }
                             const patient = patientdata.payload.data() as Patient;
-                            patient.id = patientdata.payload.id;
+                            patient._id = patientdata.payload.id;
                             patient.fileinfo = hospitalfile;
                             return Object.assign({}, emptypatient, patient);
                         })
@@ -216,7 +217,7 @@ export class PatientService {
         /**
          * patient document ID
          * **/
-        const queueID = this.db.createId();
+        const queueID = this.stitch.db.createId();
 
 
         /**
@@ -228,8 +229,8 @@ export class PatientService {
 
         const visitTemp = {
             visitdescription: description,
-            patientid: patient.id,
-            hospitalid: this.activehospital.id,
+            patientid: patient._id,
+            hospitalid: this.activehospital._id,
             metadata: {
                 date: todayDate,
                 lastedit: todayDate
@@ -257,8 +258,8 @@ export class PatientService {
         const combineData = Object.assign({}, emptypatientvisit, visitTemp);
 
         // Get a new write batch
-        const batch = this.db.firestore.batch();
-        const hospitalVisitRef = this.db.firestore.collection('hospitalvisits').doc(queueID);
+        const batch = this.stitch.db.firestore.batch();
+        const hospitalVisitRef = this.stitch.db.firestore.collection('hospitalvisits').doc(queueID);
         batch.set(hospitalVisitRef, combineData);
 
 
@@ -268,15 +269,15 @@ export class PatientService {
             return {id: value.insuranceControl, insuranceno: value.insurancenumber};
         });
 
-        const patientRef = this.db.firestore
-            .collection('patients').doc(patient.id);
+        const patientRef = this.stitch.db.firestore
+            .collection('patients').doc(patient._id);
 
         batch.update(patientRef, {patient, insurance: tempInsurance});
 
         // TODO: use transactions with promise.all
         // increment the visit count
-        const hospitalFileRef = this.db.firestore.collection('hospitals')
-            .doc(this.activehospital.id).collection('filenumbers').doc(patient.id);
+        const hospitalFileRef = this.stitch.db.firestore.collection('hospitals')
+            .doc(this.activehospital._id).collection('filenumbers').doc(patient._id);
 
 
         batch.update(hospitalFileRef, Object.assign({}, patient.fileinfo, {visitcount: patient.fileinfo.visitcount + 1}));
@@ -295,9 +296,9 @@ export class PatientService {
      * */
     updatePatient(patientID: string, {personalinfo, insurance, nextofkin}: AddPatientFormModel): Promise<any> {
         // get current data
-        const patientDataRef = this.db.firestore.collection('patients').doc(patientID);
+        const patientDataRef = this.stitch.db.firestore.collection('patients').doc(patientID);
 
-        return this.db.firestore.runTransaction(transaction => {
+        return this.stitch.db.firestore.runTransaction(transaction => {
             return transaction.get(patientDataRef).then(async sfDoc => {
                 if (!sfDoc.exists) {
                     Promise.reject('Document does not exist!');
@@ -312,8 +313,8 @@ export class PatientService {
                  * fetch patient file
                  * */
 
-                const fileDataDoc = await this.db.firestore.collection('hospitals')
-                    .doc(this.activehospital.id)
+                const fileDataDoc = await this.stitch.db.firestore.collection('hospitals')
+                    .doc(this.activehospital._id)
                     .collection('filenumbers')
                     .doc(patientID).get();
 
@@ -382,11 +383,11 @@ export class PatientService {
                 batched.push(updatedPatientData);
 
 
-                const patientFileRef = this.db.firestore.collection('hospitals')
-                    .doc(this.activehospital.id).collection('filenumbers').doc(patientID);
+                const patientFileRef = this.stitch.db.firestore.collection('hospitals')
+                    .doc(this.activehospital._id).collection('filenumbers').doc(patientID);
 
                 // batch write the number of active patients
-                const patientRef = this.db.firestore
+                const patientRef = this.stitch.db.firestore
                     .collection('patients').doc(patientID);
 
 
@@ -425,9 +426,9 @@ export class PatientService {
 
     updateVitalsAllegiesConditions(patientID: string, vitals, conditions: Array<any>, allegies: Array<any>): any {
         // get current user
-        const patientsDocRef = this.db.firestore.collection('patients').doc(patientID);
+        const patientsDocRef = this.stitch.db.firestore.collection('patients').doc(patientID);
 
-        return this.db.firestore.runTransaction(transaction => {
+        return this.stitch.db.firestore.runTransaction(transaction => {
             return transaction.get(patientsDocRef).then(patientDoc => {
                 if (!patientDoc.exists) {
                     Promise.reject('No such document');
@@ -466,8 +467,8 @@ export class PatientService {
     * **/
     getHospitalFileByNumber(fileNumber: string): Observable<HospFile[]> {
         console.log('fetch hospital file');
-        return this.db.collection('hospitals')
-            .doc(this.activehospital.id)
+        return this.stitch.db.collection('hospitals')
+            .doc(this.activehospital._id)
             .collection('filenumbers', ref => ref.where('no', '==', fileNumber))
             .snapshotChanges().pipe(
                 debounceTime(500),
@@ -485,10 +486,10 @@ export class PatientService {
     private searchFromHospitalFile(field: string, value: string): any {
         /**
          * search filenumber
-         * search id
+         * search _id
          * */
-        this.db.collection('hospitals')
-            .doc(this.activehospital.id)
+        this.stitch.db.collection('hospitals')
+            .doc(this.activehospital._id)
             .collection('filenumbers', ref => {
                 return ref.where(field, '==', value);
             }).snapshotChanges().pipe(
@@ -501,7 +502,7 @@ export class PatientService {
                     console.log(t);
                     const fileInfo = t.payload.doc.data() as HospFile;
 
-                    return this.db.collection('patients').doc(fileInfo.id).snapshotChanges().pipe(
+                    return this.stitch.db.collection('patients').doc(fileInfo.id).snapshotChanges().pipe(
                         map(patientData => {
                             console.log('inside patient data');
                             console.log(patientData);
@@ -525,7 +526,7 @@ export class PatientService {
          * */
 
         // TODO: make sure something is done if the patient has no file number
-        this.db.collection('patients', ref => {
+        this.stitch.db.collection('patients', ref => {
             return ref.where(`personalinfo.${field}`, '==', value);
         }).snapshotChanges().pipe(
             switchMap(f => {
@@ -536,9 +537,9 @@ export class PatientService {
 
                     const patient = Object.assign({}, emptypatient, t.payload.doc.data());
 
-                    return this.db.collection('hospitals')
-                        .doc(this.activehospital.id)
-                        .collection('filenumbers').doc(patient.id).snapshotChanges()
+                    return this.stitch.db.collection('hospitals')
+                        .doc(this.activehospital._id)
+                        .collection('filenumbers').doc(patient._id).snapshotChanges()
                         .pipe(
                             map(fileData => {
                                 // TODO: return null if no patient

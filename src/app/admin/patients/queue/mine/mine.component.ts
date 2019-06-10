@@ -4,7 +4,6 @@ import {fuseAnimations} from '../../../../../@fuse/animations';
 import {QueueService} from '../../../services/queue.service';
 import {MergedPatient_QueueModel} from '../../../../models/visit/MergedPatient_Queue.model';
 import * as moment from 'moment';
-import {firestore} from 'firebase';
 import {AdminSelectionComponent} from '../admin-selection/admin-selection.component';
 import {HospitalAdmin} from '../../../../models/user/HospitalAdmin';
 import {FuseConfirmDialogComponent} from '../../../../../@fuse/components/confirm-dialog/confirm-dialog.component';
@@ -27,7 +26,7 @@ export class MineComponent implements OnInit {
                 public _matDialog: MatDialog) {
         queue.mypatientqueue.subscribe(value => {
             this.patientsdatasource.data = value.sort((a, b) => {
-                return a.queuedata.metadata.lastedit.toMillis() - b.queuedata.metadata.lastedit.toMillis();
+                return a.queuedata.metadata.lastedit.getMilliseconds() - b.queuedata.metadata.lastedit.getMilliseconds();
             });
         });
     }
@@ -35,8 +34,8 @@ export class MineComponent implements OnInit {
     ngOnInit(): void {
     }
 
-    getAge(birtday: firestore.Timestamp): number {
-        return moment().diff(birtday.toDate().toLocaleDateString(), 'years');
+    getAge(birtday: Date): number {
+        return moment().diff(birtday, 'years');
     }
 
 
@@ -82,7 +81,7 @@ export class MineComponent implements OnInit {
                 this.dialogRef.afterClosed().subscribe((res: HospitalAdmin) => {
                     console.log(res);
                     if (res) {
-                        this.queue.assignadmin(data.queuedata, res.id);
+                        this.queue.assignadmin(data.queuedata, res._id);
                     }
                 });
             }

@@ -1,10 +1,22 @@
 import {Injectable} from '@angular/core';
-import {AngularFirestore} from '@angular/fire/firestore';
 import {AdminService} from './admin.service';
 import {BehaviorSubject} from 'rxjs';
 import {HospitalAdmin} from '../../models/user/HospitalAdmin';
 import {emptyhospital, Hospital} from '../../models/hospital/Hospital';
 import {AdminInvite, emptyadmininvite} from '../../models/user/AdminInvite';
+import {StitchService} from './stitch/stitch.service';
+import {
+    AnonymousCredential,
+    GoogleRedirectCredential,
+    RemoteMongoClient,
+    RemoteMongoDatabase,
+    Stitch,
+    StitchAppClient,
+    StitchAppClientConfiguration,
+    StitchAuth,
+    StitchUser,
+    BSON
+} from 'mongodb-stitch-browser-sdk';
 
 @Injectable({
     providedIn: 'root'
@@ -16,9 +28,10 @@ export class HospitalService {
     hospitalerror: boolean;
     invitedadmins: BehaviorSubject<Array<AdminInvite>> = new BehaviorSubject<Array<AdminInvite>>([]);
 
-    constructor(private db: AngularFirestore, private adminservice: AdminService) {
+    constructor(private stitch: StitchService, private adminservice: AdminService) {
         adminservice.observableuserdata.subscribe((admin: HospitalAdmin) => {
-            if (admin.id) {
+            if (admin._id) {
+                console.log(admin.config.hospitalid);
                 this.userdata = admin;
                 this.gethospitaldetails();
             }
@@ -27,25 +40,25 @@ export class HospitalService {
     }
 
     gethospitaladmins(): void {
-        this.db.firestore.collection('hospitaladmins')
-            .where('config.hospitalid', '==', this.activehospital.value.id)
-            .onSnapshot(hospitaladmindocs => {
-                this.hospitaladmins.next(hospitaladmindocs.docs.map(hospitaladmin => {
-                    return Object.assign(hospitaladmin.data() as HospitalAdmin, {id: hospitaladmin.id});
-                }));
-            });
+        this.stitch.db.collection('hospitaladmins')
+            .find({'config.hospitalid': this.activehospital.value._id});
+        // .onSnapshot(hospitaladmindocs => {
+        //     this.hospitaladmins.next(hospitaladmindocs.docs.map(hospitaladmin => {
+        //         return Object.assign(hospitaladmin.data() as HospitalAdmin, {_id: hospitaladmin._id});
+        //     }));
+        // });
     }
 
     getinvitedadmins(): void {
-        this.db.firestore.collection('admininvites').where('hospitalid', '==', this.activehospital.value.id).onSnapshot(invitesdata => {
-            this.invitedadmins.next(invitesdata.docs.map(inviteedata => {
-                return Object.assign(emptyadmininvite, inviteedata.data() as AdminInvite, {id: inviteedata.id});
-            }));
-        });
+        // this.stitch.db.collection('admininvites').where('hospitalid', '==', this.activehospital.value._id).onSnapshot(invitesdata => {
+        //     this.invitedadmins.next(invitesdata.docs.map(inviteedata => {
+        //         return Object.assign(emptyadmininvite, inviteedata.data() as AdminInvite, {_id: inviteedata._id});
+        //     }));
+        // });
     }
 
-    savehospitalchanges(hospital: Hospital): Promise<void> {
-        return this.db.firestore.collection('hospitals').doc(hospital.id).set(hospital);
+    savehospitalchanges(hospital: Hospital): Promise<{}> {
+        return this.stitch.db.collection('hospitals').findOneAndUpdate({_id: hospital._id}, hospital);
     }
 
     adminexists(email: string): HospitalAdmin | undefined {
@@ -57,28 +70,14 @@ export class HospitalService {
 
     gethospitaldetails(): void {
 
-        this.db.firestore.collection('hospitals').doc(this.userdata.config.hospitalid)
-            .onSnapshot(hospitaldata => {
-                if (hospitaldata.exists) {
-                    const temp: Hospital = Object.assign(emptyhospital, hospitaldata.data() as HospitalAdmin, {id: hospitaldata.id});
-                    this.activehospital.next(temp);
-                    // Update Admins if data changes when the user is in the admins page
-                    // this.db.firestore.collection('hospitals').doc(this.userdata.config.hospitalid).collection('admins').doc(this.userdata.data.uid).set({status : true})
-
-                    if (this.adminservice.firstlogin) {
-                        this.adminservice.firstlogin = false;
-                        // Update the list of admins after first time login
-                        this.db.firestore.collection('hospitals').doc(this.userdata.config.hospitalid).collection('admins').doc(this.userdata.data.uid).set({status: true});
-                    }
-                    this.gethospitaladmins();
-                    this.getinvitedadmins();
-                } else {
-                    // this.showNotification('error', 'The associated Clinic has been deleted. Please contactperson us for instrustions', 'bottom', 5000);
-                    // this.afAuth.auth.signOut();
-                    // this.router.navigate(['//authentication/signin']);
-                }
-            }, err => {
-                console.log(`Encountered error: ${err}`);
+        this.stitch.db.collection<Hospital>('hospitals').findOne({_id: this.userdata.config.hospitalid})
+            .then(async value => {
+                console.log(value);
+                this.activehospital.next(Object.assign(emptyhospital, value));
+                let changes = await this.stitch.db.collection<Hospital>('hospitals').watch([this.userdata.config.hospitalid]);
+                changes.onNext(data => {
+                    this.activehospital.next(Object.assign(emptyhospital, data));
+                });
             });
     }
 }

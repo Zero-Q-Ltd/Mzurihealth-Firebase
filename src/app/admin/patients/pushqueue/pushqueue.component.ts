@@ -137,7 +137,7 @@ export class PushqueueComponent implements OnInit {
                 this.insuranceSet = true;
 
                 // this.patientService.
-                this.patientService.getSinglePatient(this.patient.id).subscribe(pData => {
+                this.patientService.getSinglePatient(this.patient._id).subscribe(pData => {
 
                     if (pData.insurance.length === 0) {
                         this.insuranceAvailable = false;

@@ -1,7 +1,8 @@
 import {emptymetadata, Metadata} from '../universal';
+import {BSON} from 'mongodb-stitch-browser-sdk';
 
 export interface HospitalAdmin {
-    id: string;
+    _id: BSON.ObjectId;
     status: boolean;
     data: {
         uid: string,
@@ -27,7 +28,7 @@ export interface HospitalAdmin {
 }
 
 export const emptyadmin: HospitalAdmin = {
-    id: null,
+    _id: null,
     config: {
         level: null,
         hospitalid: null,

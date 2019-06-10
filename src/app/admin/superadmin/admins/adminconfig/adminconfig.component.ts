@@ -37,10 +37,10 @@ export class AdminconfigComponent implements OnInit {
         const subcategory = this.clickedadmin.config.level;
         if (this.admincategories.length > 0) {
             if (this.admincategories.find(cat => {
-                return cat.id === categoryid;
+                return cat._id === categoryid;
             })) {
                 const admincategory = this.admincategories.find(cat => {
-                    return cat.id === categoryid;
+                    return cat._id === categoryid;
                 });
                 const adinsubcategory = `${admincategory.subcategories[subcategory].level} : ${admincategory.subcategories[subcategory].name}`;
                 return [admincategory.name, adinsubcategory];

@@ -51,12 +51,12 @@ export class NavbarVerticalStyle1Component implements OnInit, OnDestroy {
          * custom code
          */
         adminservice.observableuserdata.subscribe((admin: HospitalAdmin) => {
-            if (admin.id) {
+            if (admin._id) {
                 this.userdata = admin;
             }
         });
         this.hospitalservice.activehospital.subscribe(hospital => {
-            if (hospital.id) {
+            if (hospital._id) {
                 this.activehospital = hospital;
             }
         });

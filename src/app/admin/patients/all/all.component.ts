@@ -3,7 +3,6 @@ import {fuseAnimations} from '../../../../@fuse/animations';
 import {MatDialog, MatDialogRef, MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
 import {Patient} from '../../../models/patient/Patient';
 import * as moment from 'moment';
-import {firestore} from 'firebase';
 import {HospitalAdmin} from '../../../models/user/HospitalAdmin';
 import {emptyhospital, Hospital} from '../../../models/hospital/Hospital';
 import {AdminService} from '../../services/admin.service';
@@ -52,7 +51,7 @@ export class AllComponent implements OnInit, AfterViewInit {
                 public _matDialog: MatDialog, private router: Router) {
 
         this.hospitalservice.activehospital.subscribe(hospital => {
-            if (hospital.id) {
+            if (hospital._id) {
                 this.activehospital = hospital;
             }
         });
@@ -83,14 +82,14 @@ export class AllComponent implements OnInit, AfterViewInit {
 
     }
 
-    getAge(birtday: firestore.Timestamp): number {
-        return moment().diff(birtday.toDate().toLocaleDateString(), 'years');
+    getAge(birtday: Date): number {
+        return moment().diff(birtday, 'years');
     }
 
     addToQueue(patient: Patient): void {
 
         const fil = this.queueService.mainpatientqueue.value.filter(value => {
-            return value.patientdata.id === patient.id;
+            return value.patientdata._id === patient._id;
         });
 
         if (fil.length !== 0) {
@@ -151,7 +150,7 @@ export class AllComponent implements OnInit, AfterViewInit {
     editpatient(patient: Patient): void {
         event.stopPropagation();
         this.dialogRef = this._matDialog.open(ProfileComponent, {
-            data: patient.id,
+            data: patient._id,
             width: '80%'
         });
     }
@@ -159,7 +158,7 @@ export class AllComponent implements OnInit, AfterViewInit {
     deletepatient(patient: Patient): void {
         event.stopPropagation();
         const fil = this.queueService.mainpatientqueue.value.filter(value => {
-            return value.patientdata.id === patient.id;
+            return value.patientdata._id === patient._id;
         });
 
         if (fil.length !== 0) {
@@ -177,7 +176,7 @@ export class AllComponent implements OnInit, AfterViewInit {
         this.confirmDialogRef.componentInstance.confirmMessage = 'Delete Patient?';
         this.confirmDialogRef.afterClosed().subscribe(result => {
             if (result) {
-                this.patientservice.deletepatient(patient.id);
+                this.patientservice.deletepatient(patient._id);
             }
         });
     }

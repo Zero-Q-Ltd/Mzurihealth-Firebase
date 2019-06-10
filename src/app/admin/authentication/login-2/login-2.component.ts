@@ -5,8 +5,6 @@ import {FuseConfigService} from '@fuse/services/config.service';
 import {fuseAnimations} from '@fuse/animations';
 import {FuseSplashScreenService} from '../../../../@fuse/services/splash-screen.service';
 import {AdminService} from '../../services/admin.service';
-import {AngularFireAuth} from '@angular/fire/auth';
-import * as firebase from 'firebase';
 import {HospitalAdmin} from '../../../models/user/HospitalAdmin';
 import {Router} from '@angular/router';
 import {StitchService} from '../../services/stitch/stitch.service';
@@ -30,7 +28,6 @@ export class Login2Component implements OnInit {
      * @param {FormBuilder} _formBuilder
      * @param _fuseSplashScreenService
      * @param adminservice
-     * @param afAuth
      * @param router
      */
     constructor(
@@ -38,7 +35,6 @@ export class Login2Component implements OnInit {
         private _formBuilder: FormBuilder,
         private _fuseSplashScreenService: FuseSplashScreenService,
         private adminservice: AdminService,
-        private afAuth: AngularFireAuth,
         private router: Router,
         private stitch: StitchService
     ) {
@@ -60,7 +56,7 @@ export class Login2Component implements OnInit {
             }
         };
         this.adminservice.observableuserdata.subscribe((admin: HospitalAdmin) => {
-            if (admin && admin.id) {
+            if (admin && admin._id) {
                 this.router.navigate(['/admin']);
             }
         });

@@ -1,5 +1,3 @@
-import {firestore} from 'firebase/app';
-
 export interface Customfields {
     id: number;
     value: any;
@@ -7,8 +5,8 @@ export interface Customfields {
 }
 
 export interface Metadata {
-    date: firestore.Timestamp;
-    lastedit: firestore.Timestamp;
+    date: Date;
+    lastedit: Date;
 }
 
 export const emptymetadata: Metadata = {

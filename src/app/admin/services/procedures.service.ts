@@ -1,17 +1,16 @@
 import {Injectable} from '@angular/core';
-import {AngularFirestore, Query} from '@angular/fire/firestore';
 import {HospitalService} from './hospital.service';
 import {BehaviorSubject, combineLatest} from 'rxjs';
 import {Hospital} from '../../models/hospital/Hospital';
 import {CustomProcedure} from '../../models/procedure/CustomProcedure';
 import {ProcedureCategory} from '../../models/procedure/ProcedureCategory';
 import {NotificationService} from '../../shared/services/notifications.service';
-import {firestore} from 'firebase/app';
 import {RawProcedure} from '../../models/procedure/RawProcedure';
 import {HospitalAdmin} from '../../models/user/HospitalAdmin';
 import {AdminService} from './admin.service';
 import {map, switchMap} from 'rxjs/operators';
-import Timestamp = firestore.Timestamp;
+import {StitchService} from './stitch/stitch.service';
+import * as moment from 'moment';
 
 @Injectable({
     providedIn: 'root'
@@ -23,12 +22,12 @@ export class ProceduresService {
     procedurecategories: BehaviorSubject<Array<ProcedureCategory>> = new BehaviorSubject<Array<ProcedureCategory>>([]);
     userdata: HospitalAdmin;
 
-    constructor(private db: AngularFirestore,
+    constructor(private stitch: StitchService,
                 private hospitalservice: HospitalService,
                 private notificationservice: NotificationService,
                 private adminservice: AdminService) {
         this.hospitalservice.activehospital.subscribe(hospital => {
-            if (hospital.id) {
+            if (hospital._id) {
                 this.activehospital = hospital;
                 this.getprocedures();
                 this.getprocedurecategories();
@@ -44,42 +43,42 @@ export class ProceduresService {
          * I honestly am not sure why the following code works so well
          * Please.... be very careful before changing
          */
-        this.db.collection('procedureconfigs', ref => ref.where('hospitalid', '==', this.activehospital.id).where('status', '==', true)).snapshotChanges().pipe(
-            switchMap(f => {
-                return combineLatest(...f.map(t => {
-                    const customprocedure = t.payload.doc.data() as CustomProcedure;
-                    customprocedure.id = t.payload.doc.id;
-                    return this.db.collection('procedures').doc(customprocedure.parentprocedureid).snapshotChanges().pipe(
-                        map(originalproceduredata => {
-                            const rawprocedure = originalproceduredata.payload.data() as RawProcedure;
-                            rawprocedure.id = originalproceduredata.payload.id;
-                            return ({rawprocedure: rawprocedure, customprocedure: customprocedure});
-                        })
-                    );
-                }));
-            })
-        ).subscribe(mergedData => {
-            this.hospitalprocedures.next(mergedData);
-        });
+        // this.db.collection('procedureconfigs', ref => ref.where('hospitalid', '==', this.activehospital._id).where('status', '==', true)).snapshotChanges().pipe(
+        //     switchMap(f => {
+        //         return combineLatest(...f.map(t => {
+        //             const customprocedure = t.payload.doc.data() as CustomProcedure;
+        //             customprocedure.id = t.payload.doc.id;
+        //             return this.db.collection('procedures').doc(customprocedure.parentprocedureid).snapshotChanges().pipe(
+        //                 map(originalproceduredata => {
+        //                     const rawprocedure = originalproceduredata.payload.data() as RawProcedure;
+        //                     rawprocedure.id = originalproceduredata.payload.id;
+        //                     return ({rawprocedure: rawprocedure, customprocedure: customprocedure});
+        //                 })
+        //             );
+        //         }));
+        //     })
+        // ).subscribe(mergedData => {
+        //     this.hospitalprocedures.next(mergedData);
+        // });
     }
 
-    fetchproceduresincategory(categoryid: string): Query {
-        return this.db.firestore.collection('procedures').where('category.id', '==', categoryid);
+    fetchproceduresincategory(categoryid: string): any {
+        // return this.db.firestore.collection('procedures').where('category._id', '==', categoryid);
     }
 
-    disableprocedure(procedureid: string): Promise<void> {
-        return this.db.firestore.collection('procedureconfigs').doc(procedureid).update({status: false});
+    disableprocedure(procedureid: string) {
+        // return this.db.firestore.collection('procedureconfigs').doc(procedureid).update({status: false});
     }
 
     getprocedurecategories(): void {
-        this.db.firestore.collection('procedurecategories').orderBy('name', 'asc').onSnapshot(rawdocs => {
-            this.procedurecategories.next(rawdocs.docs.map(rawdoc => {
-                const procedurecategory: ProcedureCategory = rawdoc.data() as ProcedureCategory;
-                procedurecategory.id = rawdoc.id;
-                return procedurecategory;
-            }));
-            // console.log('done fetching ');
-        });
+        // this.db.firestore.collection('procedurecategories').orderBy('name', 'asc').onSnapshot(rawdocs => {
+        //     this.procedurecategories.next(rawdocs.docs.map(rawdoc => {
+        //         const procedurecategory: ProcedureCategory = rawdoc.data() as ProcedureCategory;
+        //         procedurecategory.id = rawdoc.id;
+        //         return procedurecategory;
+        //     }));
+        //     // console.log('done fetching ');
+        // });
     }
 
     syncprocedures(): any {
@@ -139,12 +138,12 @@ export class ProceduresService {
         //                 min: Number(proc.Minimum) || null
         //             },
         //             category: {
-        //                 id: procedurecategory.id,
+        //                 _id: procedurecategory._id,
         //                 subcategoryid: belongingcategory ? belongingcategory[0] : null,
         //                 code: proc.Code || null
         //             },
         //             numericid: Number(proc.NUMERICID) || null,
-        //             id: null,
+        //             _id: null,
         //             name: proc.Name ? proc.Name.toLowerCase() : ''
         //         };
         //         console.log(newprocedure);
@@ -160,13 +159,13 @@ export class ProceduresService {
         // });
     }
 
-    addcustomprocedure(customprocedure: CustomProcedure): Promise<any> {
-        customprocedure.hospitalid = this.activehospital.id;
+    addcustomprocedure(customprocedure: CustomProcedure): any {
+        customprocedure.hospitalid = this.activehospital._id;
         customprocedure.status = true;
-        customprocedure.creatorid = this.userdata.id;
+        customprocedure.creatorid = this.userdata._id;
         customprocedure.metadata = {
-            lastedit: Timestamp.now(),
-            date: Timestamp.now()
+            lastedit: moment().toDate(),
+            date: moment().toDate()
         };
         /**
          * remove insurance prices set to 0
@@ -176,13 +175,13 @@ export class ProceduresService {
                 delete customprocedure.insuranceprices[key];
             }
         });
-        return this.db.firestore.collection('procedureconfigs').add(customprocedure);
+        // return this.db.firestore.collection('procedureconfigs').add(customprocedure);
     }
 
-    editcustomprocedure(customprocedure: CustomProcedure): Promise<any> {
-        customprocedure.creatorid = this.userdata.id;
+    editcustomprocedure(customprocedure: CustomProcedure): any {
+        customprocedure.creatorid = this.userdata._id;
         customprocedure.metadata = {
-            lastedit: Timestamp.now(),
+            lastedit: moment().toDate(),
             date: customprocedure.metadata.date
         };
         /**
@@ -193,11 +192,11 @@ export class ProceduresService {
                 delete customprocedure.insuranceprices[key];
             }
         });
-        return this.db.firestore.collection('procedureconfigs').doc(customprocedure.id).update(customprocedure);
+        // return this.db.firestore.collection('procedureconfigs').doc(customprocedure.id).update(customprocedure);
     }
 
-    deactivateprocedure(procedureid: string): Promise<any> {
+    deactivateprocedure(procedureid: string): any {
 
-        return this.db.firestore.collection('hospitals').doc(this.activehospital.id).collection('procedures').doc(procedureid).delete();
+        // return this.db.firestore.collection('hospitals').doc(this.activehospital._id).collection('procedures').doc(procedureid).delete();
     }
 }

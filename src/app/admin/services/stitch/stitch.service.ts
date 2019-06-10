@@ -43,7 +43,6 @@ export class StitchService {
 
         // It's OK to get RemoteMongoDatabase *before* connecting/authenticating the client
         this.db = this.client.getServiceClient(RemoteMongoClient.factory, 'mongodb-atlas').db(environment.mongo.database);
-
         // console.log('StitchService#createStitchApp', {
         //   loggedIn: this.client.auth.isLoggedIn,
         //   hasRedirectResult: this.auth.hasRedirectResult(),

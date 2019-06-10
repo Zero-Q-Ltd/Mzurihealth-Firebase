@@ -92,7 +92,7 @@ export const navigation: FuseNavigation[] = [
                 url: 'payments/all',
             },
             // {
-            //     id: 'Today',
+            //     _id: 'Today',
             //     title: 'Add',
             //     // translate: 'NAV.add',
             //     type: 'item',

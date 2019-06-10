@@ -4,13 +4,24 @@ import {PaymentChannel} from '../../../models/payment/PaymentChannel';
 import {emptyhospital, Hospital} from '../../../models/hospital/Hospital';
 import {HospitalService} from '../../services/hospital.service';
 import {MouseEvent} from '@agm/core';
-import {firestore} from 'firebase';
 import {NotificationService} from '../../../shared/services/notifications.service';
 import {FuseConfirmDialogComponent} from '../../../../@fuse/components/confirm-dialog/confirm-dialog.component';
 import {MatDialog, MatDialogRef} from '@angular/material';
 import {emptypaymentmethod} from '../../../models/payment/CustomPaymentMethod.model';
 import {LocalcommunicationService} from '../localcommunication.service';
 import {fuseAnimations} from '../../../../@fuse/animations';
+import {
+    AnonymousCredential,
+    GoogleRedirectCredential,
+    RemoteMongoClient,
+    RemoteMongoDatabase,
+    Stitch,
+    StitchAppClient,
+    StitchAppClientConfiguration,
+    StitchAuth,
+    StitchUser,
+    BSON,
+} from 'mongodb-stitch-browser-sdk';
 
 declare let google: any;
 
@@ -78,7 +89,7 @@ export class HospconfigComponent implements OnInit {
              * initialize some vars
              */
             if (!hosp.location) {
-                this.temphospital.location = new firestore.GeoPoint(this.defaultlat, this.defaultlng);
+                // this.temphospital.location = new firestore.GeoPoint(this.defaultlat, this.defaultlng);
             } else {
                 this.defaultlat = hosp.location.latitude;
                 this.defaultlng = hosp.location.longitude;
@@ -88,8 +99,8 @@ export class HospconfigComponent implements OnInit {
     }
 
     mapClicked($event: MouseEvent): void {
-        const location: firestore.GeoPoint = new firestore.GeoPoint($event.coords.lat, $event.coords.lng);
-        this.temphospital.location = location;
+        // const location: BSON.geo = new firestore.GeoPoint($event.coords.lat, $event.coords.lng);
+        // this.temphospital.location = location;
     }
 
     ngOnInit(): void {

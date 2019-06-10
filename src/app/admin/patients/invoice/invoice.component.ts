@@ -36,7 +36,7 @@ export class InvoiceComponent implements OnInit, OnDestroy {
          */
         queue.mainpatientqueue.subscribe(queuedata => {
             queuedata.filter(value => {
-                if (value.patientdata.id === this.patientid) {
+                if (value.patientdata._id === this.patientid) {
                     this.patientdata = value;
                 }
             });

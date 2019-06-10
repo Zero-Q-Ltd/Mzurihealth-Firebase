@@ -136,12 +136,12 @@ export class AdminlayoutComponent implements OnInit {
         // Set the private defaults
         this._unsubscribeAll = new Subject();
         adminservice.observableuserdata.subscribe((admin: HospitalAdmin) => {
-            if (admin.id) {
+            if (admin._id) {
                 this.headerdata.userdata = admin;
             }
         });
         this.hospitalservice.activehospital.subscribe(hospital => {
-            if (hospital.id) {
+            if (hospital._id) {
                 this.headerdata.activehospital = hospital;
             }
         });

@@ -69,7 +69,7 @@ export class MainComponent implements OnInit, AfterViewInit {
         this.dialogRef.afterClosed().subscribe((res: HospitalAdmin) => {
             console.log(res);
             if (res) {
-                this.queue.assignadmin(data.queuedata, res.id);
+                this.queue.assignadmin(data.queuedata, res._id);
             }
         });
     }
@@ -77,7 +77,7 @@ export class MainComponent implements OnInit, AfterViewInit {
     customizeInvoice(data: MergedPatient_QueueModel): void {
         event.stopPropagation();
         this.dialogRef = this._matDialog.open(InvoiceCustomizationComponent, {
-            data: data.patientdata.id,
+            data: data.patientdata._id,
             width: '90%'
         });
 

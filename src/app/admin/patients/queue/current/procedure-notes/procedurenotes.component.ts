@@ -69,7 +69,7 @@ export class ProcedurenotesComponent implements OnInit {
         if (this.newnoteform.valid) {
             this.procedurenores.push(Object.assign({
                 admin: {
-                    id: this.adminservice.userdata.id,
+                    id: this.adminservice.userdata._id,
                     name: this.adminservice.userdata.data.displayName
                 },
                 note: ''

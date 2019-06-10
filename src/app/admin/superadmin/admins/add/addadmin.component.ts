@@ -67,10 +67,10 @@ export class AddadminComponent implements OnInit {
             this.admininvite.email = this.adminsform.get('email').value;
             this.admininvite.phone = this.adminsform.get('phone').value;
 
-            this.admininvite.categoyid = this.chosencategory.id;
+            this.admininvite.categoyid = this.chosencategory._id;
             this.admininvite.level = Number(leveldata.key);
-            this.admininvite.hospitalid = this.hospitalservice.activehospital.value.id;
-            this.admininvite.inviterid = this.userdata.id;
+            this.admininvite.hospitalid = this.hospitalservice.activehospital.value._id;
+            this.admininvite.inviterid = this.userdata._id;
 
             console.log(this.admininvite);
             if (!this.hospitalservice.adminexists(this.admininvite.email)) {

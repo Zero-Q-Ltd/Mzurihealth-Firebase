@@ -13,8 +13,8 @@ import {Router} from '@angular/router';
 import {Paymentmethods} from '../../../models/payment/PaymentChannel';
 import {PaymentmethodService} from '../../services/paymentmethod.service';
 import {NumberValidator} from '../../validators/number.validator';
-import {firestore} from 'firebase';
 import {FilenumberValidator} from '../../validators/filenumber.validator';
+import {StitchService} from '../../services/stitch/stitch.service';
 
 @Component({
     selector: 'app-add',
@@ -47,9 +47,10 @@ export class AddComponent implements OnInit {
                 private router: Router,
                 private paymentethods: PaymentmethodService,
                 private notificationservice: NotificationService,
+                private stitch: StitchService,
                 @Optional() @Inject(MAT_DIALOG_DATA) public data?: any) {
 
-        this.maxDate = firestore.Timestamp.now().toDate();
+        this.maxDate = moment().toDate();
 
 
         /**
@@ -63,7 +64,7 @@ export class AddComponent implements OnInit {
 
 
         this.hospitalservice.activehospital.subscribe(hospital => {
-            if (hospital.id) {
+            if (hospital._id) {
                 this.activehospital = hospital;
                 this.patientfileno.no = (hospital.patientcount + 1).toString();
 
@@ -144,9 +145,9 @@ export class AddComponent implements OnInit {
     insurancechanges(): void {
 
         this.insurance.controls.forEach(x => {
-            x.get('id').valueChanges.subscribe(g => {
+            x.get('_id').valueChanges.subscribe(g => {
                 if (g) {
-                    if (x.get('id').value.toString().length > -1) {
+                    if (x.get('_id').value.toString().length > -1) {
                         x.get('insurancenumber').enable({emitEvent: false});
                     } else {
                         x.get('insurancenumber').disable({emitEvent: false});
@@ -164,8 +165,8 @@ export class AddComponent implements OnInit {
     removeInsurance(index: number): void {
         if (index === 0) {
             // clear the insurance input
-            this.insurance.at(index).get('id').patchValue(undefined);
-            this.insurance.at(index).get('id').markAsUntouched();
+            this.insurance.at(index).get('_id').patchValue(undefined);
+            this.insurance.at(index).get('_id').markAsUntouched();
             this.insurance.at(index).get('insurancenumber').patchValue(undefined);
             this.insurance.at(index).get('insurancenumber').disable();
             return;

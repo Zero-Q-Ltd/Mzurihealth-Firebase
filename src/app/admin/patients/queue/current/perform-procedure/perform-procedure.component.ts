@@ -59,7 +59,7 @@ export class PerformProcedureComponent implements OnInit {
                 this.procedureResults[i].notes[0] = {
                     note: '',
                     admin: {
-                        id: this.adminservice.userdata.id,
+                        id: this.adminservice.userdata._id,
                         name: this.adminservice.userdata.data.displayName
                     }
                 };

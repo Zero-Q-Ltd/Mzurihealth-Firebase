@@ -49,7 +49,7 @@ export class GeneralDetailsComponent implements OnInit {
                 /**
                  * check if this is an empty patient before
                  */
-                if (!value.patientdata.id) {
+                if (!value.patientdata._id) {
                     return;
                 }
                 this.initFormBuilder();
@@ -75,7 +75,7 @@ export class GeneralDetailsComponent implements OnInit {
                     .get('gender').patchValue(value.patientdata.personalinfo.gender);
 
                 this.patientsForm.controls['personalinfo']
-                    .get('birth').patchValue(value.patientdata.personalinfo.dob.toDate());
+                    .get('birth').patchValue(value.patientdata.personalinfo.dob);
 
                 this.patientsForm.controls['personalinfo']
                     .get('email').patchValue(value.patientdata.personalinfo.email);
@@ -129,7 +129,7 @@ export class GeneralDetailsComponent implements OnInit {
 
     submitPatientsForm(): void {
         if (this.patientsForm.valid) {
-            this.patientservice.updatePatient(this.currentpatient.id, this.patientsForm.getRawValue()).then(() => {
+            this.patientservice.updatePatient(this.currentpatient._id, this.patientsForm.getRawValue()).then(() => {
                 this.notificationservice.notify({
                     alert_type: 'success',
                     body: 'Patient successifully updated',
@@ -184,9 +184,9 @@ export class GeneralDetailsComponent implements OnInit {
 
     insurancechanges(): void {
         this.insurance.controls.forEach(x => {
-            x.get('id').valueChanges.subscribe(g => {
+            x.get('_id').valueChanges.subscribe(g => {
                 if (g) {
-                    if (x.get('id').value.toString().length > -1) {
+                    if (x.get('_id').value.toString().length > -1) {
                         x.get('insurancenumber').enable({emitEvent: false});
                     } else {
                         x.get('insurancenumber').disable({emitEvent: false});

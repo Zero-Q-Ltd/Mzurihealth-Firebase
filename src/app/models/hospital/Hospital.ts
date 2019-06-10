@@ -1,12 +1,11 @@
-import {firestore} from 'firebase';
 import {emptymetadata, Metadata} from '../universal';
 import {CustomPaymentMethod} from '../payment/CustomPaymentMethod.model';
 
 export interface Hospital {
-    location: firestore.GeoPoint;
+    location: any;
     name: string;
     userid: string;
-    id: string;
+    _id: string;
     description: string;
     status: boolean;
     contactperson: {
@@ -43,9 +42,9 @@ export const emptyhospital: Hospital = {
         phone: null,
         address: null
     },
-    location: new firestore.GeoPoint(0, 0),
+    location: null,
     name: null,
-    id: null,
+    _id: null,
     userid: null,
     description: null,
     patientcount: null,

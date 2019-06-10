@@ -16,7 +16,7 @@ import {
     StitchAppClientConfiguration,
     StitchAuth,
     StitchUser,
-    BSON
+    BSON,
 } from 'mongodb-stitch-browser-sdk';
 
 @Injectable({
@@ -24,7 +24,13 @@ import {
 })
 export class AdminService {
 
+    /**
+     * The only source of truth
+     */
     observableuserdata: ReplaySubject<HospitalAdmin> = new ReplaySubject(1);
+    /**
+     * Secondary copy of data to avoid many unnecessary subscriptions
+     */
     userdata: HospitalAdmin = emptyadmin;
     activeurl: string = null;
     firstlogin = false;
@@ -37,6 +43,9 @@ export class AdminService {
         this.stitch.user.subscribe(value => {
             this.getuser(value);
         });
+        this.observableuserdata.subscribe(value => {
+            this.userdata = value;
+        });
     }
 
     // The the status of the activeadmin
@@ -46,51 +55,24 @@ export class AdminService {
 
     }
 
-    getuser(user: StitchUser): void {
+    async getuser(user: StitchUser) {
         this.stitch.db.collection<HospitalAdmin>('hospitaladmins')
             .findOne({_id: new BSON.ObjectId(user.id)})
             .then(userdata => {
-                    console.log(user.id);
-                    console.log(userdata);
-                    // const temp = userdata;
-                    // if (!temp.status) {
-                    //     this.observableuserdata.next(null);
-                    //     this.notificationservice.notify({
-                    //         alert_type: 'info',
-                    //         body: 'Your account has been disabled!! Please contact us for more information',
-                    //         title: 'Error!',
-                    //         duration: 10000,
-                    //         icon: '',
-                    //         placement: {
-                    //             vertical: 'top',
-                    //             horizontal: 'center'
-                    //         }
-                    //     });
-                    // }
-                    //
-                    // if (temp['config']['availability'] == null) {
-                    //     const config = temp['config'];
-                    //     config['availability'] = 2;
-                    //     // this.db.firestore.collection('hospitaladmins').doc(user.uid).update({config: config});
-                    // }
-                    // // this.userdata = this.objectassign(temp, emptyadmin)
-                    // this.userdata = emptyadmin;
-                    // Object.assign(this.userdata, temp);
-                    //
-                    // // this.showNotification('success', `Welcome ${user.displayName}`, 'bottom', 5000)
-                    //
-                    // this.observableuserdata.next(temp.status ? this.userdata : null);
-                    // this.getadmincategories();
-
-                }
-            );
+                this.observableuserdata.next(userdata);
+            });
+        const stream = await this.stitch.db.collection<HospitalAdmin>('hospitaladmins')
+            .watch([new BSON.ObjectId(user.id)]);
+        stream.onNext(data => {
+            this.observableuserdata.next(data.fullDocument);
+        });
     }
 
     getadmincategories(): void {
         // this.db.firestore.collection('admincategories').onSnapshot(allcategorydata => {
         //     this.admincategories.next(allcategorydata.docs.map(categorydata => {
         //         const category = categorydata.data() as AdminCategory;
-        //         category.id = categorydata.id;
+        //         category._id = categorydata._id;
         //         return category;
         //     }));
         // });
@@ -140,7 +122,7 @@ export class AdminService {
         //     if (!snapshot.empty) {
         //         const invite = snapshot.docs[0].data() as AdminInvite;
         //         const newadmin: HospitalAdmin = {
-        //             id: user.uid,
+        //             _id: user.uid,
         //             data: {
         //                 displayName: user.displayName,
         //                 email: user.email,
@@ -167,7 +149,7 @@ export class AdminService {
         //             }
         //         };
         //         this.db.firestore.collection(`hospitaladmins`).doc(user.uid).set(newadmin).then(result => {
-        //             this.db.firestore.collection(`admininvites`).doc(snapshot.docs[0].id).delete();
+        //             this.db.firestore.collection(`admininvites`).doc(snapshot.docs[0]._id).delete();
         //             if (this.activeurl === '/authentication/signin') {
         //                 this.router.navigate(['/dashboard']);
         //             }

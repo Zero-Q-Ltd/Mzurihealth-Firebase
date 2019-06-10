@@ -11,11 +11,8 @@ import {FuseProgressBarModule} from '@fuse/components';
 import {fuseConfig} from 'app/fuse-config';
 
 import {AppComponent} from 'app/app.component';
-import {AngularFirestoreModule} from '@angular/fire/firestore';
 import {RouterModule} from '@angular/router';
-import {AngularFireAuth} from '@angular/fire/auth';
 import {AppRoutingModule} from './app-routing.module';
-import {AngularFireModule} from '@angular/fire';
 import {FuseSharedModule} from '../@fuse/shared.module';
 import {Error404Module} from './errorpages/404/error-404.module';
 import {Error500Module} from './errorpages/500/error-500.module';
@@ -54,11 +51,7 @@ export const firebaseConfig = {
         TranslateModule.forRoot(),
         AppRoutingModule,
         RouterModule,
-        AngularFireModule.initializeApp(firebaseConfig),
-        AngularFirestoreModule,
-        AngularFirestoreModule.enablePersistence({
-            synchronizeTabs: true
-        }),
+
         MatSnackBarModule,
         Error404Module,
         Error500Module,
@@ -76,7 +69,7 @@ export const firebaseConfig = {
     ],
 
     entryComponents: [NotificationComponent],
-    providers: [AngularFireAuth],
+    providers: [],
     bootstrap: [
         AppComponent,
     ]

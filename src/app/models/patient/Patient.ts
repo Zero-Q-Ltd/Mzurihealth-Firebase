@@ -1,5 +1,4 @@
 import {Customfields, emptymetadata, Metadata} from '../universal';
-import {firestore} from 'firebase';
 import {HospFile} from '../hospital/HospFile';
 import {Condition} from '../procedure/MedicalConditions.model';
 import {Allegy} from '../procedure/Allergy.model';
@@ -15,12 +14,12 @@ export interface Patient {
         phone: number,
         email: string,
         idno: string,
-        dob: firestore.Timestamp,
+        dob: Date,
     };
     fileinfo?: HospFile;
-    id: string;
+    _id: string;
     /**
-     * Optional parent id number for minors
+     * Optional parent _id number for minors
      */
     parentid?: string;
 
@@ -77,7 +76,7 @@ export const emptypatient: Patient = {
         idno: null,
         dob: null,
     },
-    id: null,
+    _id: null,
     nextofkin: {
         name: null,
         relationship: null,

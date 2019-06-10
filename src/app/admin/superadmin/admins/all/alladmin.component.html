@@ -78,13 +78,17 @@
         <mat-header-cell *matHeaderCellDef>Action
         </mat-header-cell>
         <mat-cell *matCellDef="let admin">
-            <button (click)='disableadmin($event, admin) ; false' *ngIf="admin.status" [disabled]="userdata.config.level>admin.config.level || userdata.id === admin.id " class="sendbutton"
+            <button (click)='disableadmin($event, admin) ; false' *ngIf="admin.status"
+                    [disabled]="userdata.config.level>admin.config.level || userdata._id === admin._id "
+                    class="sendbutton"
                     color="warn" mat-raised-button
                     matRipple>
                 Disable User
                 <mat-icon>cancel</mat-icon>
             </button>
-            <button (click)='enableadmin($event, admin) ; false' *ngIf="!admin.status" [disabled]="userdata.config.level>admin.config.level || userdata.id === admin.id " class="sendbutton"
+            <button (click)='enableadmin($event, admin) ; false' *ngIf="!admin.status"
+                    [disabled]="userdata.config.level>admin.config.level || userdata._id === admin._id "
+                    class="sendbutton"
                     color="accent" mat-raised-button
                     matRipple>
                 Enable User

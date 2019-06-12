@@ -1,6 +1,6 @@
 import {Component, Inject, OnInit, ViewEncapsulation} from '@angular/core';
 import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {Patient} from '../../../models/patient/Patient';
+import {Insurance, Patient} from '../../../models/patient/Patient';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import {PaymentmethodService} from '../../services/paymentmethod.service';
 import {PaymentChannel, Paymentmethods} from '../../../models/payment/PaymentChannel';
@@ -142,12 +142,12 @@ export class PushqueueComponent implements OnInit {
                     if (pData.insurance.length === 0) {
                         this.insuranceAvailable = false;
                     }
-                    pData.insurance.map((insuranceData: { id: string, insuranceno: string }, index) => {
+                    pData.insurance.map((insuranceData: Insurance, index) => {
                         this.insuranceAvailable = true;
                         this.addInsurance();
 
                         const mergedData = Object.assign({}, this.allInsurance[insuranceData.id],
-                            {id: insuranceData.id, insuranceno: insuranceData.insuranceno});
+                            {id: insuranceData.id, insuranceno: insuranceData.insuranceNo});
 
                         this.insurance.controls[index].get('insuranceControl').patchValue(mergedData.id, {emitEvent: false});
                         this.insurance.controls[index].get('insurancenumber').patchValue(mergedData.insuranceno, {emitEvent: false});

@@ -1,23 +1,22 @@
 import {Injectable} from '@angular/core';
 import {HospitalService} from './hospital.service';
-import {BehaviorSubject, combineLatest} from 'rxjs';
+import {BehaviorSubject} from 'rxjs';
 import {Hospital} from '../../models/hospital/Hospital';
 import {CustomProcedure} from '../../models/procedure/CustomProcedure';
 import {ProcedureCategory} from '../../models/procedure/ProcedureCategory';
 import {NotificationService} from '../../shared/services/notifications.service';
-import {RawProcedure} from '../../models/procedure/RawProcedure';
 import {HospitalAdmin} from '../../models/user/HospitalAdmin';
 import {AdminService} from './admin.service';
-import {map, switchMap} from 'rxjs/operators';
 import {StitchService} from './stitch/stitch.service';
 import * as moment from 'moment';
+import {MergedProcedureModel} from '../../models/procedure/MergedProcedure.model';
 
 @Injectable({
     providedIn: 'root'
 })
 export class ProceduresService {
-    hospitalprocedures: BehaviorSubject<Array<{ rawprocedure: RawProcedure, customprocedure: CustomProcedure }>> =
-        new BehaviorSubject<Array<{ rawprocedure: RawProcedure, customprocedure: CustomProcedure }>>([]);
+    hospitalprocedures: BehaviorSubject<Array<MergedProcedureModel>> =
+        new BehaviorSubject<Array<MergedProcedureModel>>([]);
     activehospital: Hospital;
     procedurecategories: BehaviorSubject<Array<ProcedureCategory>> = new BehaviorSubject<Array<ProcedureCategory>>([]);
     userdata: HospitalAdmin;

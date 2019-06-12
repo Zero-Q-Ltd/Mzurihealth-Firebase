@@ -12,14 +12,14 @@ export interface AdminInvite {
     id: string;
 }
 
-export const emptyadmininvite = {
+export const emptyadmininvite: AdminInvite = {
     email: null,
     name: null,
     phone: null,
-    categoyid: null,
+    categoyId: null,
     level: null,
-    inviterid: null,
-    hospitalid: null,
+    inviterId: null,
+    hospitalId: null,
     id: null,
     metadata: emptymetadata
 };

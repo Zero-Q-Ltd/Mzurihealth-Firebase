@@ -1,7 +1,7 @@
 import {Component, Inject, OnInit, Optional} from '@angular/core';
 import {Paymentmethods} from '../../../models/payment/PaymentChannel';
 import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {Patient} from '../../../models/patient/Patient';
+import {Insurance, Patient} from '../../../models/patient/Patient';
 import {AdminService} from '../../services/admin.service';
 import {PatientService} from '../../services/patient.service';
 import {NotificationService} from '../../../shared/services/notifications.service';
@@ -175,14 +175,14 @@ export class ProfileComponent implements OnInit {
         });
     }
 
-    replicateInsurance(insurancedata: { id: string; insuranceno: string; }): FormGroup {
+    replicateInsurance(insurancedata: Insurance): FormGroup {
 
         const insurancex = new FormControl({
             value: insurancedata.id,
             disabled: false
         });
         const insurancenumber = new FormControl({
-            value: insurancedata.insuranceno,
+            value: insurancedata.insuranceNo,
             disabled: false
         });
         return this.formBuilder.group({

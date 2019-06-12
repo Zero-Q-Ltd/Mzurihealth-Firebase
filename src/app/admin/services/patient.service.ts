@@ -103,7 +103,7 @@ export class PatientService {
         /**
          * patient document ID
          * **/
-        const patientID = this.stitch.db.createId();
+        const patientID = new BSON.;
 
 
         const modifiedData = {

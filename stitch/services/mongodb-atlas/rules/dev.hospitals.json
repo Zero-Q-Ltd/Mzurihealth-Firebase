@@ -1,12 +1,12 @@
 {
-    "id": "5cdb2ed5ac8a61d344b47d0d",
+    "id": "5cfdb634becb12c25bcd41c2",
     "database": "dev",
-    "collection": "hospitaladmins",
+    "collection": "hospitals",
     "roles": [
         {
             "name": "default",
             "apply_when": {},
-            "write": true,
+            "read": true,
             "insert": true,
             "delete": true,
             "additional_fields": {}

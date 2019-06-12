@@ -26,7 +26,7 @@ export class PatientnotesService {
 
     fetchpatientnotes(id: string): void {
         // this.stitch.db.collection('patientnotes')
-        //     .where('patientid', '==', id)
+        //     .where('patientId', '==', id)
         //     .limit(100)
         //     .orderBy('metadata.date', 'desc')
         //     .onSnapshot(rawdata => {
@@ -41,9 +41,9 @@ export class PatientnotesService {
             id: this.admiservice.userdata._id,
             name: this.admiservice.userdata.data.displayName
         };
-        note.patientid = this.patientid;
+        note.patientId = this.patientid;
         note.metadata = {
-            lastedit: moment().toDate(),
+            lastEdit: moment().toDate(),
             date: moment().toDate()
         };
         // return this.db.collection('patientnotes').add(note);

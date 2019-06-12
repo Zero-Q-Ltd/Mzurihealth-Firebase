@@ -1,18 +1,18 @@
 export interface RawProcedure {
-    name: string,
-    id: string
+    name: string;
+    id: string;
     pricing: {
         max: number | string,
         min: number | string,
-    },
-    category: rawprocedurecategory
-    numericid: number
+    };
+    category: RawProcedureCategory;
+    numericid: number;
 }
 
-export interface rawprocedurecategory {
-    id: string,
-    code: string,
-    subcategoryid: string | null
+export interface RawProcedureCategory {
+    id: string;
+    code: string;
+    subCategoryId: string | null;
 }
 
 export const emptyprawrocedure: RawProcedure = {
@@ -26,6 +26,6 @@ export const emptyprawrocedure: RawProcedure = {
     category: {
         id: null,
         code: null,
-        subcategoryid: null
+        subCategoryId: null
     },
 };

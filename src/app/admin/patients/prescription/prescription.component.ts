@@ -4,7 +4,7 @@ import {QueueService} from '../../services/queue.service';
 import {PaymentmethodService} from '../../services/paymentmethod.service';
 import {PatientvisitService} from '../../services/patientvisit.service';
 import {MAT_DIALOG_DATA} from '@angular/material';
-import {emptymergedQueueModel, MergedPatient_QueueModel} from '../../../models/visit/MergedPatient_Queue.model';
+import {emptymergedQueueModel, MergedPatientQueueModel} from '../../../models/visit/MergedPatientQueueModel';
 import {PaymentChannel} from '../../../models/payment/PaymentChannel';
 import {Subject} from 'rxjs';
 import {Hospital} from '../../../models/hospital/Hospital';
@@ -15,7 +15,7 @@ import {Hospital} from '../../../models/hospital/Hospital';
     styleUrls: ['./prescription.component.scss']
 })
 export class PrescriptionComponent implements OnInit {
-    patientdata: MergedPatient_QueueModel = {...emptymergedQueueModel};
+    patientdata: MergedPatientQueueModel = {...emptymergedQueueModel};
     allpaymentchannels: Array<PaymentChannel> = [];
     activehospital: Hospital;
     hidden = false;

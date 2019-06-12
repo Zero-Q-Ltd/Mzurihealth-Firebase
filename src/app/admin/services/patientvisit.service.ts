@@ -25,7 +25,7 @@ export class PatientvisitService {
                 private stitch: StitchService) {
         /*** DANGEROUS TERRITORY ****
          * the order of calling these functions is very important,
-         * because if hospitalid is missing some queries that execute later might fail
+         * because if hospitalId is missing some queries that execute later might fail
          */
         this.adminservice.observableuserdata.subscribe(admin => {
             this.adminid = admin._id;
@@ -50,20 +50,20 @@ export class PatientvisitService {
      * @param per
      */
     addprocedure(visitid: string, procedure: MergedProcedureModel, per: Procedureperformed) {
-        per.name = procedure.rawprocedure.name;
-        per.category = procedure.rawprocedure.category;
+        per.name = procedure.rawProcedure.name;
+        per.category = procedure.rawProcedure.category;
         per.metadata = {
-            lastedit: moment().toDate(),
+            lastEdit: moment().toDate(),
             date: moment().toDate()
         };
         per.adminid = this.adminid;
         per.payment = {
             amount: 0,
-            hasinsurance: false,
+            hasInsurance: false,
             methods: []
         };
-        per.originalprocedureid = procedure.rawprocedure.id;
-        per.customprocedureid = procedure.customprocedure.id;
+        per.originalProcedureId = procedure.rawProcedure.id;
+        per.customProcedureId = procedure.customProcedure.id;
         // return this.db.collection('hospitalvisits').doc(visitid).update({
         //     procedures: firestore.FieldValue.arrayUnion(per)
         // });
@@ -88,8 +88,8 @@ export class PatientvisitService {
 
     fetchvisithistory(): void {
         // this.db.firestore.collection('hospitalvisits')
-        //     .where('hospitalid', '==', this.hospitalid)
-        //     .where('patientid', '==', this.patientid)
+        //     .where('hospitalId', '==', this.hospitalId)
+        //     .where('patientId', '==', this.patientId)
         //     .orderBy('metadata.date', 'asc')
         //     .limit(10)
         //     .onSnapshot(snapshot => {

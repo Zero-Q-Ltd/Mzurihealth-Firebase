@@ -1,6 +1,6 @@
 import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {MatDialog, MatDialogRef, MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
-import {RawProcedure, rawprocedurecategory} from '../../../../models/procedure/RawProcedure';
+import {RawProcedure, RawProcedureCategory} from '../../../../models/procedure/RawProcedure';
 import {ProceduresService} from '../../../services/procedures.service';
 import {CustomProcedure, emptycustomprocedure} from '../../../../models/procedure/CustomProcedure';
 import {ProcedureCategory} from '../../../../models/procedure/ProcedureCategory';
@@ -49,11 +49,11 @@ export class AllComponent implements OnInit, AfterViewInit {
         this.hospitalprocedures.filter = filterValue.trim().toLowerCase();
     }
 
-    getcategory(category: rawprocedurecategory): string {
-        if (category.subcategoryid) {
+    getcategory(category: RawProcedureCategory): string {
+        if (category.subCategoryId) {
             return this.procedurecategories.find(cat => {
                 return cat.id === category.id;
-            }).subcategories[category.subcategoryid].name;
+            }).subcategories[category.subCategoryId].name;
         } else {
             return '';
         }
@@ -76,7 +76,7 @@ export class AllComponent implements OnInit, AfterViewInit {
                             horizontal: 'right'
                         },
                         title: 'Success',
-                        alert_type: 'success',
+                        alertType: 'success',
                         body: 'Deleted'
                     });
                 });
@@ -92,7 +92,7 @@ export class AllComponent implements OnInit, AfterViewInit {
      */
     onSelect(selected: { rawprocedure: RawProcedure, customprocedure: CustomProcedure }): void {
         this.selectedprocedure = selected.customprocedure;
-        this.communicationservice.onprocedureselected.next({selectiontype: 'customprocedure', selection: selected});
+        this.communicationservice.onprocedureselected.next({selectiontype: 'customProcedure', selection: selected});
     }
 
 }

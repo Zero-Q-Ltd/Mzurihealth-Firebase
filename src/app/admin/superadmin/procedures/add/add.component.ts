@@ -3,7 +3,7 @@ import {fuseAnimations} from '../../../../../@fuse/animations';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ProceduresService} from '../../../services/procedures.service';
 import {ProcedureCategory} from '../../../../models/procedure/ProcedureCategory';
-import {emptyprawrocedure, RawProcedure, rawprocedurecategory} from '../../../../models/procedure/RawProcedure';
+import {emptyprawrocedure, RawProcedure, RawProcedureCategory} from '../../../../models/procedure/RawProcedure';
 import {MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
 import {FuseSidebarService} from '../../../../../@fuse/components/sidebar/sidebar.service';
 import {LocalcommunicationService} from '../../localcommunication.service';
@@ -69,11 +69,11 @@ export class AddComponent implements OnInit, AfterViewInit {
         this.categoryprocedures.sort = this.sort;
     }
 
-    getcategory(category: rawprocedurecategory): any {
-        if (category.subcategoryid) {
+    getcategory(category: RawProcedureCategory): any {
+        if (category.subCategoryId) {
             return this.procedurecategories.find(cat => {
                 return cat.id === category.id;
-            }).subcategories[category.subcategoryid].name;
+            }).subcategories[category.subCategoryId].name;
         } else {
             return '';
         }
@@ -95,7 +95,7 @@ export class AddComponent implements OnInit, AfterViewInit {
                     horizontal: 'center'
                 },
                 title: 'Warning',
-                alert_type: 'info',
+                alertType: 'info',
                 body: 'this procedure is already configured'
             });
         } else {

@@ -2,7 +2,7 @@ import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {MatDialog, MatDialogRef, MatTableDataSource} from '@angular/material';
 import {fuseAnimations} from '../../../../../@fuse/animations';
 import {QueueService} from '../../../services/queue.service';
-import {MergedPatient_QueueModel} from '../../../../models/visit/MergedPatient_Queue.model';
+import {MergedPatientQueueModel} from '../../../../models/visit/MergedPatientQueueModel';
 import * as moment from 'moment';
 import {AdminSelectionComponent} from '../admin-selection/admin-selection.component';
 import {HospitalAdmin} from '../../../../models/user/HospitalAdmin';
@@ -17,7 +17,7 @@ import {InvoiceComponent} from '../../invoice/invoice.component';
     animations: fuseAnimations
 })
 export class MineComponent implements OnInit {
-    patientsdatasource = new MatTableDataSource<MergedPatient_QueueModel>();
+    patientsdatasource = new MatTableDataSource<MergedPatientQueueModel>();
     patientsheaders = ['FileNo', 'Photo', 'Name', 'ID', 'Age', 'Phone', 'Last Visit', 'Status', 'Action'];
     dialogRef: MatDialogRef<any>;
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
@@ -26,7 +26,7 @@ export class MineComponent implements OnInit {
                 public _matDialog: MatDialog) {
         queue.mypatientqueue.subscribe(value => {
             this.patientsdatasource.data = value.sort((a, b) => {
-                return a.queuedata.metadata.lastedit.getMilliseconds() - b.queuedata.metadata.lastedit.getMilliseconds();
+                return a.queuedata.metadata.lastEdit.getMilliseconds() - b.queuedata.metadata.lastEdit.getMilliseconds();
             });
         });
     }
@@ -39,7 +39,7 @@ export class MineComponent implements OnInit {
     }
 
 
-    acceptpatient(data: MergedPatient_QueueModel): void {
+    acceptpatient(data: MergedPatientQueueModel): void {
         event.stopPropagation();
         this.queue.acceptpatient(data.queuedata);
 
@@ -54,7 +54,7 @@ export class MineComponent implements OnInit {
         // });
     }
 
-    viewinvoice(data: MergedPatient_QueueModel): void {
+    viewinvoice(data: MergedPatientQueueModel): void {
         event.stopPropagation();
 
         this.dialogRef = this._matDialog.open(InvoiceComponent, {
@@ -67,7 +67,7 @@ export class MineComponent implements OnInit {
         this.dialogRef.afterClosed();
     }
 
-    redirectpatient(data: MergedPatient_QueueModel): void {
+    redirectpatient(data: MergedPatientQueueModel): void {
         event.stopPropagation();
 
         this.confirmDialogRef = this._matDialog.open(FuseConfirmDialogComponent, {

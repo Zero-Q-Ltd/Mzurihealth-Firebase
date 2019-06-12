@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {BehaviorSubject} from 'rxjs';
-import {MergedPatient_QueueModel} from '../../models/visit/MergedPatient_Queue.model';
+import {MergedPatientQueueModel} from '../../models/visit/MergedPatientQueueModel';
 import {HospitalService} from './hospital.service';
 import {emptypatientvisit, PatientVisit} from '../../models/visit/PatientVisit';
 import {emptypatient, Patient} from '../../models/patient/Patient';
@@ -13,7 +13,7 @@ import {StitchService} from './stitch/stitch.service';
 })
 export class PaymentHistoryService {
     activehospitalid: string;
-    paymentshistory: BehaviorSubject<Array<MergedPatient_QueueModel>> = new BehaviorSubject([]);
+    paymentshistory: BehaviorSubject<Array<MergedPatientQueueModel>> = new BehaviorSubject([]);
 
     constructor(private stitch: StitchService, private hospitalservice: HospitalService) {
         this.hospitalservice.activehospital.subscribe(hospital => {
@@ -30,20 +30,20 @@ export class PaymentHistoryService {
     gethistory(timeframe: 'day' | 'week' | 'month' | 'year'): void {
         //     this.paymentshistory.next([]);
         //     this.db.firestore.collection('hospitalvisits')
-        //         .where('hospitalid', '==', this.activehospitalid)
+        //         .where('hospitalId', '==', this.activehospitalid)
         //         .where('checkin.status', '==', 4)
         //         .where('metadata.date', '>=', this.timeframetodate(timeframe))
         //         .get().then(async value => {
         //         Promise.all(value.docs.map(async docdata => {
         //             const visit: PatientVisit = Object.assign({...emptypatientvisit}, docdata.data(), {id: docdata.id});
-        //             return this.db.firestore.collection('patients').doc(visit.patientid).get().then(async value1 => {
+        //             return this.db.firestore.collection('patients').doc(visit.patientId).get().then(async value1 => {
         //                 const patient: Patient = Object.assign({...emptypatient}, value1.data(), {_id: value1.id});
         //                 const filedata = await this.db.firestore.collection('hospitals').doc(this.activehospitalid)
         //                     .collection('filenumbers')
         //                     .doc(patient._id)
         //                     .get();
         //                 const file: HospFile = Object.assign({...emptyfile}, filedata.data(), {id: filedata.id});
-        //                 patient.fileinfo = file;
+        //                 patient.fileInfo = file;
         //                 return {queuedata: visit, patientdata: patient};
         //             });
         //

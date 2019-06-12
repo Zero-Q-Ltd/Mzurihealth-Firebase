@@ -1,7 +1,7 @@
 import {Component, Inject, OnInit, ViewEncapsulation} from '@angular/core';
 import {QueueService} from '../../services/queue.service';
 import {PatientvisitService} from '../../services/patientvisit.service';
-import {emptymergedQueueModel, MergedPatient_QueueModel} from '../../../models/visit/MergedPatient_Queue.model';
+import {emptymergedQueueModel, MergedPatientQueueModel} from '../../../models/visit/MergedPatientQueueModel';
 import {emptyprocedureperformed, Procedureperformed} from '../../../models/procedure/Procedureperformed';
 import {PaymentmethodService} from '../../services/paymentmethod.service';
 import {PaymentChannel, Paymentmethods} from '../../../models/payment/PaymentChannel';
@@ -24,7 +24,7 @@ import {PrescriptionComponent} from '../prescription/prescription.component';
     animations: fuseAnimations
 })
 export class InvoiceCustomizationComponent implements OnInit {
-    patientdata: MergedPatient_QueueModel = {...emptymergedQueueModel};
+    patientdata: MergedPatientQueueModel = {...emptymergedQueueModel};
     allpaymentchannels: Array<PaymentChannel> = [];
     hospitalmethods: Array<CustomPaymentMethod> = [];
     dialogRef: MatDialogRef<any>;
@@ -32,7 +32,7 @@ export class InvoiceCustomizationComponent implements OnInit {
     hospitaladmins: Array<HospitalAdmin> = [];
     proceduresdatasouce: MatTableDataSource<Procedureperformed> = new MatTableDataSource<Procedureperformed>();
     procedureheaders = ['name', 'admin-time', 'payment-method', 'cost'];
-    paymentmethodheaders = ['channel', 'amount', 'transactionid'];
+    paymentmethodheaders = ['channel', 'amount', 'transactionId'];
     multipayment = false;
     selectedinsurance: Paymentmethods;
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
@@ -62,7 +62,7 @@ export class InvoiceCustomizationComponent implements OnInit {
             this.getqueueinfo();
         });
         this.hospital.activehospital.subscribe(hosp => {
-            this.hospitalmethods = hosp.paymentmethods;
+            this.hospitalmethods = hosp.paymentMethods;
         });
     }
 
@@ -79,7 +79,7 @@ export class InvoiceCustomizationComponent implements OnInit {
                         /**
                          * Calculate the totals with the first pre-selected channel
                          */
-                        this.setchannel(this.allpaymentchannels.filter(channel => channel.id === value.queuedata.payment.singlepayment.channelid)[0]);
+                        this.setchannel(this.allpaymentchannels.filter(channel => channel.id === value.queuedata.payment.singlePayment.channelId)[0]);
                     }
                 }
             });
@@ -93,11 +93,11 @@ export class InvoiceCustomizationComponent implements OnInit {
              * check if the procedure contains a custom price for insurance
              */
             if (!!this.procedureservice.hospitalprocedures.value.find(value => {
-                return value.customprocedure.id === customprocedureid && value.customprocedure.custominsuranceprice && !!value.customprocedure.insuranceprices[insuranceid];
+                return value.customprocedure.id === customprocedureid && value.customprocedure.customInsurancePrice && !!value.customprocedure.insurancePrices[insuranceid];
             })) {
                 return this.procedureservice.hospitalprocedures.value.find(value => {
-                    return value.customprocedure.id === customprocedureid && !!value.customprocedure.insuranceprices[insuranceid];
-                }).customprocedure.insuranceprices[insuranceid];
+                    return value.customprocedure.id === customprocedureid && !!value.customprocedure.insurancePrices[insuranceid];
+                }).customprocedure.insurancePrices[insuranceid];
 
             } else {
                 /**
@@ -105,7 +105,7 @@ export class InvoiceCustomizationComponent implements OnInit {
                  */
                 return this.procedureservice.hospitalprocedures.value.find(value => {
                     return value.customprocedure.id === customprocedureid;
-                }).customprocedure.regularprice;
+                }).customprocedure.regularPrice;
             }
         } else {
             /**
@@ -113,7 +113,7 @@ export class InvoiceCustomizationComponent implements OnInit {
              */
             return this.procedureservice.hospitalprocedures.value.find(value => {
                 return value.customprocedure.id === customprocedureid;
-            }).customprocedure.regularprice;
+            }).customprocedure.regularPrice;
         }
     }
 
@@ -127,7 +127,7 @@ export class InvoiceCustomizationComponent implements OnInit {
     }
 
     selectprocedure(procedure): void {
-        if (this.patientdata.queuedata.payment.splitpayment) {
+        if (this.patientdata.queuedata.payment.splitPayment) {
             this.clickedprocedure = procedure;
         }
     }
@@ -141,24 +141,24 @@ export class InvoiceCustomizationComponent implements OnInit {
                     horizontal: 'right'
                 },
                 title: 'Info',
-                alert_type: 'info',
+                alertType: 'info',
                 body: 'Coming soon...'
             });
-            this.patientdata.queuedata.payment.splitpayment = false;
+            this.patientdata.queuedata.payment.splitPayment = false;
         }, 800);
 
     }
 
     setchannel(channel: PaymentChannel): void {
-        this.patientdata.queuedata.payment.singlepayment = {
+        this.patientdata.queuedata.payment.singlePayment = {
             amount: 0,
-            channelid: channel.id,
-            methidid: '',
-            transactionid: ''
+            channelId: channel.id,
+            methodId: '',
+            transactionId: ''
         };
         const isinsurance = channel.name === 'insurance';
         if (!isinsurance) {
-            this.patientdata.queuedata.payment.hasinsurance = null;
+            this.patientdata.queuedata.payment.hasInsurance = null;
         }else {
             /**
              * @TODO: find a way of selecting the insurance
@@ -166,7 +166,7 @@ export class InvoiceCustomizationComponent implements OnInit {
         }
         let total = 0;
         this.patientdata.queuedata.procedures.map(value => {
-            const amount = this.getpaymentamount(value.customprocedureid);
+            const amount = this.getpaymentamount(value.customProcedureId);
             value.payment = {
                 amount: amount,
                 methods: [{
@@ -175,7 +175,7 @@ export class InvoiceCustomizationComponent implements OnInit {
                     methidid: '',
                     transactionid: ''
                 }],
-                hasinsurance: isinsurance
+                hasInsurance: isinsurance
             };
             total += amount;
         });
@@ -184,7 +184,7 @@ export class InvoiceCustomizationComponent implements OnInit {
 
     getcativechannelmethods(channelid: string): Array<CustomPaymentMethod> {
         return this.hospitalmethods.filter(value => {
-            return value.paymentchannelid === channelid;
+            return value.paymentChannelId === channelid;
         });
     }
 
@@ -203,10 +203,10 @@ export class InvoiceCustomizationComponent implements OnInit {
 
     selectinsurance(insurance): void {
         this.selectedinsurance = insurance;
-        this.patientdata.queuedata.payment.hasinsurance = true;
+        this.patientdata.queuedata.payment.hasInsurance = true;
         let total = 0;
         this.patientdata.queuedata.procedures.map(value => {
-            const amount = this.getpaymentamount(value.customprocedureid, insurance._id);
+            const amount = this.getpaymentamount(value.customProcedureId, insurance._id);
             value.payment = {
                 amount: amount,
                 methods: [{
@@ -215,18 +215,18 @@ export class InvoiceCustomizationComponent implements OnInit {
                     methidid: insurance._id,
                     transactionid: ''
                 }],
-                hasinsurance: true
+                hasInsurance: true
             };
             total += amount;
         });
         this.patientdata.queuedata.payment.total = total;
-        this.patientdata.queuedata.payment.singlepayment.amount = total;
+        this.patientdata.queuedata.payment.singlePayment.amount = total;
     }
 
 
     channelconfigured(channelid: string): boolean {
         return !!this.hospitalmethods.filter(value => {
-            return value.paymentchannelid === channelid;
+            return value.paymentChannelId === channelid;
         });
     }
 
@@ -239,7 +239,7 @@ export class InvoiceCustomizationComponent implements OnInit {
                     horizontal: 'right'
                 },
                 title: 'Info',
-                alert_type: 'info',
+                alertType: 'info',
                 body: 'Coming soon...'
             });
             this.multipayment = false;
@@ -275,7 +275,7 @@ export class InvoiceCustomizationComponent implements OnInit {
                     horizontal: 'center'
                 },
                 title: 'Error',
-                alert_type: 'error',
+                alertType: 'error',
                 body: 'Patient visit is in progress'
             });
         }

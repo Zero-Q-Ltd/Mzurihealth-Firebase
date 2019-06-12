@@ -1,5 +1,5 @@
 import {emptymetadata, Metadata} from '../universal';
-import {rawprocedurecategory} from './RawProcedure';
+import {RawProcedureCategory} from './RawProcedure';
 
 export interface Proceduresperformed {
     id: string;
@@ -7,7 +7,7 @@ export interface Proceduresperformed {
 }
 
 export interface Procedureperformed {
-    category: rawprocedurecategory;
+    category: RawProcedureCategory;
     results: string;
     /**
      * temporary storage for notes, useful for bulk addition of notes where the behavious of dynamic
@@ -17,8 +17,8 @@ export interface Procedureperformed {
     notes: Array<ProcedureNotes>;
     adminid: string;
     name: string;
-    originalprocedureid: string;
-    customprocedureid: string;
+    originalProcedureId: string;
+    customProcedureId: string;
     metadata: Metadata;
     payment: {
         amount: number,
@@ -31,7 +31,7 @@ export interface Procedureperformed {
         /**
          * whether one of the payment methods is insurance
          */
-        hasinsurance: boolean
+        hasInsurance: boolean
     };
 }
 
@@ -41,12 +41,12 @@ export const emptyprocedureperformed: Procedureperformed = {
     notes: [],
     adminid: null,
     name: null,
-    originalprocedureid: null,
-    customprocedureid: null,
+    originalProcedureId: null,
+    customProcedureId: null,
     metadata: emptymetadata,
     payment: {
         amount: 0,
-        hasinsurance: false,
+        hasInsurance: false,
         methods: []
     }
 };

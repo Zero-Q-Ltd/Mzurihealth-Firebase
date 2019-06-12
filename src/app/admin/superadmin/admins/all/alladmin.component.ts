@@ -84,7 +84,7 @@ export class AlladminComponent implements OnInit {
                             horizontal: 'right'
                         },
                         title: 'Cancelled',
-                        alert_type: 'error',
+                        alertType: 'error',
                         body: ''
                     });
                 });
@@ -111,7 +111,7 @@ export class AlladminComponent implements OnInit {
                             horizontal: 'right'
                         },
                         title: 'Success',
-                        alert_type: 'success',
+                        alertType: 'success',
                         body: 'Disabled'
                     });
                 });
@@ -137,7 +137,7 @@ export class AlladminComponent implements OnInit {
                             horizontal: 'right'
                         },
                         title: 'Success',
-                        alert_type: 'success',
+                        alertType: 'success',
                         body: 'Enabled'
                     });
                 });

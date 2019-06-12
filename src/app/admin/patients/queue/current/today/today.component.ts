@@ -5,7 +5,7 @@ import {HospitalService} from '../../../../services/hospital.service';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {PatientService} from '../../../../services/patient.service';
 import {PatientvisitService} from '../../../../services/patientvisit.service';
-import {RawProcedure, rawprocedurecategory} from '../../../../../models/procedure/RawProcedure';
+import {RawProcedure, RawProcedureCategory} from '../../../../../models/procedure/RawProcedure';
 import {CustomProcedure} from '../../../../../models/procedure/CustomProcedure';
 import {ProceduresService} from '../../../../services/procedures.service';
 import {fuseAnimations} from '../../../../../../@fuse/animations';
@@ -16,7 +16,7 @@ import {map, startWith} from 'rxjs/operators';
 import {allerytypearray} from '../../../../../models/procedure/Allergy.model';
 import {medicalconditionsarray} from '../../../../../models/procedure/MedicalConditions.model';
 import {QueueService} from '../../../../services/queue.service';
-import {MergedPatient_QueueModel} from '../../../../../models/visit/MergedPatient_Queue.model';
+import {MergedPatientQueueModel} from '../../../../../models/visit/MergedPatientQueueModel';
 import {AdminSelectionComponent} from '../../admin-selection/admin-selection.component';
 import {MatDialog, MatDialogRef, MatTableDataSource} from '@angular/material';
 import {LocalcommunicationService} from '../localcommunication.service';
@@ -41,7 +41,7 @@ export class TodayComponent implements OnInit {
     vitalsform: FormGroup;
     hospitalprocedures: Array<MergedProcedureModel> = [];
     selectedprocedure: { rawprocedure: RawProcedure, customprocedure: CustomProcedure };
-    currentpatient: MergedPatient_QueueModel;
+    currentpatient: MergedPatientQueueModel;
     expand = true;
     procedurecategories: Array<ProcedureCategory>;
     procedureselection: FormGroup;
@@ -130,23 +130,23 @@ export class TodayComponent implements OnInit {
 
                 const mappedData: Array<Procedureperformed> = selection.selected.map(value => {
                     const ff = res.filter(value1 => {
-                        return value1.originalprocedureid === value.rawprocedure.id;
+                        return value1.originalProcedureId === value.rawProcedure.id;
                     })[0];
                     ff.results = ff.results || '';
-                    ff.name = value.rawprocedure.name;
-                    ff.category = value.rawprocedure.category;
+                    ff.name = value.rawProcedure.name;
+                    ff.category = value.rawProcedure.category;
                     ff.metadata = {
-                        lastedit: moment().toDate(),
+                        lastEdit: moment().toDate(),
                         date: moment().toDate()
                     };
                     ff.adminid = this.patientvisitservice.adminid;
                     ff.payment = {
                         amount: 0,
-                        hasinsurance: false,
+                        hasInsurance: false,
                         methods: []
                     };
-                    ff.originalprocedureid = value.rawprocedure.id;
-                    ff.customprocedureid = value.customprocedure.id;
+                    ff.originalProcedureId = value.rawProcedure.id;
+                    ff.customProcedureId = value.customProcedure.id;
                     if (ff.tempnote && ff.tempnote !== '') {
                         ff.notes[0] = {
                             admin: {
@@ -298,7 +298,7 @@ export class TodayComponent implements OnInit {
                     horizontal: 'right'
                 },
                 title: 'Success',
-                alert_type: 'success',
+                alertType: 'success',
                 body: 'Saved'
             });
         });
@@ -308,11 +308,11 @@ export class TodayComponent implements OnInit {
         this.selectedprocedure = selected;
     }
 
-    getcategory(category: rawprocedurecategory): string {
-        if (category && category.subcategoryid) {
+    getcategory(category: RawProcedureCategory): string {
+        if (category && category.subCategoryId) {
             return this.procedurecategories.find(cat => {
                 return cat.id === category.id;
-            }).subcategories[category.subcategoryid].name;
+            }).subcategories[category.subCategoryId].name;
         } else {
             return '';
         }
@@ -416,12 +416,12 @@ export class TodayComponent implements OnInit {
     }
 
     initvitalsformm(): void {
-        let height = new FormControl(this.currentpatient.patientdata.medicalinfo.vitals.height);
-        let weight = new FormControl(this.currentpatient.patientdata.medicalinfo.vitals.weight);
-        let pressure = new FormControl(this.currentpatient.patientdata.medicalinfo.vitals.pressure);
-        let heartrate = new FormControl(this.currentpatient.patientdata.medicalinfo.vitals.heartrate);
-        let sugar = new FormControl(this.currentpatient.patientdata.medicalinfo.vitals.sugar);
-        let respiration = new FormControl(this.currentpatient.patientdata.medicalinfo.vitals.respiration);
+        let height = new FormControl(this.currentpatient.patientdata.medicalInfo.vitals.height);
+        let weight = new FormControl(this.currentpatient.patientdata.medicalInfo.vitals.weight);
+        let pressure = new FormControl(this.currentpatient.patientdata.medicalInfo.vitals.pressure);
+        let heartrate = new FormControl(this.currentpatient.patientdata.medicalInfo.vitals.heartRate);
+        let sugar = new FormControl(this.currentpatient.patientdata.medicalInfo.vitals.sugar);
+        let respiration = new FormControl(this.currentpatient.patientdata.medicalInfo.vitals.respiration);
         this.vitalsform = new FormGroup({
             height: height,
             weight: weight,
@@ -433,7 +433,7 @@ export class TodayComponent implements OnInit {
     }
 
     procedureselectiondisplayfn(data?: MergedProcedureModel): string {
-        return data ? data.rawprocedure.name : '';
+        return data ? data.rawProcedure.name : '';
     }
 
     saveprescription(): void {
@@ -444,7 +444,7 @@ export class TodayComponent implements OnInit {
                     horizontal: 'right'
                 },
                 title: 'Success',
-                alert_type: 'success',
+                alertType: 'success',
                 body: 'Saved'
             });
         });
@@ -463,7 +463,7 @@ export class TodayComponent implements OnInit {
                         horizontal: 'right'
                     },
                     title: 'Success',
-                    alert_type: 'success',
+                    alertType: 'success',
                     body: 'Saved'
                 });
             });
@@ -476,12 +476,12 @@ export class TodayComponent implements OnInit {
 
     private initconditionsallergiesforms(): void {
         this.allergiesform = this.formBuilder.group({
-            allergiesformArray: this.formBuilder.array(this.currentpatient.patientdata.medicalinfo.allergies.map(mzio => {
+            allergiesformArray: this.formBuilder.array(this.currentpatient.patientdata.medicalInfo.allergies.map(mzio => {
                 return this.igamizio(mzio);
             }))
         });
         this.medconditionsform = this.formBuilder.group({
-            conditionsformArray: this.formBuilder.array(this.currentpatient.patientdata.medicalinfo.conditions.map(tatizo => {
+            conditionsformArray: this.formBuilder.array(this.currentpatient.patientdata.medicalInfo.conditions.map(tatizo => {
                 return this.igamatatizo(tatizo);
             }))
         });
@@ -497,7 +497,7 @@ export class TodayComponent implements OnInit {
             return this.hospitalprocedures;
         }
         const filterValue = value.selection.toLowerCase();
-        return this.hospitalprocedures.filter(option => option.rawprocedure.name.toLowerCase().includes(filterValue));
+        return this.hospitalprocedures.filter(option => option.rawProcedure.name.toLowerCase().includes(filterValue));
     }
 
 }

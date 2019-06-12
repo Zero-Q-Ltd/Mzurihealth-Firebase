@@ -2,7 +2,7 @@ import {AfterViewInit, Component, OnInit, ViewChild, ViewEncapsulation} from '@a
 import {MatDialog, MatDialogRef, MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
 import {fuseAnimations} from '../../../../../@fuse/animations';
 import {QueueService} from '../../../services/queue.service';
-import {MergedPatient_QueueModel} from '../../../../models/visit/MergedPatient_Queue.model';
+import {MergedPatientQueueModel} from '../../../../models/visit/MergedPatientQueueModel';
 import {AdminSelectionComponent} from '../admin-selection/admin-selection.component';
 import {HospitalAdmin} from '../../../../models/user/HospitalAdmin';
 import {FuseConfirmDialogComponent} from '../../../../../@fuse/components/confirm-dialog/confirm-dialog.component';
@@ -17,7 +17,7 @@ import {InvoiceCustomizationComponent} from '../../invoice-customization/invoice
     animations: fuseAnimations
 })
 export class MainComponent implements OnInit, AfterViewInit {
-    patientsdatasource = new MatTableDataSource<MergedPatient_QueueModel>();
+    patientsdatasource = new MatTableDataSource<MergedPatientQueueModel>();
     patientsheaders = ['FileNo', 'Photo', 'Name', 'ID', 'Age', 'Phone', 'Last Visit', 'Status', 'Action'];
     dialogRef: MatDialogRef<any>;
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
@@ -48,7 +48,7 @@ export class MainComponent implements OnInit, AfterViewInit {
     }
 
 
-    redirectadmin(data: MergedPatient_QueueModel): void {
+    redirectadmin(data: MergedPatientQueueModel): void {
         event.stopPropagation();
         this.showadminchoice(data);
         // this.confirmDialogRef = this._matDialog.open(FuseConfirmDialogComponent, {
@@ -62,7 +62,7 @@ export class MainComponent implements OnInit, AfterViewInit {
         // });
     }
 
-    showadminchoice(data: MergedPatient_QueueModel): void {
+    showadminchoice(data: MergedPatientQueueModel): void {
         event.stopPropagation();
         this.dialogRef = this._matDialog.open(AdminSelectionComponent, {});
 
@@ -74,7 +74,7 @@ export class MainComponent implements OnInit, AfterViewInit {
         });
     }
 
-    customizeInvoice(data: MergedPatient_QueueModel): void {
+    customizeInvoice(data: MergedPatientQueueModel): void {
         event.stopPropagation();
         this.dialogRef = this._matDialog.open(InvoiceCustomizationComponent, {
             data: data.patientdata._id,
@@ -84,7 +84,7 @@ export class MainComponent implements OnInit, AfterViewInit {
         this.dialogRef.afterClosed();
     }
 
-    payinvoice(data: MergedPatient_QueueModel): void {
+    payinvoice(data: MergedPatientQueueModel): void {
 
     }
 

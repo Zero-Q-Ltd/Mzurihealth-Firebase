@@ -8,7 +8,7 @@ export interface Patientnote {
         name: string
     };
     id: string;
-    patientid: string;
+    patientId: string;
     metadata: Metadata;
     /**
      * distributed counter for docs that found this note helpful
@@ -19,7 +19,7 @@ export interface Patientnote {
 export const emptynote: Patientnote = {
     title: null,
     note: null,
-    patientid: null,
+    patientId: null,
     id: null,
     metadata: emptymetadata,
     admin: {

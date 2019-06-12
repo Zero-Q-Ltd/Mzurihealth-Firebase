@@ -4,12 +4,12 @@ export interface AdminInvite {
     email: string;
     name: string;
     phone: string;
-    categoyid: string;
+    categoyId: string;
     level: number;
-    inviterid: string;
-    hospitalid: string;
+    inviterId: string;
+    hospitalId: string;
     metadata: Metadata;
-    id: string
+    id: string;
 }
 
 export const emptyadmininvite = {

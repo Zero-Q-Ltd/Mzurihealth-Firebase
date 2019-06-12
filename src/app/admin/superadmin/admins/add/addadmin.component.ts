@@ -67,16 +67,16 @@ export class AddadminComponent implements OnInit {
             this.admininvite.email = this.adminsform.get('email').value;
             this.admininvite.phone = this.adminsform.get('phone').value;
 
-            this.admininvite.categoyid = this.chosencategory._id;
+            this.admininvite.categoyId = this.chosencategory._id;
             this.admininvite.level = Number(leveldata.key);
-            this.admininvite.hospitalid = this.hospitalservice.activehospital.value._id;
-            this.admininvite.inviterid = this.userdata._id;
+            this.admininvite.hospitalId = this.hospitalservice.activehospital.value._id;
+            this.admininvite.inviterId = this.userdata._id;
 
             console.log(this.admininvite);
             if (!this.hospitalservice.adminexists(this.admininvite.email)) {
                 this.adminservice.createinvite(this.admininvite).then(result => {
                     this.notificationservice.notify({
-                        alert_type: 'success',
+                        alertType: 'success',
                         body: 'Successfully sent invite',
                         placement: {
                             vertical: 'bottom',
@@ -90,7 +90,7 @@ export class AddadminComponent implements OnInit {
             } else {
                 this.adminservice.createinvite(this.admininvite).then(result => {
                     this.notificationservice.notify({
-                        alert_type: 'error',
+                        alertType: 'error',
                         body: 'A user with this email already exists',
                         placement: {
                             vertical: 'bottom',
@@ -104,7 +104,7 @@ export class AddadminComponent implements OnInit {
 
         } else {
             this.notificationservice.notify({
-                alert_type: 'warning',
+                alertType: 'warning',
                 body: 'Please fill all the fields',
                 placement: {
                     vertical: 'bottom',

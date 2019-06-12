@@ -82,7 +82,7 @@ export class PatientService {
     /**
      * save patient to db
      * */
-    savePatient({personalinfo, insurance, nextofkin}: AddPatientFormModel): Promise<void> {
+    savePatient({personaLinfo, insurance, nextofkin}: AddPatientFormModel): Promise<void> {
         /**
          * create data to insert to the patient collection
          * */
@@ -109,15 +109,15 @@ export class PatientService {
         const modifiedData = {
             id: patientID,
             personalinfo: {
-                name: personalinfo.firstname.toLowerCase() + ' ' + personalinfo.lastname.toLowerCase(),
-                address: personalinfo.address.toLowerCase(),
-                gender: personalinfo.gender,
-                occupation: personalinfo.occupation.toLowerCase(),
-                workplace: personalinfo.workplace.toLowerCase(),
-                phone: personalinfo.phone,
-                email: personalinfo.email.toLowerCase(),
-                idno: personalinfo.idno,
-                dob: moment(personalinfo.birth, 'MM/DD/YYYY').toDate(),
+                name: personaLinfo.firstName.toLowerCase() + ' ' + personaLinfo.lastName.toLowerCase(),
+                address: personaLinfo.address.toLowerCase(),
+                gender: personaLinfo.gender,
+                occupation: personaLinfo.occupation.toLowerCase(),
+                workplace: personaLinfo.workplace.toLowerCase(),
+                phone: personaLinfo.phone,
+                email: personaLinfo.email.toLowerCase(),
+                idno: personaLinfo.idNo,
+                dob: moment(personaLinfo.birth, 'MM/DD/YYYY').toDate(),
             },
             nextofkin: transformedNextOfKin,
             insurance: tempInsurance,
@@ -139,8 +139,8 @@ export class PatientService {
             id: patientID,
             date: todayDate,
             lastvisit: todayDate,
-            no: personalinfo.fileno,
-            idno: personalinfo.idno
+            no: personaLinfo.fileno,
+            idno: personaLinfo.idNo
         };
 
         const hospitalFileNumber = Object.assign({}, emptyfile, hospitalFileNumberTemp);
@@ -166,7 +166,7 @@ export class PatientService {
 
         // batch write the number of active patients
         const numberOfPatientsRef = this.stitch.db.firestore.collection('hospitals').doc(this.activehospital._id);
-        batch.update(numberOfPatientsRef, {patientcount: this.activehospital.patientcount + 1});
+        batch.update(numberOfPatientsRef, {patientcount: this.activehospital.patientCount + 1});
 
         return batch.commit();
 
@@ -190,7 +190,7 @@ export class PatientService {
                             }
                             const patient = patientdata.payload.data() as Patient;
                             patient._id = patientdata.payload.id;
-                            patient.fileinfo = hospitalfile;
+                            patient.fileInfo = hospitalfile;
                             return Object.assign({}, emptypatient, patient);
                         })
                     );
@@ -280,7 +280,7 @@ export class PatientService {
             .doc(this.activehospital._id).collection('filenumbers').doc(patient._id);
 
 
-        batch.update(hospitalFileRef, Object.assign({}, patient.fileinfo, {visitcount: patient.fileinfo.visitcount + 1}));
+        batch.update(hospitalFileRef, Object.assign({}, patient.fileInfo, {visitcount: patient.fileInfo.visitCount + 1}));
 
         return batch.commit();
     }
@@ -294,7 +294,7 @@ export class PatientService {
      *
      *   return  Promise
      * */
-    updatePatient(patientID: string, {personalinfo, insurance, nextofkin}: AddPatientFormModel): Promise<any> {
+    updatePatient(patientID: string, {personaLinfo, insurance, nextofkin}: AddPatientFormModel): Promise<any> {
         // get current data
         const patientDataRef = this.stitch.db.firestore.collection('patients').doc(patientID);
 
@@ -340,15 +340,15 @@ export class PatientService {
                 const modifiedData = {
                     id: patientID,
                     personalinfo: {
-                        name: personalinfo.firstname + ' ' + personalinfo.lastname,
-                        address: personalinfo.address,
-                        gender: personalinfo.gender,
-                        occupation: personalinfo.occupation,
-                        workplace: personalinfo.workplace,
-                        phone: personalinfo.phone,
-                        email: personalinfo.email,
-                        idno: personalinfo.idno,
-                        dob: moment(personalinfo.birth, 'MM/DD/YYYY').toDate(),
+                        name: personaLinfo.firstName + ' ' + personaLinfo.lastName,
+                        address: personaLinfo.address,
+                        gender: personaLinfo.gender,
+                        occupation: personaLinfo.occupation,
+                        workplace: personaLinfo.workplace,
+                        phone: personaLinfo.phone,
+                        email: personaLinfo.email,
+                        idno: personaLinfo.idNo,
+                        dob: moment(personaLinfo.birth, 'MM/DD/YYYY').toDate(),
                     },
                     nextofkin,
                     insurance: tempInsurance,
@@ -360,10 +360,10 @@ export class PatientService {
 
                 const hospitalFileNumber = {
                     id: patientID,
-                    date: firstData.fileinfo.date,
+                    date: firstData.fileInfo.date,
                     lastvisit: todayDate,
-                    no: personalinfo.fileno,
-                    idno: personalinfo.idno
+                    no: personaLinfo.fileno,
+                    idno: personaLinfo.idNo
                 };
 
 
@@ -438,14 +438,14 @@ export class PatientService {
                 const patientData = Object.assign({}, {...emptypatient}, patientDoc.data()) as Patient;
 
                 let tempMeta = null;
-                if (patientData.medicalinfo.metadata.date === null) {
+                if (patientData.medicalInfo.metadata.date === null) {
                     tempMeta = {
                         date: moment().toDate(),
                         lastedit: moment().toDate()
                     };
                 } else {
                     tempMeta = {
-                        date: patientData.medicalinfo.metadata.date,
+                        date: patientData.medicalInfo.metadata.date,
                         lastedit: moment().toDate()
                     };
                 }

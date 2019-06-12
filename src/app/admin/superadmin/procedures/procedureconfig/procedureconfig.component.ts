@@ -36,7 +36,7 @@ export class ProcedureconfigComponent implements OnInit {
                 return;
             }
             this.selectecustomprocedure = selection.selection;
-            this.regularpricecontrol.patchValue(this.selectecustomprocedure.customprocedure.regularprice);
+            this.regularpricecontrol.patchValue(this.selectecustomprocedure.customprocedure.regularPrice);
         });
 
         this.paymentethods.allinsurance.subscribe(insurance => {
@@ -77,9 +77,9 @@ export class ProcedureconfigComponent implements OnInit {
 
     saveprocedureconfig(): void {
         if (!this.regularpricecontrol.errors) {
-            this.selectecustomprocedure.customprocedure.regularprice = this.regularpricecontrol.value;
+            this.selectecustomprocedure.customprocedure.regularPrice = this.regularpricecontrol.value;
             if (this.communicatioservice.onprocedureselected.value.selectiontype === 'newprocedure') {
-                this.selectecustomprocedure.customprocedure.parentprocedureid = this.selectecustomprocedure.rawprocedure.id;
+                this.selectecustomprocedure.customprocedure.parentProcedureId = this.selectecustomprocedure.rawprocedure.id;
                 this.procedureservice.addcustomprocedure(this.selectecustomprocedure.customprocedure).then(() => {
                     this.notificationservice.notify({
                         placement: {
@@ -87,7 +87,7 @@ export class ProcedureconfigComponent implements OnInit {
                             horizontal: 'right'
                         },
                         title: 'Success',
-                        alert_type: 'success',
+                        alertType: 'success',
                         body: 'Successfully saved'
                     });
                     this.communicatioservice.resetall();
@@ -104,7 +104,7 @@ export class ProcedureconfigComponent implements OnInit {
                     horizontal: 'center'
                 },
                 title: 'Error',
-                alert_type: 'error',
+                alertType: 'error',
                 body: 'Regular price is required'
             });
         }

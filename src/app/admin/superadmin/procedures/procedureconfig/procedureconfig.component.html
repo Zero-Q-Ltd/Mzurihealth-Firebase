@@ -44,11 +44,11 @@
                 </mat-form-field>
             </div>
             <div class="offline-switch">
-                <mat-slide-toggle [(ngModel)]="selectecustomprocedure.customprocedure.custominsuranceprice"
+                <mat-slide-toggle [(ngModel)]="selectecustomprocedure.customprocedure.customInsurancePrice"
                                   labelPosition="before">Custom Prices for Insurance
                 </mat-slide-toggle>
             </div>
-            <div *ngIf="selectecustomprocedure.customprocedure.custominsuranceprice "
+            <div *ngIf="selectecustomprocedure.customprocedure.customInsurancePrice "
                  [@animate]="{value:'*',params:{delay:'200ms'}}"
                  class="input-group col-sm-10">
                 <mat-form-field appearance="outline" fxFlex="100">
@@ -57,11 +57,11 @@
                     <mat-icon class="disabled-text" matSuffix>search</mat-icon>
                 </mat-form-field>
             </div>
-            <div *ngIf="selectecustomprocedure.customprocedure.custominsuranceprice " [@animateStagger]="{value:'50'}">
+            <div *ngIf="selectecustomprocedure.customprocedure.customInsurancePrice " [@animateStagger]="{value:'50'}">
                 <span *ngFor='let insurance of filteredinsurance | keyvalue' [@animate]="{value:'*',params:{y:'100%'}}">
                     <mat-form-field appearance="outline" fxFlex="100">
                         <mat-label>{{insurance.value.name}}</mat-label>
-                        <input [(ngModel)]='selectecustomprocedure.customprocedure.insuranceprices[insurance.key]'
+                        <input [(ngModel)]='selectecustomprocedure.customprocedure.insurancePrices[insurance.key]'
                                matInput
                                type="number">
                         <mat-icon class="disabled-text" matSuffix>attach_money</mat-icon>

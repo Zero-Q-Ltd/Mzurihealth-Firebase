@@ -3,14 +3,14 @@ import {emptymetadata, Metadata} from '../universal';
 export interface CustomProcedure {
     creatorid: string;
     id: string;
-    regularprice: number;
-    parentprocedureid: string;
-    hospitalid: string;
-    insuranceprices: {
+    regularPrice: number;
+    parentProcedureId: string;
+    hospitalId: string;
+    insurancePrices: {
         [key: string]: number
     };
     status: boolean;
-    custominsuranceprice: boolean;
+    customInsurancePrice: boolean;
     metadata: Metadata;
 }
 
@@ -18,10 +18,10 @@ export const emptycustomprocedure: CustomProcedure = {
     creatorid: null,
     id: null,
     status: null,
-    regularprice: 0,
-    insuranceprices: {},
-    parentprocedureid: null,
-    hospitalid: null,
+    regularPrice: 0,
+    insurancePrices: {},
+    parentProcedureId: null,
+    hospitalId: null,
     metadata: emptymetadata,
-    custominsuranceprice: false
+    customInsurancePrice: false
 };

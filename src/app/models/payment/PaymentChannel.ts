@@ -11,7 +11,7 @@ export interface PaymentChannel {
     /**
      * specifies whether transaction details are to be collected under the payment methods
      */
-    transactiondetailcollection: boolean;
+    transactionDetailCollection: boolean;
     methods: {
         [key: string]: Paymentmethods
     };
@@ -30,5 +30,5 @@ export const emptypaymentChannel: PaymentChannel = {
         self: false,
         external: false
     },
-    transactiondetailcollection: false
+    transactionDetailCollection: false
 };

@@ -94,7 +94,7 @@ export class AllComponent implements OnInit, AfterViewInit {
 
         if (fil.length !== 0) {
             this.notificationservice.notify({
-                alert_type: 'warning',
+                alertType: 'warning',
                 body: 'The patient is already in the queue',
                 title: 'Warning',
                 placement: {horizontal: 'center', vertical: 'top'}
@@ -135,7 +135,7 @@ export class AllComponent implements OnInit, AfterViewInit {
 
 
                             this.notificationservice.notify({
-                                alert_type: 'error',
+                                alertType: 'error',
                                 body: 'An error occurred',
                                 title: 'ERROR',
                                 placement: {horizontal: 'right', vertical: 'top'}
@@ -163,7 +163,7 @@ export class AllComponent implements OnInit, AfterViewInit {
 
         if (fil.length !== 0) {
             this.notificationservice.notify({
-                alert_type: 'error',
+                alertType: 'error',
                 body: 'You must first exit the patient from queue to delete them',
                 title: 'ERROR',
                 placement: {horizontal: 'center', vertical: 'top'}

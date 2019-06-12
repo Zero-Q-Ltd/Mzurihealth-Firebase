@@ -1,9 +1,11 @@
+import {Insurance} from './Patient';
+
 export interface AddPatientFormModel {
-    personalinfo: {
-        firstname: string,
-        lastname: string,
+    personaLinfo: {
+        firstName: string,
+        lastName: string,
         occupation: string,
-        idno: number,
+        idNo: number,
         gender: string,
         birth: string,
         email: string,
@@ -21,10 +23,4 @@ export interface AddPatientFormModel {
 
     insurance: Array<Insurance>;
 }
-
-interface Insurance {
-    id: string;
-    insurancenumber: string;
-}
-
 

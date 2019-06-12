@@ -86,7 +86,7 @@ export class PushqueueComponent implements OnInit {
         if (this.insuranceEnabled()) {
             if (this.insuranceSet && this.selected === null) {
                 this.notificationService.notify({
-                    alert_type: 'info',
+                    alertType: 'info',
                     body: 'Please select Insurance',
                     title: 'Select insurance',
                     placement: {horizontal: 'right', vertical: 'top'}
@@ -96,7 +96,7 @@ export class PushqueueComponent implements OnInit {
             this.matDialogRef.close(['save', {data: this.queueForm, selected: this.selectedInsurance}]);
         } else {
             this.notificationService.notify({
-                alert_type: 'info',
+                alertType: 'info',
                 body: 'The user does not have any insurance',
                 title: 'No Insurance',
                 placement: {horizontal: 'right', vertical: 'top'}

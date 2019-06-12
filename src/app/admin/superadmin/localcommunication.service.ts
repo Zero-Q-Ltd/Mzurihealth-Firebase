@@ -9,7 +9,7 @@ import {emptyadmin, HospitalAdmin} from '../../models/user/HospitalAdmin';
 })
 export class LocalcommunicationService {
     onprocedureselected: BehaviorSubject<{
-        selectiontype: 'newprocedure' | 'customprocedure' | null,
+        selectiontype: 'newprocedure' | 'customProcedure' | null,
         selection: { rawprocedure: RawProcedure, customprocedure: CustomProcedure }
     }> = new BehaviorSubject({selectiontype: null, selection: null});
     onadminselected: BehaviorSubject<HospitalAdmin> = new BehaviorSubject<HospitalAdmin>({...emptyadmin});
@@ -24,9 +24,9 @@ export class LocalcommunicationService {
     }
 
     resetselection(): void {
-        this.onprocedureselected.value.selection.customprocedure.regularprice = 0;
-        this.onprocedureselected.value.selection.customprocedure.insuranceprices = {};
-        this.onprocedureselected.value.selection.customprocedure.custominsuranceprice = false;
+        this.onprocedureselected.value.selection.customprocedure.regularPrice = 0;
+        this.onprocedureselected.value.selection.customprocedure.insurancePrices = {};
+        this.onprocedureselected.value.selection.customprocedure.customInsurancePrice = false;
         this.onprocedureselected.next({
             selectiontype: this.onprocedureselected.value.selectiontype, selection: {
                 rawprocedure: this.onprocedureselected.value.selection.rawprocedure,

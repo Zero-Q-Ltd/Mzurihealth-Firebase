@@ -5,7 +5,7 @@ import {BehaviorSubject} from 'rxjs';
 import {HospitalAdmin} from '../../models/user/HospitalAdmin';
 import {PatientService} from './patient.service';
 import {PatientVisit} from '../../models/visit/PatientVisit';
-import {emptymergedQueueModel, MergedPatient_QueueModel} from '../../models/visit/MergedPatient_Queue.model';
+import {emptymergedQueueModel, MergedPatientQueueModel} from '../../models/visit/MergedPatientQueueModel';
 import {ProceduresService} from './procedures.service';
 import {MergedProcedureModel} from '../../models/procedure/MergedProcedure.model';
 import {StitchService} from './stitch/stitch.service';
@@ -16,9 +16,9 @@ import * as moment from 'moment';
 })
 export class QueueService {
     activehospitalid: string;
-    mainpatientqueue: BehaviorSubject<Array<MergedPatient_QueueModel>> = new BehaviorSubject([]);
-    mypatientqueue: BehaviorSubject<Array<MergedPatient_QueueModel>> = new BehaviorSubject([]);
-    currentpatient: BehaviorSubject<MergedPatient_QueueModel> = new BehaviorSubject({...emptymergedQueueModel});
+    mainpatientqueue: BehaviorSubject<Array<MergedPatientQueueModel>> = new BehaviorSubject([]);
+    mypatientqueue: BehaviorSubject<Array<MergedPatientQueueModel>> = new BehaviorSubject([]);
+    currentpatient: BehaviorSubject<MergedPatientQueueModel> = new BehaviorSubject({...emptymergedQueueModel});
     adminid: string;
 
     constructor(private stitch: StitchService,
@@ -79,7 +79,7 @@ export class QueueService {
             status: 1,
             admin: adminid
         };
-        visit.metadata.lastedit = moment().toDate();
+        visit.metadata.lastEdit = moment().toDate();
         console.log(visit);
         // return this.db.firestore.collection('hospitalvisits').doc(visit.id).update(visit);
     }
@@ -96,7 +96,7 @@ export class QueueService {
 
     getinsuanceprice(procedure: MergedProcedureModel): number {
         // if (this.currentpatient.value.queuedata.paymentmethod) {
-        //     if (procedure.customprocedure.insuranceprices[this.currentpatient.value.queuedata.paymentmethod]) {
+        //     if (procedure.customProcedure.insurancePrices[this.currentpatient.value.queuedata.paymentmethod]) {
         //
         //     }
         // }
@@ -108,7 +108,7 @@ export class QueueService {
      */
     private getwholequeue(): void {
         //     this.db.collection('hospitalvisits', ref => ref
-        //         .where('hospitalid', '==', this.activehospitalid)
+        //         .where('hospitalId', '==', this.activehospitalid)
         //         .where('checkin.status', '<', 4))
         //         .snapshotChanges().pipe(
         //         switchMap(f => {
@@ -117,7 +117,7 @@ export class QueueService {
         //                     return of([]);
         //                 }
         //                 const visit: PatientVisit = Object.assign({...emptypatientvisit}, t.payload.doc.data(), {id: t.payload.doc.id});
-        //                 return this.db.collection('patients').doc(visit.patientid).snapshotChanges().pipe(
+        //                 return this.db.collection('patients').doc(visit.patientId).snapshotChanges().pipe(
         //                     switchMap(patientdata => {
         //                         if (!patientdata.payload.exists) {
         //                             // console.log(visit)
@@ -130,7 +130,7 @@ export class QueueService {
         //                 );
         //             }));
         //         }),
-        //         switchMap((val1: Array<MergedPatient_QueueModel>) => {
+        //         switchMap((val1: Array<MergedPatientQueueModel>) => {
         //             console.log(val1);
         //             return combineLatest(...val1.map(t => {
         //                 if (val1.length === 0 || !t.patientdata._id) {
@@ -142,7 +142,7 @@ export class QueueService {
         //                     .snapshotChanges()
         //                     .pipe().map(filedata => {
         //                         const file: HospFile = Object.assign({...emptyfile}, filedata.payload.data(), {id: t.patientdata._id});
-        //                         t.patientdata.fileinfo = file;
+        //                         t.patientdata.fileInfo = file;
         //                         return t;
         //                     });
         //

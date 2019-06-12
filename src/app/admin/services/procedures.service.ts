@@ -43,16 +43,16 @@ export class ProceduresService {
          * I honestly am not sure why the following code works so well
          * Please.... be very careful before changing
          */
-        // this.db.collection('procedureconfigs', ref => ref.where('hospitalid', '==', this.activehospital._id).where('status', '==', true)).snapshotChanges().pipe(
+        // this.db.collection('procedureconfigs', ref => ref.where('hospitalId', '==', this.activehospital._id).where('status', '==', true)).snapshotChanges().pipe(
         //     switchMap(f => {
         //         return combineLatest(...f.map(t => {
-        //             const customprocedure = t.payload.doc.data() as CustomProcedure;
-        //             customprocedure.id = t.payload.doc.id;
-        //             return this.db.collection('procedures').doc(customprocedure.parentprocedureid).snapshotChanges().pipe(
+        //             const customProcedure = t.payload.doc.data() as CustomProcedure;
+        //             customProcedure.id = t.payload.doc.id;
+        //             return this.db.collection('procedures').doc(customProcedure.parentProcedureId).snapshotChanges().pipe(
         //                 map(originalproceduredata => {
-        //                     const rawprocedure = originalproceduredata.payload.data() as RawProcedure;
-        //                     rawprocedure.id = originalproceduredata.payload.id;
-        //                     return ({rawprocedure: rawprocedure, customprocedure: customprocedure});
+        //                     const rawProcedure = originalproceduredata.payload.data() as RawProcedure;
+        //                     rawProcedure.id = originalproceduredata.payload.id;
+        //                     return ({rawProcedure: rawProcedure, customProcedure: customProcedure});
         //                 })
         //             );
         //         }));
@@ -63,7 +63,7 @@ export class ProceduresService {
     }
 
     fetchproceduresincategory(categoryid: string): any {
-        // return this.db.firestore.collection('procedures').where('category._id', '==', categoryid);
+        // return this.db.firestore.collection('procedures').where('category._id', '==', categoryId);
     }
 
     disableprocedure(procedureid: string) {
@@ -111,7 +111,7 @@ export class ProceduresService {
           return await batch.commit();
         });*/
         // return Promise.all(
-        //     proceduredata['Table 1'].forEach(async (proc: rawprocedure) => {
+        //     proceduredata['Table 1'].forEach(async (proc: rawProcedure) => {
         //         let batch = this.db.firestore.batch();
         //
         //         let procedurecategory = this.procedurecategories.value.find(cat => {
@@ -139,7 +139,7 @@ export class ProceduresService {
         //             },
         //             category: {
         //                 _id: procedurecategory._id,
-        //                 subcategoryid: belongingcategory ? belongingcategory[0] : null,
+        //                 subCategoryId: belongingcategory ? belongingcategory[0] : null,
         //                 code: proc.Code || null
         //             },
         //             numericid: Number(proc.NUMERICID) || null,
@@ -151,7 +151,7 @@ export class ProceduresService {
         //         return await batch.commit();
         //     })).then(() => {
         //     this.notificationservice.notify({
-        //         alert_type: 'success',
+        //         alertType: 'success',
         //         body: 'Procedures added',
         //         title: 'Success',
         //         placement: 'center'
@@ -160,39 +160,39 @@ export class ProceduresService {
     }
 
     addcustomprocedure(customprocedure: CustomProcedure): any {
-        customprocedure.hospitalid = this.activehospital._id;
+        customprocedure.hospitalId = this.activehospital._id;
         customprocedure.status = true;
         customprocedure.creatorid = this.userdata._id;
         customprocedure.metadata = {
-            lastedit: moment().toDate(),
+            lastEdit: moment().toDate(),
             date: moment().toDate()
         };
         /**
          * remove insurance prices set to 0
          */
-        Object.keys(customprocedure.insuranceprices).forEach(key => {
-            if (customprocedure.insuranceprices[key] === 0 || customprocedure.insuranceprices[key] === null) {
-                delete customprocedure.insuranceprices[key];
+        Object.keys(customprocedure.insurancePrices).forEach(key => {
+            if (customprocedure.insurancePrices[key] === 0 || customprocedure.insurancePrices[key] === null) {
+                delete customprocedure.insurancePrices[key];
             }
         });
-        // return this.db.firestore.collection('procedureconfigs').add(customprocedure);
+        // return this.db.firestore.collection('procedureconfigs').add(customProcedure);
     }
 
     editcustomprocedure(customprocedure: CustomProcedure): any {
         customprocedure.creatorid = this.userdata._id;
         customprocedure.metadata = {
-            lastedit: moment().toDate(),
+            lastEdit: moment().toDate(),
             date: customprocedure.metadata.date
         };
         /**
          * remove insurance prices set to 0
          */
-        Object.keys(customprocedure.insuranceprices).forEach(key => {
-            if (!customprocedure.insuranceprices[key] || customprocedure.insuranceprices[key] === 0 || customprocedure.insuranceprices[key] === null) {
-                delete customprocedure.insuranceprices[key];
+        Object.keys(customprocedure.insurancePrices).forEach(key => {
+            if (!customprocedure.insurancePrices[key] || customprocedure.insurancePrices[key] === 0 || customprocedure.insurancePrices[key] === null) {
+                delete customprocedure.insurancePrices[key];
             }
         });
-        // return this.db.firestore.collection('procedureconfigs').doc(customprocedure.id).update(customprocedure);
+        // return this.db.firestore.collection('procedureconfigs').doc(customProcedure.id).update(customProcedure);
     }
 
     deactivateprocedure(procedureid: string): any {

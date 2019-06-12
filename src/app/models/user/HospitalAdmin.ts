@@ -11,12 +11,12 @@ export interface HospitalAdmin {
         displayName: string,
     };
     config: {
-        hospitalid: string
-        categoryid: string
+        hospitalId: string
+        categoryId: string
         level: number
         availability: number // Whether on break , away or available
     };
-    profiledata?: {
+    profileData?: {
         bio: string,
         age: string,
         address: string,
@@ -31,9 +31,9 @@ export const emptyadmin: HospitalAdmin = {
     _id: null,
     config: {
         level: null,
-        hospitalid: null,
+        hospitalId: null,
         availability: 0,
-        categoryid: null
+        categoryId: null
     },
     status: null,
     data: {
@@ -42,7 +42,7 @@ export const emptyadmin: HospitalAdmin = {
         photoURL: null,
         displayName: null,
     },
-    profiledata: {
+    profileData: {
         address: null,
         age: null,
         bio: null,

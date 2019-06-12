@@ -1,5 +1,5 @@
 import {Component, Inject, OnDestroy, OnInit} from '@angular/core';
-import {MergedPatient_QueueModel} from '../../../models/visit/MergedPatient_Queue.model';
+import {MergedPatientQueueModel} from '../../../models/visit/MergedPatientQueueModel';
 import {PaymentChannel} from '../../../models/payment/PaymentChannel';
 import {Subject} from 'rxjs';
 import {Hospital} from '../../../models/hospital/Hospital';
@@ -24,7 +24,7 @@ export class InvoiceComponent implements OnInit, OnDestroy {
                 private queue: QueueService,
                 private paymentmethodService: PaymentmethodService,
                 private patientvisit: PatientvisitService,
-                @Inject(MAT_DIALOG_DATA) public patientdata: MergedPatient_QueueModel) {
+                @Inject(MAT_DIALOG_DATA) public patientdata: MergedPatientQueueModel) {
         // Set the private defaults
         this._unsubscribeAll = new Subject();
         this.hospitalservice.activehospital.subscribe(hosp => {

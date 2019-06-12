@@ -129,7 +129,7 @@ export class AdminService {
         //                 photoURL: user.photoURL,
         //                 uid: user.uid
         //             },
-        //             profiledata: {
+        //             profileData: {
         //                 phone: '',
         //                 address: '',
         //                 age: '',
@@ -138,14 +138,14 @@ export class AdminService {
         //             },
         //             config: {
         //                 level: invite.level,
-        //                 categoryid: invite.categoyid,
+        //                 categoryId: invite.categoyId,
         //                 availability: 1,
-        //                 hospitalid: invite.hospitalid
+        //                 hospitalId: invite.hospitalId
         //             },
         //             status: true,
         //             metadata: {
         //                 date: firestore.Timestamp.now(),
-        //                 lastedit: firestore.Timestamp.now()
+        //                 lastEdit: firestore.Timestamp.now()
         //             }
         //         };
         //         this.db.firestore.collection(`hospitaladmins`).doc(user.uid).set(newadmin).then(result => {
@@ -157,7 +157,7 @@ export class AdminService {
         //     } else {
         //         // console.log('User does not exist!!')
         //         this.notificationservice.notify({
-        //             alert_type: 'error',
+        //             alertType: 'error',
         //             body: 'You have not registered with any Hospital. Please contactperson us for instrustions',
         //             title: 'ERROR', duration: 10000,
         //             icon: '',

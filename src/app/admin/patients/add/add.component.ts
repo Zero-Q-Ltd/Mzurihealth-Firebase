@@ -33,7 +33,7 @@ export class AddComponent implements OnInit {
     nextofkin: FormGroup;
     insurance: FormArray;
     // doctor will do this
-    // private medicalinfo: FormGroup;
+    // private medicalInfo: FormGroup;
 
     savingUser: Boolean = false;
 
@@ -66,15 +66,15 @@ export class AddComponent implements OnInit {
         this.hospitalservice.activehospital.subscribe(hospital => {
             if (hospital._id) {
                 this.activehospital = hospital;
-                this.patientfileno.no = (hospital.patientcount + 1).toString();
+                this.patientfileno.no = (hospital.patientCount + 1).toString();
 
                 /**
                  * set the form data and disable it
                  * */
-                this.patientsForm.controls['personalinfo']
+                this.patientsForm.controls['personaLinfo']
                     .get('fileno').patchValue(this.patientfileno.no);
 
-                // this.patientsForm.controls['personalinfo']
+                // this.patientsForm.controls['personaLinfo']
                 //     .get('fileno').disable({onlySelf: true});
             }
         });
@@ -105,7 +105,7 @@ export class AddComponent implements OnInit {
                 console.log('patient added successfully');
                 this.savingUser = false;
                 this.notificationservice.notify({
-                    alert_type: 'success',
+                    alertType: 'success',
                     body: 'User was successfully added',
                     title: 'Success',
                     placement: {horizontal: 'right', vertical: 'top'}
@@ -120,7 +120,7 @@ export class AddComponent implements OnInit {
         } else {
             this.savingUser = false;
             this.notificationservice.notify({
-                alert_type: 'error',
+                alertType: 'error',
                 body: 'Please fill all the required inputs',
                 title: 'ERROR',
                 placement: {horizontal: 'right', vertical: 'top'}

@@ -1,13 +1,13 @@
 export interface CustomPaymentMethod {
-    accountnumber: string;
-    extrainfo: string;
-    paymentchannelid: string;
-    paymentmethodid: string;
+    accountNumber: string;
+    extraInfo: string;
+    paymentChannelId: string;
+    paymentMethodId: string;
 }
 
 export const emptypaymentmethod: CustomPaymentMethod = {
-    paymentmethodid: '',
-    paymentchannelid: '',
-    accountnumber: '',
-    extrainfo: ''
+    paymentMethodId: '',
+    paymentChannelId: '',
+    accountNumber: '',
+    extraInfo: ''
 };

@@ -31,7 +31,7 @@ export class HospitalService {
     constructor(private stitch: StitchService, private adminservice: AdminService) {
         adminservice.observableuserdata.subscribe((admin: HospitalAdmin) => {
             if (admin._id) {
-                console.log(admin.config.hospitalid);
+                console.log(admin.config.hospitalId);
                 this.userdata = admin;
                 this.gethospitaldetails();
             }
@@ -50,7 +50,7 @@ export class HospitalService {
     }
 
     getinvitedadmins(): void {
-        // this.stitch.db.collection('admininvites').where('hospitalid', '==', this.activehospital.value._id).onSnapshot(invitesdata => {
+        // this.stitch.db.collection('admininvites').where('hospitalId', '==', this.activehospital.value._id).onSnapshot(invitesdata => {
         //     this.invitedadmins.next(invitesdata.docs.map(inviteedata => {
         //         return Object.assign(emptyadmininvite, inviteedata.data() as AdminInvite, {_id: inviteedata._id});
         //     }));
@@ -70,11 +70,11 @@ export class HospitalService {
 
     gethospitaldetails(): void {
 
-        this.stitch.db.collection<Hospital>('hospitals').findOne({_id: this.userdata.config.hospitalid})
+        this.stitch.db.collection<Hospital>('hospitals').findOne({_id: this.userdata.config.hospitalId})
             .then(async value => {
                 console.log(value);
                 this.activehospital.next(Object.assign(emptyhospital, value));
-                let changes = await this.stitch.db.collection<Hospital>('hospitals').watch([this.userdata.config.hospitalid]);
+                let changes = await this.stitch.db.collection<Hospital>('hospitals').watch([this.userdata.config.hospitalId]);
                 changes.onNext(data => {
                     this.activehospital.next(Object.assign(emptyhospital, data));
                 });

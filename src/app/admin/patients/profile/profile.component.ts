@@ -19,7 +19,7 @@ export class ProfileComponent implements OnInit {
     allInsurance: { [key: string]: Paymentmethods } = {};
     patientsForm: FormGroup;
     currentpatient: Patient;
-    // private medicalinfo: FormGroup;
+    // private medicalInfo: FormGroup;
     loading = true;
     private personalinfo: FormGroup;
     private nextofkin: FormGroup;
@@ -55,53 +55,53 @@ export class ProfileComponent implements OnInit {
                 this.loading = false;
 
                 this.currentpatient = value;
-                this.patientsForm.controls['personalinfo']
-                    .get('fileno').patchValue(value.fileinfo.no);
+                this.patientsForm.controls['personaLinfo']
+                    .get('fileno').patchValue(value.fileInfo.no);
 
-                // this.patientsForm.controls['personalinfo']
+                // this.patientsForm.controls['personaLinfo']
                 //     .get('fileno').disable({onlySelf: true});
 
-                this.patientsForm.controls['personalinfo']
-                    .get('firstname').patchValue(value.personalinfo.name.split(' ')[0]);
+                this.patientsForm.controls['personaLinfo']
+                    .get('firstName').patchValue(value.personalInfo.name.split(' ')[0]);
 
-                this.patientsForm.controls['personalinfo']
-                    .get('lastname').patchValue(value.personalinfo.name.split(' ')[1]);
+                this.patientsForm.controls['personaLinfo']
+                    .get('lastName').patchValue(value.personalInfo.name.split(' ')[1]);
 
-                this.patientsForm.controls['personalinfo']
-                    .get('idno').patchValue(value.personalinfo.idno);
+                this.patientsForm.controls['personaLinfo']
+                    .get('idNo').patchValue(value.personalInfo.idno);
 
-                this.patientsForm.controls['personalinfo']
-                    .get('gender').patchValue(value.personalinfo.gender);
+                this.patientsForm.controls['personaLinfo']
+                    .get('gender').patchValue(value.personalInfo.gender);
 
-                this.patientsForm.controls['personalinfo']
-                    .get('birth').patchValue(value.personalinfo.dob);
+                this.patientsForm.controls['personaLinfo']
+                    .get('birth').patchValue(value.personalInfo.dob);
 
-                this.patientsForm.controls['personalinfo']
-                    .get('email').patchValue(value.personalinfo.email);
+                this.patientsForm.controls['personaLinfo']
+                    .get('email').patchValue(value.personalInfo.email);
 
-                this.patientsForm.controls['personalinfo']
-                    .get('workplace').patchValue(value.personalinfo.workplace);
+                this.patientsForm.controls['personaLinfo']
+                    .get('workplace').patchValue(value.personalInfo.workplace);
 
-                this.patientsForm.controls['personalinfo']
-                    .get('phone').patchValue(value.personalinfo.phone);
+                this.patientsForm.controls['personaLinfo']
+                    .get('phone').patchValue(value.personalInfo.phone);
 
-                this.patientsForm.controls['personalinfo']
-                    .get('address').patchValue(value.personalinfo.address);
+                this.patientsForm.controls['personaLinfo']
+                    .get('address').patchValue(value.personalInfo.address);
 
-                this.patientsForm.controls['personalinfo']
-                    .get('occupation').patchValue(value.personalinfo.occupation);
+                this.patientsForm.controls['personaLinfo']
+                    .get('occupation').patchValue(value.personalInfo.occupation);
 
-                this.patientsForm.controls['nextofkin']
-                    .get('relationship').patchValue(value.nextofkin.relationship);
+                this.patientsForm.controls['nextofKin']
+                    .get('relationship').patchValue(value.nextofKin.relationship);
 
-                this.patientsForm.controls['nextofkin']
-                    .get('name').patchValue(value.nextofkin.name);
+                this.patientsForm.controls['nextofKin']
+                    .get('name').patchValue(value.nextofKin.name);
 
-                this.patientsForm.controls['nextofkin']
-                    .get('phone').patchValue(value.nextofkin.phone);
+                this.patientsForm.controls['nextofKin']
+                    .get('phone').patchValue(value.nextofKin.phone);
 
-                this.patientsForm.controls['nextofkin']
-                    .get('workplace').patchValue(value.nextofkin.workplace);
+                this.patientsForm.controls['nextofKin']
+                    .get('workplace').patchValue(value.nextofKin.workplace);
 
 
                 console.log('magic insurance');
@@ -137,7 +137,7 @@ export class ProfileComponent implements OnInit {
 
             this.patientservice.updatePatient(this.currentpatient._id, this.patientsForm.getRawValue()).then(() => {
                 this.notificationservice.notify({
-                    alert_type: 'success',
+                    alertType: 'success',
                     body: 'Saved',
                     title: 'Success',
                     placement: {
@@ -150,7 +150,7 @@ export class ProfileComponent implements OnInit {
             });
         } else {
             this.notificationservice.notify({
-                alert_type: 'error',
+                alertType: 'error',
                 body: 'Please fill all the required inputs',
                 title: 'ERROR',
                 placement: {

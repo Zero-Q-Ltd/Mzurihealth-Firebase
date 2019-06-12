@@ -33,7 +33,7 @@ export class AdminconfigComponent implements OnInit {
     }
 
     categoryarray(): Array<string> {
-        const categoryid = this.clickedadmin.config.categoryid;
+        const categoryid = this.clickedadmin.config.categoryId;
         const subcategory = this.clickedadmin.config.level;
         if (this.admincategories.length > 0) {
             if (this.admincategories.find(cat => {
@@ -62,7 +62,7 @@ export class AdminconfigComponent implements OnInit {
                     horizontal: 'center'
                 },
                 title: 'Error',
-                alert_type: 'error',
+                alertType: 'error',
                 body: 'Regular price is required'
             });
         }

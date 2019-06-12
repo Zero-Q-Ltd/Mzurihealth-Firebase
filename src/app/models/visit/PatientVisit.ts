@@ -4,7 +4,7 @@ import {Procedureperformed} from '../procedure/Procedureperformed';
 export interface PatientVisit {
     procedures: Array<Procedureperformed>;
     totalcost: number;
-    visitdescription: string;
+    visitDescription: string;
     vitals: {
         height: number,
         weight: number,
@@ -13,7 +13,7 @@ export interface PatientVisit {
         heartrate: number,
         respiration: number
     };
-    generalnotes: Array<{
+    generalNotes: Array<{
         adminid: string,
         notes: string
     }>;
@@ -22,19 +22,19 @@ export interface PatientVisit {
     prescription: string;
     metadata: Metadata;
     payment: {
-        splitpayment: boolean;
+        splitPayment: boolean;
         total: number,
         status: boolean,
-        hasinsurance: boolean,
-        singlepayment?: {
-            channelid: string;
+        hasInsurance: boolean,
+        singlePayment?: {
+            channelId: string;
             amount: number;
-            methidid: string;
-            transactionid: string
+            methodId: string;
+            transactionId: string
         }
     };
     id: string;
-    invoiceid: number;
+    invoiceId: number;
     checkin: Checkin;
 }
 
@@ -53,7 +53,7 @@ export interface Checkin {
 export const emptypatientvisit: PatientVisit = {
     procedures: [],
     totalcost: 0,
-    visitdescription: null,
+    visitDescription: null,
     vitals: {
         height: null,
         weight: null,
@@ -62,17 +62,17 @@ export const emptypatientvisit: PatientVisit = {
         heartrate: null,
         respiration: null
     },
-    invoiceid: 0,
-    generalnotes: [],
+    invoiceId: 0,
+    generalNotes: [],
     checkin: {
         status: null,
         admin: null
     },
     payment: {
-        splitpayment: false,
+        splitPayment: false,
         total: 0,
         status: false,
-        hasinsurance: false,
+        hasInsurance: false,
     },
     patientid: null,
     hospitalid: null,

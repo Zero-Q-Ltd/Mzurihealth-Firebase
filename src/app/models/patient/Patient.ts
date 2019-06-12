@@ -4,7 +4,7 @@ import {Condition} from '../procedure/MedicalConditions.model';
 import {Allegy} from '../procedure/Allergy.model';
 
 export interface Patient {
-    personalinfo: {
+    personalInfo: {
         address: string,
         photoURL: string
         name: string,
@@ -16,14 +16,14 @@ export interface Patient {
         idno: string,
         dob: Date,
     };
-    fileinfo?: HospFile;
+    fileInfo?: HospFile;
     _id: string;
     /**
      * Optional parent _id number for minors
      */
     parentid?: string;
 
-    nextofkin: {
+    nextofKin: {
         name: string,
         relationship: string,
         phone: number,
@@ -33,8 +33,8 @@ export interface Patient {
      * A patient can have several insurances at the same time
      */
     insurance: Array<Insurance>;
-    medicalinfo: {
-        bloodtype: string,
+    medicalInfo: {
+        bloodType: string,
         conditions: Array<Condition>
         allergies: Array<Allegy>;
         vitals: {
@@ -42,7 +42,7 @@ export interface Patient {
             weight: number,
             pressure: number,
             sugar: number,
-            heartrate: number,
+            heartRate: number,
             respiration: number,
             hb: string,
         };
@@ -53,18 +53,18 @@ export interface Patient {
      */
     status: boolean;
     exrainfo: string;
-    customfuelds?: Array<Customfields>;
-    primaryhosp: string;
+    customFieelds?: Array<Customfields>;
+    primaryHosp: string;
     metadata: Metadata;
 }
 
-interface Insurance {
+export interface Insurance {
     id: string;
-    insuranceno: string;
+    insuranceNo: string;
 }
 
 export const emptypatient: Patient = {
-    personalinfo: {
+    personalInfo: {
         address: null,
         photoURL: null,
         name: null,
@@ -77,15 +77,15 @@ export const emptypatient: Patient = {
         dob: null,
     },
     _id: null,
-    nextofkin: {
+    nextofKin: {
         name: null,
         relationship: null,
         phone: null,
         workplace: null
     },
     insurance: [],
-    medicalinfo: {
-        bloodtype: null,
+    medicalInfo: {
+        bloodType: null,
         conditions: [],
         allergies: [],
         vitals: {
@@ -93,7 +93,7 @@ export const emptypatient: Patient = {
             weight: null,
             pressure: null,
             sugar: null,
-            heartrate: null,
+            heartRate: null,
             respiration: null,
             hb: null
         },
@@ -101,8 +101,8 @@ export const emptypatient: Patient = {
     },
     status: true,
     exrainfo: null,
-    primaryhosp: null,
-    customfuelds: [],
+    primaryHosp: null,
+    customFieelds: [],
     metadata: emptymetadata,
 };
 

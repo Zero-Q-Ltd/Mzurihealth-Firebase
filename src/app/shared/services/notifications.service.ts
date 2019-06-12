@@ -13,7 +13,7 @@ export class NotificationService {
 
     constructor(private snackBar: MatSnackBar) {
         this.notificationSubject.subscribe((alert: Alert) => {
-            if (alert.alert_type) {
+            if (alert.alertType) {
                 const config = NotificationService.getsrc(alert);
                 const sound = new Howl({
                     src: [config.soundsrc]
@@ -32,7 +32,7 @@ export class NotificationService {
     }
 
     private static getsrc(alert: Alert): any {
-        switch (alert.alert_type) {
+        switch (alert.alertType) {
             case 'question':
                 return {
                     icon: 'attach_money',

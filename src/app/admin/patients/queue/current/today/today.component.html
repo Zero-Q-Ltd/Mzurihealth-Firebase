@@ -271,9 +271,9 @@
                                               fxLayoutAlign="start">
                                 <mat-option *ngFor="let procedure of filteredprocedures | async"
                                             [value]="procedure">
-                                    <span fxFlex="100">{{procedure.rawprocedure.name }}</span> -->
+                                    <span fxFlex="100">{{procedure.rawProcedure.name }}</span> -->
                                     <span class="text-right text-italic"
-                                          fxFlex="100">{{getcategory(procedure.rawprocedure.category) }}</span>
+                                          fxFlex="100">{{getcategory(procedure.rawProcedure.category) }}</span>
                                 </mat-option>
                             </mat-autocomplete>
                         </form>

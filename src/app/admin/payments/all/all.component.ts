@@ -6,7 +6,7 @@ import {Paymentmethods} from '../../../models/payment/PaymentChannel';
 import {FuseConfirmDialogComponent} from '../../../../@fuse/components/confirm-dialog/confirm-dialog.component';
 import {FormGroup} from '@angular/forms';
 import {fuseAnimations} from '../../../../@fuse/animations';
-import {MergedPatient_QueueModel} from '../../../models/visit/MergedPatient_Queue.model';
+import {MergedPatientQueueModel} from '../../../models/visit/MergedPatientQueueModel';
 import {PatientService} from '../../services/patient.service';
 import {QueueService} from '../../services/queue.service';
 import {PaymentHistoryService} from '../../services/payment-history.service';
@@ -21,7 +21,7 @@ import {InvoiceComponent} from '../invoice/invoice.component';
 })
 export class AllComponent implements OnInit {
     viewcriteria: 'day' | 'week' | 'month' | 'year' = 'week';
-    patientshistorydatasource = new MatTableDataSource<MergedPatient_QueueModel>();
+    patientshistorydatasource = new MatTableDataSource<MergedPatientQueueModel>();
     patientsheaders = ['FileNo', 'Photo', 'name', 'ID', 'Phone', 'Date', 'Procedures', 'Amount'];
     activehospital: Hospital = Object.assign({}, emptyhospital);
     hospitaladmins: Array<HospitalAdmin> = [];
@@ -42,7 +42,7 @@ export class AllComponent implements OnInit {
         });
     }
 
-    viewinvoice(data: MergedPatient_QueueModel): void {
+    viewinvoice(data: MergedPatientQueueModel): void {
         event.stopPropagation();
         this.dialogRef = this._matDialog.open(InvoiceComponent, {
             data: data,

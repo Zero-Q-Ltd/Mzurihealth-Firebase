@@ -6,10 +6,10 @@ export interface Customfields {
 
 export interface Metadata {
     date: Date;
-    lastedit: Date;
+    lastEdit: Date;
 }
 
 export const emptymetadata: Metadata = {
     date: null,
-    lastedit: null
+    lastEdit: null
 };

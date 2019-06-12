@@ -5,22 +5,22 @@
         </div>
         <div id="company">
             <h2 class="name">{{activehospital.name}}</h2>
-            <div>{{activehospital.contactdetails.address}}</div>
-            <div>{{activehospital.contactdetails.phone}}</div>
-            <div>{{activehospital.contactdetails.email}}</div>
+            <div>{{activehospital.contactDetails.address}}</div>
+            <div>{{activehospital.contactDetails.phone}}</div>
+            <div>{{activehospital.contactDetails.email}}</div>
         </div>
     </header>
     <main>
         <div class="clearfix" id="details">
             <div id="client">
                 <div class="to">INVOICE TO:</div>
-                <h2 class="name">{{patientdata.patientdata.personalinfo.name}}</h2>
-                <div class="address">{{patientdata.patientdata.personalinfo.address}}</div>
-                <div class="phone">{{patientdata.patientdata.personalinfo.phone}}</div>
-                <div class="email">{{patientdata.patientdata.personalinfo.email}}</div>
+                <h2 class="name">{{patientdata.patientdata.personalInfo.name}}</h2>
+                <div class="address">{{patientdata.patientdata.personalInfo.address}}</div>
+                <div class="phone">{{patientdata.patientdata.personalInfo.phone}}</div>
+                <div class="email">{{patientdata.patientdata.personalInfo.email}}</div>
             </div>
             <div id="invoice">
-                <h1>INVOICE #{{patientdata.queuedata.invoiceid}}</h1>
+                <h1>INVOICE #{{patientdata.queuedata.invoiceId}}</h1>
                 <div class="date">Date of Invoice: {{patientdata.queuedata.metadata.date.toDate().toDateString()}}</div>
                 <div class="date">Due Date: {{patientdata.queuedata.metadata.date.toDate().toDateString()}}</div>
             </div>
@@ -67,10 +67,10 @@
         <div id="notices">
             <h3>PAYMENT CHANNELS:</h3>
             <table>
-                <tr *ngFor="let paymentchannel of activehospital.paymentmethods">
-                    <td class="desc">{{allpaymentchannels | paymentmethod : paymentchannel.paymentchannelid :paymentchannel.paymentmethodid |titlecase}}</td>
-                    <td class="desc">{{paymentchannel.accountnumber}}</td>
-                    <td class="desc">{{paymentchannel.extrainfo}}</td>
+                <tr *ngFor="let paymentchannel of activehospital.paymentMethods">
+                    <td class="desc">{{allpaymentchannels | paymentmethod : paymentchannel.paymentChannelId :paymentchannel.paymentMethodId |titlecase}}</td>
+                    <td class="desc">{{paymentchannel.accountNumber}}</td>
+                    <td class="desc">{{paymentchannel.extraInfo}}</td>
                 </tr>
             </table>
         </div>

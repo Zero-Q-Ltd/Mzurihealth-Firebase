@@ -3,7 +3,7 @@ import {Subject} from 'rxjs';
 import {HospitalService} from '../../services/hospital.service';
 import {Hospital} from '../../../models/hospital/Hospital';
 import {PatientvisitService} from '../../services/patientvisit.service';
-import {emptymergedQueueModel, MergedPatient_QueueModel} from '../../../models/visit/MergedPatient_Queue.model';
+import {emptymergedQueueModel, MergedPatientQueueModel} from '../../../models/visit/MergedPatientQueueModel';
 import {QueueService} from '../../services/queue.service';
 import {MAT_DIALOG_DATA} from '@angular/material';
 import {PaymentmethodService} from '../../services/paymentmethod.service';
@@ -15,7 +15,7 @@ import {PaymentChannel} from '../../../models/payment/PaymentChannel';
     styleUrls: ['./invoice.component.scss']
 })
 export class InvoiceComponent implements OnInit, OnDestroy {
-    patientdata: MergedPatient_QueueModel = {...emptymergedQueueModel};
+    patientdata: MergedPatientQueueModel = {...emptymergedQueueModel};
     allpaymentchannels: Array<PaymentChannel> = [];
     activehospital: Hospital;
     hidden = false;

@@ -15,16 +15,16 @@ export interface Hospital {
         position: string,
         address: string
     };
-    contactdetails: {
+    contactDetails: {
         phone: string,
         email: string,
         address: string
     };
     logourl: string;
-    patientcount: number;
-    invoicecount: number;
+    patientCount: number;
+    invoiceCount: number;
     metadata: Metadata;
-    paymentmethods: Array<CustomPaymentMethod>;
+    paymentMethods: Array<CustomPaymentMethod>;
 }
 
 export const emptyhospital: Hospital = {
@@ -37,7 +37,7 @@ export const emptyhospital: Hospital = {
     },
     logourl: null,
     status: null,
-    contactdetails: {
+    contactDetails: {
         email: null,
         phone: null,
         address: null
@@ -47,8 +47,8 @@ export const emptyhospital: Hospital = {
     _id: null,
     userid: null,
     description: null,
-    patientcount: null,
-    invoicecount: null,
+    patientCount: null,
+    invoiceCount: null,
     metadata: emptymetadata,
-    paymentmethods: []
+    paymentMethods: []
 };

@@ -52,7 +52,7 @@ export class HospconfigComponent implements OnInit {
                 private _matDialog: MatDialog) {
         this.paymentmethodService.allpaymentchannels.subscribe(channels => {
             this.customizablepaymentchannels = channels.filter(channel => {
-                return channel.transactiondetailcollection;
+                return channel.transactionDetailCollection;
             });
         });
         /**
@@ -73,8 +73,8 @@ export class HospconfigComponent implements OnInit {
              * create a new variable
              */
             this.originalhspital = hosp;
-            if (hosp.paymentmethods.length < 1) {
-                this.originalhspital.paymentmethods.push({...emptypaymentmethod});
+            if (hosp.paymentMethods.length < 1) {
+                this.originalhspital.paymentMethods.push({...emptypaymentmethod});
             }
             /**
              * TODO : Find a better solution
@@ -130,7 +130,7 @@ export class HospconfigComponent implements OnInit {
                             horizontal: 'right'
                         },
                         title: 'SAVED',
-                        alert_type: 'success',
+                        alertType: 'success',
                         body: ''
                     });
                 });
@@ -139,7 +139,7 @@ export class HospconfigComponent implements OnInit {
     }
 
     addpaymentarray(): void {
-        this.temphospital.paymentmethods.push({...emptypaymentmethod});
+        this.temphospital.paymentMethods.push({...emptypaymentmethod});
     }
 
     getpaymentchannel(id: string): PaymentChannel | null {
@@ -153,6 +153,6 @@ export class HospconfigComponent implements OnInit {
     }
 
     deletepayment(index: number): void {
-        this.temphospital.paymentmethods.splice(index, 1);
+        this.temphospital.paymentMethods.splice(index, 1);
     }
 }

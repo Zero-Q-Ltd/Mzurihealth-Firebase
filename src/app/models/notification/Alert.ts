@@ -7,5 +7,5 @@ export interface Alert {
         horizontal: 'start' | 'center' | 'end' | 'left' | 'right',
         vertical: 'bottom' | 'top'
     };
-    alert_type?: 'success' | 'error' | 'warning' | 'info' | 'question';
+    alertType?: 'success' | 'error' | 'warning' | 'info' | 'question';
 }

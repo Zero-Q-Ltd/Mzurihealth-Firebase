@@ -93,27 +93,27 @@ export class InvoiceCustomizationComponent implements OnInit {
              * check if the procedure contains a custom price for insurance
              */
             if (!!this.procedureservice.hospitalprocedures.value.find(value => {
-                return value.customprocedure.id === customprocedureid && value.customprocedure.customInsurancePrice && !!value.customprocedure.insurancePrices[insuranceid];
+                return value.customProcedure.id === customprocedureid && value.customProcedure.customInsurancePrice && !!value.customProcedure.insurancePrices[insuranceid];
             })) {
                 return this.procedureservice.hospitalprocedures.value.find(value => {
-                    return value.customprocedure.id === customprocedureid && !!value.customprocedure.insurancePrices[insuranceid];
-                }).customprocedure.insurancePrices[insuranceid];
+                    return value.customProcedure.id === customprocedureid && !!value.customProcedure.insurancePrices[insuranceid];
+                }).customProcedure.insurancePrices[insuranceid];
 
             } else {
                 /**
                  * return the normal price
                  */
                 return this.procedureservice.hospitalprocedures.value.find(value => {
-                    return value.customprocedure.id === customprocedureid;
-                }).customprocedure.regularPrice;
+                    return value.customProcedure.id === customprocedureid;
+                }).customProcedure.regularPrice;
             }
         } else {
             /**
              * return the normal price
              */
             return this.procedureservice.hospitalprocedures.value.find(value => {
-                return value.customprocedure.id === customprocedureid;
-            }).customprocedure.regularPrice;
+                return value.customProcedure.id === customprocedureid;
+            }).customProcedure.regularPrice;
         }
     }
 

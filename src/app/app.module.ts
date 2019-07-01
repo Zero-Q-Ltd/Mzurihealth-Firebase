@@ -21,6 +21,9 @@ import {AgmCoreModule} from '@agm/core';
 import {CommonModule} from '@angular/common';
 import {NotificationComponent} from './shared/components/notification/notification.component';
 import {Angulartics2Module} from 'angulartics2';
+import {HttpLink, HttpLinkModule} from 'apollo-angular-link-http';
+import {Apollo, ApolloModule} from 'apollo-angular';
+import {InMemoryCache} from 'apollo-cache-inmemory';
 
 export const firebaseConfig = {
     apiKey: 'AIzaSyDaiEsgWOaeopaYQTgTWPIatMeKLZjZc-A',
@@ -56,7 +59,8 @@ export const firebaseConfig = {
         Error404Module,
         Error500Module,
         FrontendModule,
-
+        ApolloModule,
+        HttpLinkModule,
         /* Angulartics2Module.forRoot(<Angulartics2Settings>{
              pageTracking: {clearHash: true, clearQueryParams: true},
              ga: {transport: 'beacon'},
@@ -75,4 +79,10 @@ export const firebaseConfig = {
     ]
 })
 export class AppModule {
+    constructor(apollo: Apollo, httpLink: HttpLink) {
+        apollo.create({
+            link: httpLink.create({uri: '[URL]'}),
+            cache: new InMemoryCache()
+        });
+    }
 }

@@ -1,6 +1,6 @@
 import {Component, Inject, OnInit, Optional} from '@angular/core';
 import {fuseAnimations} from '../../../../../../@fuse/animations';
-import {Patient} from '../../../../../models/patient/Patient';
+import {Insurance, Patient} from '../../../../../models/patient/Patient';
 import * as moment from 'moment';
 import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {AdminService} from '../../../../services/admin.service';
@@ -167,13 +167,13 @@ export class GeneralDetailsComponent implements OnInit {
         });
     }
 
-    replicateInsurance(insurancedata: { id: string; insuranceno: string; }): FormGroup {
+    replicateInsurance(insurancedata: Insurance): FormGroup {
         const insurancex = new FormControl({
             value: insurancedata.id,
             disabled: false
         });
         const insurancenumber = new FormControl({
-            value: insurancedata.insuranceno,
+            value: insurancedata.insuranceNo,
             disabled: false
         });
         return this.formBuilder.group({

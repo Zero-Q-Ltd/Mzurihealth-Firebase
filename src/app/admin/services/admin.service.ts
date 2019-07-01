@@ -5,19 +5,6 @@ import {emptyadmin, HospitalAdmin} from '../../models/user/HospitalAdmin';
 import {NotificationService} from '../../shared/services/notifications.service';
 import {AdminCategory} from '../../models/user/AdminCategory';
 import {AdminInvite} from '../../models/user/AdminInvite';
-import {StitchService} from './stitch/stitch.service';
-import {
-    AnonymousCredential,
-    GoogleRedirectCredential,
-    RemoteMongoClient,
-    RemoteMongoDatabase,
-    Stitch,
-    StitchAppClient,
-    StitchAppClientConfiguration,
-    StitchAuth,
-    StitchUser,
-    BSON,
-} from 'mongodb-stitch-browser-sdk';
 
 @Injectable({
     providedIn: 'root'

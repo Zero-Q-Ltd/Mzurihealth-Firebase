@@ -16,7 +16,6 @@ import {emptyhospital, Hospital} from '../models/hospital/Hospital';
 import {emptyadmin, HospitalAdmin} from '../models/user/HospitalAdmin';
 import {AdminService} from './services/admin.service';
 import {HospitalService} from './services/hospital.service';
-import {AngularFireAuth} from '@angular/fire/auth';
 import {Router} from '@angular/router';
 import {ProceduresService} from './services/procedures.service';
 
@@ -71,7 +70,6 @@ export class AdminlayoutComponent implements OnInit {
         private adminservice: AdminService,
         private hospitalservice: HospitalService,
         private procedureservice: ProceduresService,
-        private afAuth: AngularFireAuth,
         private router: Router,
     ) {
         // Get default navigation

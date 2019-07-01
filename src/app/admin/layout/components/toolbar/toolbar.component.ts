@@ -13,7 +13,6 @@ import {emptyadmin, HospitalAdmin} from '../../../../models/user/HospitalAdmin';
 import {AdminService} from '../../../services/admin.service';
 import {HospitalService} from '../../../services/hospital.service';
 import {Router} from '@angular/router';
-import {StitchService} from '../../../services/stitch/stitch.service';
 
 @Component({
     selector: 'toolbar',
@@ -58,7 +57,6 @@ export class ToolbarComponent implements OnInit, OnDestroy {
         private adminservice: AdminService,
         private hospitalservice: HospitalService,
         private router: Router,
-        private stitch: StitchService
     ) {
         // Set the defaults
         this.userStatusOptions = [
@@ -123,9 +121,9 @@ export class ToolbarComponent implements OnInit, OnDestroy {
     }
 
     onLogoutClick() {
-        this.stitch.auth.logout().then(() => {
-            this.router.navigateByUrl('');
-        });
+        // this.stitch.auth.logout().then(() => {
+        //     this.router.navigateByUrl('');
+        // });
     }
 
     setuserstatus(status) {

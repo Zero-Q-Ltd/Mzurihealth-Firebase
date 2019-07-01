@@ -25,14 +25,7 @@ import {HttpLink, HttpLinkModule} from 'apollo-angular-link-http';
 import {Apollo, ApolloModule} from 'apollo-angular';
 import {InMemoryCache} from 'apollo-cache-inmemory';
 
-export const firebaseConfig = {
-    apiKey: 'AIzaSyDaiEsgWOaeopaYQTgTWPIatMeKLZjZc-A',
-    authDomain: 'mzurihealth.firebaseapp.com',
-    databaseURL: 'https://mzurihealth.firebaseio.com',
-    projectId: 'mzurihealth',
-    storageBucket: 'mzurihealth.appspot.com',
-    messagingSenderId: '126269493100'
-};
+
 
 @NgModule({
     declarations: [
@@ -68,8 +61,6 @@ export const firebaseConfig = {
          }),*/
         Angulartics2Module.forRoot(),
 
-        // SW
-        // ServiceWorkerModule.register('/ngsw-worker.js', { enabled: environment.production }),
     ],
 
     entryComponents: [NotificationComponent],
@@ -81,7 +72,7 @@ export const firebaseConfig = {
 export class AppModule {
     constructor(apollo: Apollo, httpLink: HttpLink) {
         apollo.create({
-            link: httpLink.create({uri: '[URL]'}),
+            link: httpLink.create({uri: ' http://localhost:4242/query'}),
             cache: new InMemoryCache()
         });
     }

@@ -10,18 +10,6 @@ import {MatDialog, MatDialogRef} from '@angular/material';
 import {emptypaymentmethod} from '../../../models/payment/CustomPaymentMethod.model';
 import {LocalcommunicationService} from '../localcommunication.service';
 import {fuseAnimations} from '../../../../@fuse/animations';
-import {
-    AnonymousCredential,
-    GoogleRedirectCredential,
-    RemoteMongoClient,
-    RemoteMongoDatabase,
-    Stitch,
-    StitchAppClient,
-    StitchAppClientConfiguration,
-    StitchAuth,
-    StitchUser,
-    BSON,
-} from 'mongodb-stitch-browser-sdk';
 
 declare let google: any;
 

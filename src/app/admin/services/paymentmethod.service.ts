@@ -3,7 +3,6 @@ import {HospitalService} from './hospital.service';
 import {Hospital} from '../../models/hospital/Hospital';
 import {PaymentChannel, Paymentmethods} from '../../models/payment/PaymentChannel';
 import {BehaviorSubject} from 'rxjs';
-import {StitchService} from './stitch/stitch.service';
 
 // import * as paymentchannels from 'assets/paymentchannels.json';
 
@@ -15,8 +14,7 @@ export class PaymentmethodService {
     allpaymentchannels: BehaviorSubject<Array<PaymentChannel>> = new BehaviorSubject<Array<PaymentChannel>>([]);
     allinsurance: BehaviorSubject<{ [key: string]: Paymentmethods }> = new BehaviorSubject({});
 
-    constructor(private stitch: StitchService,
-                private hospitalservice: HospitalService) {
+    constructor(private hospitalservice: HospitalService) {
         this.hospitalservice.activehospital.subscribe(hospital => {
             if (hospital._id) {
                 this.activehospital = hospital;

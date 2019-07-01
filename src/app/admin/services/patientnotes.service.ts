@@ -3,7 +3,6 @@ import {QueueService} from './queue.service';
 import {BehaviorSubject} from 'rxjs';
 import {emptynote, Patientnote} from '../../models/patient/Patientnote';
 import {AdminService} from './admin.service';
-import {StitchService} from './stitch/stitch.service';
 import * as moment from 'moment';
 
 @Injectable({
@@ -14,7 +13,6 @@ export class PatientnotesService {
     patientid: string;
 
     constructor(private queueservice: QueueService,
-                private stitch: StitchService,
                 private admiservice: AdminService) {
         queueservice.currentpatient.subscribe(value => {
             if (value.patientdata._id) {

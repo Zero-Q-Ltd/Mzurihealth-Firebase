@@ -1,4 +1,4 @@
-import {BSON} from 'mongodb-stitch-browser-sdk';
+import {BSON} from 'bson';
 
 export interface AdminCategory {
     name: string;

@@ -7,7 +7,6 @@ import {ProcedureCategory} from '../../models/procedure/ProcedureCategory';
 import {NotificationService} from '../../shared/services/notifications.service';
 import {HospitalAdmin} from '../../models/user/HospitalAdmin';
 import {AdminService} from './admin.service';
-import {StitchService} from './stitch/stitch.service';
 import * as moment from 'moment';
 import {MergedProcedureModel} from '../../models/procedure/MergedProcedure.model';
 
@@ -21,8 +20,7 @@ export class ProceduresService {
     procedurecategories: BehaviorSubject<Array<ProcedureCategory>> = new BehaviorSubject<Array<ProcedureCategory>>([]);
     userdata: HospitalAdmin;
 
-    constructor(private stitch: StitchService,
-                private hospitalservice: HospitalService,
+    constructor(private hospitalservice: HospitalService,
                 private notificationservice: NotificationService,
                 private adminservice: AdminService) {
         this.hospitalservice.activehospital.subscribe(hospital => {
@@ -66,6 +64,7 @@ export class ProceduresService {
     }
 
     disableprocedure(procedureid: string) {
+        return true as any;
         // return this.db.firestore.collection('procedureconfigs').doc(procedureid).update({status: false});
     }
 

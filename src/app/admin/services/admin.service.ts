@@ -5,6 +5,9 @@ import {emptyadmin, HospitalAdmin} from '../../models/user/HospitalAdmin';
 import {NotificationService} from '../../shared/services/notifications.service';
 import {AdminCategory} from '../../models/user/AdminCategory';
 import {AdminInvite} from '../../models/user/AdminInvite';
+import {Apollo} from 'apollo-angular';
+import gql from 'graphql-tag';
+import {map} from 'rxjs/operators';
 
 @Injectable({
     providedIn: 'root'
@@ -26,10 +29,25 @@ export class AdminService {
 
     constructor(private router: Router,
                 private notificationservice: NotificationService,
-                private stitch: StitchService) {
-        this.stitch.user.subscribe(value => {
-            this.getuser(value);
-        });
+                private apollo: Apollo
+    ) {
+        console.log('sending query');
+        this.apollo.watchQuery<HospitalAdmin>({
+            query: gql`
+                query HospitalAdmin {
+                    admin {
+                        id_
+                        name
+                    }
+                }
+            `
+        })
+        .valueChanges
+        .pipe(
+            map(result => {
+                console.log(result);
+            })
+        );
         this.observableuserdata.subscribe(value => {
             this.userdata = value;
         });
@@ -40,19 +58,6 @@ export class AdminService {
         const config = this.userdata.config;
         config.availability = availability;
 
-    }
-
-    async getuser(user: StitchUser) {
-        this.stitch.db.collection<HospitalAdmin>('hospitaladmins')
-            .findOne({_id: new BSON.ObjectId(user.id)})
-            .then(userdata => {
-                this.observableuserdata.next(userdata);
-            });
-        const stream = await this.stitch.db.collection<HospitalAdmin>('hospitaladmins')
-            .watch([new BSON.ObjectId(user.id)]);
-        stream.onNext(data => {
-            this.observableuserdata.next(data.fullDocument);
-        });
     }
 
     getadmincategories(): void {
@@ -101,7 +106,7 @@ export class AdminService {
         this.router.navigate(['/admin/authentication/login']);
     }
 
-    checkinvite(user: StitchUser): void {
+    checkinvite(): void {
         // const invitequery = this.db.firestore.collection('admininvites')
         // .where('email', '==', user.email)
         // .limit(1)

@@ -6,7 +6,6 @@ import {BehaviorSubject} from 'rxjs';
 import {Procedureperformed} from '../../models/procedure/Procedureperformed';
 import {MergedProcedureModel} from '../../models/procedure/MergedProcedure.model';
 import {AdminService} from './admin.service';
-import {StitchService} from './stitch/stitch.service';
 import * as moment from 'moment';
 
 @Injectable({
@@ -21,8 +20,7 @@ export class PatientvisitService {
 
     constructor(private queue: QueueService,
                 private adminservice: AdminService,
-                private hospitalService: HospitalService,
-                private stitch: StitchService) {
+                private hospitalService: HospitalService) {
         /*** DANGEROUS TERRITORY ****
          * the order of calling these functions is very important,
          * because if hospitalId is missing some queries that execute later might fail
@@ -67,6 +65,8 @@ export class PatientvisitService {
         // return this.db.collection('hospitalvisits').doc(visitid).update({
         //     procedures: firestore.FieldValue.arrayUnion(per)
         // });
+        return true as any;
+
     }
 
     /**
@@ -114,6 +114,8 @@ export class PatientvisitService {
         //         admin: null,
         //     }
         // });
+        return true as any;
+
     }
 
     payandexit(visit: PatientVisit) {
@@ -129,6 +131,8 @@ export class PatientvisitService {
         // return this.db.collection('hospitalvisits').doc(visitid).update({
         //     prescription: prescription
         // });
+        return true as any;
+
     }
 
     terminatepatientvisit(visitid) {

@@ -8,6 +8,7 @@ import {LocalcommunicationService} from '../../localcommunication.service';
 import {fuseAnimations} from '../../../../../@fuse/animations';
 import {FuseConfirmDialogComponent} from '../../../../../@fuse/components/confirm-dialog/confirm-dialog.component';
 import {NotificationService} from '../../../../shared/services/notifications.service';
+import {MergedProcedureModel} from '../../../../models/procedure/MergedProcedure.model';
 
 @Component({
     selector: 'procedures-all',
@@ -16,7 +17,7 @@ import {NotificationService} from '../../../../shared/services/notifications.ser
     animations: [fuseAnimations]
 })
 export class AllComponent implements OnInit, AfterViewInit {
-    hospitalprocedures = new MatTableDataSource<{ rawprocedure: RawProcedure, customprocedure: CustomProcedure }>();
+    hospitalprocedures = new MatTableDataSource<MergedProcedureModel>();
     procedurecategories: Array<ProcedureCategory>;
     procedureheaders = ['name', 'category', 'regprice', 'minprice', 'maxprice', 'action'];
     selectedprocedure: CustomProcedure = {...emptycustomprocedure};

@@ -2,11 +2,7 @@ import {Injectable} from '@angular/core';
 import {BehaviorSubject} from 'rxjs';
 import {MergedPatientQueueModel} from '../../models/visit/MergedPatientQueueModel';
 import {HospitalService} from './hospital.service';
-import {emptypatientvisit, PatientVisit} from '../../models/visit/PatientVisit';
-import {emptypatient, Patient} from '../../models/patient/Patient';
 import * as moment from 'moment';
-import {emptyfile, HospFile} from '../../models/hospital/HospFile';
-import {StitchService} from './stitch/stitch.service';
 
 @Injectable({
     providedIn: 'root'
@@ -15,7 +11,7 @@ export class PaymentHistoryService {
     activehospitalid: string;
     paymentshistory: BehaviorSubject<Array<MergedPatientQueueModel>> = new BehaviorSubject([]);
 
-    constructor(private stitch: StitchService, private hospitalservice: HospitalService) {
+    constructor(private hospitalservice: HospitalService) {
         this.hospitalservice.activehospital.subscribe(hospital => {
             if (hospital._id) {
                 this.activehospitalid = hospital._id;

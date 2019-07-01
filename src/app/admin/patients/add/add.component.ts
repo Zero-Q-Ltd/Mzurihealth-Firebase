@@ -14,7 +14,6 @@ import {Paymentmethods} from '../../../models/payment/PaymentChannel';
 import {PaymentmethodService} from '../../services/paymentmethod.service';
 import {NumberValidator} from '../../validators/number.validator';
 import {FilenumberValidator} from '../../validators/filenumber.validator';
-import {StitchService} from '../../services/stitch/stitch.service';
 
 @Component({
     selector: 'app-add',
@@ -47,7 +46,6 @@ export class AddComponent implements OnInit {
                 private router: Router,
                 private paymentethods: PaymentmethodService,
                 private notificationservice: NotificationService,
-                private stitch: StitchService,
                 @Optional() @Inject(MAT_DIALOG_DATA) public data?: any) {
 
         this.maxDate = moment().toDate();

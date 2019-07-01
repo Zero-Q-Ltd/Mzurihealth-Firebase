@@ -8,7 +8,6 @@ import {PatientVisit} from '../../models/visit/PatientVisit';
 import {emptymergedQueueModel, MergedPatientQueueModel} from '../../models/visit/MergedPatientQueueModel';
 import {ProceduresService} from './procedures.service';
 import {MergedProcedureModel} from '../../models/procedure/MergedProcedure.model';
-import {StitchService} from './stitch/stitch.service';
 import * as moment from 'moment';
 
 @Injectable({
@@ -21,8 +20,7 @@ export class QueueService {
     currentpatient: BehaviorSubject<MergedPatientQueueModel> = new BehaviorSubject({...emptymergedQueueModel});
     adminid: string;
 
-    constructor(private stitch: StitchService,
-                private hospitalservice: HospitalService,
+    constructor(private hospitalservice: HospitalService,
                 private adminservice: AdminService,
                 private patientservice: PatientService,
                 private procedureservice: ProceduresService) {
@@ -81,6 +79,8 @@ export class QueueService {
         };
         visit.metadata.lastEdit = moment().toDate();
         console.log(visit);
+        return true as any;
+
         // return this.db.firestore.collection('hospitalvisits').doc(visit.id).update(visit);
     }
 
@@ -90,6 +90,7 @@ export class QueueService {
             status: 2,
             admin: this.adminid
         };
+        return true as any;
         // batch.update(this.db.firestore.collection('hospitalvisits').doc(visit.id), visit);
         // return batch.commit();
     }

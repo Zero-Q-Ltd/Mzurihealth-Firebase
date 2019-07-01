@@ -1,5 +1,5 @@
 import {emptymetadata, Metadata} from '../universal';
-import {BSON} from 'mongodb-stitch-browser-sdk';
+import {BSON} from 'bson';
 
 export interface HospitalAdmin {
     _id: BSON.ObjectId;

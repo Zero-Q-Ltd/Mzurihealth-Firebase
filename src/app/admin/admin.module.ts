@@ -12,7 +12,7 @@ import {AuthenticationModule} from './authentication/authentication.module';
 import {CalendarModule} from './calendar/calendar.module';
 import {AdminSharedModule} from './shared/admin-shared.module';
 import {AdminprofileComponent} from './adminprofile/adminprofile.component';
-import {StitchService} from './services/stitch/stitch.service';
+import {AdminService} from './services/admin.service';
 
 @NgModule({
     imports: [
@@ -41,8 +41,6 @@ import {StitchService} from './services/stitch/stitch.service';
     providers: [UsersGuard]
 })
 export class AdminModule {
-    public constructor(
-        stitch: StitchService,
-    ) {
+    public constructor(private adminservice: AdminService) {
     }
 }

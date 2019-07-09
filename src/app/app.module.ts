@@ -1,6 +1,6 @@
 import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
-import {HttpClientModule} from '@angular/common/http';
+import {HttpClientModule, HttpHeaders} from '@angular/common/http';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatIconModule, MatSnackBarModule} from '@angular/material';
 import {TranslateModule} from '@ngx-translate/core';
@@ -24,7 +24,6 @@ import {Angulartics2Module} from 'angulartics2';
 import {HttpLink, HttpLinkModule} from 'apollo-angular-link-http';
 import {Apollo, ApolloModule} from 'apollo-angular';
 import {InMemoryCache} from 'apollo-cache-inmemory';
-
 
 
 @NgModule({
@@ -71,9 +70,20 @@ import {InMemoryCache} from 'apollo-cache-inmemory';
 })
 export class AppModule {
     constructor(apollo: Apollo, httpLink: HttpLink) {
+        const link = httpLink.create({uri: 'http://localhost:4242/query'});
+        const cache = new InMemoryCache();
+
         apollo.create({
-            link: httpLink.create({uri: ' http://localhost:4242/query'}),
-            cache: new InMemoryCache()
+            link,
+            cache
         });
+
+        /**
+         * TODO: For use later when we start doing auth
+         */
+            // const middleware = setContext(() => ({
+            //     headers: new HttpHeaders().set('Authorization', localStorage.getItem('token') || null)
+            // }));
+        const state = cache.extract();
     }
 }

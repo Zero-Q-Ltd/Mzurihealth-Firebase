@@ -1,11 +1,11 @@
-export interface CustomPaymentMethod {
+export interface PaymentMethod {
     accountNumber: string;
     extraInfo: string;
     paymentChannelId: string;
     paymentMethodId: string;
 }
 
-export const emptypaymentmethod: CustomPaymentMethod = {
+export const emptypaymentmethod: PaymentMethod = {
     paymentMethodId: '',
     paymentChannelId: '',
     accountNumber: '',

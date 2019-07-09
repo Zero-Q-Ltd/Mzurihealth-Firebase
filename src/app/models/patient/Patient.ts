@@ -1,5 +1,5 @@
 import {Customfields, emptymetadata, Metadata} from '../universal';
-import {HospFile} from '../hospital/HospFile';
+import {HospFile} from '../hospital/file';
 import {Condition} from '../procedure/MedicalConditions.model';
 import {Allegy} from '../procedure/Allergy.model';
 

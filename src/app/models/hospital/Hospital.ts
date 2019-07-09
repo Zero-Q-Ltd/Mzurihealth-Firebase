@@ -1,5 +1,5 @@
 import {emptymetadata, Metadata} from '../universal';
-import {CustomPaymentMethod} from '../payment/CustomPaymentMethod.model';
+import {PaymentMethod} from '../payment/CustomPaymentMethod.model';
 
 export interface Hospital {
     location: any;
@@ -24,7 +24,7 @@ export interface Hospital {
     patientCount: number;
     invoiceCount: number;
     metadata: Metadata;
-    paymentMethods: Array<CustomPaymentMethod>;
+    paymentMethods: Array<PaymentMethod>;
 }
 
 export const emptyhospital: Hospital = {

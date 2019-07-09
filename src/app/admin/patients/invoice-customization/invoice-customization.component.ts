@@ -6,7 +6,7 @@ import {emptyprocedureperformed, Procedureperformed} from '../../../models/proce
 import {PaymentmethodService} from '../../services/paymentmethod.service';
 import {PaymentChannel, Paymentmethods} from '../../../models/payment/PaymentChannel';
 import {HospitalService} from '../../services/hospital.service';
-import {CustomPaymentMethod} from '../../../models/payment/CustomPaymentMethod.model';
+import {PaymentMethod} from '../../../models/payment/CustomPaymentMethod.model';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef, MatTableDataSource} from '@angular/material';
 import {InvoiceComponent} from '../invoice/invoice.component';
 import {HospitalAdmin} from '../../../models/user/HospitalAdmin';
@@ -26,7 +26,7 @@ import {PrescriptionComponent} from '../prescription/prescription.component';
 export class InvoiceCustomizationComponent implements OnInit {
     patientdata: MergedPatientQueueModel = {...emptymergedQueueModel};
     allpaymentchannels: Array<PaymentChannel> = [];
-    hospitalmethods: Array<CustomPaymentMethod> = [];
+    hospitalmethods: Array<PaymentMethod> = [];
     dialogRef: MatDialogRef<any>;
     clickedprocedure: Procedureperformed = {...emptyprocedureperformed};
     hospitaladmins: Array<HospitalAdmin> = [];
@@ -182,7 +182,7 @@ export class InvoiceCustomizationComponent implements OnInit {
         this.patientdata.queuedata.payment.total = total;
     }
 
-    getcativechannelmethods(channelid: string): Array<CustomPaymentMethod> {
+    getcativechannelmethods(channelid: string): Array<PaymentMethod> {
         return this.hospitalmethods.filter(value => {
             return value.paymentChannelId === channelid;
         });

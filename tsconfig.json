@@ -22,15 +22,12 @@
         ],
         "lib": [
             "es2018",
-            "dom"
+            "dom",
+            "esnext.asynciterable"
         ],
         "module": "commonjs",
         "skipLibCheck": true,
         "stripInternal": true,
         "noImplicitAny": false,
-        "types": [
-            "meteor-typings",
-            "@types/underscore"
-        ]
     }
 }

@@ -6,7 +6,7 @@ import {HospitalAdmin} from '../../models/user/HospitalAdmin';
 import {HospitalService} from './hospital.service';
 import {AdminService} from './admin.service';
 import * as moment from 'moment';
-import {emptyfile, HospFile} from '../../models/hospital/HospFile';
+import {emptyfile, HospFile} from '../../models/hospital/file';
 import {AddPatientFormModel} from '../../models/patient/AddPatientForm.model';
 import {debounceTime, map, switchMap} from 'rxjs/operators';
 import {BehaviorSubject, combineLatest, Observable, of} from 'rxjs';

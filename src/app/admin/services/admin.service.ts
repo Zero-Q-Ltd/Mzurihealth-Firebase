@@ -8,6 +8,7 @@ import {AdminInvite} from '../../models/user/AdminInvite';
 import {Apollo} from 'apollo-angular';
 import gql from 'graphql-tag';
 import {map} from 'rxjs/operators';
+import {Subscription} from 'apollo-client/util/Observable';
 
 @Injectable({
     providedIn: 'root'
@@ -26,31 +27,30 @@ export class AdminService {
     firstlogin = false;
     validuser: boolean;
     admincategories: BehaviorSubject<Array<AdminCategory>> = new BehaviorSubject<Array<AdminCategory>>([]);
+// We use the gql tag to parse our query string into a query document
+    CurrentUserForProfile = gql`
+        query Patient {
+            currentUser {
+                login
+                avatar_url
+            }
+        }
+    `;
+    private querySubscription: Subscription;
 
     constructor(private router: Router,
                 private notificationservice: NotificationService,
                 private apollo: Apollo
     ) {
         console.log('sending query');
-        this.apollo.watchQuery<HospitalAdmin>({
-            query: gql`
-                query HospitalAdmin {
-                    admin {
-                        id_
-                        name
-                    }
-                }
-            `
+
+        this.querySubscription = this.apollo.watchQuery<any>({
+            query: this.CurrentUserForProfile
         })
-        .valueChanges
-        .pipe(
-            map(result => {
-                console.log(result);
-            })
-        );
-        this.observableuserdata.subscribe(value => {
-            this.userdata = value;
-        });
+            .valueChanges
+            .subscribe(({data, loading}) => {
+                console.log(data);
+            });
     }
 
     // The the status of the activeadmin

@@ -233,3 +233,6 @@ body.theme-pink-dark {
 
     @include fuse-color-classes($palettes);
 }
+.cdk-overlay-pane {
+    overflow: scroll;
+}

@@ -175,8 +175,7 @@
                 </mat-panel-description>
             </mat-expansion-panel-header>
             <ng-template matExpansionPanelContent>
-                <div class="fullwidth">
-                    <table [dataSource]="proceduresdatasource" class="fullwidth" mat-table>
+                    <table [dataSource]="proceduresdatasource"  mat-table>
 
                         <!--- Note that these columns can be defined in any order.
                               The actual rendered columns are set as a property on the row definition" -->
@@ -220,22 +219,28 @@
 
                         <tr mat-header-row *matHeaderRowDef="procedurecolumns"></tr>
                         <tr mat-row *matRowDef="let row; columns: procedurecolumns; let i = index "
-                            (click)="viewnotes(i)"></tr>
-                    </table>
-                </div>
-                <div class="row">
+                            (click)="viewnotes(i)">
 
-                    <div class="col-md-1">
-                        <button (click)="performprocedures()" class="add-icon" mat-raised-button>
-                            <mat-icon>add_box</mat-icon>
-                            PROCEDURE
-                        </button>
-                    </div>
-                    <div class="col-md-10">
-                        <mat-paginator [pageSizeOptions]="[10, 20, 50, 100]" [pageSize]="10"
-                                       showFirstLastButtons></mat-paginator>
-                    </div>
-                </div>
+                        </tr>
+                    </table>
+                <br>
+                <button (click)="performprocedures()" class="add-icon" mat-raised-button>
+                    <mat-icon>add_box</mat-icon>
+                    PROCEDURE
+                </button>
+                <mat-paginator [pageSizeOptions]="[10, 20, 50, 100]" [pageSize]="10" showFirstLastButtons></mat-paginator>
+                <!--<div class="row">-->
+                    <!--<div class="col-md-2">-->
+                        <!--<button (click)="performprocedures()" class="add-icon" mat-raised-button>-->
+                            <!--<mat-icon>add_box</mat-icon>-->
+                            <!--PROCEDURE-->
+                        <!--</button>-->
+                    <!--</div>-->
+                    <!--<div class="col-md-10">-->
+                        <!--<mat-paginator [pageSizeOptions]="[10, 20, 50, 100]" [pageSize]="10"-->
+                                       <!--showFirstLastButtons></mat-paginator>-->
+                    <!--</div>-->
+                <!--</div>-->
             </ng-template>
         </mat-expansion-panel>
 

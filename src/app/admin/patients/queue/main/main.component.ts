@@ -18,7 +18,7 @@ import {InvoiceCustomizationComponent} from '../../invoice-customization/invoice
 })
 export class MainComponent implements OnInit, AfterViewInit {
     patientsdatasource = new MatTableDataSource<MergedPatient_QueueModel>();
-    patientsheaders = ['FileNo', 'Photo', 'Name', 'ID', 'Age', 'Phone', 'Last Visit', 'Status', 'Action'];
+    patientsheaders = ['FileNo', 'Name', 'Age', 'Phone', 'Last Visit', 'Status', 'Action'];
     dialogRef: MatDialogRef<any>;
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     hospitaladmins: Array<HospitalAdmin>;

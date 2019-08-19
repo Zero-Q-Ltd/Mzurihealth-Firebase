@@ -19,7 +19,7 @@ import {InvoiceComponent} from '../../invoice/invoice.component';
 })
 export class MineComponent implements OnInit {
     patientsdatasource = new MatTableDataSource<MergedPatient_QueueModel>();
-    patientsheaders = ['FileNo', 'Photo', 'Name', 'ID', 'Age', 'Phone', 'Last Visit', 'Status', 'Action'];
+    patientsheaders = ['FileNo', 'Name', 'Age', 'Phone', 'Last Visit', 'Status', 'Action'];
     dialogRef: MatDialogRef<any>;
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
 

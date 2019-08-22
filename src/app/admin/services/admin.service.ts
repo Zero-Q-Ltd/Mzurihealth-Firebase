@@ -5,10 +5,19 @@ import {emptyadmin, HospitalAdmin} from '../../models/user/HospitalAdmin';
 import {NotificationService} from '../../shared/services/notifications.service';
 import {AdminCategory} from '../../models/user/AdminCategory';
 import {AdminInvite} from '../../models/user/AdminInvite';
-import {Apollo} from 'apollo-angular';
-import gql from 'graphql-tag';
-import {map} from 'rxjs/operators';
-import {Subscription} from 'apollo-client/util/Observable';
+import {StitchService} from './stitch/stitch.service';
+import {
+    AnonymousCredential,
+    GoogleRedirectCredential,
+    RemoteMongoClient,
+    RemoteMongoDatabase,
+    Stitch,
+    StitchAppClient,
+    StitchAppClientConfiguration,
+    StitchAuth,
+    StitchUser,
+    BSON,
+} from 'mongodb-stitch-browser-sdk';
 
 @Injectable({
     providedIn: 'root'
@@ -27,30 +36,16 @@ export class AdminService {
     firstlogin = false;
     validuser: boolean;
     admincategories: BehaviorSubject<Array<AdminCategory>> = new BehaviorSubject<Array<AdminCategory>>([]);
-// We use the gql tag to parse our query string into a query document
-    CurrentUserForProfile = gql`
-        query Patient {
-            currentUser {
-                login
-                avatar_url
-            }
-        }
-    `;
-    private querySubscription: Subscription;
 
     constructor(private router: Router,
                 private notificationservice: NotificationService,
-                private apollo: Apollo
-    ) {
-        console.log('sending query');
-
-        this.querySubscription = this.apollo.watchQuery<any>({
-            query: this.CurrentUserForProfile
-        })
-            .valueChanges
-            .subscribe(({data, loading}) => {
-                console.log(data);
-            });
+                private stitch: StitchService) {
+        this.stitch.user.subscribe(value => {
+            this.getuser(value);
+        });
+        this.observableuserdata.subscribe(value => {
+            this.userdata = value;
+        });
     }
 
     // The the status of the activeadmin
@@ -58,6 +53,19 @@ export class AdminService {
         const config = this.userdata.config;
         config.availability = availability;
 
+    }
+
+    async getuser(user: StitchUser) {
+        this.stitch.db.collection<HospitalAdmin>('hospitaladmins')
+            .findOne({_id: new BSON.ObjectId(user.id)})
+            .then(userdata => {
+                this.observableuserdata.next(userdata);
+            });
+        const stream = await this.stitch.db.collection<HospitalAdmin>('hospitaladmins')
+            .watch([new BSON.ObjectId(user.id)]);
+        stream.onNext(data => {
+            this.observableuserdata.next(data.fullDocument);
+        });
     }
 
     getadmincategories(): void {
@@ -106,7 +114,7 @@ export class AdminService {
         this.router.navigate(['/admin/authentication/login']);
     }
 
-    checkinvite(): void {
+    checkinvite(user: StitchUser): void {
         // const invitequery = this.db.firestore.collection('admininvites')
         // .where('email', '==', user.email)
         // .limit(1)

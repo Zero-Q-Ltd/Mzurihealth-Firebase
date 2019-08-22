@@ -1,6 +1,6 @@
 import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
-import {HttpClientModule, HttpHeaders} from '@angular/common/http';
+import {HttpClientModule} from '@angular/common/http';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatIconModule, MatSnackBarModule} from '@angular/material';
 import {TranslateModule} from '@ngx-translate/core';
@@ -21,10 +21,15 @@ import {AgmCoreModule} from '@agm/core';
 import {CommonModule} from '@angular/common';
 import {NotificationComponent} from './shared/components/notification/notification.component';
 import {Angulartics2Module} from 'angulartics2';
-import {HttpLink, HttpLinkModule} from 'apollo-angular-link-http';
-import {Apollo, ApolloModule} from 'apollo-angular';
-import {InMemoryCache} from 'apollo-cache-inmemory';
 
+export const firebaseConfig = {
+    apiKey: 'AIzaSyDaiEsgWOaeopaYQTgTWPIatMeKLZjZc-A',
+    authDomain: 'mzurihealth.firebaseapp.com',
+    databaseURL: 'https://mzurihealth.firebaseio.com',
+    projectId: 'mzurihealth',
+    storageBucket: 'mzurihealth.appspot.com',
+    messagingSenderId: '126269493100'
+};
 
 @NgModule({
     declarations: [
@@ -51,8 +56,7 @@ import {InMemoryCache} from 'apollo-cache-inmemory';
         Error404Module,
         Error500Module,
         FrontendModule,
-        ApolloModule,
-        HttpLinkModule,
+
         /* Angulartics2Module.forRoot(<Angulartics2Settings>{
              pageTracking: {clearHash: true, clearQueryParams: true},
              ga: {transport: 'beacon'},
@@ -60,6 +64,8 @@ import {InMemoryCache} from 'apollo-cache-inmemory';
          }),*/
         Angulartics2Module.forRoot(),
 
+        // SW
+        // ServiceWorkerModule.register('/ngsw-worker.js', { enabled: environment.production }),
     ],
 
     entryComponents: [NotificationComponent],
@@ -69,21 +75,4 @@ import {InMemoryCache} from 'apollo-cache-inmemory';
     ]
 })
 export class AppModule {
-    constructor(apollo: Apollo, httpLink: HttpLink) {
-        const link = httpLink.create({uri: 'http://localhost:4242/query'});
-        const cache = new InMemoryCache();
-
-        apollo.create({
-            link,
-            cache
-        });
-
-        /**
-         * TODO: For use later when we start doing auth
-         */
-            // const middleware = setContext(() => ({
-            //     headers: new HttpHeaders().set('Authorization', localStorage.getItem('token') || null)
-            // }));
-        const state = cache.extract();
-    }
 }

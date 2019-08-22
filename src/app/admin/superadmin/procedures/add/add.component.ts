@@ -87,7 +87,7 @@ export class AddComponent implements OnInit, AfterViewInit {
     onSelect(selected: RawProcedure): void {
 
         if (this.procedureservice.hospitalprocedures.value.find(merged => {
-            return merged.rawProcedure.id === selected.id;
+            return merged.rawprocedure.id === selected.id;
         })) {
             this.notificationservice.notify({
                 placement: {

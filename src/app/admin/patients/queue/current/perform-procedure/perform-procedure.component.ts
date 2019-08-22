@@ -54,8 +54,8 @@ export class PerformProcedureComponent implements OnInit {
                 /**
                  * very useful for later on when dialog is dismissed
                  */
-                this.procedureResults[i].originalProcedureId = r.rawProcedure.id;
-                this.procedureResults[i].customProcedureId = r.customProcedure.id;
+                this.procedureResults[i].originalProcedureId = r.rawprocedure.id;
+                this.procedureResults[i].customProcedureId = r.customprocedure.id;
                 this.procedureResults[i].notes[0] = {
                     note: '',
                     admin: {

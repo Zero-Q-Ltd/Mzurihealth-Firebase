@@ -1,5 +1,5 @@
 import {emptymetadata, Metadata} from '../universal';
-import {BSON} from 'bson';
+import * as BSON from 'bson';
 
 export interface HospitalAdmin {
     _id: BSON.ObjectId;

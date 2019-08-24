@@ -104,7 +104,6 @@ export class GeneralDetailsComponent implements OnInit {
                 this.patientsForm.controls['nextofKin']
                     .get('workplace').patchValue(value.patientdata.nextofKin.workplace);
 
-
                 value.patientdata.insurance.forEach(i => {
                     this.insurance.push(this.replicateInsurance(i));
                     this.insurancechanges();

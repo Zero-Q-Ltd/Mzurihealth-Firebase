@@ -4,6 +4,8 @@ import {BehaviorSubject} from 'rxjs';
 import {HospitalAdmin} from '../../models/user/HospitalAdmin';
 import {emptyhospital, Hospital} from '../../models/hospital/Hospital';
 import {AdminInvite, emptyadmininvite} from '../../models/user/AdminInvite';
+import { StitchService } from './stitch/stitch.service';
+import { BSON } from 'mongodb-stitch-core-sdk';
 
 @Injectable({
     providedIn: 'root'
@@ -15,10 +17,10 @@ export class HospitalService {
     hospitalerror: boolean;
     invitedadmins: BehaviorSubject<Array<AdminInvite>> = new BehaviorSubject<Array<AdminInvite>>([]);
 
-    constructor(private adminservice: AdminService) {
+    constructor(private adminservice: AdminService,
+        private stitch: StitchService) {
         adminservice.observableuserdata.subscribe((admin: HospitalAdmin) => {
             if (admin._id) {
-                console.log(admin.config.hospitalId);
                 this.userdata = admin;
                 this.gethospitaldetails();
             }
@@ -56,16 +58,15 @@ export class HospitalService {
     }
 
 
-    gethospitaldetails(): void {
-        return true as any;
-        // this.stitch.db.collection<Hospital>('hospitals').findOne({_id: this.userdata.config.hospitalId})
-        //     .then(async value => {
-        //         console.log(value);
-        //         this.activehospital.next(Object.assign(emptyhospital, value));
-        //         let changes = await this.stitch.db.collection<Hospital>('hospitals').watch([this.userdata.config.hospitalId]);
-        //         changes.onNext(data => {
-        //             this.activehospital.next(Object.assign(emptyhospital, data));
-        //         });
-        //     });
+    async gethospitaldetails(): Promise<void> {
+        this.stitch.db.collection<Hospital>('hospitals').findOne({_id: this.userdata.config.hospitalId})
+            .then(async value => {
+                console.log(value);
+                this.activehospital.next(Object.assign(emptyhospital, value));
+                let changes = await this.stitch.db.collection<Hospital>('hospitals').watch([this.userdata.config.hospitalId]);
+                changes.onNext(data => {
+                    this.activehospital.next(Object.assign(emptyhospital, data));
+                });
+            });
     }
 }

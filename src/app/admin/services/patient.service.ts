@@ -12,7 +12,7 @@ import {debounceTime, map, switchMap} from 'rxjs/operators';
 import {BehaviorSubject, combineLatest, Observable, of} from 'rxjs';
 import 'rxjs/add/observable/empty';
 import {PaymentChannel} from '../../models/payment/PaymentChannel';
-import {BSON} from 'bson';
+import * as BSON from 'bson';
 
 
 @Injectable({

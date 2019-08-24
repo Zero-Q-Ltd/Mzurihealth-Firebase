@@ -1,11 +1,11 @@
-import {Injectable} from '@angular/core';
-import {BehaviorSubject, ReplaySubject} from 'rxjs';
-import {Router} from '@angular/router';
-import {emptyadmin, HospitalAdmin} from '../../models/user/HospitalAdmin';
-import {NotificationService} from '../../shared/services/notifications.service';
-import {AdminCategory} from '../../models/user/AdminCategory';
-import {AdminInvite} from '../../models/user/AdminInvite';
-import {StitchService} from './stitch/stitch.service';
+import { Injectable } from '@angular/core';
+import { BehaviorSubject, ReplaySubject } from 'rxjs';
+import { Router } from '@angular/router';
+import { emptyadmin, HospitalAdmin } from '../../models/user/HospitalAdmin';
+import { NotificationService } from '../../shared/services/notifications.service';
+import { AdminCategory } from '../../models/user/AdminCategory';
+import { AdminInvite } from '../../models/user/AdminInvite';
+import { StitchService } from './stitch/stitch.service';
 import {
     AnonymousCredential,
     GoogleRedirectCredential,
@@ -16,8 +16,9 @@ import {
     StitchAppClientConfiguration,
     StitchAuth,
     StitchUser,
-    BSON,
+    BSON, StreamListener,
 } from 'mongodb-stitch-browser-sdk';
+import { ChangeEvent } from 'mongodb-stitch-core-services-mongodb-remote';
 
 @Injectable({
     providedIn: 'root'
@@ -38,8 +39,8 @@ export class AdminService {
     admincategories: BehaviorSubject<Array<AdminCategory>> = new BehaviorSubject<Array<AdminCategory>>([]);
 
     constructor(private router: Router,
-                private notificationservice: NotificationService,
-                private stitch: StitchService) {
+        private notificationservice: NotificationService,
+        private stitch: StitchService) {
         this.stitch.user.subscribe(value => {
             this.getuser(value);
         });
@@ -52,21 +53,48 @@ export class AdminService {
     setstatus(availability: number): void {
         const config = this.userdata.config;
         config.availability = availability;
-
     }
 
-    async getuser(user: StitchUser) {
+    getuser = async (user: StitchUser) => {
         this.stitch.db.collection<HospitalAdmin>('hospitaladmins')
-            .findOne({_id: new BSON.ObjectId(user.id)})
-            .then(userdata => {
+            .findOne({ _id: new BSON.ObjectId(user.id) })
+            .then(async userdata => {
                 this.observableuserdata.next(userdata);
+                console.log(userdata);
+                const stream = await this.stitch.db.collection<HospitalAdmin>('hospitaladmins')
+                    .watch({ _id: new BSON.ObjectId(user.id) });
+                stream.onNext(data => {
+                    console.log(data.fullDocument);
+                    this.observableuserdata.next(data.fullDocument);
+                });
+                stream.onError(error => {
+                    console.log(error);
+                });
             });
-        const stream = await this.stitch.db.collection<HospitalAdmin>('hospitaladmins')
-            .watch([new BSON.ObjectId(user.id)]);
-        stream.onNext(data => {
-            this.observableuserdata.next(data.fullDocument);
-        });
-    }
+            
+        // const stream = await this.stitch.db.collection<HospitalAdmin>('hospitaladmins')
+        //     .watch(id);
+        // stream.onNext(data => {
+        //     console.log(data);
+        //     this.observableuserdata.next(data.fullDocument);
+        // });
+        // stream.onError(error => {
+        //     console.log(error);
+        // });
+
+        // this.stitch.db.collection<HospitalAdmin>('hospitaladmins')
+        //     .watch().then(v => {
+        //     v.addListener(new class implements StreamListener<ChangeEvent<HospitalAdmin>> {
+        //         onNext(data: ChangeEvent<HospitalAdmin>): void {
+        //             console.log(ChangeEvent.fullDocument);
+        //         }
+        //
+        //         onError(error: Error): void {
+        //         }
+        //     });
+        //
+        // });
+    };
 
     getadmincategories(): void {
         // this.db.firestore.collection('admincategories').onSnapshot(allcategorydata => {

@@ -56,7 +56,7 @@
     "@types/jasminewd2": "2.0.6",
     "@types/lodash": "4.14.126",
     "@types/node": "12.0.0",
-    "chart.js": "2.8.0",
+    "chart.js": "2.9.4",
     "classlist.js": "1.1.20150312",
     "codelyzer": "5.0.1",
     "core-js": "3.0.1",

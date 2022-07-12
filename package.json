@@ -72,7 +72,7 @@
     "karma-coverage-istanbul-reporter": "2.0.5",
     "karma-jasmine": "2.0.1",
     "karma-jasmine-html-reporter": "1.4.2",
-    "lodash": "4.17.19",
+    "lodash": "4.17.21",
     "moment": "2.29.4",
     "ng2-charts": "2.2.3",
     "ngrx-store-freeze": "0.2.4",
